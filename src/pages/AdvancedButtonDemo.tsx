@@ -14,32 +14,32 @@ const AdvancedButtonDemo = () => {
   const [logs, setLogs] = useState<string[]>([]);
   
   // Visibility Tests State
-  const [opacityVisible, setOpacityVisible] = useState(false);
-  const [displayVisible, setDisplayVisible] = useState(false);
-  const [visibilityVisible, setVisibilityVisible] = useState(false);
-  const [fadeInVisible, setFadeInVisible] = useState(false);
+  const [opacityVisible, setOpacityVisible] = useState(true);
+  const [displayVisible, setDisplayVisible] = useState(true);
+  const [visibilityVisible, setVisibilityVisible] = useState(true);
+  const [fadeInVisible, setFadeInVisible] = useState(true);
   
   // Stability Tests State
-  const [slideInComplete, setSlideInComplete] = useState(false);
-  const [animationComplete, setAnimationComplete] = useState(false);
-  const [positionStable, setPositionStable] = useState(false);
+  const [slideInComplete, setSlideInComplete] = useState(true);
+  const [animationComplete, setAnimationComplete] = useState(true);
+  const [positionStable, setPositionStable] = useState(true);
   
   // Element Resolution State
   const [multipleButtons, setMultipleButtons] = useState([{ id: 1, active: false }, { id: 2, active: false }, { id: 3, active: true }]);
-  const [dynamicButtonExists, setDynamicButtonExists] = useState(false);
+  const [dynamicButtonExists, setDynamicButtonExists] = useState(true);
   const [buttonId, setButtonId] = useState("changing-id-1");
   
   // Event Reception State
-  const [overlayVisible, setOverlayVisible] = useState(true);
-  const [modalVisible, setModalVisible] = useState(true);
-  const [spinnerVisible, setSpinnerVisible] = useState(true);
-  const [zIndexResolved, setZIndexResolved] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
+  const [zIndexResolved, setZIndexResolved] = useState(true);
   
   // Enabled State Tests
   const [formValid, setFormValid] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [fieldsetDisabled, setFieldsetDisabled] = useState(true);
-  const [ariaDisabled, setAriaDisabled] = useState(true);
+  const [fieldsetDisabled, setFieldsetDisabled] = useState(false);
+  const [ariaDisabled, setAriaDisabled] = useState(false);
   const [formData, setFormData] = useState({ email: "", name: "" });
 
   const addLog = (message: string) => {
@@ -67,39 +67,55 @@ const AdvancedButtonDemo = () => {
 
   // Visibility Test Functions
   const startOpacityTest = () => {
-    addLog("VISIBILITY: Starting opacity test - button has opacity: 0");
-    setOpacityVisible(false);
+    addLog("VISIBILITY: Starting opacity test - button will fade out then back in");
+    setOpacityVisible(true);
+    setTimeout(() => {
+      setOpacityVisible(false);
+      addLog("VISIBILITY: Button now has opacity: 0");
+    }, 500);
     setTimeout(() => {
       addLog("VISIBILITY: Transitioning opacity from 0 to 1 over 2 seconds");
       setOpacityVisible(true);
-    }, 1000);
+    }, 2000);
   };
 
   const startDisplayTest = () => {
-    addLog("VISIBILITY: Starting display test - button has display: none");
-    setDisplayVisible(false);
+    addLog("VISIBILITY: Starting display test - button will hide then show");
+    setDisplayVisible(true);
+    setTimeout(() => {
+      setDisplayVisible(false);
+      addLog("VISIBILITY: Button now has display: none");
+    }, 500);
     setTimeout(() => {
       addLog("VISIBILITY: Changing display from none to block");
       setDisplayVisible(true);
-    }, 1500);
+    }, 2000);
   };
 
   const startVisibilityTest = () => {
-    addLog("VISIBILITY: Starting visibility test - button has visibility: hidden");
-    setVisibilityVisible(false);
+    addLog("VISIBILITY: Starting visibility test - button will hide then show");
+    setVisibilityVisible(true);
+    setTimeout(() => {
+      setVisibilityVisible(false);
+      addLog("VISIBILITY: Button now has visibility: hidden");
+    }, 500);
     setTimeout(() => {
       addLog("VISIBILITY: Changing visibility from hidden to visible");
       setVisibilityVisible(true);
-    }, 1200);
+    }, 2000);
   };
 
   const startFadeInTest = () => {
-    addLog("VISIBILITY: Starting fade-in test - 3 second CSS transition");
-    setFadeInVisible(false);
+    addLog("VISIBILITY: Starting fade-in test - button will fade out then in with CSS transition");
+    setFadeInVisible(true);
+    setTimeout(() => {
+      setFadeInVisible(false);
+      addLog("VISIBILITY: Button fading out");
+    }, 500);
     setTimeout(() => {
       addLog("VISIBILITY: Triggering CSS fade-in animation");
       setFadeInVisible(true);
-    }, 500);
+    }, 2000);
   };
 
   // Stability Test Functions
@@ -255,10 +271,10 @@ const AdvancedButtonDemo = () => {
           
           <div className="nasa-panel p-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <div className="text-xs text-primary mb-1">TESTING FRAMEWORK</div>
-                <div className="text-sm">Playwright Auto-Wait vs WebDriver Manual Waits</div>
-              </div>
+                <div>
+                  <div className="text-xs text-primary mb-1">TESTING CATEGORY</div>
+                  <div className="text-sm">Advanced element interaction challenges</div>
+                </div>
               <div>
                 <div className="text-xs text-accent mb-1">CHALLENGE CATEGORIES</div>
                 <div className="text-sm">Visibility • Stability • Resolution • Events • State</div>
@@ -307,18 +323,18 @@ const AdvancedButtonDemo = () => {
               Visibility Tests
               <InfoPopover title="Visibility Challenge Details">
                 <div className="space-y-2 text-sm">
-                  <p><strong>What Playwright checks:</strong></p>
+                  <p><strong>Automation challenges:</strong></p>
                   <ul className="list-disc pl-4 space-y-1">
                     <li>Element has non-empty bounding box</li>
                     <li>No visibility:hidden computed style</li>
                     <li>Elements with opacity:0 are considered visible</li>
                     <li>Elements with display:none are not visible</li>
                   </ul>
-                  <p><strong>WebDriver challenges:</strong></p>
+                  <p><strong>Common issues:</strong></p>
                   <ul className="list-disc pl-4 space-y-1">
-                    <li>May attempt to click before element becomes visible</li>
-                    <li>Needs explicit waits for CSS transitions</li>
-                    <li>Different visibility detection logic</li>
+                    <li>Attempting to click before element becomes visible</li>
+                    <li>Timing issues with CSS transitions</li>
+                    <li>Different visibility detection logic across tools</li>
                   </ul>
                   <div className="bg-muted p-2 rounded text-xs">
                     <code>CSS: opacity: 0 → 1, display: none → block, visibility: hidden → visible</code>
@@ -391,17 +407,17 @@ const AdvancedButtonDemo = () => {
               Stability Tests
               <InfoPopover title="Stability Challenge Details">
                 <div className="space-y-2 text-sm">
-                  <p><strong>What Playwright checks:</strong></p>
+                  <p><strong>Stability requirements:</strong></p>
                   <ul className="list-disc pl-4 space-y-1">
                     <li>Element maintains same bounding box for 2+ consecutive animation frames</li>
                     <li>No ongoing CSS animations or transitions</li>
                     <li>Position, size, and transform values are stable</li>
                   </ul>
-                  <p><strong>WebDriver challenges:</strong></p>
+                  <p><strong>Common challenges:</strong></p>
                   <ul className="list-disc pl-4 space-y-1">
-                    <li>May click while element is still moving</li>
+                    <li>Clicking while element is still moving</li>
                     <li>No automatic animation completion detection</li>
-                    <li>Requires manual waits for animation timing</li>
+                    <li>Manual timing waits for animation completion</li>
                   </ul>
                   <div className="bg-muted p-2 rounded text-xs">
                     <code>CSS: transform, @keyframes, transition timing</code>
