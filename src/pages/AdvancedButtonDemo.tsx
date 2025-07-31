@@ -13,6 +13,14 @@ const AdvancedButtonDemo = () => {
   const { toast } = useToast();
   const [logs, setLogs] = useState<string[]>([]);
   
+  // System Metrics
+  const [totalClicks, setTotalClicks] = useState(0);
+  const [visibilityTests, setVisibilityTests] = useState(0);
+  const [stabilityTests, setStabilityTests] = useState(0);
+  const [resolutionTests, setResolutionTests] = useState(0);
+  const [eventTests, setEventTests] = useState(0);
+  const [enabledTests, setEnabledTests] = useState(0);
+  
   // Visibility Tests State
   const [opacityVisible, setOpacityVisible] = useState(true);
   const [displayVisible, setDisplayVisible] = useState(true);
@@ -244,10 +252,46 @@ const AdvancedButtonDemo = () => {
   };
 
   const handleButtonClick = (testType: string, buttonName: string) => {
+    setTotalClicks(prev => prev + 1);
+    
+    // Track by test category
+    switch (testType) {
+      case "VISIBILITY":
+        setVisibilityTests(prev => prev + 1);
+        break;
+      case "STABILITY":
+        setStabilityTests(prev => prev + 1);
+        break;
+      case "RESOLUTION":
+        setResolutionTests(prev => prev + 1);
+        break;
+      case "EVENTS":
+        setEventTests(prev => prev + 1);
+        break;
+      case "ENABLED":
+        setEnabledTests(prev => prev + 1);
+        break;
+    }
+    
     addLog(`SUCCESS: ${testType} - ${buttonName} clicked successfully!`);
     toast({
       title: "Button Clicked Successfully!",
       description: `${testType}: ${buttonName}`,
+    });
+  };
+
+  const resetAllSystems = () => {
+    setTotalClicks(0);
+    setVisibilityTests(0);
+    setStabilityTests(0);
+    setResolutionTests(0);
+    setEventTests(0);
+    setEnabledTests(0);
+    setLogs([]);
+    
+    toast({
+      title: "All Systems Reset",
+      description: "Metrics and logs cleared",
     });
   };
 
@@ -802,23 +846,42 @@ const AdvancedButtonDemo = () => {
            <CardContent>
              <div className="space-y-3 text-sm">
                <div className="flex justify-between">
-                 <span className="text-accent font-futura">Mission Type:</span>
-                 <span className="text-primary">Advanced Button Testing</span>
+                 <span className="text-accent font-futura">Total Clicks:</span>
+                 <span className="text-primary">{totalClicks}</span>
                </div>
                <div className="flex justify-between">
-                 <span className="text-accent font-futura">Test Categories:</span>
-                 <span className="text-primary">5 ACTIVE</span>
+                 <span className="text-accent font-futura">Visibility Tests:</span>
+                 <span className="text-primary">{visibilityTests}</span>
                </div>
                <div className="flex justify-between">
-                 <span className="text-accent font-futura">System Status:</span>
-                 <span className="text-primary">◉ OPERATIONAL</span>
+                 <span className="text-accent font-futura">Stability Tests:</span>
+                 <span className="text-primary">{stabilityTests}</span>
+               </div>
+               <div className="flex justify-between">
+                 <span className="text-accent font-futura">Resolution Tests:</span>
+                 <span className="text-primary">{resolutionTests}</span>
+               </div>
+               <div className="flex justify-between">
+                 <span className="text-accent font-futura">Event Tests:</span>
+                 <span className="text-primary">{eventTests}</span>
+               </div>
+               <div className="flex justify-between">
+                 <span className="text-accent font-futura">Enabled Tests:</span>
+                 <span className="text-primary">{enabledTests}</span>
                </div>
                <div className="border-t border-border pt-3">
-                 <div className="text-accent font-futura mb-2">Mission Objective:</div>
-                 <div className="text-muted-foreground text-xs">
-                   Test automated interaction capabilities with complex button behaviors including visibility changes, 
-                   movement, overlays, state transitions, and form validation scenarios.
-                 </div>
+                 <div className="text-accent font-futura mb-2">System Status:</div>
+                 <div className="text-primary text-xs">◉ {totalClicks > 0 ? "TESTING ACTIVE" : "READY FOR TESTING"}</div>
+               </div>
+               <div className="border-t border-border pt-3">
+                 <Button 
+                   onClick={resetAllSystems}
+                   variant="destructive"
+                   size="sm"
+                   className="w-full"
+                 >
+                   RESET ALL SYSTEMS
+                 </Button>
                </div>
              </div>
              
