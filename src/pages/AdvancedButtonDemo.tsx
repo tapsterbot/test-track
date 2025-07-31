@@ -854,22 +854,22 @@ const AdvancedButtonDemo = () => {
                  <div className="text-accent font-futura mb-2">Test Categories:</div>
                  <div className="grid grid-cols-3 gap-2">
                    <Badge variant="outline" className="justify-center py-1">
-                     VIS: {visibilityTests}
+                     Visibility: {visibilityTests}
                    </Badge>
                    <Badge variant="outline" className="justify-center py-1">
-                     STB: {stabilityTests}
+                     Stability: {stabilityTests}
                    </Badge>
                    <Badge variant="outline" className="justify-center py-1">
-                     RES: {resolutionTests}
+                     Resolution: {resolutionTests}
                    </Badge>
                    <Badge variant="outline" className="justify-center py-1">
-                     EVT: {eventTests}
+                     Events: {eventTests}
                    </Badge>
                    <Badge variant="outline" className="justify-center py-1">
-                     ENB: {enabledTests}
+                     Enabled: {enabledTests}
                    </Badge>
                    <Badge variant="secondary" className="justify-center py-1">
-                     SYS: {totalClicks > 0 ? "ACTIVE" : "READY"}
+                     Status: {totalClicks > 0 ? "ACTIVE" : "READY"}
                    </Badge>
                  </div>
                </div>
