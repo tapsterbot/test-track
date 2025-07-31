@@ -11,6 +11,9 @@ import DropdownDemo from "./pages/DropdownDemo";
 import CheckboxRadioDemo from "./pages/CheckboxRadioDemo";
 import TableDemo from "./pages/TableDemo";
 import ModalDemo from "./pages/ModalDemo";
+import AlertDemo from "./pages/AlertDemo";
+import FileUploadDemo from "./pages/FileUploadDemo";
+import DragDropDemo from "./pages/DragDropDemo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +33,9 @@ const App = () => (
           <Route path="/checkbox-radio-demo" element={<CheckboxRadioDemo />} />
           <Route path="/table-demo" element={<TableDemo />} />
           <Route path="/modal-demo" element={<ModalDemo />} />
+          <Route path="/alert-demo" element={<AlertDemo />} />
+          <Route path="/file-upload-demo" element={<FileUploadDemo />} />
+          <Route path="/drag-drop-demo" element={<DragDropDemo />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
