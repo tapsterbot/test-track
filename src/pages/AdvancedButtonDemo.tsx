@@ -262,8 +262,8 @@ const AdvancedButtonDemo = () => {
                 <Home className="h-6 w-6" />
               </Link>
               <div>
-                <div className="text-xs text-accent font-futura tracking-wide">AUTONOMOUS CONTROL SYSTEM</div>
-                <h1 className="text-2xl font-black text-primary font-futura tracking-wide">ADVANCED INTERACTION PROTOCOLS</h1>
+                <div className="text-xs text-accent font-futura tracking-wide">MODULE 016</div>
+                <h1 className="text-2xl font-black text-primary font-futura tracking-wide">ADVANCED BUTTON CLICKING</h1>
               </div>
             </div>
             <Badge variant="destructive" className="font-futura">ADVANCED</Badge>
