@@ -203,7 +203,7 @@ const Index = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
                 <div className="text-center">
                   <div className="text-primary text-2xl nasa-display mb-2">◉</div>
-                  <div className="text-xs text-accent font-futura mb-1">SELENIUM COMPATIBLE</div>
+                  <div className="text-xs text-accent font-futura mb-1">AGENT COMPATIBLE</div>
                   <div className="text-foreground">All elements properly tagged for automation frameworks</div>
                 </div>
                 <div className="text-center">
