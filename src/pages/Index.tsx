@@ -190,14 +190,14 @@ const Index = () => {
       <div className="nasa-panel border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-3">
           {/* Mission Status Bar */}
-          <div className="flex justify-between items-center mb-4 text-xs nasa-display">
-            <div className="flex gap-6">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2 md:gap-0 text-xs nasa-display">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-6">
               <span className="text-primary">◉ SYSTEM OPERATIONAL</span>
               <span className="text-accent">⚠ TELEMETRY ACTIVE</span>
               <span className="text-foreground">□ MISSION TIME: {currentTime.toLocaleTimeString()}</span>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-primary">CONSOLE 001 READY</div>
+            <div className="flex items-center justify-between sm:justify-end gap-4">
+              <div className="text-primary text-xs">CONSOLE 001 READY</div>
               <ThemeToggle />
             </div>
           </div>
@@ -207,24 +207,24 @@ const Index = () => {
             <div className="text-center">
               <div className="mb-4 font-futura">
                 <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">VALET NETWORK SYSTEMS</div>
-                <h1 className="text-7xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
+                <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
                   TEST TRACK
                 </h1>
-                <div className="text-sm text-accent tracking-[0.2em] mb-4 font-futura">AUTONOMOUS AGENT TRAINING FACILITY</div>
+                <div className="text-xs sm:text-sm text-accent tracking-[0.2em] mb-4 font-futura">AUTONOMOUS AGENT TRAINING FACILITY</div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-                <div className="nasa-panel p-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
+                <div className="nasa-panel p-3 md:p-4">
                   <div className="text-xs text-primary mb-1">MISSION OBJECTIVE</div>
-                  <div className="text-sm text-foreground">Web automation testing protocols and validation procedures</div>
+                  <div className="text-xs md:text-sm text-foreground">Web automation testing protocols and validation procedures</div>
                 </div>
-                <div className="nasa-panel p-4">
+                <div className="nasa-panel p-3 md:p-4">
                   <div className="text-xs text-accent mb-1">SYSTEMS STATUS</div>
-                  <div className="text-sm text-foreground">All training modules operational and ready for deployment</div>
+                  <div className="text-xs md:text-sm text-foreground">All training modules operational and ready for deployment</div>
                 </div>
-                <div className="nasa-panel p-4">
+                <div className="nasa-panel p-3 md:p-4">
                   <div className="text-xs text-destructive mb-1">CAUTION</div>
-                  <div className="text-sm text-foreground">May cause occasional smiles • Side effects include increased curiosity</div>
+                  <div className="text-xs md:text-sm text-foreground">May cause occasional smiles • Side effects include increased curiosity</div>
                 </div>
               </div>
             </div>
