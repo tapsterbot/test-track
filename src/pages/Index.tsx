@@ -109,7 +109,7 @@ const Index = () => {
   return <div className="min-h-screen bg-background">
       {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-3">
           {/* Mission Status Bar */}
           <div className="flex justify-between items-center mb-4 text-xs nasa-display">
             <div className="flex gap-6">
@@ -124,11 +124,11 @@ const Index = () => {
           </div>
           
           {/* Main Control Panel */}
-          <div className="nasa-panel p-8 mb-6">
+          <div className="nasa-panel p-4 mb-4">
             <div className="text-center">
               <div className="mb-4 font-futura">
                 <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">VALET NETWORK SYSTEMS</div>
-                <h1 className="text-7xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
+                <h1 className="text-5xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
                   TEST TRACK
                 </h1>
                 <div className="text-sm text-accent tracking-[0.2em] mb-4 font-futura">AUTONOMOUS AGENT TRAINING FACILITY</div>
