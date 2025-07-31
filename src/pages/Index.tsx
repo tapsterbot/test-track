@@ -107,7 +107,7 @@ const Index = () => {
   }, {
     title: "Advanced Button Clicking",
     path: "/advanced-button-demo", 
-    description: "Challenging button scenarios testing Playwright's auto-wait vs WebDriver",
+    description: "Challenging button scenarios testing automation timing and interaction strategies",
     difficulty: "Advanced",
     elements: ["visibility", "stability", "element resolution", "event reception", "enabled state"]
   },
