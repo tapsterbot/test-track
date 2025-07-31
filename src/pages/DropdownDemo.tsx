@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Home, ChevronDown, Settings, Users, Database, Shield } from "lucide-react";
+import { Home, ChevronDown, Settings, Users, Database, Shield, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -69,7 +69,7 @@ const DropdownDemo = () => {
             <div className="flex items-center justify-between gap-4">
               <Link to="/">
                 <Button variant="outline" size="icon" className="nasa-panel">
-                  <Home className="w-4 h-4" />
+                  <ArrowLeft className="w-4 h-4" />
                 </Button>
               </Link>
               <span className="text-foreground text-sm">□ MISSION TIME: {currentTime.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
