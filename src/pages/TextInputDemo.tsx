@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Eye, EyeOff, CheckCircle, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const TextInputDemo = () => {
   const [formData, setFormData] = useState({
@@ -57,72 +58,92 @@ const TextInputDemo = () => {
     });
     setValidationResults({});
     toast({
-      title: "Fields Cleared",
-      description: "All input fields have been reset.",
+      title: "Systems Reset",
+      description: "All input channels have been cleared.",
     });
   };
 
   const submitForm = () => {
     toast({
-      title: "Form Submitted",
-      description: "All input values have been processed.",
+      title: "Data Transmission Complete",
+      description: "All input data has been processed by mission control.",
     });
   };
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b bg-card">
+      {/* NASA Mission Control Header */}
+      <div className="nasa-panel border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-4 mb-4">
-            <Link to="/" className="text-primary hover:text-primary/80">
-              <ArrowLeft size={24} />
-            </Link>
-            <div>
-              <h1 className="text-3xl font-bold font-futura tracking-wide">TEXT INPUT DEMO</h1>
-              <p className="text-muted-foreground">Practice text input, validation, and form field interactions</p>
+          <div className="flex justify-between items-center mb-4 text-xs nasa-display">
+            <div className="flex gap-6">
+              <span className="text-primary">◉ MODULE 002 OPERATIONAL</span>
+              <span className="text-accent">⚠ INPUT SYSTEMS ACTIVE</span>
+              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="text-primary">DATA INPUT READY</div>
+              <ThemeToggle />
             </div>
           </div>
-          <div className="flex gap-2">
-            <Badge variant="secondary">Basic</Badge>
-            <Badge variant="outline">input fields</Badge>
-            <Badge variant="outline">text validation</Badge>
-            <Badge variant="outline">keyboard events</Badge>
+          
+          <div className="nasa-panel p-8">
+            <div className="flex items-center gap-4 mb-6">
+              <Link to="/">
+                <Button variant="outline" size="sm" className="nasa-panel">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  RETURN TO MISSION CONTROL
+                </Button>
+              </Link>
+            </div>
+            
+            <div className="text-center">
+              <div className="mb-4 font-futura">
+                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">TRAINING MODULE 002</div>
+                <h1 className="text-3xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
+                  TEXT INPUT INTERFACE
+                </h1>
+                <div className="text-sm text-accent tracking-[0.2em] mb-4 font-futura">DATA ENTRY & VALIDATION PROTOCOLS</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-8 max-w-4xl mx-auto">
+          
           {/* Basic Input Types */}
-          <Card>
+          <Card className="nasa-panel">
             <CardHeader>
-              <CardTitle>Basic Input Types</CardTitle>
+              <CardTitle className="font-futura tracking-wide text-primary">BASIC INPUT CHANNELS</CardTitle>
+              <CardDescription>Primary data entry interfaces</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="text-input">Text Input</Label>
+                <Label htmlFor="text-input">Text Input Channel</Label>
                 <Input
                   id="text-input"
                   name="text"
                   type="text"
-                  placeholder="Enter any text..."
+                  placeholder="ENTER TEXT DATA..."
                   value={formData.text}
                   onChange={(e) => handleInputChange('text', e.target.value)}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Characters: {formData.text.length}
+                  CHARACTERS: {formData.text.length}
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email-input">Email Input</Label>
+                <Label htmlFor="email-input">Communication Channel</Label>
                 <div className="relative">
                   <Input
                     id="email-input"
                     name="email"
                     type="email"
-                    placeholder="user@example.com"
+                    placeholder="astronaut@nasa.gov"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     className={validationResults.email === false ? "border-destructive" : 
@@ -138,18 +159,18 @@ const TextInputDemo = () => {
                   )}
                 </div>
                 {validationResults.email === false && (
-                  <p className="text-xs text-destructive">Please enter a valid email</p>
+                  <p className="text-xs text-destructive">INVALID COMMUNICATION PROTOCOL</p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password-input">Password Input</Label>
+                <Label htmlFor="password-input">Security Access Code</Label>
                 <div className="relative">
                   <Input
                     id="password-input"
                     name="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter password..."
+                    placeholder="ENTER SECURITY CODE..."
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
                     className={validationResults.password === false ? "border-destructive" : 
@@ -167,25 +188,26 @@ const TextInputDemo = () => {
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Minimum 8 characters required
+                  MINIMUM 8 CHARACTERS REQUIRED FOR SECURITY CLEARANCE
                 </p>
               </div>
             </CardContent>
           </Card>
 
           {/* Specialized Inputs */}
-          <Card>
+          <Card className="nasa-panel">
             <CardHeader>
-              <CardTitle>Specialized Inputs</CardTitle>
+              <CardTitle className="font-futura tracking-wide text-primary">SPECIALIZED DATA INPUTS</CardTitle>
+              <CardDescription>Advanced data collection interfaces</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="number-input">Number Input</Label>
+                <Label htmlFor="number-input">Numerical Data Input</Label>
                 <Input
                   id="number-input"
                   name="number"
                   type="number"
-                  placeholder="Enter a number..."
+                  placeholder="ENTER NUMERICAL VALUE..."
                   value={formData.number}
                   onChange={(e) => handleInputChange('number', e.target.value)}
                   min="0"
@@ -193,30 +215,30 @@ const TextInputDemo = () => {
                 />
                 {formData.number && (
                   <p className="text-xs text-muted-foreground">
-                    Value: {formData.number}
+                    RECORDED VALUE: {formData.number}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="search-input">Search Input</Label>
+                <Label htmlFor="search-input">Search Query Interface</Label>
                 <Input
                   id="search-input"
                   name="search"
                   type="search"
-                  placeholder="Search for something..."
+                  placeholder="SEARCH MISSION DATABASE..."
                   value={formData.search}
                   onChange={(e) => handleInputChange('search', e.target.value)}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="url-input">URL Input</Label>
+                <Label htmlFor="url-input">Network Location Input</Label>
                 <Input
                   id="url-input"
                   name="url"
                   type="url"
-                  placeholder="https://example.com"
+                  placeholder="https://mission-control.nasa.gov"
                   value={formData.url}
                   onChange={(e) => handleInputChange('url', e.target.value)}
                   className={validationResults.url === false ? "border-destructive" : 
@@ -225,26 +247,27 @@ const TextInputDemo = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="textarea-input">Textarea</Label>
+                <Label htmlFor="textarea-input">Mission Log Entry</Label>
                 <Textarea
                   id="textarea-input"
                   name="textarea"
-                  placeholder="Enter multiple lines of text..."
+                  placeholder="ENTER MISSION LOG DATA..."
                   value={formData.textarea}
                   onChange={(e) => handleInputChange('textarea', e.target.value)}
                   rows={4}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Words: {formData.textarea.split(' ').filter(word => word.length > 0).length}
+                  WORD COUNT: {formData.textarea.split(' ').filter(word => word.length > 0).length}
                 </p>
               </div>
             </CardContent>
           </Card>
 
           {/* Form Actions */}
-          <Card>
+          <Card className="nasa-panel">
             <CardHeader>
-              <CardTitle>Form Actions</CardTitle>
+              <CardTitle className="font-futura tracking-wide text-primary">DATA TRANSMISSION CONTROLS</CardTitle>
+              <CardDescription>Form submission and system management</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex gap-2">
@@ -253,7 +276,7 @@ const TextInputDemo = () => {
                   onClick={submitForm}
                   className="flex-1"
                 >
-                  Submit Form
+                  TRANSMIT DATA TO MISSION CONTROL
                 </Button>
                 <Button 
                   id="clear-button"
@@ -261,12 +284,12 @@ const TextInputDemo = () => {
                   onClick={clearAllFields}
                   className="flex-1"
                 >
-                  Clear All
+                  CLEAR ALL CHANNELS
                 </Button>
               </div>
               
-              <div className="p-4 bg-muted rounded text-sm">
-                <p className="font-medium mb-2">Current Form Values:</p>
+              <div className="p-4 bg-muted rounded nasa-panel text-sm">
+                <p className="font-medium mb-2 text-accent">CURRENT DATA STREAM:</p>
                 <div className="space-y-1 font-mono text-xs">
                   <p>Text: "{formData.text}"</p>
                   <p>Email: "{formData.email}"</p>
@@ -274,30 +297,56 @@ const TextInputDemo = () => {
                   <p>Number: "{formData.number}"</p>
                   <p>Search: "{formData.search}"</p>
                   <p>URL: "{formData.url}"</p>
-                  <p>Textarea: "{formData.textarea.substring(0, 30)}{formData.textarea.length > 30 ? '...' : ''}"</p>
+                  <p>Log: "{formData.textarea.substring(0, 30)}{formData.textarea.length > 30 ? '...' : ''}"</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Test Instructions */}
-          <Card>
+          {/* Mission Summary */}
+          <Card className="nasa-panel">
             <CardHeader>
-              <CardTitle>Automation Test Cases</CardTitle>
+              <CardTitle className="font-futura tracking-wide text-primary">MISSION SUMMARY</CardTitle>
+              <CardDescription>Current input interface status and validation results</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2 text-sm">
-                <p><strong>Test Scenarios:</strong></p>
-                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                  <li>Enter text into each input field type</li>
-                  <li>Test email validation with valid/invalid emails</li>
-                  <li>Toggle password visibility</li>
-                  <li>Enter numbers and verify numeric validation</li>
-                  <li>Test form clearing functionality</li>
-                  <li>Verify character/word counting</li>
-                  <li>Test keyboard events (Tab navigation)</li>
-                  <li>Verify placeholder text display</li>
-                </ul>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <h4 className="font-semibold text-accent mb-2">VALIDATION STATUS:</h4>
+                  <ul className="space-y-1 text-muted-foreground">
+                    <li>Email: {validationResults.email === true ? "VALID" : validationResults.email === false ? "INVALID" : "PENDING"}</li>
+                    <li>Password: {validationResults.password === true ? "SECURE" : validationResults.password === false ? "INSUFFICIENT" : "PENDING"}</li>
+                    <li>Number: {validationResults.number === true ? "VALID" : validationResults.number === false ? "INVALID" : "PENDING"}</li>
+                    <li>URL: {validationResults.url === true ? "VALID" : validationResults.url === false ? "INVALID" : "PENDING"}</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-accent mb-2">DATA METRICS:</h4>
+                  <ul className="space-y-1 text-muted-foreground">
+                    <li>Text Length: {formData.text.length} chars</li>
+                    <li>Password Visibility: {showPassword ? "VISIBLE" : "HIDDEN"}</li>
+                    <li>Log Words: {formData.textarea.split(' ').filter(word => word.length > 0).length}</li>
+                    <li>Fields Populated: {Object.values(formData).filter(value => value.length > 0).length}/7</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-muted rounded nasa-panel">
+                <h4 className="font-semibold text-accent mb-2">TEST PROTOCOLS:</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
+                  <div>
+                    <p>• Enter text into each input field type</p>
+                    <p>• Test email validation with valid/invalid emails</p>
+                    <p>• Toggle password visibility controls</p>
+                    <p>• Enter numbers and verify numeric validation</p>
+                  </div>
+                  <div>
+                    <p>• Test form clearing functionality</p>
+                    <p>• Verify character/word counting accuracy</p>
+                    <p>• Test keyboard events (Tab navigation)</p>
+                    <p>• Verify placeholder text display</p>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
