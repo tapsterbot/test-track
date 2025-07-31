@@ -340,7 +340,7 @@ const AdvancedButtonDemo = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Eye className="h-5 w-5 mr-2" />
-              Visual Sensor Calibration
+              Visible
               <InfoPopover title="Visual Detection Systems">
                 <div className="space-y-2 text-sm">
                   <p><strong>Automation challenges:</strong></p>
@@ -424,7 +424,7 @@ const AdvancedButtonDemo = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <MousePointer className="h-5 w-5 mr-2" />
-              Motion Stabilization Protocols
+              Stable
               <InfoPopover title="Positional Stability Systems">
                 <div className="space-y-2 text-sm">
                   <p><strong>Stability requirements:</strong></p>
@@ -492,7 +492,7 @@ const AdvancedButtonDemo = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <CheckCircle className="h-5 w-5 mr-2" />
-              Element Resolution Tests
+              Element Resolution
               <InfoPopover title="Element Resolution Challenges">
                 <div className="space-y-2 text-sm">
                   <p><strong>What automation tools need to handle:</strong></p>
@@ -579,7 +579,7 @@ const AdvancedButtonDemo = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <MousePointer className="h-5 w-5 mr-2" />
-              Event Reception Tests
+              Receives Events
               <InfoPopover title="Event Reception Issues">
                 <div className="space-y-2 text-sm">
                   <p><strong>What automation tools check:</strong></p>
@@ -696,7 +696,7 @@ const AdvancedButtonDemo = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <XCircle className="h-5 w-5 mr-2" />
-              Enabled State Tests
+              Enabled
               <InfoPopover title="Enabled State Detection">
                 <div className="space-y-2 text-sm">
                   <p><strong>What automation tools verify:</strong></p>
