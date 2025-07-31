@@ -253,42 +253,62 @@ const AdvancedButtonDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* NASA Header */}
+      {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center gap-4">
-              <Link to="/" className="text-primary hover:text-primary/80 transition-colors">
-                <Home className="h-6 w-6" />
-              </Link>
-              <div>
-                <div className="text-xs text-accent font-futura tracking-wide">MODULE 016</div>
-                <h1 className="text-2xl font-black text-primary font-futura tracking-wide">ADVANCED BUTTON CLICKING</h1>
-              </div>
+        <div className="container mx-auto px-4 py-1">
+          <div className="flex justify-between items-center mb-1 text-xs nasa-display">
+            <div className="flex gap-6">
+              <span className="text-primary">◉ MODULE 016 OPERATIONAL</span>
+              <span className="text-accent">⚠ ADVANCED SYSTEMS ACTIVE</span>
+              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
             </div>
-            <Badge variant="destructive" className="font-futura">ADVANCED</Badge>
+            <div className="flex items-center gap-4">
+              <div className="text-primary">INTERACTION PROTOCOLS READY</div>
+              <Badge variant="destructive" className="font-futura text-xs">ADVANCED</Badge>
+            </div>
           </div>
           
-          <div className="nasa-panel p-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <div className="text-xs text-primary mb-1">MISSION PARAMETERS</div>
-                  <div className="text-sm">Advanced autonomous navigation challenges</div>
-                </div>
-                <div>
-                  <div className="text-xs text-accent mb-1">SENSOR CATEGORIES</div>
-                  <div className="text-sm">Visual • Positional • Recognition • Interface • Status</div>
-                </div>
-                <div>
-                  <div className="text-xs text-destructive mb-1">NAVIGATION COMPLEXITY</div>
-                  <div className="text-sm">Critical timing sequences and edge case scenarios</div>
-                </div>
+          <div className="nasa-panel p-2">
+            <div className="flex items-center gap-4 mb-2">
+              <Link to="/">
+                <Button variant="outline" size="sm" className="nasa-panel">
+                  <Home className="w-4 h-4 mr-2" />
+                  RETURN TO MISSION CONTROL
+                </Button>
+              </Link>
+            </div>
+            
+            <div className="text-center">
+              <div className="mb-2 font-futura">
+                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 016</div>
+                <h1 className="text-4xl font-black text-primary font-futura tracking-[0.15em] mb-2">
+                  ADVANCED BUTTON CLICKING
+                </h1>
+                <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">AUTONOMOUS NAVIGATION CHALLENGES</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-8">
+        {/* Mission Parameters Panel */}
+        <div className="nasa-panel p-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <div className="text-xs text-primary mb-1">MISSION PARAMETERS</div>
+              <div className="text-sm">Advanced autonomous navigation challenges</div>
+            </div>
+            <div>
+              <div className="text-xs text-accent mb-1">SENSOR CATEGORIES</div>
+              <div className="text-sm">Visual • Positional • Recognition • Interface • Status</div>
+            </div>
+            <div>
+              <div className="text-xs text-destructive mb-1">NAVIGATION COMPLEXITY</div>
+              <div className="text-sm">Critical timing sequences and edge case scenarios</div>
+            </div>
+          </div>
+        </div>
         {/* Console Logs */}
         <Card className="mb-8">
           <CardHeader>
