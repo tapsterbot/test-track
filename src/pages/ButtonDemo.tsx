@@ -44,6 +44,16 @@ const ButtonDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <div className="absolute top-4 left-4 z-10">
+        <Link to="/">
+          <Button variant="outline" size="sm" className="nasa-panel">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            RETURN TO MISSION CONTROL
+          </Button>
+        </Link>
+      </div>
+      
       {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-3">
@@ -59,14 +69,6 @@ const ButtonDemo = () => {
           </div>
           
           <div className="nasa-panel p-2">
-            <div className="flex items-center gap-4 mb-2">
-              <Link to="/">
-                <Button variant="outline" size="sm" className="nasa-panel">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  RETURN TO MISSION CONTROL
-                </Button>
-              </Link>
-            </div>
             
             <div className="text-center">
               <div className="mb-2 font-futura">
