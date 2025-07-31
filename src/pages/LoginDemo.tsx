@@ -94,7 +94,7 @@ const LoginDemo = () => {
               <ArrowLeft size={24} />
             </Link>
             <div>
-              <h1 className="text-3xl font-bold font-orbitron tracking-wide">LOGIN FORM DEMO</h1>
+              <h1 className="text-3xl font-bold font-futura tracking-wide">LOGIN FORM DEMO</h1>
               <p className="text-muted-foreground">Complete login form with validation and submission</p>
             </div>
           </div>
