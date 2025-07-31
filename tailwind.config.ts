@@ -60,6 +60,12 @@ export default {
 					warning: 'hsl(var(--demo-warning))',
 					info: 'hsl(var(--demo-info))'
 				},
+				nasa: {
+					blue: 'hsl(var(--primary))',
+					amber: 'hsl(var(--mission-amber))',
+					green: 'hsl(var(--console-green))',
+					telemetry: 'hsl(var(--telemetry-blue))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

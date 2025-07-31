@@ -8,97 +8,96 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 220 15% 97%;
-    --foreground: 220 20% 15%;
+    /* NASA Apollo Era Color Scheme */
+    --background: 220 20% 8%;  /* Deep space black */
+    --foreground: 0 0% 95%;    /* Mission control white */
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 15%;
+    --card: 220 15% 12%;       /* Control panel dark */
+    --card-foreground: 0 0% 92%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 15%;
+    --popover: 220 15% 10%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 217 91% 60%;
+    --primary: 195 100% 45%;   /* NASA blue */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 93%;
-    --secondary-foreground: 220 20% 25%;
+    --secondary: 210 15% 25%;  /* Console grey */
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 220 15% 95%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 220 10% 18%;      /* Instrument panel */
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 142 76% 36%;
+    --accent: 358 75% 55%;     /* Warning red */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 100% 50%; /* Alert red */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 88%;
-    --input: 220 15% 95%;
-    --ring: 217 91% 60%;
+    --border: 220 15% 25%;     /* Panel borders */
+    --input: 220 15% 15%;      /* Input backgrounds */
+    --ring: 195 100% 45%;      /* Focus rings */
 
-    /* Custom automation demo colors */
-    --demo-success: 142 76% 36%;
-    --demo-warning: 45 93% 58%;
-    --demo-info: 217 91% 60%;
-    --demo-gradient: linear-gradient(135deg, hsl(217 91% 60%), hsl(142 76% 36%));
-    --demo-shadow: 0 10px 25px -5px hsl(217 91% 60% / 0.1);
-    --demo-glow: 0 0 20px hsl(217 91% 60% / 0.3);
+    /* Apollo Mission Custom Colors */
+    --demo-success: 120 60% 45%;  /* Go light green */
+    --demo-warning: 45 100% 55%;  /* Caution amber */
+    --demo-info: 195 100% 45%;    /* NASA blue */
+    --demo-gradient: linear-gradient(135deg, hsl(195 100% 45%), hsl(358 75% 55%));
+    --demo-shadow: 0 8px 32px hsl(195 100% 45% / 0.3);
+    --demo-glow: 0 0 24px hsl(195 100% 45% / 0.4);
+    --mission-amber: 45 100% 55%;
+    --console-green: 120 60% 45%;
+    --telemetry-blue: 220 80% 60%;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;  /* Sharp, technical corners */
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 220 20% 6%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 195 100% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 15%;
+    --sidebar-accent-foreground: 0 0% 85%;
+    --sidebar-border: 220 15% 20%;
+    --sidebar-ring: 195 100% 45%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Light mode for mission control displays */
+    --background: 0 0% 98%;     /* Bright white displays */
+    --foreground: 220 20% 10%;  /* Dark text */
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 95%;
+    --card-foreground: 220 20% 15%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 98%;
+    --popover-foreground: 220 20% 10%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 195 100% 35%;    /* Darker NASA blue */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 210 15% 90%;   /* Light grey panels */
+    --secondary-foreground: 220 20% 20%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 210 10% 88%;
+    --muted-foreground: 220 15% 40%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 358 75% 45%;      /* Darker warning red */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 80% 45%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 220 15% 85%;
+    --input: 220 10% 92%;
+    --ring: 195 100% 35%;
+
+    --sidebar-background: 0 0% 96%;
+    --sidebar-foreground: 220 20% 15%;
+    --sidebar-primary: 195 100% 35%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 210 10% 88%;
+    --sidebar-accent-foreground: 220 20% 20%;
+    --sidebar-border: 220 15% 80%;
+    --sidebar-ring: 195 100% 35%;
   }
 }
 

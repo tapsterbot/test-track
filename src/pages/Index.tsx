@@ -120,19 +120,24 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b bg-card">
+      {/* Apollo-style Header */}
+      <div className="border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-5xl font-black mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-futura tracking-wider">
-              TEST TRACK
-            </h1>
-            <p className="text-lg text-muted-foreground mb-2">
-              A comprehensive collection of web elements and interactions for practicing Selenium WebDriver and test automation
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Each page demonstrates specific HTML elements and user interactions perfect for learning and testing automation frameworks
-            </p>
+            <div className="mb-6 border border-primary/30 bg-card/50 p-6 rounded-sm">
+              <h1 className="text-6xl font-black mb-4 text-primary font-futura tracking-[0.2em] drop-shadow-lg">
+                TEST TRACK
+              </h1>
+              <div className="text-xs text-muted-foreground font-futura tracking-widest mb-2">
+                MISSION CONTROL • AUTOMATION TESTING FACILITY
+              </div>
+              <p className="text-lg text-foreground mb-2 font-futura">
+                A comprehensive collection of web elements and interactions for practicing Selenium WebDriver and test automation
+              </p>
+              <p className="text-sm text-muted-foreground font-futura">
+                Each page demonstrates specific HTML elements and user interactions perfect for learning and testing automation frameworks
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -142,10 +147,10 @@ const Index = () => {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {demoPages.map((demo, index) => (
             <Link key={index} to={demo.path} className="group">
-              <Card className="h-full transition-all duration-200 hover:shadow-lg hover:-translate-y-1 border-2 hover:border-primary/20">
+              <Card className="h-full transition-all duration-300 hover:shadow-demo hover:-translate-y-1 border border-primary/20 bg-card/80 backdrop-blur-sm hover:bg-card hover:border-primary/40">
                 <CardHeader>
                   <div className="flex items-start justify-between mb-2">
-                    <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                    <CardTitle className="text-lg group-hover:text-primary transition-colors font-futura tracking-wide">
                       {demo.title}
                     </CardTitle>
                     <Badge 
@@ -172,20 +177,20 @@ const Index = () => {
           ))}
         </div>
 
-        {/* Footer Info */}
+        {/* Apollo Mission Footer */}
         <div className="mt-12 text-center">
-          <Card className="max-w-2xl mx-auto">
+          <Card className="max-w-2xl mx-auto border border-primary/20 bg-card/80">
             <CardContent className="pt-6">
-              <h3 className="text-lg font-semibold mb-2">About This Demo Site</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                This site is designed specifically for test automation tutorials and practice. Each page contains carefully crafted examples 
-                with proper element IDs, classes, and attributes to make automation testing straightforward and educational.
+              <h3 className="text-lg font-semibold mb-2 font-futura tracking-wide">MISSION PARAMETERS</h3>
+              <p className="text-sm text-muted-foreground mb-4 font-futura">
+                This facility is designed for test automation training and practice. Each module contains precisely engineered 
+                examples with proper element identification systems for automation testing protocols.
               </p>
-              <div className="flex justify-center gap-4 text-xs text-muted-foreground">
-                <span>✓ Selenium-friendly markup</span>
-                <span>✓ Consistent element naming</span>
-                <span>✓ Progressive difficulty</span>
-                <span>✓ Real-world scenarios</span>
+              <div className="flex justify-center gap-6 text-xs text-muted-foreground font-futura tracking-wide">
+                <span className="text-demo-success">✓ SELENIUM-READY</span>
+                <span className="text-demo-info">✓ ELEMENT MAPPING</span>
+                <span className="text-demo-warning">✓ GRADUATED COMPLEXITY</span>
+                <span className="text-accent">✓ OPERATIONAL SCENARIOS</span>
               </div>
             </CardContent>
           </Card>
