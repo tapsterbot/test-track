@@ -145,7 +145,7 @@ const Index = () => {
                 </div>
                 <div className="nasa-panel p-4">
                   <div className="text-xs text-destructive mb-1">CAUTION</div>
-                  <div className="text-sm text-foreground">🤖 Racing helmet recommended • No experience with autonomous vehicles necessary • Energy drink tolerance helpful but not mandatory</div>
+                  <div className="text-sm text-foreground">🤖 Helmet required • No robot experience needed • Caffeine tolerance preferred</div>
                 </div>
               </div>
             </div>
