@@ -102,7 +102,7 @@ const DropdownDemo = () => {
               <div className="flex items-center gap-3">
                 <Database className="w-5 h-5 text-primary" />
                 <div>
-                  <CardTitle className="font-futura text-lg">Mission Parameters</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">Mission Parameters</CardTitle>
                   <CardDescription>Primary selection interface</CardDescription>
                 </div>
               </div>
@@ -172,7 +172,7 @@ const DropdownDemo = () => {
               <div className="flex items-center gap-3">
                 <Settings className="w-5 h-5 text-accent" />
                 <div>
-                  <CardTitle className="font-futura text-lg">System Configuration</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">System Configuration</CardTitle>
                   <CardDescription>Advanced selection controls</CardDescription>
                 </div>
               </div>
@@ -242,7 +242,7 @@ const DropdownDemo = () => {
               <div className="flex items-center gap-3">
                 <Shield className="w-5 h-5 text-destructive" />
                 <div>
-                  <CardTitle className="font-futura text-lg">Control Actions</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">Control Actions</CardTitle>
                   <CardDescription>System reset and validation</CardDescription>
                 </div>
               </div>
@@ -274,7 +274,7 @@ const DropdownDemo = () => {
               <div className="flex items-center gap-3">
                 <Users className="w-5 h-5 text-primary" />
                 <div>
-                  <CardTitle className="font-futura text-lg">Mission Summary</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">Mission Summary</CardTitle>
                   <CardDescription>Current selection status</CardDescription>
                 </div>
               </div>
