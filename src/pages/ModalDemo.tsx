@@ -170,7 +170,7 @@ const ModalDemo = () => {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button variant="outline" className="font-futura">DOWNLOAD BRIEFING</Button>
+                    
                     <DialogClose asChild>
                       <Button className="font-futura">ACKNOWLEDGE & CLOSE</Button>
                     </DialogClose>
