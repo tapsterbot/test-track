@@ -177,29 +177,51 @@ const MultiWindowDemo = () => {
 
   const communicateWithWindow = (windowId: string) => {
     const windowRef = windowRefs.current[windowId];
+    
+    console.log('🛰️ [COMMUNICATION] Protocol: PostMessage API');
+    console.log('🛰️ [COMMUNICATION] Target Window ID:', windowId);
+    console.log('🛰️ [COMMUNICATION] Window Reference:', windowRef);
+    console.log('🛰️ [COMMUNICATION] Window Closed Status:', windowRef?.closed);
+    
     if (windowRef && !windowRef.closed) {
       try {
-        // Attempt to send a message (will work if same origin)
-        windowRef.postMessage({
+        const messagePayload = {
           type: 'MISSION_UPDATE',
           data: {
             timestamp: new Date().toISOString(),
             sender: 'Mission Control',
-            message: 'Status update requested'
+            message: 'Status update requested',
+            windowId: windowId
           }
-        }, '*');
+        };
+        
+        console.log('🛰️ [COMMUNICATION] Sending PostMessage:', messagePayload);
+        console.log('🛰️ [COMMUNICATION] Target Origin: * (wildcard - security risk in production)');
+        console.log('🛰️ [COMMUNICATION] Window URL:', windowRef.location?.href || 'Cross-origin - cannot access');
+        
+        // Attempt to send a message (will work if same origin)
+        windowRef.postMessage(messagePayload, '*');
+        
+        console.log('✅ [COMMUNICATION] PostMessage sent successfully');
+        console.log('🛰️ [COMMUNICATION] Note: Message delivery depends on target window having a message listener');
+        console.log('🛰️ [COMMUNICATION] Cross-origin windows may receive but cannot respond back due to security');
 
         toast({
           title: "Communication Sent",
           description: `Data transmitted to ${windows.find(w => w.id === windowId)?.name}`,
         });
       } catch (error) {
+        console.error('❌ [COMMUNICATION] PostMessage failed:', error);
+        console.log('🛰️ [COMMUNICATION] Failure reason: Likely cross-origin security restriction');
+        
         toast({
           title: "Communication Failed",
           description: "Cross-origin security restriction encountered",
           variant: "destructive"
         });
       }
+    } else {
+      console.log('❌ [COMMUNICATION] Cannot communicate: Window is null or closed');
     }
   };
 
