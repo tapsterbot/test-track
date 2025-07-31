@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, Move, Target, Shield, Zap, Clock, GitBranch } from "lucide-react";
+import { ArrowLeft, Move, Target, Shield, Zap, Clock, Activity } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -16,7 +16,7 @@ interface DraggableItem {
 
 const DragDropDemo = () => {
   const [items, setItems] = useState<DraggableItem[]>([
-    { id: '1', name: 'Flux Capacitor', type: 'entity', icon: GitBranch },
+    { id: '1', name: 'Flux Capacitor', type: 'entity', icon: Activity },
     { id: '2', name: 'Codex Fragment', type: 'anomaly', icon: Shield },
     { id: '3', name: 'Temporal Echo', type: 'artifact', icon: Clock },
     { id: '4', name: 'Neural Interface', type: 'component', icon: Zap },
