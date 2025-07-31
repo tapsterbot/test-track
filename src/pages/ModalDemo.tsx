@@ -163,8 +163,8 @@ const ModalDemo = () => {
                       </div>
                       <div className="border-t border-border pt-3">
                         <p className="text-foreground">
-                          This mission involves deep space reconnaissance and requires strict adherence to safety protocols. 
-                          All crew members must confirm readiness before deployment.
+                          This mission involves classified objectives beyond normal operational parameters. 
+                          All crew members must confirm readiness before deployment to unknown sectors.
                         </p>
                       </div>
                     </div>
