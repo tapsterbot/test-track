@@ -46,15 +46,15 @@ const ButtonDemo = () => {
     <div className="min-h-screen bg-background">
       {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-1">
-          <div className="flex justify-between items-center mb-1 text-xs nasa-display">
-            <div className="flex gap-6">
-              <span className="text-primary">◉ MODULE 001 OPERATIONAL</span>
-              <span className="text-accent">⚠ BUTTON SYSTEMS ACTIVE</span>
-              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-primary">BUTTON INTERFACE READY</div>
+        <div className="container mx-auto px-4 py-3">
+          {/* Mission Status Bar */}
+          <div className="mb-4 text-[10px] nasa-display">
+            <div className="flex flex-wrap items-center justify-between gap-1 md:gap-6">
+              <div className="flex flex-wrap items-center gap-1 md:gap-6">
+                <div className="text-primary">MODULE 001 OPERATIONAL</div>
+                <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
+                <span className="text-accent">⚠ BUTTON SYSTEMS ACTIVE</span>
+              </div>
               <ThemeToggle />
             </div>
           </div>
