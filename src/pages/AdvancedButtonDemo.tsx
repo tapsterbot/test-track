@@ -802,33 +802,33 @@ const AdvancedButtonDemo = () => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
-                <h4 className="font-semibold mb-2">Critical Test Coverage:</h4>
+                <h4 className="font-semibold mb-2">Required Tests to Complete:</h4>
                 <ul className="list-disc pl-4 space-y-1">
-                  <li>Visual sensor validation - detect interface visibility states</li>
-                  <li>Motion stability verification - ensure static positioning before interaction</li>
-                  <li>Target acquisition - resolve exact interface elements from multiple candidates</li>
-                  <li>Signal reception testing - verify interaction pathways are clear</li>
-                  <li>System state monitoring - confirm operational status before engagement</li>
+                  <li>Test buttons that appear/disappear - verify they're visible before clicking</li>
+                  <li>Test buttons that move around - wait for them to stop moving before clicking</li>
+                  <li>Test multiple similar buttons - identify the correct one to click</li>
+                  <li>Test blocked buttons - verify they can receive clicks (no overlays blocking)</li>
+                  <li>Test disabled buttons - check if button is enabled before attempting to click</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">Common Navigation Failures:</h4>
+                <h4 className="font-semibold mb-2">Common Test Failures:</h4>
                 <ul className="list-disc pl-4 space-y-1">
-                  <li>Premature interaction attempts during state transitions</li>
-                  <li>Race conditions in dynamic interface environments</li>
-                  <li>Stale reference errors when interface elements change</li>
-                  <li>Interaction blocking due to overlay interference</li>
-                  <li>Timing synchronization failures in complex sequences</li>
+                  <li>Clicking buttons before they finish loading or moving</li>
+                  <li>Clicking the wrong button when multiple similar ones exist</li>
+                  <li>Trying to click buttons that have changed location or been removed</li>
+                  <li>Attempting to click buttons hidden behind popups or overlays</li>
+                  <li>Not waiting long enough for buttons to become clickable</li>
                 </ul>
               </div>
             </div>
             
             <div className="mt-6 p-4 bg-muted rounded">
-              <h4 className="font-semibold mb-2 text-primary">Mission Success Criteria:</h4>
+              <h4 className="font-semibold mb-2 text-primary">Test Success Requirements:</h4>
               <p className="text-sm">
-                Autonomous systems must reliably navigate these challenging scenarios without manual intervention. 
-                Successful navigation requires sophisticated timing algorithms, robust state detection, and intelligent 
-                retry mechanisms to handle the unpredictable nature of dynamic interface environments.
+                All automated tests must successfully handle these button interaction scenarios without failing. 
+                Tests should wait for elements to be ready, verify their state before clicking, and handle 
+                timing issues gracefully to ensure reliable automation in real-world conditions.
               </p>
             </div>
           </CardContent>
