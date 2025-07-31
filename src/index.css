@@ -58,43 +58,51 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Light mode: Paper printouts and bright displays */
-    --background: 0 0% 96%;     
-    --foreground: 0 0% 10%;     
+    /* Light mode: Clean NASA documentation and bright displays */
+    --background: 0 0% 98%;     /* Clean white background */
+    --foreground: 0 0% 10%;     /* Dark text for readability */
 
-    --card: 0 0% 98%;
+    --card: 0 0% 95%;           /* Light grey panels */
     --card-foreground: 0 0% 15%;
 
     --popover: 0 0% 98%;
     --popover-foreground: 0 0% 10%;
 
-    --primary: 120 80% 25%;    
+    --primary: 120 70% 35%;     /* NASA green (darker for light mode) */
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 0 0% 88%;   
+    --secondary: 0 0% 88%;      /* Light grey controls */
     --secondary-foreground: 0 0% 20%;
 
-    --muted: 0 0% 92%;
+    --muted: 0 0% 92%;          /* Very light grey */
     --muted-foreground: 0 0% 40%;
 
-    --accent: 45 90% 35%;      
+    --accent: 45 85% 45%;       /* Amber warnings (darker for contrast) */
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 80% 40%;
+    --destructive: 0 75% 40%;   /* Red alerts (darker) */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 80%;
-    --input: 0 0% 95%;
-    --ring: 120 80% 25%;
+    --border: 0 0% 80%;         /* Subtle borders */
+    --input: 0 0% 95%;          /* Light input fields */
+    --ring: 120 70% 35%;        /* Focus rings */
+
+    /* Mission Control Light Mode */
+    --console-green: 120 70% 35%;
+    --warning-amber: 45 85% 45%;
+    --critical-red: 0 75% 40%;
+    --telemetry-blue: 200 80% 50%;
+    --metal-grey: 0 0% 75%;
+    --panel-dark: 0 0% 88%;
 
     --sidebar-background: 0 0% 94%;
     --sidebar-foreground: 0 0% 15%;
-    --sidebar-primary: 120 80% 25%;
+    --sidebar-primary: 120 70% 35%;
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 0 0% 88%;
     --sidebar-accent-foreground: 0 0% 20%;
     --sidebar-border: 0 0% 75%;
-    --sidebar-ring: 120 80% 25%;
+    --sidebar-ring: 120 70% 35%;
   }
 }
 
@@ -119,6 +127,10 @@ All colors MUST be HSL.
   .nasa-panel {
     background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted)));
     border: 2px solid hsl(var(--border));
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .dark .nasa-panel {
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
   }
 }

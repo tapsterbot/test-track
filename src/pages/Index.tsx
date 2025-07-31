@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Index = () => {
   const demoPages = [
@@ -130,7 +131,10 @@ const Index = () => {
               <span className="text-accent">⚠ TELEMETRY ACTIVE</span>
               <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
             </div>
-            <div className="text-primary">CONSOLE 001 READY</div>
+            <div className="flex items-center gap-4">
+              <div className="text-primary">CONSOLE 001 READY</div>
+              <ThemeToggle />
+            </div>
           </div>
           
           {/* Main Control Panel */}
