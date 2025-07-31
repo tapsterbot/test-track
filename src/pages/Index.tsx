@@ -110,6 +110,68 @@ const Index = () => {
     description: "Challenging button scenarios testing Playwright's auto-wait vs WebDriver",
     difficulty: "Advanced",
     elements: ["visibility", "stability", "element resolution", "event reception", "enabled state"]
+  },
+  // Additional Core Testing Modules
+  {
+    title: "Navigation & URL Demo",
+    path: "/navigation-demo",
+    description: "Test browser navigation, URL handling, and history manipulation",
+    difficulty: "Basic",
+    elements: ["browser history", "URL parameters", "hash navigation", "page refresh", "deep linking"]
+  }, {
+    title: "Scrolling & Viewport Demo",
+    path: "/scrolling-demo",
+    description: "Practice infinite scroll, lazy loading, and viewport manipulation",
+    difficulty: "Intermediate",
+    elements: ["infinite scroll", "lazy loading", "viewport control", "sticky elements", "scroll positioning"]
+  }, {
+    title: "Cookie & Storage Demo",
+    path: "/cookie-storage-demo",
+    description: "Handle cookies, local storage, and session management",
+    difficulty: "Intermediate",
+    elements: ["cookies", "local storage", "session storage", "data persistence", "storage cleanup"]
+  }, {
+    title: "Performance & Timing Demo",
+    path: "/performance-demo",
+    description: "Measure page load times, animation timing, and performance metrics",
+    difficulty: "Intermediate",
+    elements: ["load timing", "resource monitoring", "animation timing", "performance metrics", "lighthouse scores"]
+  }, {
+    title: "Authentication & Sessions Demo",
+    path: "/auth-demo",
+    description: "Test OAuth flows, session management, and multi-factor authentication",
+    difficulty: "Intermediate",
+    elements: ["OAuth", "session handling", "multi-factor auth", "login persistence", "logout scenarios"]
+  }, {
+    title: "Download & Print Demo",
+    path: "/download-print-demo",
+    description: "Practice file downloads, print dialogs, and PDF generation",
+    difficulty: "Intermediate",
+    elements: ["file downloads", "print handling", "PDF generation", "download progress", "file verification"]
+  }, {
+    title: "Network Intercept Demo",
+    path: "/network-demo",
+    description: "Mock API responses, simulate network failures, and test offline mode",
+    difficulty: "Advanced",
+    elements: ["API mocking", "network simulation", "request modification", "response delays", "offline testing"]
+  }, {
+    title: "Shadow DOM Demo",
+    path: "/shadow-dom-demo",
+    description: "Navigate shadow DOM trees and interact with custom elements",
+    difficulty: "Advanced",
+    elements: ["shadow DOM", "custom elements", "nested shadows", "element encapsulation", "shadow forms"]
+  }, {
+    title: "Mobile & Touch Demo",
+    path: "/mobile-touch-demo",
+    description: "Simulate touch gestures, mobile viewports, and orientation changes",
+    difficulty: "Advanced",
+    elements: ["touch gestures", "mobile viewport", "orientation change", "touch events", "mobile interactions"]
+  }, {
+    title: "WebSocket & Real-time Demo",
+    path: "/websocket-demo",
+    description: "Test WebSocket connections, real-time updates, and live data streams",
+    difficulty: "Advanced",
+    elements: ["WebSocket", "real-time data", "connection handling", "message queues", "live updates"]
   }];
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
