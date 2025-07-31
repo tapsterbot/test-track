@@ -6,9 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, Upload, Database, Satellite, FileText, Image, Lock } from "lucide-react";
-import { Link } from "react-router-dom";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { Upload, Database, Satellite, FileText, Image, Lock } from "lucide-react";
+import { ModuleHeader } from "@/components/ModuleHeader";
 
 const FileUploadDemo = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -93,43 +92,11 @@ const FileUploadDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* NASA Mission Control Header */}
-      <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-1">
-          <div className="flex justify-between items-center mb-1 text-xs nasa-display">
-            <div className="flex gap-6">
-              <span className="text-primary">◉ MODULE 009 OPERATIONAL</span>
-              <span className="text-accent">⚠ DATA LINK SYSTEMS ACTIVE</span>
-              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-primary">UPLOAD INTERFACE READY</div>
-              <ThemeToggle />
-            </div>
-          </div>
-          
-          <div className="nasa-panel p-2">
-            <div className="flex items-center gap-4 mb-2">
-              <Link to="/">
-                <Button variant="outline" size="sm" className="nasa-panel">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  RETURN TO MISSION CONTROL
-                </Button>
-              </Link>
-            </div>
-            
-            <div className="text-center">
-              <div className="mb-2 font-futura">
-                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 009</div>
-                <h1 className="text-4xl font-black text-primary font-futura tracking-[0.15em] mb-2">
-                  FILE UPLOAD DEMO
-                </h1>
-                <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">DATA TRANSMISSION PROTOCOLS</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ModuleHeader 
+        moduleNumber="009"
+        title="FILE UPLOAD DEMO"
+        description="DATA TRANSMISSION PROTOCOLS"
+      />
 
       <div className="container mx-auto px-4 py-6">
         <div className="grid gap-6 max-w-6xl mx-auto">

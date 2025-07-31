@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
@@ -9,9 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Home, AlertTriangle, Settings, FileText, Users, Activity, Zap } from "lucide-react";
+import { AlertTriangle, Settings, FileText, Users, Activity, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ModuleHeader } from "@/components/ModuleHeader";
 
 const ModalDemo = () => {
   const [modalInteractions, setModalInteractions] = useState(0);
@@ -83,44 +82,11 @@ const ModalDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* NASA Mission Control Header */}
-      <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-3">
-          {/* Mission Status Bar */}
-          <div className="flex justify-between items-center mb-4 text-xs nasa-display">
-            <div className="flex gap-6">
-              <span className="text-primary">◉ MODULE 007 ACTIVE</span>
-              <span className="text-accent">⚠ MODAL SYSTEMS ONLINE</span>
-              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-primary">CONSOLE 007 READY</div>
-              <ThemeToggle />
-            </div>
-          </div>
-          
-          {/* Navigation */}
-          <div className="flex items-center gap-4 mb-4">
-            <Button asChild variant="outline" size="sm" className="nasa-panel">
-              <Link to="/" className="flex items-center gap-2 font-futura text-sm">
-                <Home className="w-4 h-4" />
-                RETURN TO MISSION CONTROL
-              </Link>
-            </Button>
-          </div>
-
-          {/* Module Header */}
-          <div className="nasa-panel p-4">
-            <div className="text-center">
-              <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2 font-futura">MODULE 007</div>
-              <h1 className="text-4xl font-black text-primary font-futura tracking-[0.15em] mb-2">
-                MODAL & POPUP DEMO
-              </h1>
-              <div className="text-sm text-accent tracking-[0.2em] font-futura">OVERLAY INTERFACE PROTOCOLS</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ModuleHeader 
+        moduleNumber="007"
+        title="MODAL & POPUP DEMO"
+        description="OVERLAY INTERFACE PROTOCOLS"
+      />
 
       {/* Control Interface */}
       <div className="container mx-auto px-4 py-8">

@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Home, ChevronUp, ChevronDown, Search, Database, Users, Activity, ArrowLeft } from "lucide-react";
+import { ChevronUp, ChevronDown, Search, Database, Users, Activity } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ModuleHeader } from "@/components/ModuleHeader";
 
 interface MissionData {
   id: string;
@@ -22,7 +21,6 @@ interface MissionData {
 }
 
 const TableDemo = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
   const [searchTerm, setSearchTerm] = useState("");
   const [sortColumn, setSortColumn] = useState<keyof MissionData | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
@@ -30,14 +28,6 @@ const TableDemo = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const { toast } = useToast();
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const missionData: MissionData[] = [
     { id: "M001", mission: "Mars Reconnaissance", commander: "Sarah Chen", status: "Active", priority: "High", duration: 180, crew: 6, launchDate: "2024-03-15" },
@@ -141,35 +131,11 @@ const TableDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* NASA Mission Control Header */}
-      <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-3">
-          {/* Mission Status Bar */}
-          <div className="mb-4 text-xs nasa-display">
-            <div className="flex items-center justify-between gap-4">
-              <Link to="/">
-                <Button variant="outline" size="icon" className="nasa-panel">
-                  <ArrowLeft className="w-4 h-4" />
-                </Button>
-              </Link>
-              <span className="text-foreground text-sm">□ MISSION TIME: {currentTime.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
-              <ThemeToggle />
-            </div>
-          </div>
-          
-          <div className="nasa-panel p-2">
-            <div className="text-center">
-              <div className="mb-2 font-futura">
-                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 006</div>
-                <h1 className="text-4xl font-black text-primary font-futura tracking-[0.15em] mb-2">
-                  TABLE DEMO
-                </h1>
-                <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">DATA EXTRACTION PROTOCOLS</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ModuleHeader 
+        moduleNumber="006"
+        title="TABLE DEMO"
+        description="DATA EXTRACTION PROTOCOLS"
+      />
 
       {/* Control Interface */}
       <div className="container mx-auto px-4 py-8">

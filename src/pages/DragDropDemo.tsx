@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, Move, Target, Shield, Zap, Clock, Activity } from "lucide-react";
-import { Link } from "react-router-dom";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { Move, Target, Shield, Zap, Clock, Activity } from "lucide-react";
+import { ModuleHeader } from "@/components/ModuleHeader";
 
 interface DraggableItem {
   id: string;
@@ -115,43 +114,11 @@ const DragDropDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Research Command Header */}
-      <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-1">
-          <div className="flex justify-between items-center mb-1 text-xs nasa-display">
-            <div className="flex gap-6">
-              <span className="text-primary">◉ MODULE 010 OPERATIONAL</span>
-              <span className="text-accent">⚠ DIMENSIONAL ARRAY SYSTEMS ACTIVE</span>
-              <span className="text-foreground">□ OPERATION TIME: {new Date().toLocaleTimeString()}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-primary">DRAG & DROP INTERFACE READY</div>
-              <ThemeToggle />
-            </div>
-          </div>
-          
-          <div className="nasa-panel p-2">
-            <div className="flex items-center gap-4 mb-2">
-              <Link to="/">
-                <Button variant="outline" size="sm" className="nasa-panel">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  RETURN TO COMMAND CENTER
-                </Button>
-              </Link>
-            </div>
-            
-            <div className="text-center">
-              <div className="mb-2 font-futura">
-                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 010</div>
-                <h1 className="text-4xl font-black text-primary font-futura tracking-[0.15em] mb-2">
-                  DRAG & DROP DEMO
-                </h1>
-                <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">DIMENSIONAL ARRANGEMENT PROTOCOLS</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ModuleHeader 
+        moduleNumber="010"
+        title="DRAG & DROP DEMO"
+        description="DIMENSIONAL ARRANGEMENT PROTOCOLS"
+      />
 
       <div className="container mx-auto px-4 py-6">
         <div className="grid gap-6 max-w-6xl mx-auto">

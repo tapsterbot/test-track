@@ -5,9 +5,8 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, AlertTriangle, Zap, Shield, Radio, Satellite } from "lucide-react";
-import { Link } from "react-router-dom";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { AlertTriangle, Zap, Shield, Radio, Satellite } from "lucide-react";
+import { ModuleHeader } from "@/components/ModuleHeader";
 
 const AlertDemo = () => {
   const [alertVisible, setAlertVisible] = useState(false);
@@ -52,33 +51,11 @@ const AlertDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* NASA Mission Control Header */}
-      <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-1">
-          <div className="flex justify-between items-center mb-1 text-xs nasa-display">
-            <Link to="/">
-              <Button variant="outline" size="icon" className="nasa-panel">
-                <ArrowLeft className="w-4 h-4" />
-              </Button>
-            </Link>
-            <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
-            <ThemeToggle />
-          </div>
-          
-          <div className="nasa-panel p-2">
-            
-            <div className="text-center">
-              <div className="mb-2 font-futura">
-                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 008</div>
-                <h1 className="text-4xl font-black text-primary font-futura tracking-[0.15em] mb-2">
-                  ALERT DEMO
-                </h1>
-                <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">EMERGENCY COMMUNICATION PROTOCOLS</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ModuleHeader 
+        moduleNumber="008"
+        title="ALERT DEMO"
+        description="EMERGENCY COMMUNICATION PROTOCOLS"
+      />
 
       <div className="container mx-auto px-4 py-6">
         <div className="grid gap-6 max-w-6xl mx-auto">
