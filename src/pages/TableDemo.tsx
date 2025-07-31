@@ -182,7 +182,7 @@ const TableDemo = () => {
               <div className="flex items-center gap-3">
                 <Search className="w-5 h-5 text-primary" />
                 <div>
-                  <CardTitle className="font-futura text-lg">Data Search & Controls</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">Data Search & Controls</CardTitle>
                   <CardDescription>Mission database query interface</CardDescription>
                 </div>
               </div>
@@ -215,7 +215,7 @@ const TableDemo = () => {
               <div className="flex items-center gap-3">
                 <Database className="w-5 h-5 text-accent" />
                 <div>
-                  <CardTitle className="font-futura text-lg">Mission Database</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">Mission Database</CardTitle>
                   <CardDescription>Active mission data repository</CardDescription>
                 </div>
               </div>
@@ -394,7 +394,7 @@ const TableDemo = () => {
                 <div className="flex items-center gap-3">
                   <Activity className="w-5 h-5 text-primary" />
                   <div>
-                    <CardTitle className="font-futura text-lg">Data Metrics</CardTitle>
+                    <CardTitle className="font-futura tracking-wide text-primary">Data Metrics</CardTitle>
                     <CardDescription>Database interaction summary</CardDescription>
                   </div>
                 </div>
@@ -434,7 +434,7 @@ const TableDemo = () => {
                 <div className="flex items-center gap-3">
                   <Users className="w-5 h-5 text-accent" />
                   <div>
-                    <CardTitle className="font-futura text-lg">Mission Summary</CardTitle>
+                    <CardTitle className="font-futura tracking-wide text-primary">Mission Summary</CardTitle>
                     <CardDescription>Current database status</CardDescription>
                   </div>
                 </div>
