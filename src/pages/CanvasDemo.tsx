@@ -263,7 +263,7 @@ const CanvasDemo = () => {
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader 
-        moduleNumber="014"
+        moduleNumber="013"
         title="CANVAS DEMO"
         description="REMOTE VEHICLE OPERATIONS & TERRAIN MAPPING"
       />

@@ -53,7 +53,7 @@ const FramesDemo = () => {
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader 
-        moduleNumber="012"
+        moduleNumber="011"
         title="FRAMES & IFRAMES DEMO"
         description="MULTI-DIMENSIONAL PORTAL ACCESS SYSTEMS"
       />

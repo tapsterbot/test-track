@@ -298,7 +298,7 @@ const AdvancedButtonDemo = () => {
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader 
-        moduleNumber="016"
+        moduleNumber="015"
         title="ADVANCED BUTTON CLICKING"
         description="AUTONOMOUS NAVIGATION CHALLENGES"
       />
