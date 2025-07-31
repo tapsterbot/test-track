@@ -106,7 +106,7 @@ const DragDropDemo = () => {
       >
         <IconComponent className="h-5 w-5 text-primary" />
         <div>
-          <p className="font-medium font-futura tracking-wider">{item.name}</p>
+          <p className="font-medium font-futura tracking-wider">CLASSIFIED: {item.name}</p>
           <p className="text-xs text-muted-foreground uppercase tracking-widest">{item.type}</p>
         </div>
       </div>
