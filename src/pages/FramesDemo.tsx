@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, Monitor, Globe, Lock, Shield, Eye, Database } from "lucide-react";
-import { Link } from "react-router-dom";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { Monitor, Globe, Lock, Shield, Eye, Database } from "lucide-react";
+import { ModuleHeader } from "@/components/ModuleHeader";
 
 const FramesDemo = () => {
   const [activePortal, setActivePortal] = useState<string>("alpha");
@@ -53,38 +52,11 @@ const FramesDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex justify-between items-center mb-4 text-xs nasa-display">
-            <div className="flex gap-6">
-              <span className="text-primary">◉ PORTAL NETWORK ACTIVE</span>
-              <span className="text-accent">⚠ DIMENSIONAL BRIDGE STABLE</span>
-              <span className="text-foreground">□ CLEARANCE LEVEL: {clearanceLevel}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-primary">MODULE 012 ACTIVE</div>
-              <ThemeToggle />
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link to="/">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <ArrowLeft className="h-4 w-4" />
-                  Return to Mission Control
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-2xl font-black text-primary font-futura tracking-wide">FRAMES & IFRAMES DEMO</h1>
-                <p className="text-sm text-muted-foreground font-futura">Multi-Dimensional Portal Access Systems</p>
-              </div>
-            </div>
-            <Badge variant="destructive" className="font-futura">ADVANCED</Badge>
-          </div>
-        </div>
-      </div>
+      <ModuleHeader 
+        moduleNumber="012"
+        title="FRAMES & IFRAMES DEMO"
+        description="MULTI-DIMENSIONAL PORTAL ACCESS SYSTEMS"
+      />
 
       <div className="container mx-auto px-4 py-8">
         {/* Mission Summary */}
