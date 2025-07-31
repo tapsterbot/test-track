@@ -27,6 +27,15 @@ const DragDropDemo = () => {
   const [draggedItem, setDraggedItem] = useState<DraggableItem | null>(null);
   const [dragOver, setDragOver] = useState<string | null>(null);
 
+  // Priority sequence state
+  const [priorityItems, setPriorityItems] = useState([
+    { id: 'p1', order: 1, text: 'Establish orbital communications relay' },
+    { id: 'p2', order: 2, text: 'Deploy deep space monitoring stations' },
+    { id: 'p3', order: 3, text: 'Initiate temporal research protocols' },
+    { id: 'p4', order: 4, text: 'Begin xenoarchaeology excavation' },
+  ]);
+  const [draggedPriorityItem, setDraggedPriorityItem] = useState<any>(null);
+
   const handleDragStart = (e: React.DragEvent, item: DraggableItem) => {
     setDraggedItem(item);
     e.dataTransfer.effectAllowed = 'move';
@@ -85,11 +94,56 @@ const DragDropDemo = () => {
     setItems(allItems);
     setContainer1([]);
     setContainer2([]);
+    setPriorityItems([
+      { id: 'p1', order: 1, text: 'Establish orbital communications relay' },
+      { id: 'p2', order: 2, text: 'Deploy deep space monitoring stations' },
+      { id: 'p3', order: 3, text: 'Initiate temporal research protocols' },
+      { id: 'p4', order: 4, text: 'Begin xenoarchaeology excavation' },
+    ]);
     toast({
       title: "🔄 Layout Reset",
-      description: "All objects returned to original configuration.",
+      description: "All objects and priorities returned to original configuration.",
       variant: "default",
     });
+  };
+
+  // Priority sequence drag handlers
+  const handlePriorityDragStart = (e: React.DragEvent, item: any) => {
+    setDraggedPriorityItem(item);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handlePriorityDragOver = (e: React.DragEvent, targetItem: any) => {
+    e.preventDefault();
+    if (!draggedPriorityItem || draggedPriorityItem.id === targetItem.id) return;
+    
+    const draggedIndex = priorityItems.findIndex(item => item.id === draggedPriorityItem.id);
+    const targetIndex = priorityItems.findIndex(item => item.id === targetItem.id);
+    
+    if (draggedIndex !== -1 && targetIndex !== -1) {
+      const newItems = [...priorityItems];
+      newItems.splice(draggedIndex, 1);
+      newItems.splice(targetIndex, 0, draggedPriorityItem);
+      
+      // Renumber the orders
+      const reorderedItems = newItems.map((item, index) => ({
+        ...item,
+        order: index + 1
+      }));
+      
+      setPriorityItems(reorderedItems);
+    }
+  };
+
+  const handlePriorityDragEnd = () => {
+    setDraggedPriorityItem(null);
+    if (draggedPriorityItem) {
+      toast({
+        title: "📋 Priority Reordered",
+        description: "Mission sequence has been updated.",
+        variant: "default",
+      });
+    }
   };
 
   const renderItem = (item: DraggableItem) => {
@@ -285,22 +339,24 @@ const DragDropDemo = () => {
             </div>
             
             <div className="space-y-2">
-              <div className="flex items-center gap-3 p-3 bg-background border rounded">
-                <span className="font-futura text-sm font-bold">01</span>
-                <span className="font-futura tracking-wider">Establish orbital communications relay</span>
-              </div>
-              <div className="flex items-center gap-3 p-3 bg-background border rounded">
-                <span className="font-futura text-sm font-bold">02</span>
-                <span className="font-futura tracking-wider">Deploy deep space monitoring stations</span>
-              </div>
-              <div className="flex items-center gap-3 p-3 bg-background border rounded">
-                <span className="font-futura text-sm font-bold">03</span>
-                <span className="font-futura tracking-wider">Initiate temporal research protocols</span>
-              </div>
-              <div className="flex items-center gap-3 p-3 bg-background border rounded">
-                <span className="font-futura text-sm font-bold">04</span>
-                <span className="font-futura tracking-wider">Begin xenoarchaeology excavation</span>
-              </div>
+              {priorityItems.map((priorityItem) => (
+                <div 
+                  key={priorityItem.id}
+                  draggable
+                  onDragStart={(e) => handlePriorityDragStart(e, priorityItem)}
+                  onDragOver={(e) => handlePriorityDragOver(e, priorityItem)}
+                  onDragEnd={handlePriorityDragEnd}
+                  className={`flex items-center gap-3 p-3 bg-background border rounded cursor-grab hover:bg-accent/50 transition-colors ${
+                    draggedPriorityItem?.id === priorityItem.id ? 'opacity-50' : ''
+                  }`}
+                  id={`priority-${priorityItem.id}`}
+                >
+                  <span className="font-futura text-sm font-bold">
+                    {priorityItem.order.toString().padStart(2, '0')}
+                  </span>
+                  <span className="font-futura tracking-wider">{priorityItem.text}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
