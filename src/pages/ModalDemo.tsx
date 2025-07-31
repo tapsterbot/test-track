@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ChevronLeft, AlertTriangle, Settings, FileText, Users, Activity, Zap } from "lucide-react";
+import { Home, AlertTriangle, Settings, FileText, Users, Activity, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -101,13 +101,12 @@ const ModalDemo = () => {
           
           {/* Navigation */}
           <div className="flex items-center gap-4 mb-4">
-            <Link 
-              to="/" 
-              className="flex items-center gap-2 text-accent hover:text-primary transition-colors font-futura text-sm"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              RETURN TO MAIN CONSOLE
-            </Link>
+            <Button asChild variant="outline" size="sm" className="nasa-panel">
+              <Link to="/" className="flex items-center gap-2 font-futura text-sm">
+                <Home className="w-4 h-4" />
+                RETURN TO MISSION CONTROL
+              </Link>
+            </Button>
           </div>
 
           {/* Module Header */}

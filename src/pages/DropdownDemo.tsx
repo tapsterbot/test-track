@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronDown, Settings, Users, Database, Shield } from "lucide-react";
+import { Home, ChevronDown, Settings, Users, Database, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -70,13 +70,12 @@ const DropdownDemo = () => {
           
           {/* Navigation */}
           <div className="flex items-center gap-4 mb-4">
-            <Link 
-              to="/" 
-              className="flex items-center gap-2 text-accent hover:text-primary transition-colors font-futura text-sm"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              RETURN TO MAIN CONSOLE
-            </Link>
+            <Button asChild variant="outline" size="sm" className="nasa-panel">
+              <Link to="/" className="flex items-center gap-2 font-futura text-sm">
+                <Home className="w-4 h-4" />
+                RETURN TO MISSION CONTROL
+              </Link>
+            </Button>
           </div>
 
           {/* Module Header */}
