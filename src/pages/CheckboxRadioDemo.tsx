@@ -73,7 +73,7 @@ const CheckboxRadioDemo = () => {
             <div className="text-center">
               <div className="mb-4 font-futura">
                 <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">TRAINING MODULE 005</div>
-                <h1 className="text-5xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
+                <h1 className="text-3xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
                   CHECKBOXES & RADIO BUTTONS
                 </h1>
                 <div className="text-sm text-accent tracking-[0.2em] mb-4 font-futura">FORM CONTROL SELECTION PROTOCOLS</div>
