@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/use-toast";
 import { ArrowLeft, Move, Target, Orbit, Zap, Clock, Star } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface DraggableItem {
   id: string;
@@ -110,39 +111,47 @@ const DragDropDemo = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      {/* Header */}
-      <div className="border-b border-border/40 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <Link 
-              to="/" 
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-              id="back-to-index"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="font-futura tracking-wider">MISSION CONTROL</span>
-            </Link>
-            <Badge variant="outline" className="font-futura tracking-wider">
-              SPATIAL ARRAY ACTIVE
-            </Badge>
+    <div className="min-h-screen bg-background">
+      {/* NASA Mission Control Header */}
+      <div className="nasa-panel border-b-2 border-primary bg-card">
+        <div className="container mx-auto px-4 py-1">
+          <div className="flex justify-between items-center mb-1 text-xs nasa-display">
+            <div className="flex gap-6">
+              <span className="text-primary">◉ MODULE 010 OPERATIONAL</span>
+              <span className="text-accent">⚠ SPATIAL ARRAY SYSTEMS ACTIVE</span>
+              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="text-primary">DRAG & DROP INTERFACE READY</div>
+              <ThemeToggle />
+            </div>
+          </div>
+          
+          <div className="nasa-panel p-2">
+            <div className="flex items-center gap-4 mb-2">
+              <Link to="/">
+                <Button variant="outline" size="sm" className="nasa-panel">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  RETURN TO MISSION CONTROL
+                </Button>
+              </Link>
+            </div>
+            
+            <div className="text-center">
+              <div className="mb-2 font-futura">
+                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 010</div>
+                <h1 className="text-4xl font-black text-primary font-futura tracking-[0.15em] mb-2">
+                  DRAG & DROP DEMO
+                </h1>
+                <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">SPATIAL ARRANGEMENT PROTOCOLS</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Title Section */}
-        <div className="text-center mb-12">
-          <div className="text-center">
-            <div className="mb-2 font-futura">
-              <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 010</div>
-              <h1 className="text-4xl font-black text-primary font-futura tracking-[0.15em] mb-2">
-                DRAG & DROP DEMO
-              </h1>
-              <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">SPATIAL ARRANGEMENT PROTOCOLS</div>
-            </div>
-          </div>
-        </div>
+      <div className="container mx-auto px-4 py-6">
+        <div className="grid gap-6 max-w-6xl mx-auto">
 
         {/* Control Panel */}
         <div className="mb-8">
@@ -317,6 +326,7 @@ const DragDropDemo = () => {
               </ul>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
