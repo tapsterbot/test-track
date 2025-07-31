@@ -2,125 +2,111 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ThemeToggle";
-
 const Index = () => {
   const demoPages = [
-    // Basic Elements
-    {
-      title: "Button Demo",
-      path: "/button-demo",
-      description: "Test button clicks, different button types, and visual feedback",
-      difficulty: "Basic",
-      elements: ["button", "click events", "state changes"]
-    },
-    {
-      title: "Text Input Demo",
-      path: "/text-input-demo", 
-      description: "Practice text input, validation, and form field interactions",
-      difficulty: "Basic",
-      elements: ["input fields", "text validation", "keyboard events"]
-    },
-    {
-      title: "Login Form Demo",
-      path: "/login-demo",
-      description: "Complete login form with username, password, and submission",
-      difficulty: "Basic", 
-      elements: ["forms", "input fields", "form submission", "validation"]
-    },
-    {
-      title: "Dropdown & Select Demo",
-      path: "/dropdown-demo",
-      description: "Test dropdown menus, select boxes, and option selection",
-      difficulty: "Basic",
-      elements: ["select elements", "dropdowns", "option handling"]
-    },
-    {
-      title: "Checkboxes & Radio Buttons",
-      path: "/checkbox-radio-demo",
-      description: "Practice with checkboxes, radio button groups, and selections",
-      difficulty: "Basic", 
-      elements: ["checkboxes", "radio buttons", "form controls"]
-    },
-    
-    // Intermediate Elements
-    {
-      title: "Table Demo",
-      path: "/table-demo",
-      description: "Extract data from tables, sort columns, and navigate table content",
-      difficulty: "Intermediate",
-      elements: ["tables", "data extraction", "sorting", "pagination"]
-    },
-    {
-      title: "Modal & Popup Demo", 
-      path: "/modal-demo",
-      description: "Handle modal windows, popups, and overlay interactions",
-      difficulty: "Intermediate",
-      elements: ["modals", "popups", "overlays", "focus management"]
-    },
-    {
-      title: "Alert Demo",
-      path: "/alert-demo", 
-      description: "Test JavaScript alerts, confirms, and prompt dialogs",
-      difficulty: "Intermediate",
-      elements: ["alerts", "confirms", "prompts", "dialog handling"]
-    },
-    {
-      title: "File Upload Demo",
-      path: "/file-upload-demo",
-      description: "Practice file selection and upload functionality",
-      difficulty: "Intermediate", 
-      elements: ["file inputs", "file upload", "file validation"]
-    },
-    
-    // Advanced Elements
-    {
-      title: "Drag & Drop Demo",
-      path: "/drag-drop-demo", 
-      description: "Test drag and drop interactions and element positioning",
-      difficulty: "Advanced",
-      elements: ["drag and drop", "mouse actions", "element positioning"]
-    },
-    {
-      title: "Frames & iFrames Demo",
-      path: "/frames-demo",
-      description: "Practice switching between frames and iframe content",
-      difficulty: "Advanced",
-      elements: ["frames", "iframes", "frame switching", "nested content"]
-    },
-    {
-      title: "Dynamic Content Demo",
-      path: "/dynamic-demo",
-      description: "Handle dynamically loaded content and AJAX responses",
-      difficulty: "Advanced", 
-      elements: ["AJAX", "dynamic content", "waiting strategies", "async loading"]
-    },
-    {
-      title: "Canvas Demo", 
-      path: "/canvas-demo",
-      description: "Interact with HTML5 canvas elements and graphics",
-      difficulty: "Advanced",
-      elements: ["canvas", "graphics", "drawing", "coordinate testing"]
-    },
-    {
-      title: "Multi-Window Demo",
-      path: "/multi-window-demo",
-      description: "Practice handling multiple browser windows and tabs",
-      difficulty: "Advanced",
-      elements: ["multiple windows", "tab switching", "window management"]
-    }
-  ];
-
+  // Basic Elements
+  {
+    title: "Button Demo",
+    path: "/button-demo",
+    description: "Test button clicks, different button types, and visual feedback",
+    difficulty: "Basic",
+    elements: ["button", "click events", "state changes"]
+  }, {
+    title: "Text Input Demo",
+    path: "/text-input-demo",
+    description: "Practice text input, validation, and form field interactions",
+    difficulty: "Basic",
+    elements: ["input fields", "text validation", "keyboard events"]
+  }, {
+    title: "Login Form Demo",
+    path: "/login-demo",
+    description: "Complete login form with username, password, and submission",
+    difficulty: "Basic",
+    elements: ["forms", "input fields", "form submission", "validation"]
+  }, {
+    title: "Dropdown & Select Demo",
+    path: "/dropdown-demo",
+    description: "Test dropdown menus, select boxes, and option selection",
+    difficulty: "Basic",
+    elements: ["select elements", "dropdowns", "option handling"]
+  }, {
+    title: "Checkboxes & Radio Buttons",
+    path: "/checkbox-radio-demo",
+    description: "Practice with checkboxes, radio button groups, and selections",
+    difficulty: "Basic",
+    elements: ["checkboxes", "radio buttons", "form controls"]
+  },
+  // Intermediate Elements
+  {
+    title: "Table Demo",
+    path: "/table-demo",
+    description: "Extract data from tables, sort columns, and navigate table content",
+    difficulty: "Intermediate",
+    elements: ["tables", "data extraction", "sorting", "pagination"]
+  }, {
+    title: "Modal & Popup Demo",
+    path: "/modal-demo",
+    description: "Handle modal windows, popups, and overlay interactions",
+    difficulty: "Intermediate",
+    elements: ["modals", "popups", "overlays", "focus management"]
+  }, {
+    title: "Alert Demo",
+    path: "/alert-demo",
+    description: "Test JavaScript alerts, confirms, and prompt dialogs",
+    difficulty: "Intermediate",
+    elements: ["alerts", "confirms", "prompts", "dialog handling"]
+  }, {
+    title: "File Upload Demo",
+    path: "/file-upload-demo",
+    description: "Practice file selection and upload functionality",
+    difficulty: "Intermediate",
+    elements: ["file inputs", "file upload", "file validation"]
+  },
+  // Advanced Elements
+  {
+    title: "Drag & Drop Demo",
+    path: "/drag-drop-demo",
+    description: "Test drag and drop interactions and element positioning",
+    difficulty: "Advanced",
+    elements: ["drag and drop", "mouse actions", "element positioning"]
+  }, {
+    title: "Frames & iFrames Demo",
+    path: "/frames-demo",
+    description: "Practice switching between frames and iframe content",
+    difficulty: "Advanced",
+    elements: ["frames", "iframes", "frame switching", "nested content"]
+  }, {
+    title: "Dynamic Content Demo",
+    path: "/dynamic-demo",
+    description: "Handle dynamically loaded content and AJAX responses",
+    difficulty: "Advanced",
+    elements: ["AJAX", "dynamic content", "waiting strategies", "async loading"]
+  }, {
+    title: "Canvas Demo",
+    path: "/canvas-demo",
+    description: "Interact with HTML5 canvas elements and graphics",
+    difficulty: "Advanced",
+    elements: ["canvas", "graphics", "drawing", "coordinate testing"]
+  }, {
+    title: "Multi-Window Demo",
+    path: "/multi-window-demo",
+    description: "Practice handling multiple browser windows and tabs",
+    difficulty: "Advanced",
+    elements: ["multiple windows", "tab switching", "window management"]
+  }];
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case "Basic": return "bg-demo-success";
-      case "Intermediate": return "bg-demo-warning"; 
-      case "Advanced": return "bg-destructive";
-      default: return "bg-muted";
+      case "Basic":
+        return "bg-demo-success";
+      case "Intermediate":
+        return "bg-demo-warning";
+      case "Advanced":
+        return "bg-destructive";
+      default:
+        return "bg-muted";
     }
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-4 border-primary bg-card">
         <div className="container mx-auto px-4 py-6">
@@ -141,7 +127,7 @@ const Index = () => {
           <div className="nasa-panel p-8 mb-6">
             <div className="text-center">
               <div className="mb-4 font-futura">
-                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">NASA MANNED SPACECRAFT CENTER</div>
+                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">VALET NETWORK AUTONOMOUS AGENT CENTER</div>
                 <h1 className="text-7xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
                   TEST TRACK
                 </h1>
@@ -176,15 +162,11 @@ const Index = () => {
         </div>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {demoPages.map((demo, index) => (
-            <Link key={index} to={demo.path} className="group">
+          {demoPages.map((demo, index) => <Link key={index} to={demo.path} className="group">
               <div className="nasa-panel h-full transition-all duration-300 hover:shadow-lg hover:border-primary p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="text-xs text-primary font-futura tracking-wide">MODULE {String(index + 1).padStart(3, '0')}</div>
-                  <Badge 
-                    variant={demo.difficulty === 'Basic' ? 'secondary' : demo.difficulty === 'Intermediate' ? 'default' : 'destructive'}
-                    className="font-futura text-xs"
-                  >
+                  <Badge variant={demo.difficulty === 'Basic' ? 'secondary' : demo.difficulty === 'Intermediate' ? 'default' : 'destructive'} className="font-futura text-xs">
                     {demo.difficulty.toUpperCase()}
                   </Badge>
                 </div>
@@ -200,14 +182,9 @@ const Index = () => {
                 <div className="space-y-2">
                   <div className="text-xs text-accent font-futura tracking-wide">OPERATIONAL ELEMENTS:</div>
                   <div className="flex flex-wrap gap-1">
-                    {demo.elements.map((element, elementIndex) => (
-                      <span 
-                        key={elementIndex} 
-                        className="px-2 py-1 bg-secondary text-secondary-foreground text-xs font-futura"
-                      >
+                    {demo.elements.map((element, elementIndex) => <span key={elementIndex} className="px-2 py-1 bg-secondary text-secondary-foreground text-xs font-futura">
                         {element}
-                      </span>
-                    ))}
+                      </span>)}
                   </div>
                 </div>
                 
@@ -215,8 +192,7 @@ const Index = () => {
                   <div className="text-xs text-primary font-futura tracking-wide">◉ READY FOR DEPLOYMENT</div>
                 </div>
               </div>
-            </Link>
-          ))}
+            </Link>)}
         </div>
         
         {/* Mission Control Footer */}
@@ -250,8 +226,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
