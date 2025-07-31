@@ -8,96 +8,93 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* NASA Apollo Era Color Scheme */
-    --background: 220 20% 8%;  /* Deep space black */
-    --foreground: 0 0% 95%;    /* Mission control white */
+    /* Authentic 1960s NASA Mission Control Colors */
+    --background: 0 0% 8%;        /* Control room dark */
+    --foreground: 120 20% 85%;    /* Green phosphor display */
 
-    --card: 220 15% 12%;       /* Control panel dark */
-    --card-foreground: 0 0% 92%;
+    --card: 0 0% 12%;             /* Console panel */
+    --card-foreground: 120 30% 90%;
 
-    --popover: 220 15% 10%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 120 20% 85%;
 
-    --primary: 195 100% 45%;   /* NASA blue */
-    --primary-foreground: 0 0% 100%;
+    --primary: 120 100% 40%;      /* Bright console green */
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 210 15% 25%;  /* Console grey */
-    --secondary-foreground: 0 0% 90%;
+    --secondary: 0 0% 20%;        /* Metal panel grey */
+    --secondary-foreground: 120 20% 80%;
 
-    --muted: 220 10% 18%;      /* Instrument panel */
-    --muted-foreground: 0 0% 70%;
+    --muted: 0 0% 15%;            /* Darkened controls */
+    --muted-foreground: 120 15% 60%;
 
-    --accent: 358 75% 55%;     /* Warning red */
-    --accent-foreground: 0 0% 100%;
+    --accent: 45 100% 50%;        /* Warning amber */
+    --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 100% 50%; /* Alert red */
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 100% 45%;    /* Critical red */
+    --destructive-foreground: 120 20% 90%;
 
-    --border: 220 15% 25%;     /* Panel borders */
-    --input: 220 15% 15%;      /* Input backgrounds */
-    --ring: 195 100% 45%;      /* Focus rings */
+    --border: 120 30% 25%;        /* Green panel lines */
+    --input: 0 0% 8%;             /* Input fields */
+    --ring: 120 100% 40%;         /* Focus indicators */
 
-    /* Apollo Mission Custom Colors */
-    --demo-success: 120 60% 45%;  /* Go light green */
-    --demo-warning: 45 100% 55%;  /* Caution amber */
-    --demo-info: 195 100% 45%;    /* NASA blue */
-    --demo-gradient: linear-gradient(135deg, hsl(195 100% 45%), hsl(358 75% 55%));
-    --demo-shadow: 0 8px 32px hsl(195 100% 45% / 0.3);
-    --demo-glow: 0 0 24px hsl(195 100% 45% / 0.4);
-    --mission-amber: 45 100% 55%;
-    --console-green: 120 60% 45%;
-    --telemetry-blue: 220 80% 60%;
+    /* Mission Control Specific */
+    --console-green: 120 100% 40%;
+    --warning-amber: 45 100% 50%;
+    --critical-red: 0 100% 45%;
+    --telemetry-blue: 200 100% 70%;
+    --metal-grey: 0 0% 25%;
+    --panel-dark: 0 0% 12%;
 
-    --radius: 0.25rem;  /* Sharp, technical corners */
+    --radius: 0rem;  /* No rounded corners - all technical/industrial */
 
-    --sidebar-background: 220 20% 6%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 195 100% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 15% 15%;
-    --sidebar-accent-foreground: 0 0% 85%;
-    --sidebar-border: 220 15% 20%;
-    --sidebar-ring: 195 100% 45%;
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 120 20% 80%;
+    --sidebar-primary: 120 100% 40%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 120 20% 75%;
+    --sidebar-border: 120 30% 20%;
+    --sidebar-ring: 120 100% 40%;
   }
 
   .dark {
-    /* Light mode for mission control displays */
-    --background: 0 0% 98%;     /* Bright white displays */
-    --foreground: 220 20% 10%;  /* Dark text */
+    /* Light mode: Paper printouts and bright displays */
+    --background: 0 0% 96%;     
+    --foreground: 0 0% 10%;     
 
-    --card: 0 0% 95%;
-    --card-foreground: 220 20% 15%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 15%;
 
     --popover: 0 0% 98%;
-    --popover-foreground: 220 20% 10%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 195 100% 35%;    /* Darker NASA blue */
-    --primary-foreground: 0 0% 100%;
+    --primary: 120 80% 25%;    
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 15% 90%;   /* Light grey panels */
-    --secondary-foreground: 220 20% 20%;
+    --secondary: 0 0% 88%;   
+    --secondary-foreground: 0 0% 20%;
 
-    --muted: 210 10% 88%;
-    --muted-foreground: 220 15% 40%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 358 75% 45%;      /* Darker warning red */
-    --accent-foreground: 0 0% 100%;
+    --accent: 45 90% 35%;      
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 80% 45%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 80% 40%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 220 15% 85%;
-    --input: 220 10% 92%;
-    --ring: 195 100% 35%;
+    --border: 0 0% 80%;
+    --input: 0 0% 95%;
+    --ring: 120 80% 25%;
 
-    --sidebar-background: 0 0% 96%;
-    --sidebar-foreground: 220 20% 15%;
-    --sidebar-primary: 195 100% 35%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 10% 88%;
-    --sidebar-accent-foreground: 220 20% 20%;
-    --sidebar-border: 220 15% 80%;
-    --sidebar-ring: 195 100% 35%;
+    --sidebar-background: 0 0% 94%;
+    --sidebar-foreground: 0 0% 15%;
+    --sidebar-primary: 120 80% 25%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 0 0% 88%;
+    --sidebar-accent-foreground: 0 0% 20%;
+    --sidebar-border: 0 0% 75%;
+    --sidebar-ring: 120 80% 25%;
   }
 }
 
@@ -108,5 +105,19 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Futura', 'Exo 2', 'Avenir Next', 'Helvetica Neue', sans-serif;
+  }
+  
+  /* NASA Mission Control Typography */
+  .nasa-display {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+  }
+  
+  .nasa-panel {
+    background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted)));
+    border: 2px solid hsl(var(--border));
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
   }
 }

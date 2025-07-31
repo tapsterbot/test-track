@@ -120,80 +120,130 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Apollo-style Header */}
-      <div className="border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center max-w-3xl mx-auto">
-            <div className="mb-6 border border-primary/30 bg-card/50 p-6 rounded-sm">
-              <h1 className="text-6xl font-black mb-4 text-primary font-futura tracking-[0.2em] drop-shadow-lg">
-                TEST TRACK
-              </h1>
-              <div className="text-xs text-muted-foreground font-futura tracking-widest mb-2">
-                MISSION CONTROL • AUTOMATION TESTING FACILITY
+      {/* NASA Mission Control Header */}
+      <div className="nasa-panel border-b-4 border-primary bg-card">
+        <div className="container mx-auto px-4 py-6">
+          {/* Mission Status Bar */}
+          <div className="flex justify-between items-center mb-4 text-xs nasa-display">
+            <div className="flex gap-6">
+              <span className="text-primary">◉ SYSTEM OPERATIONAL</span>
+              <span className="text-accent">⚠ TELEMETRY ACTIVE</span>
+              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
+            </div>
+            <div className="text-primary">CONSOLE 001 READY</div>
+          </div>
+          
+          {/* Main Control Panel */}
+          <div className="nasa-panel p-8 mb-6">
+            <div className="text-center">
+              <div className="mb-4 font-futura">
+                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">NASA MANNED SPACECRAFT CENTER</div>
+                <h1 className="text-7xl font-black text-primary nasa-display tracking-[0.15em] drop-shadow-lg mb-2">
+                  TEST TRACK
+                </h1>
+                <div className="text-sm text-accent tracking-[0.2em] mb-4">AUTOMATED SYSTEMS TRAINING FACILITY</div>
               </div>
-              <p className="text-lg text-foreground mb-2 font-futura">
-                A comprehensive collection of web elements and interactions for practicing Selenium WebDriver and test automation
-              </p>
-              <p className="text-sm text-muted-foreground font-futura">
-                Each page demonstrates specific HTML elements and user interactions perfect for learning and testing automation frameworks
-              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                <div className="nasa-panel p-4">
+                  <div className="text-xs text-primary mb-1">MISSION OBJECTIVE</div>
+                  <div className="text-sm text-foreground">Web automation testing protocols and validation procedures</div>
+                </div>
+                <div className="nasa-panel p-4">
+                  <div className="text-xs text-accent mb-1">SYSTEMS STATUS</div>
+                  <div className="text-sm text-foreground">All training modules operational and ready for deployment</div>
+                </div>
+                <div className="nasa-panel p-4">
+                  <div className="text-xs text-destructive mb-1">CAUTION</div>
+                  <div className="text-sm text-foreground">Selenium WebDriver certification required for mission participation</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Demo Pages Grid */}
+      {/* Mission Control Modules */}
       <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h2 className="text-2xl font-black text-primary nasa-display tracking-wide mb-2">TRAINING MODULES</h2>
+          <div className="h-1 bg-primary w-32 mb-4"></div>
+          <p className="text-muted-foreground text-sm nasa-display">Select operational module for automated systems testing</p>
+        </div>
+        
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {demoPages.map((demo, index) => (
             <Link key={index} to={demo.path} className="group">
-              <Card className="h-full transition-all duration-300 hover:shadow-demo hover:-translate-y-1 border border-primary/20 bg-card/80 backdrop-blur-sm hover:bg-card hover:border-primary/40">
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-2">
-                    <CardTitle className="text-lg group-hover:text-primary transition-colors font-futura tracking-wide">
-                      {demo.title}
-                    </CardTitle>
-                    <Badge 
-                      className={`${getDifficultyColor(demo.difficulty)} text-white text-xs`}
-                    >
-                      {demo.difficulty}
-                    </Badge>
-                  </div>
-                  <CardDescription className="text-sm">
-                    {demo.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
+              <div className="nasa-panel h-full transition-all duration-300 hover:shadow-lg hover:border-primary p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-xs text-primary nasa-display tracking-wide">MODULE {String(index + 1).padStart(3, '0')}</div>
+                  <Badge 
+                    variant={demo.difficulty === 'Basic' ? 'secondary' : demo.difficulty === 'Intermediate' ? 'default' : 'destructive'}
+                    className="nasa-display text-xs"
+                  >
+                    {demo.difficulty.toUpperCase()}
+                  </Badge>
+                </div>
+                
+                <h3 className="text-lg font-black text-foreground group-hover:text-primary transition-colors nasa-display tracking-wide mb-3">
+                  {demo.title}
+                </h3>
+                
+                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                  {demo.description}
+                </p>
+                
+                <div className="space-y-2">
+                  <div className="text-xs text-accent nasa-display tracking-wide">OPERATIONAL ELEMENTS:</div>
                   <div className="flex flex-wrap gap-1">
-                    {demo.elements.map((element, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
+                    {demo.elements.map((element, elementIndex) => (
+                      <span 
+                        key={elementIndex} 
+                        className="px-2 py-1 bg-secondary text-secondary-foreground text-xs nasa-display"
+                      >
                         {element}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+                
+                <div className="mt-4 pt-4 border-t border-border">
+                  <div className="text-xs text-primary nasa-display tracking-wide">◉ READY FOR DEPLOYMENT</div>
+                </div>
+              </div>
             </Link>
           ))}
         </div>
-
-        {/* Apollo Mission Footer */}
-        <div className="mt-12 text-center">
-          <Card className="max-w-2xl mx-auto border border-primary/20 bg-card/80">
-            <CardContent className="pt-6">
-              <h3 className="text-lg font-semibold mb-2 font-futura tracking-wide">MISSION PARAMETERS</h3>
-              <p className="text-sm text-muted-foreground mb-4 font-futura">
-                This facility is designed for test automation training and practice. Each module contains precisely engineered 
-                examples with proper element identification systems for automation testing protocols.
-              </p>
-              <div className="flex justify-center gap-6 text-xs text-muted-foreground font-futura tracking-wide">
-                <span className="text-demo-success">✓ SELENIUM-READY</span>
-                <span className="text-demo-info">✓ ELEMENT MAPPING</span>
-                <span className="text-demo-warning">✓ GRADUATED COMPLEXITY</span>
-                <span className="text-accent">✓ OPERATIONAL SCENARIOS</span>
+        
+        {/* Mission Control Footer */}
+        <div className="mt-12">
+          <div className="nasa-panel p-8">
+            <div className="text-center">
+              <h3 className="text-lg font-black text-primary nasa-display tracking-wide mb-4">MISSION CONTROL PARAMETERS</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
+                <div className="text-center">
+                  <div className="text-primary text-2xl nasa-display mb-2">◉</div>
+                  <div className="text-xs text-accent nasa-display mb-1">SELENIUM COMPATIBLE</div>
+                  <div className="text-foreground">All elements properly tagged for automation frameworks</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-accent text-2xl nasa-display mb-2">⚠</div>
+                  <div className="text-xs text-accent nasa-display mb-1">ELEMENT MAPPING</div>
+                  <div className="text-foreground">Consistent ID and class naming conventions throughout</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-destructive text-2xl nasa-display mb-2">⬆</div>
+                  <div className="text-xs text-accent nasa-display mb-1">PROGRESSIVE COMPLEXITY</div>
+                  <div className="text-foreground">Training modules increase in difficulty and scope</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-primary text-2xl nasa-display mb-2">□</div>
+                  <div className="text-xs text-accent nasa-display mb-1">MISSION SCENARIOS</div>
+                  <div className="text-foreground">Real-world testing situations and edge cases</div>
+                </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>
