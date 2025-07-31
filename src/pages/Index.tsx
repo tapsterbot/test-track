@@ -145,7 +145,7 @@ const Index = () => {
                 </div>
                 <div className="nasa-panel p-4">
                   <div className="text-xs text-destructive mb-1">CAUTION</div>
-                  <div className="text-sm text-foreground">🤖 May cause occasional smiles • Side effects include increased curiosity</div>
+                  <div className="text-sm text-foreground">May cause occasional smiles • Side effects include increased curiosity</div>
                 </div>
               </div>
             </div>
