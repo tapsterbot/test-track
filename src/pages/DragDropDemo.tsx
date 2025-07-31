@@ -3,23 +3,23 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, Move, Target, Orbit, Zap, Clock, Star } from "lucide-react";
+import { ArrowLeft, Move, Target, Shield, Zap, Clock, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface DraggableItem {
   id: string;
   name: string;
-  type: 'star' | 'planet' | 'artifact' | 'component';
+  type: 'entity' | 'anomaly' | 'artifact' | 'component';
   icon: any;
 }
 
 const DragDropDemo = () => {
   const [items, setItems] = useState<DraggableItem[]>([
-    { id: '1', name: 'Alpha Centauri', type: 'star', icon: Star },
-    { id: '2', name: 'Kepler-442b', type: 'planet', icon: Orbit },
-    { id: '3', name: 'Temporal Crystal', type: 'artifact', icon: Clock },
-    { id: '4', name: 'Flux Capacitor', type: 'component', icon: Zap },
+    { id: '1', name: 'The Watcher', type: 'entity', icon: Eye },
+    { id: '2', name: 'Codex Fragment', type: 'anomaly', icon: Shield },
+    { id: '3', name: 'Temporal Echo', type: 'artifact', icon: Clock },
+    { id: '4', name: 'Neural Interface', type: 'component', icon: Zap },
   ]);
 
   const [container1, setContainer1] = useState<DraggableItem[]>([]);
@@ -59,21 +59,21 @@ const DragDropDemo = () => {
       setContainer1(prev => [...prev, draggedItem]);
       toast({
         title: "🎯 Object Repositioned",
-        description: `${draggedItem.name} moved to Navigation Array Alpha.`,
+        description: `${draggedItem.name} moved to Analysis Chamber Alpha.`,
         variant: "default",
       });
     } else if (targetContainer === 'container2') {
       setContainer2(prev => [...prev, draggedItem]);
       toast({
         title: "🔧 Component Installed",
-        description: `${draggedItem.name} installed in Engineering Bay Beta.`,
+        description: `${draggedItem.name} installed in Research Bay Beta.`,
         variant: "default",
       });
     } else if (targetContainer === 'source') {
       setItems(prev => [...prev, draggedItem]);
       toast({
         title: "↩️ Item Returned",
-        description: `${draggedItem.name} returned to storage matrix.`,
+        description: `${draggedItem.name} returned to containment vault.`,
         variant: "default",
       });
     }
@@ -115,14 +115,14 @@ const DragDropDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* NASA Mission Control Header */}
+      {/* Research Command Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-1">
           <div className="flex justify-between items-center mb-1 text-xs nasa-display">
             <div className="flex gap-6">
               <span className="text-primary">◉ MODULE 010 OPERATIONAL</span>
-              <span className="text-accent">⚠ SPATIAL ARRAY SYSTEMS ACTIVE</span>
-              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
+              <span className="text-accent">⚠ DIMENSIONAL ARRAY SYSTEMS ACTIVE</span>
+              <span className="text-foreground">□ OPERATION TIME: {new Date().toLocaleTimeString()}</span>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-primary">DRAG & DROP INTERFACE READY</div>
@@ -135,7 +135,7 @@ const DragDropDemo = () => {
               <Link to="/">
                 <Button variant="outline" size="sm" className="nasa-panel">
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  RETURN TO MISSION CONTROL
+                  RETURN TO COMMAND CENTER
                 </Button>
               </Link>
             </div>
@@ -146,7 +146,7 @@ const DragDropDemo = () => {
                 <h1 className="text-4xl font-black text-primary font-futura tracking-[0.15em] mb-2">
                   DRAG & DROP DEMO
                 </h1>
-                <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">SPATIAL ARRANGEMENT PROTOCOLS</div>
+                <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">DIMENSIONAL ARRANGEMENT PROTOCOLS</div>
               </div>
             </div>
           </div>
@@ -182,7 +182,7 @@ const DragDropDemo = () => {
           <div className="bg-card/50 backdrop-blur border rounded-lg p-6">
             <div className="flex items-center gap-3 mb-4">
               <Target className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold font-futura tracking-wider">STORAGE MATRIX</h3>
+              <h3 className="text-lg font-semibold font-futura tracking-wider">CONTAINMENT VAULT</h3>
               <Badge variant="secondary" className="font-futura">
                 {items.length} ITEMS
               </Badge>
@@ -203,7 +203,7 @@ const DragDropDemo = () => {
                 {items.map(renderItem)}
                 {items.length === 0 && (
                   <div className="text-center text-muted-foreground py-8">
-                    <p className="font-futura tracking-wider">STORAGE MATRIX EMPTY</p>
+                    <p className="font-futura tracking-wider">CONTAINMENT VAULT EMPTY</p>
                     <p className="text-sm">All objects have been deployed</p>
                   </div>
                 )}
@@ -214,8 +214,8 @@ const DragDropDemo = () => {
           {/* Navigation Array Alpha */}
           <div className="bg-card/50 backdrop-blur border rounded-lg p-6">
             <div className="flex items-center gap-3 mb-4">
-              <Orbit className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold font-futura tracking-wider">NAVIGATION ARRAY ALPHA</h3>
+              <Shield className="h-5 w-5 text-primary" />
+              <h3 className="text-lg font-semibold font-futura tracking-wider">ANALYSIS CHAMBER ALPHA</h3>
               <Badge variant="secondary" className="font-futura">
                 {container1.length} OBJECTS
               </Badge>
@@ -236,8 +236,8 @@ const DragDropDemo = () => {
                 {container1.map(renderItem)}
                 {container1.length === 0 && (
                   <div className="text-center text-muted-foreground py-8">
-                    <p className="font-futura tracking-wider">AWAITING STELLAR OBJECTS</p>
-                    <p className="text-sm">Drop celestial bodies here for navigation plotting</p>
+                    <p className="font-futura tracking-wider">AWAITING ANOMALOUS OBJECTS</p>
+                    <p className="text-sm">Drop entities and anomalies here for analysis</p>
                   </div>
                 )}
               </div>
@@ -248,7 +248,7 @@ const DragDropDemo = () => {
           <div className="bg-card/50 backdrop-blur border rounded-lg p-6">
             <div className="flex items-center gap-3 mb-4">
               <Zap className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold font-futura tracking-wider">ENGINEERING BAY BETA</h3>
+              <h3 className="text-lg font-semibold font-futura tracking-wider">RESEARCH BAY BETA</h3>
               <Badge variant="secondary" className="font-futura">
                 {container2.length} COMPONENTS
               </Badge>
@@ -269,8 +269,8 @@ const DragDropDemo = () => {
                 {container2.map(renderItem)}
                 {container2.length === 0 && (
                   <div className="text-center text-muted-foreground py-8">
-                    <p className="font-futura tracking-wider">READY FOR INSTALLATION</p>
-                    <p className="text-sm">Drop artifacts and components here for analysis</p>
+                    <p className="font-futura tracking-wider">READY FOR EXPERIMENTATION</p>
+                    <p className="text-sm">Drop artifacts and components here for research</p>
                   </div>
                 )}
               </div>
@@ -282,8 +282,8 @@ const DragDropDemo = () => {
         {/* Mission Summary */}
         <Card className="nasa-panel">
           <CardHeader>
-            <CardTitle className="font-futura tracking-wide text-primary">MISSION SUMMARY</CardTitle>
-            <CardDescription>Spatial arrangement systems status and organizational metrics</CardDescription>
+            <CardTitle className="font-futura tracking-wide text-primary">OPERATION SUMMARY</CardTitle>
+            <CardDescription>Dimensional arrangement systems status and organizational metrics</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -291,8 +291,8 @@ const DragDropDemo = () => {
                 <h4 className="font-semibold text-accent mb-2">ARRANGEMENT STATUS:</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   <li>Available Items: {items.length}</li>
-                  <li>Container Alpha: {container1.length} items</li>
-                  <li>Container Beta: {container2.length} items</li>
+                  <li>Chamber Alpha: {container1.length} items</li>
+                  <li>Chamber Beta: {container2.length} items</li>
                   <li>Drag State: {draggedItem ? 'ACTIVE' : 'STANDBY'}</li>
                 </ul>
               </div>
@@ -302,7 +302,7 @@ const DragDropDemo = () => {
                   <li>Interface Status: OPERATIONAL</li>
                   <li>Drag Systems: ACTIVE</li>
                   <li>Drop Protocols: LOADED</li>
-                  <li>Spatial Array: READY</li>
+                  <li>Dimensional Array: READY</li>
                 </ul>
               </div>
             </div>
@@ -311,12 +311,12 @@ const DragDropDemo = () => {
               <h4 className="font-semibold text-accent mb-2">TEST PROTOCOLS:</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
                 <div>
-                  <p>• Verify item drag functionality</p>
-                  <p>• Test drop zone detection</p>
-                  <p>• Validate container organization</p>
+                  <p>• Verify object manipulation functionality</p>
+                  <p>• Test containment zone detection</p>
+                  <p>• Validate chamber organization</p>
                 </div>
                 <div>
-                  <p>• Check spatial rearrangement</p>
+                  <p>• Check dimensional rearrangement</p>
                   <p>• Confirm visual feedback systems</p>
                   <p>• Test reset capabilities</p>
                 </div>
