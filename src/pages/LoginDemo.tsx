@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
@@ -126,189 +126,218 @@ const LoginDemo = () => {
       </div>
 
       <div className="container mx-auto px-4 py-6">
-        <div className="grid gap-8 lg:grid-cols-3">
-          {/* Login Form */}
-          <div className="lg:col-span-2">
-            <Card className="max-w-md mx-auto">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl">Sign In</CardTitle>
-                <p className="text-muted-foreground">Enter your credentials to access your account</p>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} id="login-form" className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="username">Username</Label>
-                    <div className="relative">
-                      <User size={16} className="absolute left-3 top-3 text-muted-foreground" />
-                      <Input
-                        id="username"
-                        name="username"
-                        type="text"
-                        placeholder="Enter your username"
-                        value={formData.username}
-                        onChange={(e) => handleInputChange('username', e.target.value)}
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <div className="relative">
-                      <Lock size={16} className="absolute left-3 top-3 text-muted-foreground" />
-                      <Input
-                        id="password"
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
-                        value={formData.password}
-                        onChange={(e) => handleInputChange('password', e.target.value)}
-                        className="pl-10 pr-10"
-                        required
-                      />
-                      <Button
-                        id="toggle-password-visibility"
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-1 top-1 h-7 w-7 p-0"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    <Checkbox 
-                      id="remember-me"
-                      checked={formData.rememberMe}
-                      onCheckedChange={(checked) => handleInputChange('rememberMe', checked as boolean)}
-                    />
-                    <Label htmlFor="remember-me" className="text-sm font-normal">
-                      Remember me
-                    </Label>
-                  </div>
-
-                  <Button 
-                    id="login-submit"
-                    type="submit" 
-                    className="w-full"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Signing In..." : "Sign In"}
-                  </Button>
-
-                  {loginStatus === 'success' && (
-                    <div className="flex items-center gap-2 p-3 bg-demo-success/10 border border-demo-success/20 rounded text-demo-success">
-                      <CheckCircle size={16} />
-                      <span className="text-sm">Login successful!</span>
-                    </div>
-                  )}
-
-                  {loginStatus === 'error' && (
-                    <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded text-destructive">
-                      <AlertCircle size={16} />
-                      <span className="text-sm">Invalid credentials. Please try again.</span>
-                    </div>
-                  )}
-                </form>
-
-                <div className="mt-6 pt-6 border-t space-y-2">
-                  <Button 
-                    id="fill-demo-credentials"
-                    variant="outline" 
-                    className="w-full"
-                    onClick={fillDemoCredentials}
-                  >
-                    Fill Demo Credentials
-                  </Button>
-                  <Button 
-                    id="reset-form"
-                    variant="ghost" 
-                    className="w-full"
-                    onClick={resetForm}
-                  >
-                    Reset Form
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Info & Test Cases */}
-          <div className="space-y-6">
-            {/* Demo Info */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Demo Credentials</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="p-3 bg-muted rounded font-mono text-sm">
-                  <p><strong>Username:</strong> testuser</p>
-                  <p><strong>Password:</strong> password123</p>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Use these credentials to test successful login, or enter different values to test failure scenarios.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Login Stats */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Login Statistics</CardTitle>
-              </CardHeader>
-              <CardContent>
+        <div className="grid gap-6 lg:grid-cols-2 max-w-6xl mx-auto">
+          
+          {/* Authentication Interface */}
+          <Card className="nasa-panel">
+            <CardHeader>
+              <CardTitle className="font-futura tracking-wide text-primary">AUTHENTICATION INTERFACE</CardTitle>
+              <CardDescription>Secure access control system</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} id="login-form" className="space-y-4">
                 <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Login Attempts:</span>
-                    <span id="login-attempts" className="font-mono">{loginAttempts}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Current Status:</span>
-                    <Badge 
-                      id="login-status"
-                      className={
-                        loginStatus === 'success' ? 'bg-demo-success' :
-                        loginStatus === 'error' ? 'bg-destructive' :
-                        'bg-muted'
-                      }
-                    >
-                      {loginStatus}
-                    </Badge>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Remember Me:</span>
-                    <span id="remember-status">{formData.rememberMe ? 'Yes' : 'No'}</span>
+                  <Label htmlFor="username" className="font-futura text-xs tracking-wide">USERNAME</Label>
+                  <div className="relative">
+                    <User size={16} className="absolute left-3 top-3 text-muted-foreground" />
+                    <Input
+                      id="username"
+                      name="username"
+                      type="text"
+                      placeholder="Enter your username"
+                      value={formData.username}
+                      onChange={(e) => handleInputChange('username', e.target.value)}
+                      className="pl-10 nasa-panel"
+                      required
+                    />
                   </div>
                 </div>
-              </CardContent>
-            </Card>
 
-            {/* Test Instructions */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Automation Test Cases</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2 text-sm">
-                  <p><strong>Test Scenarios:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                    <li>Fill in valid credentials and submit</li>
-                    <li>Test invalid username/password combinations</li>
-                    <li>Toggle password visibility</li>
-                    <li>Test "Remember Me" checkbox</li>
-                    <li>Verify form validation (required fields)</li>
-                    <li>Test form reset functionality</li>
-                    <li>Verify loading states during submission</li>
-                    <li>Check success/error message display</li>
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="font-futura text-xs tracking-wide">PASSWORD</Label>
+                  <div className="relative">
+                    <Lock size={16} className="absolute left-3 top-3 text-muted-foreground" />
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={formData.password}
+                      onChange={(e) => handleInputChange('password', e.target.value)}
+                      className="pl-10 pr-10 nasa-panel"
+                      required
+                    />
+                    <Button
+                      id="toggle-password-visibility"
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-1 top-1 h-7 w-7 p-0"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-2 p-3 bg-muted rounded nasa-panel">
+                  <Checkbox 
+                    id="remember-me"
+                    checked={formData.rememberMe}
+                    onCheckedChange={(checked) => handleInputChange('rememberMe', checked as boolean)}
+                  />
+                  <Label htmlFor="remember-me" className="text-sm font-futura">
+                    REMEMBER AUTHENTICATION STATE
+                  </Label>
+                </div>
+
+                <Button 
+                  id="login-submit"
+                  type="submit" 
+                  className="w-full font-futura tracking-wide"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "AUTHENTICATING..." : "INITIATE LOGIN SEQUENCE"}
+                </Button>
+
+                {loginStatus === 'success' && (
+                  <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/20 rounded nasa-panel text-primary">
+                    <CheckCircle size={16} />
+                    <span className="text-sm font-futura">AUTHENTICATION SUCCESSFUL</span>
+                  </div>
+                )}
+
+                {loginStatus === 'error' && (
+                  <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded nasa-panel text-destructive">
+                    <AlertCircle size={16} />
+                    <span className="text-sm font-futura">ACCESS DENIED - INVALID CREDENTIALS</span>
+                  </div>
+                )}
+              </form>
+
+              <div className="mt-6 pt-6 border-t border-primary/20 space-y-2">
+                <Button 
+                  id="fill-demo-credentials"
+                  variant="outline" 
+                  className="w-full font-futura tracking-wide nasa-panel"
+                  onClick={fillDemoCredentials}
+                >
+                  LOAD DEMO CREDENTIALS
+                </Button>
+                <Button 
+                  id="reset-form"
+                  variant="outline" 
+                  className="w-full font-futura tracking-wide nasa-panel"
+                  onClick={resetForm}
+                >
+                  RESET AUTHENTICATION SYSTEM
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Security Protocols */}
+          <Card className="nasa-panel">
+            <CardHeader>
+              <CardTitle className="font-futura tracking-wide text-primary">SECURITY PROTOCOLS</CardTitle>
+              <CardDescription>Authentication system information and test credentials</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="nasa-panel p-4 bg-muted">
+                <h4 className="font-semibold text-accent mb-2 font-futura text-xs tracking-wide">AUTHORIZED CREDENTIALS:</h4>
+                <div className="space-y-1 font-mono text-sm">
+                  <p className="text-primary">USERNAME: testuser</p>
+                  <p className="text-primary">PASSWORD: password123</p>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2 font-futura">
+                  Use these credentials to test successful authentication, or enter different values to test security failure scenarios.
+                </p>
+              </div>
+
+              <div className="text-center p-4 bg-muted rounded nasa-panel">
+                <p className="text-2xl font-bold" id="login-attempts">{loginAttempts}</p>
+                <p className="text-sm text-muted-foreground font-futura">AUTHENTICATION ATTEMPTS</p>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between items-center p-2 nasa-panel bg-muted">
+                  <span className="font-futura text-xs">SYSTEM STATUS:</span>
+                  <Badge 
+                    id="login-status"
+                    className={
+                      loginStatus === 'success' ? 'bg-primary' :
+                      loginStatus === 'error' ? 'bg-destructive' :
+                      'bg-muted-foreground'
+                    }
+                  >
+                    {loginStatus === 'success' ? 'AUTHENTICATED' : 
+                     loginStatus === 'error' ? 'ACCESS DENIED' : 'STANDBY'}
+                  </Badge>
+                </div>
+                <div className="flex justify-between items-center p-2 nasa-panel bg-muted">
+                  <span className="font-futura text-xs">REMEMBER STATE:</span>
+                  <span id="remember-status" className="text-primary font-futura text-xs">
+                    {formData.rememberMe ? 'ENABLED' : 'DISABLED'}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-2 nasa-panel bg-muted">
+                  <span className="font-futura text-xs">PASSWORD VISIBILITY:</span>
+                  <span className="text-accent font-futura text-xs">
+                    {showPassword ? 'VISIBLE' : 'HIDDEN'}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Mission Summary */}
+          <Card className="nasa-panel lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="font-futura tracking-wide text-primary">MISSION SUMMARY</CardTitle>
+              <CardDescription>Authentication system status and security metrics</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <h4 className="font-semibold text-accent mb-2 font-futura">AUTHENTICATION STATUS:</h4>
+                  <ul className="space-y-1 text-muted-foreground">
+                    <li>Login Status: {loginStatus === 'success' ? 'AUTHENTICATED' : 
+                                      loginStatus === 'error' ? 'ACCESS DENIED' : 'STANDBY'}</li>
+                    <li>Total Attempts: {loginAttempts}</li>
+                    <li>Remember Me: {formData.rememberMe ? 'ENABLED' : 'DISABLED'}</li>
+                    <li>Password Visibility: {showPassword ? 'VISIBLE' : 'HIDDEN'}</li>
                   </ul>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+                <div>
+                  <h4 className="font-semibold text-accent mb-2 font-futura">SYSTEM METRICS:</h4>
+                  <ul className="space-y-1 text-muted-foreground">
+                    <li>Interface Status: OPERATIONAL</li>
+                    <li>Security Level: {loginStatus === 'success' ? 'CLEARED' : 'SECURE'}</li>
+                    <li>Form State: {isLoading ? 'PROCESSING' : 'READY'}</li>
+                    <li>Validation: {formData.username && formData.password ? 'COMPLETE' : 'PENDING'}</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-muted rounded nasa-panel">
+                <h4 className="font-semibold text-accent mb-2 font-futura">SECURITY TEST PROTOCOLS:</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
+                  <div>
+                    <p>• Test valid credentials authentication</p>
+                    <p>• Verify invalid credentials rejection</p>
+                    <p>• Test password visibility toggle</p>
+                    <p>• Validate remember me functionality</p>
+                  </div>
+                  <div>
+                    <p>• Verify form field validation</p>
+                    <p>• Test form reset capabilities</p>
+                    <p>• Check loading state behavior</p>
+                    <p>• Validate success/error messaging</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
