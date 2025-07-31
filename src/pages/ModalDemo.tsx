@@ -19,29 +19,35 @@ const ModalDemo = () => {
   const [tooltipInteractions, setTooltipInteractions] = useState(0);
   const [formData, setFormData] = useState({ name: "", description: "" });
   const [lastAction, setLastAction] = useState("");
+  const [systemStatus, setSystemStatus] = useState("Idle");
   const { toast } = useToast();
 
   const handleModalOpen = () => {
     setModalInteractions(prev => prev + 1);
     setLastAction("Modal Opened");
+    setSystemStatus("Busy");
     toast({
       title: "Modal Activated",
       description: "Dialog window has been opened",
     });
+    setTimeout(() => setSystemStatus("Active"), 1000);
   };
 
   const handleAlertTrigger = () => {
     setAlertInteractions(prev => prev + 1);
     setLastAction("Alert Dialog Triggered");
+    setSystemStatus("Alert");
     toast({
       title: "Alert System Activated",
       description: "Warning dialog has been triggered",
     });
+    setTimeout(() => setSystemStatus("Active"), 2000);
   };
 
   const handleTooltipOpen = () => {
     setTooltipInteractions(prev => prev + 1);
     setLastAction("Tooltip Displayed");
+    setSystemStatus("Active");
   };
 
   const handleFormSubmit = () => {
@@ -68,6 +74,7 @@ const ModalDemo = () => {
     setTooltipInteractions(0);
     setFormData({ name: "", description: "" });
     setLastAction("System Reset");
+    setSystemStatus("Idle");
     toast({
       title: "System Reset Complete",
       description: "All interaction counters cleared",
@@ -408,8 +415,11 @@ const ModalDemo = () => {
                 <Badge variant="secondary" className="justify-center py-2">
                   Total: {modalInteractions + alertInteractions + tooltipInteractions}
                 </Badge>
-                <Badge variant="outline" className="justify-center py-2">
-                  Status: Active
+                <Badge 
+                  variant={systemStatus === "Idle" ? "outline" : systemStatus === "Alert" ? "destructive" : "default"} 
+                  className="justify-center py-2"
+                >
+                  Status: {systemStatus}
                 </Badge>
               </div>
 
