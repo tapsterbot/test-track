@@ -108,7 +108,7 @@ const Index = () => {
   };
   return <div className="min-h-screen bg-background">
       {/* NASA Mission Control Header */}
-      <div className="nasa-panel border-b-4 border-primary bg-card">
+      <div className="nasa-panel border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-6">
           {/* Mission Status Bar */}
           <div className="flex justify-between items-center mb-4 text-xs nasa-display">
