@@ -224,10 +224,12 @@ const Index = () => {
         <div className="container mx-auto px-4 py-3">
           {/* Mission Status Bar */}
           <div className="mb-4 text-[10px] nasa-display">
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-3 items-center">
               <div className="text-primary">CONSOLE 001 READY</div>
               <span className="text-foreground text-center">□ MISSION TIME: {currentTime.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
-              <ThemeToggle />
+              <div className="flex justify-end">
+                <ThemeToggle />
+              </div>
             </div>
           </div>
           
