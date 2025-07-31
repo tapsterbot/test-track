@@ -53,7 +53,6 @@ const ButtonDemo = () => {
               <div className="flex flex-wrap items-center gap-1 md:gap-6">
                 <div className="text-primary">MODULE 001 OPERATIONAL</div>
                 <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
-                <span className="text-accent">⚠ BUTTON SYSTEMS ACTIVE</span>
               </div>
               <ThemeToggle />
             </div>
