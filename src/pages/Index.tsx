@@ -145,7 +145,7 @@ const Index = () => {
                 </div>
                 <div className="nasa-panel p-4">
                   <div className="text-xs text-destructive mb-1">CAUTION</div>
-                  <div className="text-sm text-foreground">Selenium WebDriver certification required for mission participation</div>
+                  <div className="text-sm text-foreground">Valet certification required for mission participation</div>
                 </div>
               </div>
             </div>
