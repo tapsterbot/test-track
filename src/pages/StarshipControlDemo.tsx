@@ -94,7 +94,7 @@ export default function StarshipControlDemo() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Dynamic background grid
-      ctx.strokeStyle = redAlert ? 'rgba(255, 0, 0, 0.1)' : 'rgba(0, 255, 150, 0.1)';
+      ctx.strokeStyle = redAlert ? 'hsl(var(--critical-red) / 0.1)' : 'hsl(var(--console-green) / 0.1)';
       ctx.lineWidth = 0.5;
       for (let i = -200; i <= 400; i += 20) {
         ctx.beginPath();
@@ -108,10 +108,10 @@ export default function StarshipControlDemo() {
       }
       
       // Radar circles with pulse effect
-      const baseColor = redAlert ? [255, 50, 50] : [0, 255, 150];
+      const baseColor = redAlert ? 'var(--critical-red)' : 'var(--console-green)';
       for (let i = 1; i <= 5; i++) {
         const pulse = Math.sin(pulseTime * 0.01 + i * 0.5) * 0.3 + 0.7;
-        ctx.strokeStyle = `rgba(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]}, ${0.2 * pulse})`;
+        ctx.strokeStyle = `hsl(${baseColor} / ${0.2 * pulse})`;
         ctx.lineWidth = i === 5 ? 2 : 1;
         ctx.beginPath();
         ctx.arc(100, 100, i * 20, 0, Math.PI * 2);
@@ -125,7 +125,7 @@ export default function StarshipControlDemo() {
       // Primary sweep
       ctx.rotate(rotation);
       const gradient1 = ctx.createRadialGradient(0, 0, 0, 0, 0, 100);
-      gradient1.addColorStop(0, redAlert ? 'rgba(255, 50, 50, 0.8)' : 'rgba(0, 255, 150, 0.8)');
+      gradient1.addColorStop(0, redAlert ? 'hsl(var(--critical-red) / 0.8)' : 'hsl(var(--console-green) / 0.8)');
       gradient1.addColorStop(1, 'rgba(0, 0, 0, 0)');
       
       ctx.fillStyle = gradient1;
@@ -138,7 +138,7 @@ export default function StarshipControlDemo() {
       // Secondary sweep (counter-rotating)
       ctx.rotate(-rotation * 2);
       const gradient2 = ctx.createRadialGradient(0, 0, 0, 0, 0, 80);
-      gradient2.addColorStop(0, redAlert ? 'rgba(255, 100, 0, 0.4)' : 'rgba(0, 150, 255, 0.4)');
+      gradient2.addColorStop(0, redAlert ? 'hsl(var(--warning-amber) / 0.4)' : 'hsl(var(--telemetry-blue) / 0.4)');
       gradient2.addColorStop(1, 'rgba(0, 0, 0, 0)');
       
       ctx.fillStyle = gradient2;
@@ -153,9 +153,9 @@ export default function StarshipControlDemo() {
       // Enhanced scanner blips with trails and classification
       scannerData.forEach((blip, index) => {
         const colors = {
-          friendly: '#00ff96',
-          unknown: '#ffaa00',
-          hostile: '#ff3333'
+          friendly: 'var(--console-green)',
+          unknown: 'var(--warning-amber)',
+          hostile: 'var(--critical-red)'
         };
         
         const age = scannerData.length - index;
@@ -163,21 +163,21 @@ export default function StarshipControlDemo() {
         
         // Blip trail
         for (let i = 0; i < 3; i++) {
-          ctx.fillStyle = colors[blip.type as keyof typeof colors] + Math.floor(alpha * 50 - i * 15).toString(16).padStart(2, '0');
+          ctx.fillStyle = `hsl(${colors[blip.type as keyof typeof colors]} / ${Math.max(0.1, alpha - i * 0.15)})`;
           ctx.beginPath();
           ctx.arc(blip.x + i * 2, blip.y + i * 2, 2 + i, 0, Math.PI * 2);
           ctx.fill();
         }
         
         // Main blip
-        ctx.fillStyle = colors[blip.type as keyof typeof colors];
+        ctx.fillStyle = `hsl(${colors[blip.type as keyof typeof colors]})`;
         ctx.beginPath();
         ctx.arc(blip.x, blip.y, 4, 0, Math.PI * 2);
         ctx.fill();
         
         // Pulse rings
         const ringIntensity = Math.sin(Date.now() * 0.005 + blip.id) * 0.5 + 0.5;
-        ctx.strokeStyle = colors[blip.type as keyof typeof colors] + Math.floor(ringIntensity * 100).toString(16).padStart(2, '0');
+        ctx.strokeStyle = `hsl(${colors[blip.type as keyof typeof colors]} / ${ringIntensity})`;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(blip.x, blip.y, 8 + ringIntensity * 5, 0, Math.PI * 2);
@@ -185,7 +185,7 @@ export default function StarshipControlDemo() {
         
         // Distance indicator
         if (blip.distance) {
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          ctx.fillStyle = 'hsl(var(--foreground) / 0.7)';
           ctx.font = '8px monospace';
           ctx.fillText(`${blip.distance}km`, blip.x + 8, blip.y - 8);
         }
@@ -216,7 +216,7 @@ export default function StarshipControlDemo() {
       vy: number, 
       alpha: number, 
       size: number, 
-      color: [number, number, number],
+      color: string,
       life: number,
       maxLife: number
     }> = [];
@@ -230,7 +230,7 @@ export default function StarshipControlDemo() {
         vy: (Math.random() - 0.5) * (redAlert ? 2 : 0.8),
         alpha: Math.random() * 0.7 + 0.3,
         size: Math.random() * 2 + 0.5,
-        color: redAlert ? [255, 100, 100] : [100, 200, 255],
+        color: redAlert ? 'var(--critical-red)' : 'var(--telemetry-blue)',
         life: Math.random() * 1000,
         maxLife: 1000
       });
@@ -261,7 +261,7 @@ export default function StarshipControlDemo() {
           particle.x = Math.random() * canvas.width;
           particle.y = Math.random() * canvas.height;
           particle.life = particle.maxLife;
-          particle.color = redAlert ? [255, 100, 100] : [100, 200, 255];
+          particle.color = redAlert ? 'var(--critical-red)' : 'var(--telemetry-blue)';
           particle.vx = (Math.random() - 0.5) * (redAlert ? 2 : 0.8);
           particle.vy = (Math.random() - 0.5) * (redAlert ? 2 : 0.8);
         }
@@ -271,7 +271,7 @@ export default function StarshipControlDemo() {
         const currentAlpha = particle.alpha * pulse * (particle.life / particle.maxLife);
         
         // Draw particle
-        ctx.fillStyle = `rgba(${particle.color[0]}, ${particle.color[1]}, ${particle.color[2]}, ${currentAlpha})`;
+        ctx.fillStyle = `hsl(${particle.color} / ${currentAlpha})`;
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size * pulse, 0, Math.PI * 2);
         ctx.fill();
@@ -284,7 +284,7 @@ export default function StarshipControlDemo() {
           
           if (distance < 100) {
             const lineAlpha = (1 - distance / 100) * 0.1;
-            ctx.strokeStyle = `rgba(${particle.color[0]}, ${particle.color[1]}, ${particle.color[2]}, ${lineAlpha})`;
+            ctx.strokeStyle = `hsl(${particle.color} / ${lineAlpha})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
@@ -320,7 +320,7 @@ export default function StarshipControlDemo() {
       // Holographic scan lines
       for (let y = 0; y < canvas.height; y += 3) {
         const alpha = Math.sin(frame * 0.1 + y * 0.1) * 0.1 + 0.05;
-        ctx.fillStyle = redAlert ? `rgba(255, 0, 0, ${alpha})` : `rgba(0, 255, 150, ${alpha})`;
+        ctx.fillStyle = redAlert ? `hsl(var(--critical-red) / ${alpha})` : `hsl(var(--console-green) / ${alpha})`;
         ctx.fillRect(0, y, canvas.width, 1);
       }
       
@@ -329,7 +329,7 @@ export default function StarshipControlDemo() {
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(frame * 0.005);
       
-      ctx.strokeStyle = redAlert ? 'rgba(255, 100, 100, 0.8)' : 'rgba(0, 255, 150, 0.8)';
+      ctx.strokeStyle = redAlert ? 'hsl(var(--critical-red) / 0.8)' : 'hsl(var(--console-green) / 0.8)';
       ctx.lineWidth = 1;
       
       // Ship outline
@@ -344,7 +344,7 @@ export default function StarshipControlDemo() {
       // Engine trails
       for (let i = 0; i < 5; i++) {
         const trailAlpha = (5 - i) * 0.1;
-        ctx.strokeStyle = `rgba(0, 150, 255, ${trailAlpha})`;
+        ctx.strokeStyle = `hsl(var(--telemetry-blue) / ${trailAlpha})`;
         ctx.beginPath();
         ctx.moveTo(-30 - i * 3, -3);
         ctx.lineTo(-30 - i * 3, 3);
@@ -363,10 +363,10 @@ export default function StarshipControlDemo() {
   }, [redAlert]);
 
   const getStatusColor = (value: number) => {
-    if (redAlert) return "text-red-400";
-    if (value >= 80) return "text-green-400";
-    if (value >= 60) return "text-yellow-400";
-    return "text-red-400";
+    if (redAlert) return "text-destructive";
+    if (value >= 80) return "text-primary";
+    if (value >= 60) return "text-accent";
+    return "text-destructive";
   };
 
   const getStatusBadgeVariant = (value: number) => {
@@ -408,7 +408,7 @@ export default function StarshipControlDemo() {
       <div className="container mx-auto px-4 py-8 relative z-10">
         {/* Enhanced Mission Time & Status */}
         <div className="mb-8 text-center">
-          <div className={`text-3xl font-mono mb-2 transition-all duration-300 ${redAlert ? 'text-red-400 animate-pulse' : 'text-cyan-400'}`}>
+          <div className={`text-3xl font-mono mb-2 transition-all duration-300 ${redAlert ? 'text-destructive animate-pulse' : 'text-primary'}`}>
             STELLAR DATE: {time.toISOString().slice(0, 10).replace(/-/g, '.')} • {time.toLocaleTimeString('en-US', { hour12: false })}
           </div>
           <div className="flex justify-center gap-4 mb-4">
@@ -430,9 +430,9 @@ export default function StarshipControlDemo() {
                 ref={holoDisplayRef}
                 width={120}
                 height={80}
-                className="border border-cyan-500/30 bg-slate-900/50 rounded"
+                className="border border-primary/30 bg-card/50 rounded"
               />
-              <div className="absolute bottom-1 left-1 text-xs text-cyan-400 font-mono">
+              <div className="absolute bottom-1 left-1 text-xs text-primary font-mono">
                 HOLO-DISPLAY
               </div>
             </div>
@@ -441,27 +441,27 @@ export default function StarshipControlDemo() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Power Systems */}
-          <Card className="bg-slate-800/50 border-cyan-500/30 backdrop-blur-sm animate-fade-in">
+          <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in">
             <div className="p-6">
               <div className="flex items-center gap-3 mb-4">
-                <Zap className="w-6 h-6 text-yellow-400 animate-pulse" />
-                <h3 className="text-xl font-mono text-cyan-300">POWER CORE</h3>
+                <Zap className="w-6 h-6 text-accent animate-pulse" />
+                <h3 className="text-xl font-mono text-primary">POWER CORE</h3>
               </div>
               <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-slate-300">Primary Output</span>
-                    <span className={`text-sm font-mono ${getStatusColor(powerLevel)}`}>
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-muted-foreground">Primary Output</span>
+                      <span className={`text-sm font-mono ${getStatusColor(powerLevel)}`}>
                       {powerLevel.toFixed(1)}%
                     </span>
                   </div>
                   <Progress value={powerLevel} className="h-3 animate-pulse" />
                 </div>
                 
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-slate-300">Warp Core</span>
-                    <span className={`text-sm font-mono ${getStatusColor(warpCore)}`}>
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-muted-foreground">Warp Core</span>
+                      <span className={`text-sm font-mono ${getStatusColor(warpCore)}`}>
                       {warpCore.toFixed(1)}%
                     </span>
                   </div>
@@ -470,7 +470,7 @@ export default function StarshipControlDemo() {
 
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-slate-300">Engine Temperature</span>
+                    <span className="text-sm text-muted-foreground">Engine Temperature</span>
                     <span className={`text-sm font-mono ${getStatusColor(120 - engineTemp)}`}>
                       {engineTemp.toFixed(1)}°C
                     </span>
@@ -482,7 +482,7 @@ export default function StarshipControlDemo() {
                   <Button 
                     size="sm" 
                     variant="outline" 
-                    className="font-mono text-xs border-cyan-500/50 hover:bg-cyan-500/20"
+                    className="font-mono text-xs border-primary/50 hover:bg-primary/20"
                     onClick={() => setPowerLevel(Math.min(100, powerLevel + 10))}
                   >
                     <Zap className="w-3 h-3 mr-1" />
@@ -491,7 +491,7 @@ export default function StarshipControlDemo() {
                   <Button 
                     size="sm" 
                     variant="outline" 
-                    className="font-mono text-xs border-yellow-500/50 hover:bg-yellow-500/20"
+                    className="font-mono text-xs border-accent/50 hover:bg-accent/20"
                     onClick={handleAutoMode}
                   >
                     <Settings className="w-3 h-3 mr-1" />
@@ -503,11 +503,11 @@ export default function StarshipControlDemo() {
           </Card>
 
           {/* Scanner & Radar */}
-          <Card className="bg-slate-800/50 border-green-500/30 backdrop-blur-sm animate-fade-in">
+          <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in">
             <div className="p-6">
               <div className="flex items-center gap-3 mb-4">
-                <Radar className="w-6 h-6 text-green-400 animate-spin" style={{ animationDuration: '4s' }} />
-                <h3 className="text-xl font-mono text-green-300">SCANNER</h3>
+                <Radar className="w-6 h-6 text-primary animate-spin" style={{ animationDuration: '4s' }} />
+                <h3 className="text-xl font-mono text-primary">SCANNER</h3>
               </div>
               
               <div className="relative">
@@ -515,17 +515,17 @@ export default function StarshipControlDemo() {
                   ref={canvasRef}
                   width={200}
                   height={200}
-                  className="w-full h-48 bg-slate-900/50 rounded border border-green-500/30"
+                  className="w-full h-48 bg-card/50 rounded border border-primary/30"
                 />
-                <div className="absolute bottom-2 left-2 text-xs text-green-400 font-mono">
+                <div className="absolute bottom-2 left-2 text-xs text-primary font-mono">
                   RANGE: 50,000 KM
                 </div>
               </div>
               
-                <div className="mt-4 space-y-3">
+              <div className="mt-4 space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-300">Active Contacts</span>
-                  <span className="text-green-400 font-mono">{scannerData.length}/12</span>
+                  <span className="text-muted-foreground">Active Contacts</span>
+                  <span className="text-primary font-mono">{scannerData.length}/12</span>
                 </div>
                 <div className="grid grid-cols-3 gap-1 text-xs">
                   <Badge variant="default" className="text-xs">
@@ -538,14 +538,14 @@ export default function StarshipControlDemo() {
                     {scannerData.filter(b => b.type === 'hostile').length} HOST
                   </Badge>
                 </div>
-                <div className="text-xs text-slate-400 space-y-1">
+                <div className="text-xs text-muted-foreground space-y-1">
                   <div className="flex justify-between">
                     <span>Range:</span>
-                    <span className="text-green-400">50,000 KM</span>
+                    <span className="text-primary">50,000 KM</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Resolution:</span>
-                    <span className="text-green-400">{redAlert ? 'ENHANCED' : 'STANDARD'}</span>
+                    <span className="text-primary">{redAlert ? 'ENHANCED' : 'STANDARD'}</span>
                   </div>
                 </div>
               </div>
@@ -553,18 +553,18 @@ export default function StarshipControlDemo() {
           </Card>
 
           {/* Defense Systems */}
-          <Card className="bg-slate-800/50 border-blue-500/30 backdrop-blur-sm animate-fade-in">
+          <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in">
             <div className="p-6">
               <div className="flex items-center gap-3 mb-4">
-                <Shield className="w-6 h-6 text-blue-400" />
-                <h3 className="text-xl font-mono text-blue-300">SHIELDS</h3>
+                <Shield className="w-6 h-6 text-primary" />
+                <h3 className="text-xl font-mono text-primary">SHIELDS</h3>
               </div>
               
               <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-slate-300">Shield Integrity</span>
-                    <span className={`text-sm font-mono ${getStatusColor(shieldStatus)}`}>
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-muted-foreground">Shield Integrity</span>
+                      <span className={`text-sm font-mono ${getStatusColor(shieldStatus)}`}>
                       {shieldStatus.toFixed(1)}%
                     </span>
                   </div>
@@ -572,20 +572,20 @@ export default function StarshipControlDemo() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="text-center p-2 bg-slate-700/50 rounded">
-                    <div className="text-xs text-slate-400">FORWARD</div>
-                    <div className="text-sm text-blue-400 font-mono">98%</div>
+                  <div className="text-center p-2 bg-muted/30 rounded">
+                    <div className="text-xs text-muted-foreground">FORWARD</div>
+                    <div className="text-sm text-primary font-mono">98%</div>
                   </div>
-                  <div className="text-center p-2 bg-slate-700/50 rounded">
-                    <div className="text-xs text-slate-400">AFT</div>
-                    <div className="text-sm text-blue-400 font-mono">91%</div>
+                  <div className="text-center p-2 bg-muted/30 rounded">
+                    <div className="text-xs text-muted-foreground">AFT</div>
+                    <div className="text-sm text-primary font-mono">91%</div>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
                   <Button 
                     size="sm" 
-                    className="font-mono bg-blue-600 hover:bg-blue-700 text-xs"
+                    className="font-mono bg-primary hover:bg-primary/80 text-xs"
                     onClick={() => setShieldStatus(Math.min(100, shieldStatus + 15))}
                   >
                     <Shield className="w-3 h-3 mr-1" />
@@ -594,7 +594,7 @@ export default function StarshipControlDemo() {
                   <Button 
                     size="sm" 
                     variant="outline"
-                    className="font-mono border-blue-500/50 hover:bg-blue-500/20 text-xs"
+                    className="font-mono border-primary/50 hover:bg-primary/20 text-xs"
                     onClick={() => setShieldStatus(prev => Math.min(100, prev + 5))}
                   >
                     <Power className="w-3 h-3 mr-1" />
@@ -606,17 +606,17 @@ export default function StarshipControlDemo() {
           </Card>
 
           {/* Navigation */}
-          <Card className="bg-slate-800/50 border-purple-500/30 backdrop-blur-sm animate-fade-in lg:col-span-2">
+          <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in lg:col-span-2">
             <div className="p-6">
               <div className="flex items-center gap-3 mb-4">
-                <Navigation className="w-6 h-6 text-purple-400" />
-                <h3 className="text-xl font-mono text-purple-300">NAVIGATION</h3>
+                <Navigation className="w-6 h-6 text-primary" />
+                <h3 className="text-xl font-mono text-primary">NAVIGATION</h3>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-3">
-                  <div className="text-sm text-slate-300">Current Position</div>
-                  <div className="font-mono text-xs text-purple-400 space-y-1">
+                  <div className="text-sm text-muted-foreground">Current Position</div>
+                  <div className="font-mono text-xs text-primary space-y-1">
                     <div>X: 847,239.42</div>
                     <div>Y: -234,891.17</div>
                     <div>Z: 95,847.33</div>
@@ -624,8 +624,8 @@ export default function StarshipControlDemo() {
                 </div>
                 
                 <div className="space-y-3">
-                  <div className="text-sm text-slate-300">Destination</div>
-                  <div className="font-mono text-xs text-purple-400 space-y-1">
+                  <div className="text-sm text-muted-foreground">Destination</div>
+                  <div className="font-mono text-xs text-primary space-y-1">
                     <div>KEPLER-442b</div>
                     <div>1,206 LY</div>
                     <div>ETA: 47.3 DAYS</div>
@@ -633,12 +633,12 @@ export default function StarshipControlDemo() {
                 </div>
                 
                 <div className="space-y-3">
-                  <div className="text-sm text-slate-300">Engine Status</div>
+                  <div className="text-sm text-muted-foreground">Engine Status</div>
                   <div className="space-y-2">
                     <Badge variant={getStatusBadgeVariant(warpCore)} className="text-xs">
                       WARP {warpCore > 80 ? 'READY' : 'CHARGING'}
                     </Badge>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-muted-foreground">
                       Speed: {(Math.random() * 0.3 + 0.7).toFixed(2)}c
                     </div>
                   </div>
@@ -648,11 +648,11 @@ export default function StarshipControlDemo() {
           </Card>
 
           {/* Enhanced System Status */}
-          <Card className="bg-slate-800/50 border-orange-500/30 backdrop-blur-sm animate-fade-in">
+          <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in">
             <div className="p-6">
               <div className="flex items-center gap-3 mb-4">
-                <Cpu className="w-6 h-6 text-orange-400 animate-pulse" />
-                <h3 className="text-xl font-mono text-orange-300">SYSTEMS</h3>
+                <Cpu className="w-6 h-6 text-accent animate-pulse" />
+                <h3 className="text-xl font-mono text-primary">SYSTEMS</h3>
               </div>
               
               <div className="space-y-3">
@@ -663,10 +663,10 @@ export default function StarshipControlDemo() {
                   { name: 'Hull Integrity', status: hullIntegrity > 90 ? 'NORMAL' : hullIntegrity > 80 ? 'MINOR DAMAGE' : 'WARNING', value: hullIntegrity, icon: hullIntegrity > 80 ? CheckCircle : AlertTriangle }
                 ].map((system, i) => (
                   <div key={i} className="space-y-1">
-                    <div className="flex items-center justify-between p-2 bg-slate-700/30 rounded">
+                    <div className="flex items-center justify-between p-2 bg-muted/30 rounded">
                       <div className="flex items-center gap-2">
-                        <system.icon className={`w-4 h-4 ${redAlert ? 'text-red-400' : 'text-orange-400'}`} />
-                        <span className="text-xs text-slate-300">{system.name}</span>
+                        <system.icon className={`w-4 h-4 ${redAlert ? 'text-destructive' : 'text-accent'}`} />
+                        <span className="text-xs text-muted-foreground">{system.name}</span>
                       </div>
                       <Badge 
                         variant={system.status.includes('WARNING') || system.status.includes('DAMAGE') ? 'destructive' : 'default'} 
@@ -680,16 +680,16 @@ export default function StarshipControlDemo() {
                 ))}
               </div>
               
-              <div className="mt-4 pt-3 border-t border-slate-600/50">
-                <div className="text-xs text-slate-400 mb-2">System Performance</div>
+              <div className="mt-4 pt-3 border-t border-border">
+                <div className="text-xs text-muted-foreground mb-2">System Performance</div>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="flex justify-between">
                     <span>CPU Load:</span>
-                    <span className="text-orange-400">{Math.floor(Math.random() * 30 + 45)}%</span>
+                    <span className="text-accent">{Math.floor(Math.random() * 30 + 45)}%</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Memory:</span>
-                    <span className="text-orange-400">{Math.floor(Math.random() * 20 + 60)}%</span>
+                    <span className="text-accent">{Math.floor(Math.random() * 20 + 60)}%</span>
                   </div>
                 </div>
               </div>
@@ -699,17 +699,17 @@ export default function StarshipControlDemo() {
 
         {/* Enhanced Emergency Controls */}
         <div className="mt-8 flex justify-center">
-          <Card className={`backdrop-blur-sm animate-fade-in transition-all duration-500 ${
-            redAlert ? 'bg-red-900/50 border-red-500 shadow-red-500/50 shadow-lg' : 'bg-red-900/20 border-red-500/50'
+          <Card className={`nasa-panel backdrop-blur-sm animate-fade-in transition-all duration-500 ${
+            redAlert ? 'border-destructive shadow-destructive/50 shadow-lg' : 'border-destructive/50'
           }`}>
             <div className="p-6">
               <div className="flex items-center justify-center gap-6">
                 <AlertTriangle className={`w-8 h-8 transition-all duration-300 ${
-                  redAlert ? 'text-red-400 animate-pulse' : 'text-red-500'
+                  redAlert ? 'text-destructive animate-pulse' : 'text-destructive/70'
                 }`} />
                 <div className="text-center">
-                  <div className="text-red-300 font-mono text-lg mb-2">EMERGENCY PROTOCOLS</div>
-                  <div className="text-xs text-red-400">AUTHORIZATION LEVEL: CAPTAIN</div>
+                  <div className="text-destructive font-mono text-lg mb-2">EMERGENCY PROTOCOLS</div>
+                  <div className="text-xs text-destructive/70">AUTHORIZATION LEVEL: CAPTAIN</div>
                 </div>
                 <div className="flex gap-2">
                   <Button 
@@ -717,8 +717,8 @@ export default function StarshipControlDemo() {
                     size="sm" 
                     className={`font-mono transition-all duration-300 ${
                       redAlert 
-                        ? 'bg-red-600 hover:bg-red-700 animate-pulse shadow-red-500/50 shadow-lg' 
-                        : 'border-red-500/50 hover:bg-red-500/20'
+                        ? 'bg-destructive hover:bg-destructive/80 animate-pulse shadow-destructive/50 shadow-lg' 
+                        : 'border-destructive/50 hover:bg-destructive/20'
                     }`}
                     onClick={handleRedAlert}
                   >
@@ -728,7 +728,7 @@ export default function StarshipControlDemo() {
                   <Button 
                     variant="outline"
                     size="sm" 
-                    className="font-mono border-yellow-500/50 hover:bg-yellow-500/20"
+                    className="font-mono border-accent/50 hover:bg-accent/20"
                     onClick={() => {
                       setPowerLevel(100);
                       setShieldStatus(100);
@@ -751,22 +751,22 @@ export default function StarshipControlDemo() {
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Horizontal scan lines */}
         <div className={`absolute w-full h-1 bg-gradient-to-r from-transparent to-transparent opacity-40 transition-all duration-300 ${
-          redAlert ? 'via-red-400' : 'via-cyan-400'
-        }`} 
+          redAlert ? 'via-destructive' : 'via-primary'
+        }`}
              style={{ 
                top: '15%',
                animation: redAlert ? 'scan-line 1.5s ease-in-out infinite' : 'scan-line 3s ease-in-out infinite'
              }} />
         <div className={`absolute w-full h-0.5 bg-gradient-to-r from-transparent to-transparent opacity-25 transition-all duration-300 ${
-          redAlert ? 'via-orange-400' : 'via-blue-400'
-        }`} 
+          redAlert ? 'via-accent' : 'via-primary'
+        }`}
              style={{ 
                top: '45%',
                animation: redAlert ? 'scan-line 2s ease-in-out infinite reverse' : 'scan-line 4s ease-in-out infinite reverse'
              }} />
         <div className={`absolute w-full h-0.5 bg-gradient-to-r from-transparent to-transparent opacity-20 transition-all duration-300 ${
-          redAlert ? 'via-red-400' : 'via-purple-400'
-        }`} 
+          redAlert ? 'via-destructive' : 'via-accent'
+        }`}
              style={{ 
                top: '75%',
                animation: redAlert ? 'scan-line 1.8s ease-in-out infinite' : 'scan-line 5s ease-in-out infinite'
@@ -774,15 +774,15 @@ export default function StarshipControlDemo() {
         
         {/* Vertical scan lines */}
         <div className={`absolute h-full w-0.5 bg-gradient-to-b from-transparent to-transparent opacity-15 transition-all duration-300 ${
-          redAlert ? 'via-red-400' : 'via-cyan-400'
-        }`} 
+          redAlert ? 'via-destructive' : 'via-primary'
+        }`}
              style={{ 
                left: '25%',
                animation: redAlert ? 'scan-line-vertical 2.5s ease-in-out infinite' : 'scan-line-vertical 6s ease-in-out infinite'
              }} />
         <div className={`absolute h-full w-0.5 bg-gradient-to-b from-transparent to-transparent opacity-10 transition-all duration-300 ${
-          redAlert ? 'via-orange-400' : 'via-blue-400'
-        }`} 
+          redAlert ? 'via-accent' : 'via-primary'
+        }`}
              style={{ 
                right: '30%',
                animation: redAlert ? 'scan-line-vertical 3s ease-in-out infinite reverse' : 'scan-line-vertical 7s ease-in-out infinite reverse'
