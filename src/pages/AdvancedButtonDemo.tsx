@@ -797,9 +797,31 @@ const AdvancedButtonDemo = () => {
         {/* Mission Analysis */}
         <Card>
           <CardHeader>
-             <CardTitle>Mission Analysis</CardTitle>
+             <CardTitle>Mission Summary</CardTitle>
            </CardHeader>
            <CardContent>
+             <div className="space-y-3 text-sm">
+               <div className="flex justify-between">
+                 <span className="text-accent font-futura">Mission Type:</span>
+                 <span className="text-primary">Advanced Button Testing</span>
+               </div>
+               <div className="flex justify-between">
+                 <span className="text-accent font-futura">Test Categories:</span>
+                 <span className="text-primary">5 ACTIVE</span>
+               </div>
+               <div className="flex justify-between">
+                 <span className="text-accent font-futura">System Status:</span>
+                 <span className="text-primary">◉ OPERATIONAL</span>
+               </div>
+               <div className="border-t border-border pt-3">
+                 <div className="text-accent font-futura mb-2">Mission Objective:</div>
+                 <div className="text-muted-foreground text-xs">
+                   Test automated interaction capabilities with complex button behaviors including visibility changes, 
+                   movement, overlays, state transitions, and form validation scenarios.
+                 </div>
+               </div>
+             </div>
+             
              <div className="mt-6 p-4 bg-muted rounded nasa-panel">
                <h4 className="font-semibold text-accent mb-2">TEST PROTOCOLS:</h4>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
