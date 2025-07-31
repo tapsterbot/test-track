@@ -199,6 +199,13 @@ const Index = () => {
     elements: ["touch gestures", "mobile viewport", "orientation change", "touch events", "mobile interactions"],
     implemented: false
   }, {
+    title: "Starship Command Interface",
+    path: "/starship-control-demo",
+    description: "Advanced starship control systems with real-time monitoring and futuristic animations",
+    difficulty: "Advanced",
+    elements: ["Canvas animations", "real-time data", "particle effects", "radar systems", "holographic displays"],
+    implemented: true
+  }, {
     title: "WebSocket & Real-time Demo",
     path: "/websocket-demo",
     description: "Test WebSocket connections, real-time updates, and live data streams",
