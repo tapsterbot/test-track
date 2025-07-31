@@ -50,7 +50,7 @@ const CheckboxRadioDemo = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex justify-between items-center mb-4 text-xs nasa-display">
             <div className="flex gap-6">
-              <span className="text-primary">◉ MODULE 004 OPERATIONAL</span>
+              <span className="text-primary">◉ MODULE 005 OPERATIONAL</span>
               <span className="text-accent">⚠ FORM CONTROLS ACTIVE</span>
               <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
             </div>
@@ -72,7 +72,7 @@ const CheckboxRadioDemo = () => {
             
             <div className="text-center">
               <div className="mb-4 font-futura">
-                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">TRAINING MODULE 004</div>
+                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">TRAINING MODULE 005</div>
                 <h1 className="text-5xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
                   CHECKBOXES & RADIO BUTTONS
                 </h1>
