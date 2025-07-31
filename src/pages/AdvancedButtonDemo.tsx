@@ -292,23 +292,6 @@ const AdvancedButtonDemo = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {/* Mission Parameters Panel */}
-        <div className="nasa-panel p-4 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <div className="text-xs text-primary mb-1">MISSION PARAMETERS</div>
-              <div className="text-sm">Advanced autonomous navigation challenges</div>
-            </div>
-            <div>
-              <div className="text-xs text-accent mb-1">SENSOR CATEGORIES</div>
-              <div className="text-sm">Visual • Positional • Recognition • Interface • Status</div>
-            </div>
-            <div>
-              <div className="text-xs text-destructive mb-1">NAVIGATION COMPLEXITY</div>
-              <div className="text-sm">Critical timing sequences and edge case scenarios</div>
-            </div>
-          </div>
-        </div>
         {/* Console Logs */}
         <Card className="mb-8">
           <CardHeader>
