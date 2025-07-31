@@ -44,26 +44,19 @@ const ButtonDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <div className="absolute top-12 left-4 z-10">
-        <Link to="/">
-          <Button variant="outline" size="sm" className="nasa-panel bg-card/90 backdrop-blur">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            RETURN TO MISSION CONTROL
-          </Button>
-        </Link>
-      </div>
-      
       {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-3">
           {/* Mission Status Bar */}
           <div className="mb-4 text-[10px] nasa-display">
-            <div className="flex flex-wrap items-center justify-between gap-1 md:gap-6">
-              <div className="flex flex-wrap items-center gap-1 md:gap-6">
-                <div className="text-primary">MODULE 001 OPERATIONAL</div>
-                <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
-              </div>
+            <div className="flex items-center justify-between gap-4">
+              <Link to="/">
+                <Button variant="outline" size="sm" className="nasa-panel text-xs">
+                  <ArrowLeft className="w-3 h-3 mr-1" />
+                  RETURN TO MISSION CONTROL
+                </Button>
+              </Link>
+              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
               <ThemeToggle />
             </div>
           </div>

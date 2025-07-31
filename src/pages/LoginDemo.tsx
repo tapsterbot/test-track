@@ -87,29 +87,18 @@ const LoginDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <div className="absolute top-12 left-4 z-10">
-        <Link to="/">
-          <Button variant="outline" size="sm" className="nasa-panel bg-card/90 backdrop-blur">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            RETURN TO MISSION CONTROL
-          </Button>
-        </Link>
-      </div>
-      
       {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-1">
           <div className="flex justify-between items-center mb-1 text-xs nasa-display">
-            <div className="flex gap-6">
-              <span className="text-primary">◉ MODULE 003 OPERATIONAL</span>
-              <span className="text-accent">⚠ AUTHENTICATION SYSTEMS ACTIVE</span>
-              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-primary">LOGIN INTERFACE READY</div>
-              <ThemeToggle />
-            </div>
+            <Link to="/">
+              <Button variant="outline" size="sm" className="nasa-panel text-xs">
+                <ArrowLeft className="w-3 h-3 mr-1" />
+                RETURN TO MISSION CONTROL
+              </Button>
+            </Link>
+            <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
+            <ThemeToggle />
           </div>
           
           <div className="nasa-panel p-2">
