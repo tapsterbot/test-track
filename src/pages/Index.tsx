@@ -138,10 +138,10 @@ const Index = () => {
             <div className="text-center">
               <div className="mb-4 font-futura">
                 <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">NASA MANNED SPACECRAFT CENTER</div>
-                <h1 className="text-7xl font-black text-primary nasa-display tracking-[0.15em] drop-shadow-lg mb-2">
+                <h1 className="text-7xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
                   TEST TRACK
                 </h1>
-                <div className="text-sm text-accent tracking-[0.2em] mb-4">AUTOMATED SYSTEMS TRAINING FACILITY</div>
+                <div className="text-sm text-accent tracking-[0.2em] mb-4 font-futura">AUTOMATED SYSTEMS TRAINING FACILITY</div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
@@ -166,9 +166,9 @@ const Index = () => {
       {/* Mission Control Modules */}
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h2 className="text-2xl font-black text-primary nasa-display tracking-wide mb-2">TRAINING MODULES</h2>
+          <h2 className="text-2xl font-black text-primary font-futura tracking-wide mb-2">TRAINING MODULES</h2>
           <div className="h-1 bg-primary w-32 mb-4"></div>
-          <p className="text-muted-foreground text-sm nasa-display">Select operational module for automated systems testing</p>
+          <p className="text-muted-foreground text-sm font-futura">Select operational module for automated systems testing</p>
         </div>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -176,16 +176,16 @@ const Index = () => {
             <Link key={index} to={demo.path} className="group">
               <div className="nasa-panel h-full transition-all duration-300 hover:shadow-lg hover:border-primary p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="text-xs text-primary nasa-display tracking-wide">MODULE {String(index + 1).padStart(3, '0')}</div>
+                  <div className="text-xs text-primary font-futura tracking-wide">MODULE {String(index + 1).padStart(3, '0')}</div>
                   <Badge 
                     variant={demo.difficulty === 'Basic' ? 'secondary' : demo.difficulty === 'Intermediate' ? 'default' : 'destructive'}
-                    className="nasa-display text-xs"
+                    className="font-futura text-xs"
                   >
                     {demo.difficulty.toUpperCase()}
                   </Badge>
                 </div>
                 
-                <h3 className="text-lg font-black text-foreground group-hover:text-primary transition-colors nasa-display tracking-wide mb-3">
+                <h3 className="text-lg font-black text-foreground group-hover:text-primary transition-colors font-futura tracking-wide mb-3">
                   {demo.title}
                 </h3>
                 
@@ -194,12 +194,12 @@ const Index = () => {
                 </p>
                 
                 <div className="space-y-2">
-                  <div className="text-xs text-accent nasa-display tracking-wide">OPERATIONAL ELEMENTS:</div>
+                  <div className="text-xs text-accent font-futura tracking-wide">OPERATIONAL ELEMENTS:</div>
                   <div className="flex flex-wrap gap-1">
                     {demo.elements.map((element, elementIndex) => (
                       <span 
                         key={elementIndex} 
-                        className="px-2 py-1 bg-secondary text-secondary-foreground text-xs nasa-display"
+                        className="px-2 py-1 bg-secondary text-secondary-foreground text-xs font-futura"
                       >
                         {element}
                       </span>
@@ -208,7 +208,7 @@ const Index = () => {
                 </div>
                 
                 <div className="mt-4 pt-4 border-t border-border">
-                  <div className="text-xs text-primary nasa-display tracking-wide">◉ READY FOR DEPLOYMENT</div>
+                  <div className="text-xs text-primary font-futura tracking-wide">◉ READY FOR DEPLOYMENT</div>
                 </div>
               </div>
             </Link>
@@ -219,26 +219,26 @@ const Index = () => {
         <div className="mt-12">
           <div className="nasa-panel p-8">
             <div className="text-center">
-              <h3 className="text-lg font-black text-primary nasa-display tracking-wide mb-4">MISSION CONTROL PARAMETERS</h3>
+              <h3 className="text-lg font-black text-primary font-futura tracking-wide mb-4">MISSION CONTROL PARAMETERS</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
                 <div className="text-center">
                   <div className="text-primary text-2xl nasa-display mb-2">◉</div>
-                  <div className="text-xs text-accent nasa-display mb-1">SELENIUM COMPATIBLE</div>
+                  <div className="text-xs text-accent font-futura mb-1">SELENIUM COMPATIBLE</div>
                   <div className="text-foreground">All elements properly tagged for automation frameworks</div>
                 </div>
                 <div className="text-center">
                   <div className="text-accent text-2xl nasa-display mb-2">⚠</div>
-                  <div className="text-xs text-accent nasa-display mb-1">ELEMENT MAPPING</div>
+                  <div className="text-xs text-accent font-futura mb-1">ELEMENT MAPPING</div>
                   <div className="text-foreground">Consistent ID and class naming conventions throughout</div>
                 </div>
                 <div className="text-center">
                   <div className="text-destructive text-2xl nasa-display mb-2">⬆</div>
-                  <div className="text-xs text-accent nasa-display mb-1">PROGRESSIVE COMPLEXITY</div>
+                  <div className="text-xs text-accent font-futura mb-1">PROGRESSIVE COMPLEXITY</div>
                   <div className="text-foreground">Training modules increase in difficulty and scope</div>
                 </div>
                 <div className="text-center">
                   <div className="text-primary text-2xl nasa-display mb-2">□</div>
-                  <div className="text-xs text-accent nasa-display mb-1">MISSION SCENARIOS</div>
+                  <div className="text-xs text-accent font-futura mb-1">MISSION SCENARIOS</div>
                   <div className="text-foreground">Real-world testing situations and edge cases</div>
                 </div>
               </div>

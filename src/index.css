@@ -108,11 +108,12 @@ All colors MUST be HSL.
     font-family: 'Futura', 'Exo 2', 'Avenir Next', 'Helvetica Neue', sans-serif;
   }
   
-  /* NASA Mission Control Typography */
+  /* NASA Mission Control Typography - Primary Futura */
   .nasa-display {
-    font-family: 'Courier New', monospace;
-    letter-spacing: 0.1em;
-    line-height: 1.2;
+    font-family: 'Futura', 'Exo 2', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    letter-spacing: 0.15em;
+    line-height: 1.3;
+    font-weight: 600;
   }
   
   .nasa-panel {
