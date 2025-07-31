@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -213,7 +213,9 @@ const ModalDemo = () => {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button variant="outline" className="font-futura">CANCEL</Button>
+                    <DialogClose asChild>
+                      <Button variant="outline" className="font-futura">CANCEL</Button>
+                    </DialogClose>
                     <Button onClick={handleFormSubmit} className="font-futura">CREATE MISSION</Button>
                   </DialogFooter>
                 </DialogContent>
