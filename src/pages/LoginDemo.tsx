@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Eye, EyeOff, User, Lock, CheckCircle, AlertCircle } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const LoginDemo = () => {
   const [formData, setFormData] = useState({
@@ -86,28 +87,45 @@ const LoginDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b bg-card">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-4 mb-4">
-            <Link to="/" className="text-primary hover:text-primary/80">
-              <ArrowLeft size={24} />
-            </Link>
-            <div>
-              <h1 className="text-3xl font-bold font-futura tracking-wide">LOGIN FORM DEMO</h1>
-              <p className="text-muted-foreground">Complete login form with validation and submission</p>
+      {/* NASA Mission Control Header */}
+      <div className="nasa-panel border-b-2 border-primary bg-card">
+        <div className="container mx-auto px-4 py-1">
+          <div className="flex justify-between items-center mb-1 text-xs nasa-display">
+            <div className="flex gap-6">
+              <span className="text-primary">◉ MODULE 003 OPERATIONAL</span>
+              <span className="text-accent">⚠ AUTHENTICATION SYSTEMS ACTIVE</span>
+              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="text-primary">LOGIN INTERFACE READY</div>
+              <ThemeToggle />
             </div>
           </div>
-          <div className="flex gap-2">
-            <Badge variant="secondary">Basic</Badge>
-            <Badge variant="outline">forms</Badge>
-            <Badge variant="outline">form submission</Badge>
-            <Badge variant="outline">validation</Badge>
+          
+          <div className="nasa-panel p-2">
+            <div className="flex items-center gap-4 mb-2">
+              <Link to="/">
+                <Button variant="outline" size="sm" className="nasa-panel">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  RETURN TO MISSION CONTROL
+                </Button>
+              </Link>
+            </div>
+            
+            <div className="text-center">
+              <div className="mb-2 font-futura">
+                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 003</div>
+                <h1 className="text-2xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-0">
+                  LOGIN FORM DEMO
+                </h1>
+                <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">AUTHENTICATION & SECURITY PROTOCOLS</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6">
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Login Form */}
           <div className="lg:col-span-2">
