@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,16 @@ import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const CheckboxRadioDemo = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
   const { toast } = useToast();
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
   
   // Checkbox states
   const [basicCheckbox, setBasicCheckbox] = useState(false);
@@ -47,29 +56,21 @@ const CheckboxRadioDemo = () => {
     <div className="min-h-screen bg-background">
       {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-1">
-          <div className="flex justify-between items-center mb-1 text-xs nasa-display">
-            <div className="flex gap-6">
-              <span className="text-primary">◉ MODULE 005 OPERATIONAL</span>
-              <span className="text-accent">⚠ FORM CONTROLS ACTIVE</span>
-              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-primary">CHECKBOX SYSTEMS READY</div>
+        <div className="container mx-auto px-4 py-3">
+          {/* Mission Status Bar */}
+          <div className="mb-4 text-xs nasa-display">
+            <div className="flex items-center justify-between gap-4">
+              <Link to="/">
+                <Button variant="outline" size="icon" className="nasa-panel">
+                  <ArrowLeft className="w-4 h-4" />
+                </Button>
+              </Link>
+              <span className="text-foreground text-sm">□ MISSION TIME: {currentTime.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
               <ThemeToggle />
             </div>
           </div>
           
           <div className="nasa-panel p-2">
-            <div className="flex items-center gap-4 mb-2">
-              <Link to="/">
-                <Button variant="outline" size="sm" className="nasa-panel">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  RETURN TO MISSION CONTROL
-                </Button>
-              </Link>
-            </div>
-            
             <div className="text-center">
               <div className="mb-2 font-futura">
                 <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 005</div>
