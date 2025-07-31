@@ -797,40 +797,26 @@ const AdvancedButtonDemo = () => {
         {/* Mission Analysis */}
         <Card>
           <CardHeader>
-            <CardTitle>Autonomous Navigation Requirements</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              <div>
-                <h4 className="font-semibold mb-2">Required Tests to Complete:</h4>
-                <ul className="list-disc pl-4 space-y-1">
-                  <li>Test buttons that appear/disappear - verify they're visible before clicking</li>
-                  <li>Test buttons that move around - wait for them to stop moving before clicking</li>
-                  <li>Test multiple similar buttons - identify the correct one to click</li>
-                  <li>Test blocked buttons - verify they can receive clicks (no overlays blocking)</li>
-                  <li>Test disabled buttons - check if button is enabled before attempting to click</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-2">Common Test Failures:</h4>
-                <ul className="list-disc pl-4 space-y-1">
-                  <li>Clicking buttons before they finish loading or moving</li>
-                  <li>Clicking the wrong button when multiple similar ones exist</li>
-                  <li>Trying to click buttons that have changed location or been removed</li>
-                  <li>Attempting to click buttons hidden behind popups or overlays</li>
-                  <li>Not waiting long enough for buttons to become clickable</li>
-                </ul>
-              </div>
-            </div>
-            
-            <div className="mt-6 p-4 bg-muted rounded">
-              <h4 className="font-semibold mb-2 text-primary">Test Success Requirements:</h4>
-              <p className="text-sm">
-                All automated tests must successfully handle these button interaction scenarios without failing. 
-                Tests should wait for elements to be ready, verify their state before clicking, and handle 
-                timing issues gracefully to ensure reliable automation in real-world conditions.
-              </p>
-            </div>
+             <CardTitle>Mission Analysis</CardTitle>
+           </CardHeader>
+           <CardContent>
+             <div className="mt-6 p-4 bg-muted rounded nasa-panel">
+               <h4 className="font-semibold text-accent mb-2">TEST PROTOCOLS:</h4>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
+                 <div>
+                   <p>• Test button visibility states and opacity changes</p>
+                   <p>• Verify button stability during position transitions</p>
+                   <p>• Test element resolution with multiple candidates</p>
+                   <p>• Validate event reception through overlay interference</p>
+                 </div>
+                 <div>
+                   <p>• Check button enabled/disabled state detection</p>
+                   <p>• Verify form validation and processing states</p>
+                   <p>• Test timing synchronization in dynamic sequences</p>
+                   <p>• Validate error handling and retry mechanisms</p>
+                 </div>
+               </div>
+             </div>
           </CardContent>
         </Card>
       </div>
