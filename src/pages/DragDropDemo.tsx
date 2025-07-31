@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, Move, Target, Orbit, Zap, Clock, Star } from "lucide-react";
+import { ArrowLeft, Move, Target, Orbit, Zap, Clock, Star, GripVertical } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -35,6 +35,7 @@ const DragDropDemo = () => {
     { id: 'p4', order: 4, text: 'Begin xenoarchaeology excavation' },
   ]);
   const [draggedPriorityItem, setDraggedPriorityItem] = useState<any>(null);
+  const [priorityDragOver, setPriorityDragOver] = useState<string | null>(null);
 
   const handleDragStart = (e: React.DragEvent, item: DraggableItem) => {
     setDraggedItem(item);
@@ -111,16 +112,38 @@ const DragDropDemo = () => {
   const handlePriorityDragStart = (e: React.DragEvent, item: any) => {
     setDraggedPriorityItem(item);
     e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', item.id);
   };
 
   const handlePriorityDragOver = (e: React.DragEvent, targetItem: any) => {
     e.preventDefault();
     if (!draggedPriorityItem || draggedPriorityItem.id === targetItem.id) return;
     
+    setPriorityDragOver(targetItem.id);
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handlePriorityDragEnter = (e: React.DragEvent, targetItem: any) => {
+    e.preventDefault();
+    if (!draggedPriorityItem || draggedPriorityItem.id === targetItem.id) return;
+    setPriorityDragOver(targetItem.id);
+  };
+
+  const handlePriorityDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setPriorityDragOver(null);
+  };
+
+  const handlePriorityDrop = (e: React.DragEvent, targetItem: any) => {
+    e.preventDefault();
+    setPriorityDragOver(null);
+    
+    if (!draggedPriorityItem || draggedPriorityItem.id === targetItem.id) return;
+    
     const draggedIndex = priorityItems.findIndex(item => item.id === draggedPriorityItem.id);
     const targetIndex = priorityItems.findIndex(item => item.id === targetItem.id);
     
-    if (draggedIndex !== -1 && targetIndex !== -1) {
+    if (draggedIndex !== -1 && targetIndex !== -1 && draggedIndex !== targetIndex) {
       const newItems = [...priorityItems];
       newItems.splice(draggedIndex, 1);
       newItems.splice(targetIndex, 0, draggedPriorityItem);
@@ -132,18 +155,18 @@ const DragDropDemo = () => {
       }));
       
       setPriorityItems(reorderedItems);
-    }
-  };
-
-  const handlePriorityDragEnd = () => {
-    setDraggedPriorityItem(null);
-    if (draggedPriorityItem) {
+      
       toast({
         title: "📋 Priority Reordered",
         description: "Mission sequence has been updated.",
         variant: "default",
       });
     }
+  };
+
+  const handlePriorityDragEnd = () => {
+    setDraggedPriorityItem(null);
+    setPriorityDragOver(null);
   };
 
   const renderItem = (item: DraggableItem) => {
@@ -345,16 +368,22 @@ const DragDropDemo = () => {
                   draggable
                   onDragStart={(e) => handlePriorityDragStart(e, priorityItem)}
                   onDragOver={(e) => handlePriorityDragOver(e, priorityItem)}
+                  onDragEnter={(e) => handlePriorityDragEnter(e, priorityItem)}
+                  onDragLeave={handlePriorityDragLeave}
+                  onDrop={(e) => handlePriorityDrop(e, priorityItem)}
                   onDragEnd={handlePriorityDragEnd}
                   className={`flex items-center gap-3 p-3 bg-background border rounded cursor-grab hover:bg-accent/50 transition-colors ${
                     draggedPriorityItem?.id === priorityItem.id ? 'opacity-50' : ''
+                  } ${
+                    priorityDragOver === priorityItem.id ? 'border-primary bg-primary/10' : ''
                   }`}
                   id={`priority-${priorityItem.id}`}
                 >
-                  <span className="font-futura text-sm font-bold">
+                  <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <span className="font-futura text-sm font-bold shrink-0">
                     {priorityItem.order.toString().padStart(2, '0')}
                   </span>
-                  <span className="font-futura tracking-wider">{priorityItem.text}</span>
+                  <span className="font-futura tracking-wider flex-1">{priorityItem.text}</span>
                 </div>
               ))}
             </div>
