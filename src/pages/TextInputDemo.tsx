@@ -85,14 +85,14 @@ const TextInputDemo = () => {
       <div className="nasa-panel border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-3">
           {/* Mission Status Bar */}
-          <div className="mb-4 text-[10px] nasa-display">
+          <div className="mb-4 text-xs nasa-display">
             <div className="flex items-center justify-between gap-4">
               <Link to="/">
                 <Button variant="outline" size="icon" className="nasa-panel">
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </Link>
-              <span className="text-foreground">□ MISSION TIME: {currentTime.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
+              <span className="text-foreground text-sm">□ MISSION TIME: {currentTime.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
               <ThemeToggle />
             </div>
           </div>
