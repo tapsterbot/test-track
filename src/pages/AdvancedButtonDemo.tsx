@@ -847,32 +847,33 @@ const AdvancedButtonDemo = () => {
              <div className="space-y-3 text-sm">
                <div className="flex justify-between">
                  <span className="text-accent font-futura">Total Clicks:</span>
-                 <span className="text-primary">{totalClicks}</span>
+                 <span className="text-primary font-mono">{totalClicks}</span>
                </div>
-               <div className="flex justify-between">
-                 <span className="text-accent font-futura">Visibility Tests:</span>
-                 <span className="text-primary">{visibilityTests}</span>
-               </div>
-               <div className="flex justify-between">
-                 <span className="text-accent font-futura">Stability Tests:</span>
-                 <span className="text-primary">{stabilityTests}</span>
-               </div>
-               <div className="flex justify-between">
-                 <span className="text-accent font-futura">Resolution Tests:</span>
-                 <span className="text-primary">{resolutionTests}</span>
-               </div>
-               <div className="flex justify-between">
-                 <span className="text-accent font-futura">Event Tests:</span>
-                 <span className="text-primary">{eventTests}</span>
-               </div>
-               <div className="flex justify-between">
-                 <span className="text-accent font-futura">Enabled Tests:</span>
-                 <span className="text-primary">{enabledTests}</span>
-               </div>
+               
                <div className="border-t border-border pt-3">
-                 <div className="text-accent font-futura mb-2">System Status:</div>
-                 <div className="text-primary text-xs">◉ {totalClicks > 0 ? "TESTING ACTIVE" : "READY FOR TESTING"}</div>
+                 <div className="text-accent font-futura mb-2">Test Categories:</div>
+                 <div className="grid grid-cols-3 gap-2">
+                   <Badge variant="outline" className="justify-center py-1">
+                     VIS: {visibilityTests}
+                   </Badge>
+                   <Badge variant="outline" className="justify-center py-1">
+                     STB: {stabilityTests}
+                   </Badge>
+                   <Badge variant="outline" className="justify-center py-1">
+                     RES: {resolutionTests}
+                   </Badge>
+                   <Badge variant="outline" className="justify-center py-1">
+                     EVT: {eventTests}
+                   </Badge>
+                   <Badge variant="outline" className="justify-center py-1">
+                     ENB: {enabledTests}
+                   </Badge>
+                   <Badge variant="secondary" className="justify-center py-1">
+                     SYS: {totalClicks > 0 ? "ACTIVE" : "READY"}
+                   </Badge>
+                 </div>
                </div>
+               
                <div className="border-t border-border pt-3">
                  <Button 
                    onClick={resetAllSystems}
