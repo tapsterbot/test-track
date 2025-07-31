@@ -25,30 +25,6 @@ const MultiWindowDemo = () => {
       status: 'closed',
       purpose: 'Same-origin PostMessage testing',
       classification: 'public'
-    },
-    {
-      id: 'command-center',
-      name: 'Command Center Alpha',
-      url: 'https://example.com',
-      status: 'closed',
-      purpose: 'Primary mission control interface',
-      classification: 'public'
-    },
-    {
-      id: 'surveillance',
-      name: 'Surveillance Network',
-      url: 'https://httpbin.org/html',
-      status: 'closed',
-      purpose: 'Real-time monitoring systems',
-      classification: 'restricted'
-    },
-    {
-      id: 'classified-archive',
-      name: 'Classified Archive',
-      url: 'https://jsonplaceholder.typicode.com',
-      status: 'closed',
-      purpose: 'Sensitive data repository',
-      classification: 'classified'
     }
   ]);
 
