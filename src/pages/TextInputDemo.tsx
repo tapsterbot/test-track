@@ -100,7 +100,7 @@ const TextInputDemo = () => {
             <div className="text-center">
               <div className="mb-2 font-futura">
                 <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 002</div>
-                <h1 className="text-2xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-0">
+                <h1 className="text-4xl font-black text-primary font-futura tracking-[0.15em] mb-2">
                   TEXT INPUT INTERFACE
                 </h1>
                 <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">DATA ENTRY & VALIDATION PROTOCOLS</div>
