@@ -279,7 +279,7 @@ const Index = () => {
           <div className="nasa-panel p-8">
             <div className="text-center">
               <h3 className="text-lg font-black text-primary font-futura tracking-wide mb-4">MISSION CONTROL PARAMETERS</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
                 <div className="text-center">
                   <div className="text-primary text-2xl nasa-display mb-2">◉</div>
                   <div className="text-xs text-accent font-futura mb-1">AGENT COMPATIBLE</div>
