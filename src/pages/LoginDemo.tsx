@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { ArrowLeft, Eye, EyeOff, User, Lock, CheckCircle, AlertCircle } from "lu
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const LoginDemo = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -21,6 +22,14 @@ const LoginDemo = () => {
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [loginStatus, setLoginStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const { toast } = useToast();
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   // Demo credentials for testing
   const DEMO_CREDENTIALS = {
@@ -89,15 +98,18 @@ const LoginDemo = () => {
     <div className="min-h-screen bg-background">
       {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-1">
-          <div className="flex justify-between items-center mb-1 text-xs nasa-display">
-            <Link to="/">
-              <Button variant="outline" size="icon" className="nasa-panel">
-                <ArrowLeft className="w-4 h-4" />
-              </Button>
-            </Link>
-            <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
-            <ThemeToggle />
+        <div className="container mx-auto px-4 py-3">
+          {/* Mission Status Bar */}
+          <div className="mb-4 text-xs nasa-display">
+            <div className="flex items-center justify-between gap-4">
+              <Link to="/">
+                <Button variant="outline" size="icon" className="nasa-panel">
+                  <ArrowLeft className="w-4 h-4" />
+                </Button>
+              </Link>
+              <span className="text-foreground text-sm">□ MISSION TIME: {currentTime.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
+              <ThemeToggle />
+            </div>
           </div>
           
           <div className="nasa-panel p-2">
