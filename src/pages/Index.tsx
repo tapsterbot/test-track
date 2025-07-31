@@ -14,6 +14,14 @@ const Index = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // List of implemented modules (existing demo pages)
+  const implementedModules = [
+    "/button-demo", "/text-input-demo", "/login-demo", "/dropdown-demo", 
+    "/checkbox-radio-demo", "/table-demo", "/modal-demo", "/alert-demo", 
+    "/file-upload-demo", "/drag-drop-demo", "/frames-demo", "/dynamic-demo", 
+    "/canvas-demo", "/multi-window-demo", "/advanced-button-demo"
+  ];
+
   const demoPages = [
   // Basic Elements
   {
@@ -21,31 +29,36 @@ const Index = () => {
     path: "/button-demo",
     description: "Test button clicks, different button types, and visual feedback",
     difficulty: "Basic",
-    elements: ["button", "click events", "state changes"]
+    elements: ["button", "click events", "state changes"],
+    implemented: true
   }, {
     title: "Text Input Demo",
     path: "/text-input-demo",
     description: "Practice text input, validation, and form field interactions",
     difficulty: "Basic",
-    elements: ["input fields", "text validation", "keyboard events"]
+    elements: ["input fields", "text validation", "keyboard events"],
+    implemented: true
   }, {
     title: "Login Form Demo",
     path: "/login-demo",
     description: "Complete login form with username, password, and submission",
     difficulty: "Basic",
-    elements: ["forms", "input fields", "form submission", "validation"]
+    elements: ["forms", "input fields", "form submission", "validation"],
+    implemented: true
   }, {
     title: "Dropdown & Select Demo",
     path: "/dropdown-demo",
     description: "Test dropdown menus, select boxes, and option selection",
     difficulty: "Basic",
-    elements: ["select elements", "dropdowns", "option handling"]
+    elements: ["select elements", "dropdowns", "option handling"],
+    implemented: true
   }, {
     title: "Checkboxes & Radio Buttons",
     path: "/checkbox-radio-demo",
     description: "Practice with checkboxes, radio button groups, and selections",
     difficulty: "Basic",
-    elements: ["checkboxes", "radio buttons", "form controls"]
+    elements: ["checkboxes", "radio buttons", "form controls"],
+    implemented: true
   },
   // Intermediate Elements
   {
@@ -53,25 +66,29 @@ const Index = () => {
     path: "/table-demo",
     description: "Extract data from tables, sort columns, and navigate table content",
     difficulty: "Intermediate",
-    elements: ["tables", "data extraction", "sorting", "pagination"]
+    elements: ["tables", "data extraction", "sorting", "pagination"],
+    implemented: true
   }, {
     title: "Modal & Popup Demo",
     path: "/modal-demo",
     description: "Handle modal windows, popups, and overlay interactions",
     difficulty: "Intermediate",
-    elements: ["modals", "popups", "overlays", "focus management"]
+    elements: ["modals", "popups", "overlays", "focus management"],
+    implemented: true
   }, {
     title: "Alert Demo",
     path: "/alert-demo",
     description: "Test JavaScript alerts, confirms, and prompt dialogs",
     difficulty: "Intermediate",
-    elements: ["alerts", "confirms", "prompts", "dialog handling"]
+    elements: ["alerts", "confirms", "prompts", "dialog handling"],
+    implemented: true
   }, {
     title: "File Upload Demo",
     path: "/file-upload-demo",
     description: "Practice file selection and upload functionality",
     difficulty: "Intermediate",
-    elements: ["file inputs", "file upload", "file validation"]
+    elements: ["file inputs", "file upload", "file validation"],
+    implemented: true
   },
   // Advanced Elements
   {
@@ -79,37 +96,43 @@ const Index = () => {
     path: "/drag-drop-demo",
     description: "Test drag and drop interactions and element positioning",
     difficulty: "Advanced",
-    elements: ["drag and drop", "mouse actions", "element positioning"]
+    elements: ["drag and drop", "mouse actions", "element positioning"],
+    implemented: true
   }, {
     title: "Frames & iFrames Demo",
     path: "/frames-demo",
     description: "Practice switching between frames and iframe content",
     difficulty: "Advanced",
-    elements: ["frames", "iframes", "frame switching", "nested content"]
+    elements: ["frames", "iframes", "frame switching", "nested content"],
+    implemented: true
   }, {
     title: "Dynamic Content Demo",
     path: "/dynamic-demo",
     description: "Handle dynamically loaded content and AJAX responses",
     difficulty: "Advanced",
-    elements: ["AJAX", "dynamic content", "waiting strategies", "async loading"]
+    elements: ["AJAX", "dynamic content", "waiting strategies", "async loading"],
+    implemented: true
   }, {
     title: "Canvas Demo",
     path: "/canvas-demo",
     description: "Interact with HTML5 canvas elements and graphics",
     difficulty: "Advanced",
-    elements: ["canvas", "graphics", "drawing", "coordinate testing"]
+    elements: ["canvas", "graphics", "drawing", "coordinate testing"],
+    implemented: true
   }, {
     title: "Multi-Window Demo",
     path: "/multi-window-demo",
     description: "Practice handling multiple browser windows and tabs",
     difficulty: "Advanced",
-    elements: ["multiple windows", "tab switching", "window management"]
+    elements: ["multiple windows", "tab switching", "window management"],
+    implemented: true
   }, {
     title: "Advanced Button Clicking",
     path: "/advanced-button-demo", 
     description: "Challenging button scenarios testing automation timing and interaction strategies",
     difficulty: "Advanced",
-    elements: ["visibility", "stability", "element resolution", "event reception", "enabled state"]
+    elements: ["visibility", "stability", "element resolution", "event reception", "enabled state"],
+    implemented: true
   },
   // Additional Core Testing Modules
   {
@@ -117,61 +140,71 @@ const Index = () => {
     path: "/navigation-demo",
     description: "Test browser navigation, URL handling, and history manipulation",
     difficulty: "Basic",
-    elements: ["browser history", "URL parameters", "hash navigation", "page refresh", "deep linking"]
+    elements: ["browser history", "URL parameters", "hash navigation", "page refresh", "deep linking"],
+    implemented: false
   }, {
     title: "Scrolling & Viewport Demo",
     path: "/scrolling-demo",
     description: "Practice infinite scroll, lazy loading, and viewport manipulation",
     difficulty: "Intermediate",
-    elements: ["infinite scroll", "lazy loading", "viewport control", "sticky elements", "scroll positioning"]
+    elements: ["infinite scroll", "lazy loading", "viewport control", "sticky elements", "scroll positioning"],
+    implemented: false
   }, {
     title: "Cookie & Storage Demo",
     path: "/cookie-storage-demo",
     description: "Handle cookies, local storage, and session management",
     difficulty: "Intermediate",
-    elements: ["cookies", "local storage", "session storage", "data persistence", "storage cleanup"]
+    elements: ["cookies", "local storage", "session storage", "data persistence", "storage cleanup"],
+    implemented: false
   }, {
     title: "Performance & Timing Demo",
     path: "/performance-demo",
     description: "Measure page load times, animation timing, and performance metrics",
     difficulty: "Intermediate",
-    elements: ["load timing", "resource monitoring", "animation timing", "performance metrics", "lighthouse scores"]
+    elements: ["load timing", "resource monitoring", "animation timing", "performance metrics", "lighthouse scores"],
+    implemented: false
   }, {
     title: "Authentication & Sessions Demo",
     path: "/auth-demo",
     description: "Test OAuth flows, session management, and multi-factor authentication",
     difficulty: "Intermediate",
-    elements: ["OAuth", "session handling", "multi-factor auth", "login persistence", "logout scenarios"]
+    elements: ["OAuth", "session handling", "multi-factor auth", "login persistence", "logout scenarios"],
+    implemented: false
   }, {
     title: "Download & Print Demo",
     path: "/download-print-demo",
     description: "Practice file downloads, print dialogs, and PDF generation",
     difficulty: "Intermediate",
-    elements: ["file downloads", "print handling", "PDF generation", "download progress", "file verification"]
+    elements: ["file downloads", "print handling", "PDF generation", "download progress", "file verification"],
+    implemented: false
   }, {
     title: "Network Intercept Demo",
     path: "/network-demo",
     description: "Mock API responses, simulate network failures, and test offline mode",
     difficulty: "Advanced",
-    elements: ["API mocking", "network simulation", "request modification", "response delays", "offline testing"]
+    elements: ["API mocking", "network simulation", "request modification", "response delays", "offline testing"],
+    implemented: false
   }, {
     title: "Shadow DOM Demo",
     path: "/shadow-dom-demo",
     description: "Navigate shadow DOM trees and interact with custom elements",
     difficulty: "Advanced",
-    elements: ["shadow DOM", "custom elements", "nested shadows", "element encapsulation", "shadow forms"]
+    elements: ["shadow DOM", "custom elements", "nested shadows", "element encapsulation", "shadow forms"],
+    implemented: false
   }, {
     title: "Mobile & Touch Demo",
     path: "/mobile-touch-demo",
     description: "Simulate touch gestures, mobile viewports, and orientation changes",
     difficulty: "Advanced",
-    elements: ["touch gestures", "mobile viewport", "orientation change", "touch events", "mobile interactions"]
+    elements: ["touch gestures", "mobile viewport", "orientation change", "touch events", "mobile interactions"],
+    implemented: false
   }, {
     title: "WebSocket & Real-time Demo",
     path: "/websocket-demo",
     description: "Test WebSocket connections, real-time updates, and live data streams",
     difficulty: "Advanced",
-    elements: ["WebSocket", "real-time data", "connection handling", "message queues", "live updates"]
+    elements: ["WebSocket", "real-time data", "connection handling", "message queues", "live updates"],
+    implemented: false
   }];
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -239,8 +272,13 @@ const Index = () => {
         </div>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {demoPages.map((demo, index) => <Link key={index} to={demo.path} className="group">
-              <div className="nasa-panel h-full transition-all duration-300 hover:shadow-lg hover:border-primary p-6">
+          {demoPages.map((demo, index) => {
+            const ModuleContent = (
+              <div className={`nasa-panel h-full transition-all duration-300 p-6 ${
+                demo.implemented 
+                  ? 'hover:shadow-lg hover:border-primary cursor-pointer' 
+                  : 'opacity-50 cursor-not-allowed bg-muted/30'
+              }`}>
                 <div className="flex items-center justify-between mb-4">
                   <div className="text-xs text-primary font-futura tracking-wide">MODULE {String(index + 1).padStart(3, '0')}</div>
                   <Badge variant={demo.difficulty === 'Basic' ? 'secondary' : demo.difficulty === 'Intermediate' ? 'default' : 'destructive'} className="font-futura text-xs">
@@ -248,7 +286,11 @@ const Index = () => {
                   </Badge>
                 </div>
                 
-                <h3 className="text-lg font-black text-foreground group-hover:text-primary transition-colors font-futura tracking-wide mb-3">
+                <h3 className={`text-lg font-black font-futura tracking-wide mb-3 ${
+                  demo.implemented 
+                    ? 'text-foreground group-hover:text-primary transition-colors' 
+                    : 'text-muted-foreground'
+                }`}>
                   {demo.title}
                 </h3>
                 
@@ -266,10 +308,25 @@ const Index = () => {
                 </div>
                 
                 <div className="mt-4 pt-4 border-t border-border">
-                  <div className="text-xs text-primary font-futura tracking-wide">◉ READY FOR DEPLOYMENT</div>
+                  <div className={`text-xs font-futura tracking-wide ${
+                    demo.implemented ? 'text-primary' : 'text-muted-foreground'
+                  }`}>
+                    {demo.implemented ? '◉ READY FOR DEPLOYMENT' : '🔧 UNDER DEVELOPMENT'}
+                  </div>
                 </div>
               </div>
-            </Link>)}
+            );
+
+            return demo.implemented ? (
+              <Link key={index} to={demo.path} className="group">
+                {ModuleContent}
+              </Link>
+            ) : (
+              <div key={index}>
+                {ModuleContent}
+              </div>
+            );
+          })}
         </div>
         
         {/* Mission Control Footer */}
