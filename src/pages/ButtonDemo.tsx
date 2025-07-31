@@ -50,7 +50,7 @@ const ButtonDemo = () => {
               <ArrowLeft size={24} />
             </Link>
             <div>
-              <h1 className="text-3xl font-bold font-space">Button Demo</h1>
+              <h1 className="text-3xl font-bold font-orbitron tracking-wide">BUTTON DEMO</h1>
               <p className="text-muted-foreground">Test various button types, clicks, and interactions</p>
             </div>
           </div>

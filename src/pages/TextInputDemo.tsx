@@ -79,7 +79,7 @@ const TextInputDemo = () => {
               <ArrowLeft size={24} />
             </Link>
             <div>
-              <h1 className="text-3xl font-bold font-space">Text Input Demo</h1>
+              <h1 className="text-3xl font-bold font-orbitron tracking-wide">TEXT INPUT DEMO</h1>
               <p className="text-muted-foreground">Practice text input, validation, and form field interactions</p>
             </div>
           </div>
