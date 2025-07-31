@@ -240,7 +240,7 @@ const Index = () => {
           <p className="text-muted-foreground text-sm font-futura">Select operational module for automated systems testing</p>
         </div>
         
-        <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {demoPages.map((demo, index) => <Link key={index} to={demo.path} className="group">
               <div className="nasa-panel h-full transition-all duration-300 hover:shadow-lg hover:border-primary p-6">
                 <div className="flex items-center justify-between mb-4">
