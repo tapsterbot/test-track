@@ -190,7 +190,7 @@ const Index = () => {
       <div className="nasa-panel border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-3">
           {/* Mission Status Bar */}
-          <div className="mb-4 text-xs nasa-display">
+          <div className="mb-4 text-[10px] nasa-display">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 mb-4 md:mb-0">
               <span className="text-primary">◉ SYSTEM OPERATIONAL</span>
               <span className="text-accent">⚠ TELEMETRY ACTIVE</span>
