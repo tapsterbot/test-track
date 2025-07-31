@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +8,7 @@ import { ArrowLeft, CheckCircle, AlertCircle, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const ButtonDemo = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
   const [clickCount, setClickCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [buttonStates, setButtonStates] = useState({
@@ -17,6 +18,14 @@ const ButtonDemo = () => {
     danger: false
   });
   const { toast } = useToast();
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const handleClick = (buttonType: string) => {
     setClickCount(prev => prev + 1);
@@ -55,7 +64,7 @@ const ButtonDemo = () => {
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </Link>
-              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
+              <span className="text-foreground">□ MISSION TIME: {currentTime.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
               <ThemeToggle />
             </div>
           </div>
