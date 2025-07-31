@@ -128,7 +128,7 @@ const Index = () => {
             <div className="text-center">
               <div className="mb-4 font-futura">
                 <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">VALET NETWORK SYSTEMS</div>
-                <h1 className="text-5xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
+                <h1 className="text-7xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
                   TEST TRACK
                 </h1>
                 <div className="text-sm text-accent tracking-[0.2em] mb-4 font-futura">AUTONOMOUS AGENT TRAINING FACILITY</div>
