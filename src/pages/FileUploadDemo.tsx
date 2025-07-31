@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { ArrowLeft, Upload, Database, Satellite, FileText, Image, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -306,28 +307,50 @@ const FileUploadDemo = () => {
         </div>
 
         {/* Mission Summary */}
-        <div className="bg-card/50 backdrop-blur border rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4 font-futura tracking-wider">MISSION SUMMARY</h3>
-          <div className="text-muted-foreground space-y-2 text-sm leading-relaxed">
-            <p>
-              File Upload Demo validates secure data transmission protocols for deep space communications. 
-              This module tests file selection, drag-and-drop functionality, upload progress monitoring, 
-              and various file type restrictions essential for classified mission data handling.
-            </p>
-            
-            <div className="mt-4">
-              <h4 className="font-semibold text-foreground mb-2 font-futura tracking-wider">TEST PROTOCOLS:</h4>
-              <ul className="list-disc list-inside space-y-1">
-                <li>Single and multiple file selection interfaces</li>
-                <li>Drag-and-drop upload zone functionality</li>
-                <li>Upload progress visualization and monitoring</li>
-                <li>File type validation and restriction handling</li>
-                <li>Transmission queue management systems</li>
-                <li>Secure file handling and encryption protocols</li>
-              </ul>
+        <Card className="nasa-panel">
+          <CardHeader>
+            <CardTitle className="font-futura tracking-wide text-primary">MISSION SUMMARY</CardTitle>
+            <CardDescription>Data transmission systems status and upload metrics</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <h4 className="font-semibold text-accent mb-2">TRANSMISSION STATUS:</h4>
+                <ul className="space-y-1 text-muted-foreground">
+                  <li>Files Queued: {files.length}</li>
+                  <li>Upload Status: {isUploading ? 'TRANSMITTING' : 'READY'}</li>
+                  <li>Progress: {Math.round(uploadProgress)}%</li>
+                  <li>Drag State: {dragActive ? 'ACTIVE' : 'STANDBY'}</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-accent mb-2">SYSTEM METRICS:</h4>
+                <ul className="space-y-1 text-muted-foreground">
+                  <li>Interface Status: OPERATIONAL</li>
+                  <li>Upload Systems: ACTIVE</li>
+                  <li>File Protocols: LOADED</li>
+                  <li>Transmission Array: READY</li>
+                </ul>
+              </div>
             </div>
-          </div>
-        </div>
+            
+            <div className="mt-6 p-4 bg-muted rounded nasa-panel">
+              <h4 className="font-semibold text-accent mb-2">TEST PROTOCOLS:</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
+                <div>
+                  <p>• Verify drag and drop file handling</p>
+                  <p>• Test multiple file selection</p>
+                  <p>• Validate file type restrictions</p>
+                </div>
+                <div>
+                  <p>• Check file size limitations</p>
+                  <p>• Confirm upload progress tracking</p>
+                  <p>• Test file queue management</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
         </div>
       </div>
     </div>

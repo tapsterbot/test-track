@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { ArrowLeft, AlertTriangle, Zap, Shield, Radio, Satellite } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -227,28 +228,50 @@ const AlertDemo = () => {
         </div>
 
         {/* Mission Summary */}
-        <div className="bg-card/50 backdrop-blur border rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4 font-futura tracking-wider">MISSION SUMMARY</h3>
-          <div className="text-muted-foreground space-y-2 text-sm leading-relaxed">
-            <p>
-              Alert Demo validates emergency communication systems and contact protocols for deep space operations. 
-              This module tests various alert mechanisms including JavaScript alerts, confirmation dialogs, 
-              and complex alert dialog components for critical mission scenarios.
-            </p>
-            
-            <div className="mt-4">
-              <h4 className="font-semibold text-foreground mb-2 font-futura tracking-wider">TEST PROTOCOLS:</h4>
-              <ul className="list-disc list-inside space-y-1">
-                <li>Emergency alert confirmation sequences</li>
-                <li>Priority message display and management</li>
-                <li>Alert level configuration controls</li>
-                <li>Contact initiation dialog workflows</li>
-                <li>Temporal anomaly reporting systems</li>
-                <li>Multi-level alert state management</li>
-              </ul>
+        <Card className="nasa-panel">
+          <CardHeader>
+            <CardTitle className="font-futura tracking-wide text-primary">MISSION SUMMARY</CardTitle>
+            <CardDescription>Alert communication systems status and emergency protocols</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <h4 className="font-semibold text-accent mb-2">ALERT STATUS:</h4>
+                <ul className="space-y-1 text-muted-foreground">
+                  <li>Communication Systems: OPERATIONAL</li>
+                  <li>Emergency Level: {emergencyLevel.toUpperCase()}</li>
+                  <li>Priority Alert: {alertVisible ? 'ACTIVE' : 'STANDBY'}</li>
+                  <li>Contact Protocol: READY</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-accent mb-2">SYSTEM METRICS:</h4>
+                <ul className="space-y-1 text-muted-foreground">
+                  <li>Interface Status: OPERATIONAL</li>
+                  <li>Alert Systems: ACTIVE</li>
+                  <li>Emergency Protocols: LOADED</li>
+                  <li>Communication Array: READY</li>
+                </ul>
+              </div>
             </div>
-          </div>
-        </div>
+            
+            <div className="mt-6 p-4 bg-muted rounded nasa-panel">
+              <h4 className="font-semibold text-accent mb-2">TEST PROTOCOLS:</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
+                <div>
+                  <p>• Verify alert display mechanisms</p>
+                  <p>• Test emergency protocol activation</p>
+                  <p>• Validate confirmation dialog systems</p>
+                </div>
+                <div>
+                  <p>• Check alien contact communication</p>
+                  <p>• Confirm temporal anomaly reporting</p>
+                  <p>• Test alert level modification systems</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { ArrowLeft, Move, Target, Orbit, Zap, Clock, Star } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -305,28 +306,50 @@ const DragDropDemo = () => {
         </div>
 
         {/* Mission Summary */}
-        <div className="bg-card/50 backdrop-blur border rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4 font-futura tracking-wider">MISSION SUMMARY</h3>
-          <div className="text-muted-foreground space-y-2 text-sm leading-relaxed">
-            <p>
-              Drag & Drop Demo validates spatial arrangement and object manipulation protocols for mission-critical operations. 
-              This module tests drag and drop functionality, container targeting, visual feedback systems, 
-              and sortable interfaces essential for configuring complex space-based equipment.
-            </p>
-            
-            <div className="mt-4">
-              <h4 className="font-semibold text-foreground mb-2 font-futura tracking-wider">TEST PROTOCOLS:</h4>
-              <ul className="list-disc list-inside space-y-1">
-                <li>Multi-container drag and drop operations</li>
-                <li>Visual feedback and hover state management</li>
-                <li>Object transfer between different zones</li>
-                <li>Sortable list reordering functionality</li>
-                <li>Container state management and validation</li>
-                <li>Spatial arrangement reset and recovery systems</li>
-              </ul>
+        <Card className="nasa-panel">
+          <CardHeader>
+            <CardTitle className="font-futura tracking-wide text-primary">MISSION SUMMARY</CardTitle>
+            <CardDescription>Spatial arrangement systems status and organizational metrics</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <h4 className="font-semibold text-accent mb-2">ARRANGEMENT STATUS:</h4>
+                <ul className="space-y-1 text-muted-foreground">
+                  <li>Available Items: {items.length}</li>
+                  <li>Container Alpha: {container1.length} items</li>
+                  <li>Container Beta: {container2.length} items</li>
+                  <li>Drag State: {draggedItem ? 'ACTIVE' : 'STANDBY'}</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-accent mb-2">SYSTEM METRICS:</h4>
+                <ul className="space-y-1 text-muted-foreground">
+                  <li>Interface Status: OPERATIONAL</li>
+                  <li>Drag Systems: ACTIVE</li>
+                  <li>Drop Protocols: LOADED</li>
+                  <li>Spatial Array: READY</li>
+                </ul>
+              </div>
             </div>
-          </div>
-        </div>
+            
+            <div className="mt-6 p-4 bg-muted rounded nasa-panel">
+              <h4 className="font-semibold text-accent mb-2">TEST PROTOCOLS:</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
+                <div>
+                  <p>• Verify item drag functionality</p>
+                  <p>• Test drop zone detection</p>
+                  <p>• Validate container organization</p>
+                </div>
+                <div>
+                  <p>• Check spatial rearrangement</p>
+                  <p>• Confirm visual feedback systems</p>
+                  <p>• Test reset capabilities</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
         </div>
       </div>
     </div>
