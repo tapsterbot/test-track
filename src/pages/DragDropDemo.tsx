@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, Move, Target, Orbit, Zap, Clock, Star, GripVertical } from "lucide-react";
+import { ArrowLeft, Move, Target, Orbit, Zap, Clock, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -27,15 +27,6 @@ const DragDropDemo = () => {
   const [draggedItem, setDraggedItem] = useState<DraggableItem | null>(null);
   const [dragOver, setDragOver] = useState<string | null>(null);
 
-  // Priority sequence state
-  const [priorityItems, setPriorityItems] = useState([
-    { id: 'p1', order: 1, text: 'Establish orbital communications relay' },
-    { id: 'p2', order: 2, text: 'Deploy deep space monitoring stations' },
-    { id: 'p3', order: 3, text: 'Initiate temporal research protocols' },
-    { id: 'p4', order: 4, text: 'Begin xenoarchaeology excavation' },
-  ]);
-  const [draggedPriorityItem, setDraggedPriorityItem] = useState<any>(null);
-  const [priorityDragOver, setPriorityDragOver] = useState<string | null>(null);
 
   const handleDragStart = (e: React.DragEvent, item: DraggableItem) => {
     setDraggedItem(item);
@@ -95,79 +86,13 @@ const DragDropDemo = () => {
     setItems(allItems);
     setContainer1([]);
     setContainer2([]);
-    setPriorityItems([
-      { id: 'p1', order: 1, text: 'Establish orbital communications relay' },
-      { id: 'p2', order: 2, text: 'Deploy deep space monitoring stations' },
-      { id: 'p3', order: 3, text: 'Initiate temporal research protocols' },
-      { id: 'p4', order: 4, text: 'Begin xenoarchaeology excavation' },
-    ]);
     toast({
       title: "🔄 Layout Reset",
-      description: "All objects and priorities returned to original configuration.",
+      description: "All objects returned to original configuration.",
       variant: "default",
     });
   };
 
-  // Priority sequence drag handlers
-  const handlePriorityDragStart = (e: React.DragEvent, item: any) => {
-    setDraggedPriorityItem(item);
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', item.id);
-  };
-
-  const handlePriorityDragOver = (e: React.DragEvent, targetItem: any) => {
-    e.preventDefault();
-    if (!draggedPriorityItem || draggedPriorityItem.id === targetItem.id) return;
-    
-    setPriorityDragOver(targetItem.id);
-    e.dataTransfer.dropEffect = 'move';
-  };
-
-  const handlePriorityDragEnter = (e: React.DragEvent, targetItem: any) => {
-    e.preventDefault();
-    if (!draggedPriorityItem || draggedPriorityItem.id === targetItem.id) return;
-    setPriorityDragOver(targetItem.id);
-  };
-
-  const handlePriorityDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setPriorityDragOver(null);
-  };
-
-  const handlePriorityDrop = (e: React.DragEvent, targetItem: any) => {
-    e.preventDefault();
-    setPriorityDragOver(null);
-    
-    if (!draggedPriorityItem || draggedPriorityItem.id === targetItem.id) return;
-    
-    const draggedIndex = priorityItems.findIndex(item => item.id === draggedPriorityItem.id);
-    const targetIndex = priorityItems.findIndex(item => item.id === targetItem.id);
-    
-    if (draggedIndex !== -1 && targetIndex !== -1 && draggedIndex !== targetIndex) {
-      const newItems = [...priorityItems];
-      newItems.splice(draggedIndex, 1);
-      newItems.splice(targetIndex, 0, draggedPriorityItem);
-      
-      // Renumber the orders
-      const reorderedItems = newItems.map((item, index) => ({
-        ...item,
-        order: index + 1
-      }));
-      
-      setPriorityItems(reorderedItems);
-      
-      toast({
-        title: "📋 Priority Reordered",
-        description: "Mission sequence has been updated.",
-        variant: "default",
-      });
-    }
-  };
-
-  const handlePriorityDragEnd = () => {
-    setDraggedPriorityItem(null);
-    setPriorityDragOver(null);
-  };
 
   const renderItem = (item: DraggableItem) => {
     const IconComponent = item.icon;
@@ -353,42 +278,6 @@ const DragDropDemo = () => {
           </div>
         </div>
 
-        {/* Sortable List Demo */}
-        <div className="grid gap-6 mb-8">
-          <div className="bg-card/50 backdrop-blur border rounded-lg p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Target className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold font-futura tracking-wider">MISSION PRIORITY SEQUENCE</h3>
-            </div>
-            
-            <div className="space-y-2">
-              {priorityItems.map((priorityItem) => (
-                <div 
-                  key={priorityItem.id}
-                  draggable
-                  onDragStart={(e) => handlePriorityDragStart(e, priorityItem)}
-                  onDragOver={(e) => handlePriorityDragOver(e, priorityItem)}
-                  onDragEnter={(e) => handlePriorityDragEnter(e, priorityItem)}
-                  onDragLeave={handlePriorityDragLeave}
-                  onDrop={(e) => handlePriorityDrop(e, priorityItem)}
-                  onDragEnd={handlePriorityDragEnd}
-                  className={`flex items-center gap-3 p-3 bg-background border rounded cursor-grab hover:bg-accent/50 transition-colors ${
-                    draggedPriorityItem?.id === priorityItem.id ? 'opacity-50' : ''
-                  } ${
-                    priorityDragOver === priorityItem.id ? 'border-primary bg-primary/10' : ''
-                  }`}
-                  id={`priority-${priorityItem.id}`}
-                >
-                  <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
-                  <span className="font-futura text-sm font-bold shrink-0">
-                    {priorityItem.order.toString().padStart(2, '0')}
-                  </span>
-                  <span className="font-futura tracking-wider flex-1">{priorityItem.text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
 
         {/* Mission Summary */}
         <Card className="nasa-panel">
