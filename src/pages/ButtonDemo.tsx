@@ -46,8 +46,8 @@ const ButtonDemo = () => {
     <div className="min-h-screen bg-background">
       {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-2">
-          <div className="flex justify-between items-center mb-2 text-xs nasa-display">
+        <div className="container mx-auto px-4 py-1">
+          <div className="flex justify-between items-center mb-1 text-xs nasa-display">
             <div className="flex gap-6">
               <span className="text-primary">◉ MODULE 001 OPERATIONAL</span>
               <span className="text-accent">⚠ BUTTON SYSTEMS ACTIVE</span>
@@ -59,8 +59,8 @@ const ButtonDemo = () => {
             </div>
           </div>
           
-          <div className="nasa-panel p-3">
-            <div className="flex items-center gap-4 mb-3">
+          <div className="nasa-panel p-2">
+            <div className="flex items-center gap-4 mb-2">
               <Link to="/">
                 <Button variant="outline" size="sm" className="nasa-panel">
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -70,12 +70,12 @@ const ButtonDemo = () => {
             </div>
             
             <div className="text-center">
-              <div className="mb-4 font-futura">
-                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">TRAINING MODULE 001</div>
-                <h1 className="text-2xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-1">
+              <div className="mb-2 font-futura">
+                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-1">TRAINING MODULE 001</div>
+                <h1 className="text-2xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-0">
                   BUTTON INTERFACE DEMO
                 </h1>
-                <div className="text-sm text-accent tracking-[0.2em] mb-2 font-futura">INTERACTIVE CONTROL PROTOCOLS</div>
+                <div className="text-sm text-accent tracking-[0.2em] mb-1 font-futura">INTERACTIVE CONTROL PROTOCOLS</div>
               </div>
             </div>
           </div>
@@ -83,7 +83,7 @@ const ButtonDemo = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6">
         <div className="grid gap-6 lg:grid-cols-2 max-w-6xl mx-auto">
           
           {/* Basic Buttons */}
