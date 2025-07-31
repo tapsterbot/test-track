@@ -351,9 +351,9 @@ const DropdownDemo = () => {
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
