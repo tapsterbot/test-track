@@ -285,19 +285,19 @@ const DragDropDemo = () => {
             </div>
             
             <div className="space-y-2">
-              <div className="flex items-center gap-3 p-3 bg-background border rounded cursor-grab">
+              <div className="flex items-center gap-3 p-3 bg-background border rounded">
                 <span className="font-futura text-sm font-bold">01</span>
                 <span className="font-futura tracking-wider">Establish orbital communications relay</span>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-background border rounded cursor-grab">
+              <div className="flex items-center gap-3 p-3 bg-background border rounded">
                 <span className="font-futura text-sm font-bold">02</span>
                 <span className="font-futura tracking-wider">Deploy deep space monitoring stations</span>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-background border rounded cursor-grab">
+              <div className="flex items-center gap-3 p-3 bg-background border rounded">
                 <span className="font-futura text-sm font-bold">03</span>
                 <span className="font-futura tracking-wider">Initiate temporal research protocols</span>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-background border rounded cursor-grab">
+              <div className="flex items-center gap-3 p-3 bg-background border rounded">
                 <span className="font-futura text-sm font-bold">04</span>
                 <span className="font-futura tracking-wider">Begin xenoarchaeology excavation</span>
               </div>
