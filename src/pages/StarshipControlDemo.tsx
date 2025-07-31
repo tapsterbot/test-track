@@ -94,7 +94,7 @@ export default function StarshipControlDemo() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Dynamic background grid
-      ctx.strokeStyle = redAlert ? 'hsl(var(--critical-red) / 0.1)' : 'hsl(var(--console-green) / 0.1)';
+      ctx.strokeStyle = redAlert ? 'hsla(0, 100%, 45%, 0.1)' : 'hsla(120, 100%, 40%, 0.1)';
       ctx.lineWidth = 0.5;
       for (let i = -200; i <= 400; i += 20) {
         ctx.beginPath();
@@ -108,10 +108,10 @@ export default function StarshipControlDemo() {
       }
       
       // Radar circles with pulse effect
-      const baseColor = redAlert ? 'var(--critical-red)' : 'var(--console-green)';
       for (let i = 1; i <= 5; i++) {
         const pulse = Math.sin(pulseTime * 0.01 + i * 0.5) * 0.3 + 0.7;
-        ctx.strokeStyle = `hsl(${baseColor} / ${0.2 * pulse})`;
+        const alpha = 0.2 * pulse;
+        ctx.strokeStyle = redAlert ? `hsla(0, 100%, 45%, ${alpha})` : `hsla(120, 100%, 40%, ${alpha})`;
         ctx.lineWidth = i === 5 ? 2 : 1;
         ctx.beginPath();
         ctx.arc(100, 100, i * 20, 0, Math.PI * 2);
@@ -125,7 +125,7 @@ export default function StarshipControlDemo() {
       // Primary sweep
       ctx.rotate(rotation);
       const gradient1 = ctx.createRadialGradient(0, 0, 0, 0, 0, 100);
-      gradient1.addColorStop(0, redAlert ? 'hsl(var(--critical-red) / 0.8)' : 'hsl(var(--console-green) / 0.8)');
+      gradient1.addColorStop(0, redAlert ? 'hsla(0, 100%, 45%, 0.8)' : 'hsla(120, 100%, 40%, 0.8)');
       gradient1.addColorStop(1, 'rgba(0, 0, 0, 0)');
       
       ctx.fillStyle = gradient1;
@@ -138,7 +138,7 @@ export default function StarshipControlDemo() {
       // Secondary sweep (counter-rotating)
       ctx.rotate(-rotation * 2);
       const gradient2 = ctx.createRadialGradient(0, 0, 0, 0, 0, 80);
-      gradient2.addColorStop(0, redAlert ? 'hsl(var(--warning-amber) / 0.4)' : 'hsl(var(--telemetry-blue) / 0.4)');
+      gradient2.addColorStop(0, redAlert ? 'hsla(45, 100%, 50%, 0.4)' : 'hsla(200, 100%, 70%, 0.4)');
       gradient2.addColorStop(1, 'rgba(0, 0, 0, 0)');
       
       ctx.fillStyle = gradient2;
@@ -153,9 +153,9 @@ export default function StarshipControlDemo() {
       // Enhanced scanner blips with trails and classification
       scannerData.forEach((blip, index) => {
         const colors = {
-          friendly: 'var(--console-green)',
-          unknown: 'var(--warning-amber)',
-          hostile: 'var(--critical-red)'
+          friendly: '120, 100%, 40%', // console-green
+          unknown: '45, 100%, 50%',   // warning-amber
+          hostile: '0, 100%, 45%'     // critical-red
         };
         
         const age = scannerData.length - index;
@@ -163,7 +163,8 @@ export default function StarshipControlDemo() {
         
         // Blip trail
         for (let i = 0; i < 3; i++) {
-          ctx.fillStyle = `hsl(${colors[blip.type as keyof typeof colors]} / ${Math.max(0.1, alpha - i * 0.15)})`;
+          const trailAlpha = Math.max(0.1, alpha - i * 0.15);
+          ctx.fillStyle = `hsla(${colors[blip.type as keyof typeof colors]}, ${trailAlpha})`;
           ctx.beginPath();
           ctx.arc(blip.x + i * 2, blip.y + i * 2, 2 + i, 0, Math.PI * 2);
           ctx.fill();
@@ -177,7 +178,7 @@ export default function StarshipControlDemo() {
         
         // Pulse rings
         const ringIntensity = Math.sin(Date.now() * 0.005 + blip.id) * 0.5 + 0.5;
-        ctx.strokeStyle = `hsl(${colors[blip.type as keyof typeof colors]} / ${ringIntensity})`;
+        ctx.strokeStyle = `hsla(${colors[blip.type as keyof typeof colors]}, ${ringIntensity})`;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(blip.x, blip.y, 8 + ringIntensity * 5, 0, Math.PI * 2);
@@ -185,7 +186,7 @@ export default function StarshipControlDemo() {
         
         // Distance indicator
         if (blip.distance) {
-          ctx.fillStyle = 'hsl(var(--foreground) / 0.7)';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
           ctx.font = '8px monospace';
           ctx.fillText(`${blip.distance}km`, blip.x + 8, blip.y - 8);
         }
@@ -230,7 +231,7 @@ export default function StarshipControlDemo() {
         vy: (Math.random() - 0.5) * (redAlert ? 2 : 0.8),
         alpha: Math.random() * 0.7 + 0.3,
         size: Math.random() * 2 + 0.5,
-        color: redAlert ? 'var(--critical-red)' : 'var(--telemetry-blue)',
+        color: redAlert ? '0, 100%, 45%' : '200, 100%, 70%', // critical-red : telemetry-blue
         life: Math.random() * 1000,
         maxLife: 1000
       });
@@ -261,7 +262,7 @@ export default function StarshipControlDemo() {
           particle.x = Math.random() * canvas.width;
           particle.y = Math.random() * canvas.height;
           particle.life = particle.maxLife;
-          particle.color = redAlert ? 'var(--critical-red)' : 'var(--telemetry-blue)';
+          particle.color = redAlert ? '0, 100%, 45%' : '200, 100%, 70%'; // critical-red : telemetry-blue
           particle.vx = (Math.random() - 0.5) * (redAlert ? 2 : 0.8);
           particle.vy = (Math.random() - 0.5) * (redAlert ? 2 : 0.8);
         }
@@ -271,7 +272,7 @@ export default function StarshipControlDemo() {
         const currentAlpha = particle.alpha * pulse * (particle.life / particle.maxLife);
         
         // Draw particle
-        ctx.fillStyle = `hsl(${particle.color} / ${currentAlpha})`;
+        ctx.fillStyle = `hsla(${particle.color}, ${currentAlpha})`;
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size * pulse, 0, Math.PI * 2);
         ctx.fill();
@@ -284,7 +285,7 @@ export default function StarshipControlDemo() {
           
           if (distance < 100) {
             const lineAlpha = (1 - distance / 100) * 0.1;
-            ctx.strokeStyle = `hsl(${particle.color} / ${lineAlpha})`;
+            ctx.strokeStyle = `hsla(${particle.color}, ${lineAlpha})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
@@ -320,7 +321,7 @@ export default function StarshipControlDemo() {
       // Holographic scan lines
       for (let y = 0; y < canvas.height; y += 3) {
         const alpha = Math.sin(frame * 0.1 + y * 0.1) * 0.1 + 0.05;
-        ctx.fillStyle = redAlert ? `hsl(var(--critical-red) / ${alpha})` : `hsl(var(--console-green) / ${alpha})`;
+        ctx.fillStyle = redAlert ? `hsla(0, 100%, 45%, ${alpha})` : `hsla(120, 100%, 40%, ${alpha})`;
         ctx.fillRect(0, y, canvas.width, 1);
       }
       
@@ -329,7 +330,7 @@ export default function StarshipControlDemo() {
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(frame * 0.005);
       
-      ctx.strokeStyle = redAlert ? 'hsl(var(--critical-red) / 0.8)' : 'hsl(var(--console-green) / 0.8)';
+      ctx.strokeStyle = redAlert ? 'hsla(0, 100%, 45%, 0.8)' : 'hsla(120, 100%, 40%, 0.8)';
       ctx.lineWidth = 1;
       
       // Ship outline
@@ -344,7 +345,7 @@ export default function StarshipControlDemo() {
       // Engine trails
       for (let i = 0; i < 5; i++) {
         const trailAlpha = (5 - i) * 0.1;
-        ctx.strokeStyle = `hsl(var(--telemetry-blue) / ${trailAlpha})`;
+        ctx.strokeStyle = `hsla(200, 100%, 70%, ${trailAlpha})`; // telemetry-blue
         ctx.beginPath();
         ctx.moveTo(-30 - i * 3, -3);
         ctx.lineTo(-30 - i * 3, 3);
