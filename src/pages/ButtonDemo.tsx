@@ -169,10 +169,31 @@ const ButtonDemo = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex flex-col items-center gap-2">
-                <Button id="large-button" size="lg">Large Button</Button>
-                <Button id="default-button">Default Button</Button>
-                <Button id="small-button" size="sm">Small Button</Button>
-                <Button id="icon-button" size="icon">
+                <Button 
+                  id="large-button" 
+                  size="lg"
+                  onClick={() => handleClick('large')}
+                >
+                  Large Button
+                </Button>
+                <Button 
+                  id="default-button"
+                  onClick={() => handleClick('default')}
+                >
+                  Default Button
+                </Button>
+                <Button 
+                  id="small-button" 
+                  size="sm"
+                  onClick={() => handleClick('small')}
+                >
+                  Small Button
+                </Button>
+                <Button 
+                  id="icon-button" 
+                  size="icon"
+                  onClick={() => handleClick('icon')}
+                >
                   <CheckCircle size={16} />
                 </Button>
               </div>
