@@ -92,9 +92,8 @@ const LoginDemo = () => {
         <div className="container mx-auto px-4 py-1">
           <div className="flex justify-between items-center mb-1 text-xs nasa-display">
             <Link to="/">
-              <Button variant="outline" size="sm" className="nasa-panel text-xs">
-                <ArrowLeft className="w-3 h-3 mr-1" />
-                RETURN TO MISSION CONTROL
+              <Button variant="outline" size="icon" className="nasa-panel">
+                <ArrowLeft className="w-4 h-4" />
               </Button>
             </Link>
             <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>

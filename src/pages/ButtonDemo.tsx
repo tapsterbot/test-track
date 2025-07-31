@@ -51,9 +51,8 @@ const ButtonDemo = () => {
           <div className="mb-4 text-[10px] nasa-display">
             <div className="flex items-center justify-between gap-4">
               <Link to="/">
-                <Button variant="outline" size="sm" className="nasa-panel text-xs">
-                  <ArrowLeft className="w-3 h-3 mr-1" />
-                  RETURN TO MISSION CONTROL
+                <Button variant="outline" size="icon" className="nasa-panel">
+                  <ArrowLeft className="w-4 h-4" />
                 </Button>
               </Link>
               <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false })} UTC</span>
