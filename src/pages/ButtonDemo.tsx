@@ -46,7 +46,7 @@ const ButtonDemo = () => {
     <div className="min-h-screen bg-background">
       {/* NASA Mission Control Header */}
       <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-3">
           <div className="flex justify-between items-center mb-4 text-xs nasa-display">
             <div className="flex gap-6">
               <span className="text-primary">◉ MODULE 001 OPERATIONAL</span>
@@ -59,7 +59,7 @@ const ButtonDemo = () => {
             </div>
           </div>
           
-          <div className="nasa-panel p-8">
+          <div className="nasa-panel p-4">
             <div className="flex items-center gap-4 mb-6">
               <Link to="/">
                 <Button variant="outline" size="sm" className="nasa-panel">
