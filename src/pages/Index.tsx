@@ -104,6 +104,12 @@ const Index = () => {
     description: "Practice handling multiple browser windows and tabs",
     difficulty: "Advanced",
     elements: ["multiple windows", "tab switching", "window management"]
+  }, {
+    title: "Advanced Button Clicking",
+    path: "/advanced-button-demo", 
+    description: "Challenging button scenarios testing Playwright's auto-wait vs WebDriver",
+    difficulty: "Advanced",
+    elements: ["visibility", "stability", "element resolution", "event reception", "enabled state"]
   }];
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
