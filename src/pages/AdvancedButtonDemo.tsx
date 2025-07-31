@@ -473,20 +473,20 @@ const AdvancedButtonDemo = () => {
             <CardTitle className="flex items-center">
               <CheckCircle className="h-5 w-5 mr-2" />
               Element Resolution Tests
-              <InfoPopover title="Element Resolution Challenge Details">
+              <InfoPopover title="Target Acquisition Systems">
                 <div className="space-y-2 text-sm">
-                  <p><strong>What Playwright checks:</strong></p>
+                  <p><strong>Autonomous requirements:</strong></p>
                   <ul className="list-disc pl-4 space-y-1">
-                    <li>Locator resolves to exactly one element</li>
-                    <li>Handles dynamic DOM insertions</li>
-                    <li>Re-queries DOM on each action attempt</li>
-                    <li>Waits for element to exist before other checks</li>
+                    <li>Navigation system resolves to exactly one target interface</li>
+                    <li>Handles dynamic interface insertions and modifications</li>
+                    <li>Re-scans environment on each interaction attempt</li>
+                    <li>Waits for target to exist before proceeding with other checks</li>
                   </ul>
-                  <p><strong>WebDriver challenges:</strong></p>
+                  <p><strong>Common navigation failures:</strong></p>
                   <ul className="list-disc pl-4 space-y-1">
-                    <li>StaleElementReferenceException when DOM changes</li>
-                    <li>May find wrong element if multiple matches</li>
-                    <li>Needs explicit waits for dynamic elements</li>
+                    <li>Stale reference errors when interface topology changes</li>
+                    <li>Wrong target selection when multiple candidates exist</li>
+                    <li>Race conditions with dynamically generated interfaces</li>
                   </ul>
                   <div className="bg-muted p-2 rounded text-xs">
                     <code>DOM: dynamic creation, ID changes, multiple matches</code>
@@ -495,7 +495,7 @@ const AdvancedButtonDemo = () => {
               </InfoPopover>
             </CardTitle>
             <CardDescription>
-              Buttons with challenging DOM selection scenarios
+              Control interfaces with challenging target acquisition scenarios
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -560,20 +560,20 @@ const AdvancedButtonDemo = () => {
             <CardTitle className="flex items-center">
               <MousePointer className="h-5 w-5 mr-2" />
               Event Reception Tests
-              <InfoPopover title="Event Reception Challenge Details">
+              <InfoPopover title="Signal Reception Protocols">
                 <div className="space-y-2 text-sm">
-                  <p><strong>What Playwright checks:</strong></p>
+                  <p><strong>Interaction requirements:</strong></p>
                   <ul className="list-disc pl-4 space-y-1">
-                    <li>Element is hit target of pointer event at action point</li>
-                    <li>No other element will capture the click instead</li>
-                    <li>Checks z-index and element stacking</li>
-                    <li>Waits for overlays/modals to clear</li>
+                    <li>Interface must be the hit target of interaction signals at action coordinates</li>
+                    <li>No other interface elements can intercept the interaction</li>
+                    <li>Proper z-index layering and element stacking verification</li>
+                    <li>Automatic detection and clearance of overlay obstructions</li>
                   </ul>
-                  <p><strong>WebDriver challenges:</strong></p>
+                  <p><strong>Common signal blocking issues:</strong></p>
                   <ul className="list-disc pl-4 space-y-1">
-                    <li>"Element click intercepted" errors</li>
-                    <li>Clicks captured by wrong elements</li>
-                    <li>No automatic overlay detection</li>
+                    <li>"Interaction intercepted" errors due to overlay interference</li>
+                    <li>Signals captured by unintended interface elements</li>
+                    <li>No automatic detection of blocking overlay elements</li>
                   </ul>
                   <div className="bg-muted p-2 rounded text-xs">
                     <code>CSS: z-index, position, pointer-events</code>
@@ -582,7 +582,7 @@ const AdvancedButtonDemo = () => {
               </InfoPopover>
             </CardTitle>
             <CardDescription>
-              Buttons obscured by overlays, modals, and other elements
+              Control interfaces obscured by overlays, modals, and blocking elements
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -677,20 +677,20 @@ const AdvancedButtonDemo = () => {
             <CardTitle className="flex items-center">
               <XCircle className="h-5 w-5 mr-2" />
               Enabled State Tests
-              <InfoPopover title="Enabled State Challenge Details">
+              <InfoPopover title="System State Validation">
                 <div className="space-y-2 text-sm">
-                  <p><strong>What Playwright checks:</strong></p>
+                  <p><strong>Operational state requirements:</strong></p>
                   <ul className="list-disc pl-4 space-y-1">
-                    <li>Element is not disabled</li>
-                    <li>No [disabled] attribute on form elements</li>
-                    <li>Not part of disabled fieldset</li>
-                    <li>No [aria-disabled="true"] on element or ancestors</li>
+                    <li>Interface element must not be in disabled state</li>
+                    <li>No [disabled] attribute on form control elements</li>
+                    <li>Not contained within disabled fieldset containers</li>
+                    <li>No [aria-disabled="true"] attributes on element or ancestors</li>
                   </ul>
-                  <p><strong>WebDriver challenges:</strong></p>
+                  <p><strong>State validation challenges:</strong></p>
                   <ul className="list-disc pl-4 space-y-1">
-                    <li>May attempt to click disabled elements</li>
-                    <li>Doesn't automatically wait for enable state</li>
-                    <li>Complex inheritance from fieldset/aria attributes</li>
+                    <li>Premature interaction attempts on disabled interfaces</li>
+                    <li>No automatic waiting for operational state transitions</li>
+                    <li>Complex state inheritance from container elements</li>
                   </ul>
                   <div className="bg-muted p-2 rounded text-xs">
                     <code>HTML: disabled, fieldset[disabled], aria-disabled</code>
@@ -699,7 +699,7 @@ const AdvancedButtonDemo = () => {
               </InfoPopover>
             </CardTitle>
             <CardDescription>
-              Buttons that transition from disabled to enabled states
+              Control interfaces that transition between operational and non-operational states
             </CardDescription>
           </CardHeader>
           <CardContent>
