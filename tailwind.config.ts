@@ -19,7 +19,7 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'futura': ['Futura', 'Exo 2', 'Avenir Next', 'Helvetica Neue', 'sans-serif'],
+				'futura': ['Futura', 'League Spartan', 'Exo 2', 'Avenir Next', 'Helvetica Neue', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
