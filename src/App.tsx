@@ -7,7 +7,10 @@ import Index from "./pages/Index";
 import ButtonDemo from "./pages/ButtonDemo";
 import TextInputDemo from "./pages/TextInputDemo";
 import LoginDemo from "./pages/LoginDemo";
+import DropdownDemo from "./pages/DropdownDemo";
 import CheckboxRadioDemo from "./pages/CheckboxRadioDemo";
+import TableDemo from "./pages/TableDemo";
+import ModalDemo from "./pages/ModalDemo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,7 +26,10 @@ const App = () => (
           <Route path="/button-demo" element={<ButtonDemo />} />
           <Route path="/text-input-demo" element={<TextInputDemo />} />
           <Route path="/login-demo" element={<LoginDemo />} />
+          <Route path="/dropdown-demo" element={<DropdownDemo />} />
           <Route path="/checkbox-radio-demo" element={<CheckboxRadioDemo />} />
+          <Route path="/table-demo" element={<TableDemo />} />
+          <Route path="/modal-demo" element={<ModalDemo />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
