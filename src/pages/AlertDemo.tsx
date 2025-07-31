@@ -138,7 +138,7 @@ const AlertDemo = () => {
                 className="w-full font-futura tracking-wider"
                 id="emergency-alert-btn"
               >
-                ACTIVATE EMERGENCY ALERT
+                EMERGENCY PROTOCOL CONFIRMATION
               </Button>
               
               <Button 
