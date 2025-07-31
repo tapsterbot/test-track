@@ -1,8 +1,19 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ThemeToggle";
 const Index = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   const demoPages = [
   // Basic Elements
   {
@@ -115,7 +126,7 @@ const Index = () => {
             <div className="flex gap-6">
               <span className="text-primary">◉ SYSTEM OPERATIONAL</span>
               <span className="text-accent">⚠ TELEMETRY ACTIVE</span>
-              <span className="text-foreground">□ MISSION TIME: {new Date().toLocaleTimeString()}</span>
+              <span className="text-foreground">□ MISSION TIME: {currentTime.toLocaleTimeString()}</span>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-primary">CONSOLE 001 READY</div>
