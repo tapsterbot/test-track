@@ -127,11 +127,11 @@ const Index = () => {
           <div className="nasa-panel p-8 mb-6">
             <div className="text-center">
               <div className="mb-4 font-futura">
-                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">VALET NETWORK AUTONOMOUS AGENT CENTER</div>
+                <div className="text-xs text-muted-foreground tracking-[0.3em] mb-2">VALET NETWORK SYSTEMS</div>
                 <h1 className="text-7xl font-black text-primary font-futura tracking-[0.15em] drop-shadow-lg mb-2">
                   TEST TRACK
                 </h1>
-                <div className="text-sm text-accent tracking-[0.2em] mb-4 font-futura">AUTOMATED SYSTEMS TRAINING FACILITY</div>
+                <div className="text-sm text-accent tracking-[0.2em] mb-4 font-futura">AUTONOMOUS AGENT TRAINING FACILITY</div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
