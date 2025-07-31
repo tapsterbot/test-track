@@ -32,8 +32,8 @@ const ButtonDemo = () => {
 
   const handleAsyncClick = async () => {
     setIsLoading(true);
-    setClickCount(prev => prev + 1);
     await new Promise(resolve => setTimeout(resolve, 2000));
+    setClickCount(prev => prev + 1);
     setIsLoading(false);
     toast({
       title: "Async Operation Complete",
