@@ -19,6 +19,14 @@ interface WindowData {
 const MultiWindowDemo = () => {
   const [windows, setWindows] = useState<WindowData[]>([
     {
+      id: 'comms-target',
+      name: 'Communications Target',
+      url: '/comms-target',
+      status: 'closed',
+      purpose: 'Same-origin PostMessage testing',
+      classification: 'public'
+    },
+    {
       id: 'command-center',
       name: 'Command Center Alpha',
       url: 'https://example.com',
