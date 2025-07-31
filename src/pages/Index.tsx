@@ -194,7 +194,6 @@ const Index = () => {
             <div className="flex flex-wrap items-center justify-between gap-1 md:gap-6">
               <div className="flex flex-wrap items-center gap-1 md:gap-6">
                 <span className="text-primary">◉ SYSTEM OPERATIONAL</span>
-                <span className="text-accent">⚠ TELEMETRY ACTIVE</span>
                 <span className="text-foreground">□ MISSION TIME: {currentTime.toLocaleTimeString()}</span>
                 <div className="text-primary">CONSOLE 001 READY</div>
               </div>
