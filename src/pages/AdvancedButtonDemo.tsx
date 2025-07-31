@@ -296,7 +296,7 @@ const AdvancedButtonDemo = () => {
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="flex items-center">
-              Vehicle Telemetry Logs
+              Console Logs
               <InfoPopover title="Telemetry System">
                 <div className="space-y-2 text-sm">
                   <p>All autonomous vehicle system events and state changes are logged here and transmitted to mission control.</p>
