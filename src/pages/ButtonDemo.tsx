@@ -45,9 +45,9 @@ const ButtonDemo = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <div className="absolute top-4 left-4 z-10">
+      <div className="absolute top-12 left-4 z-10">
         <Link to="/">
-          <Button variant="outline" size="sm" className="nasa-panel">
+          <Button variant="outline" size="sm" className="nasa-panel bg-card/90 backdrop-blur">
             <ArrowLeft className="w-4 h-4 mr-2" />
             RETURN TO MISSION CONTROL
           </Button>
