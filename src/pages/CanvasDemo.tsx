@@ -3,54 +3,54 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, MapPin, Zap, Target, RotateCcw, Save, Download } from "lucide-react";
+import { ArrowLeft, Radio, AlertTriangle, Target, RotateCcw, Save, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-interface StarData {
+interface VehicleData {
   x: number;
   y: number;
-  brightness: number;
+  signalStrength: number;
   id: string;
-  anomaly?: boolean;
+  offline?: boolean;
 }
 
-interface TemporalAnomaly {
+interface TerrainHazard {
   x: number;
   y: number;
   radius: number;
   id: string;
-  intensity: number;
+  severity: number;
 }
 
 const CanvasDemo = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [currentTool, setCurrentTool] = useState<'star' | 'anomaly' | 'navigation'>('star');
-  const [stars, setStars] = useState<StarData[]>([]);
-  const [anomalies, setAnomalies] = useState<TemporalAnomaly[]>([]);
+  const [currentTool, setCurrentTool] = useState<'vehicle' | 'hazard' | 'waypoint'>('vehicle');
+  const [vehicles, setVehicles] = useState<VehicleData[]>([]);
+  const [hazards, setHazards] = useState<TerrainHazard[]>([]);
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    generateStarField();
+    deployVehicles();
   }, []);
 
   useEffect(() => {
     redrawCanvas();
-  }, [stars, anomalies]);
+  }, [vehicles, hazards]);
 
-  const generateStarField = () => {
-    const newStars: StarData[] = [];
+  const deployVehicles = () => {
+    const newVehicles: VehicleData[] = [];
     for (let i = 0; i < 50; i++) {
-      newStars.push({
+      newVehicles.push({
         x: Math.random() * 600,
         y: Math.random() * 400,
-        brightness: Math.random() * 0.8 + 0.2,
-        id: `star-${i}`,
-        anomaly: Math.random() > 0.9
+        signalStrength: Math.random() * 0.8 + 0.2,
+        id: `unit-${i}`,
+        offline: Math.random() > 0.9
       });
     }
-    setStars(newStars);
+    setVehicles(newVehicles);
   };
 
   const redrawCanvas = () => {
@@ -60,48 +60,52 @@ const CanvasDemo = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Clear canvas
-    ctx.fillStyle = '#0a0a0a';
+    // Clear canvas with dark terrain background
+    ctx.fillStyle = '#1a1a1a';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw stars
-    stars.forEach(star => {
+    // Draw vehicles
+    vehicles.forEach(vehicle => {
       ctx.beginPath();
-      ctx.arc(star.x, star.y, star.brightness * 3, 0, 2 * Math.PI);
-      ctx.fillStyle = star.anomaly ? '#ff4444' : `rgba(255, 255, 255, ${star.brightness})`;
+      ctx.arc(vehicle.x, vehicle.y, vehicle.signalStrength * 4, 0, 2 * Math.PI);
+      ctx.fillStyle = vehicle.offline ? '#ff4444' : `rgba(0, 255, 0, ${vehicle.signalStrength})`;
       ctx.fill();
       
-      if (star.anomaly) {
+      // Draw vehicle icon (small square)
+      ctx.fillStyle = vehicle.offline ? '#ff6666' : '#00ff00';
+      ctx.fillRect(vehicle.x - 2, vehicle.y - 2, 4, 4);
+      
+      if (vehicle.offline) {
         ctx.strokeStyle = '#ff4444';
         ctx.lineWidth = 1;
-        ctx.arc(star.x, star.y, 8, 0, 2 * Math.PI);
+        ctx.arc(vehicle.x, vehicle.y, 8, 0, 2 * Math.PI);
         ctx.stroke();
       }
     });
 
-    // Draw temporal anomalies
-    anomalies.forEach(anomaly => {
+    // Draw terrain hazards
+    hazards.forEach(hazard => {
       const gradient = ctx.createRadialGradient(
-        anomaly.x, anomaly.y, 0,
-        anomaly.x, anomaly.y, anomaly.radius
+        hazard.x, hazard.y, 0,
+        hazard.x, hazard.y, hazard.radius
       );
-      gradient.addColorStop(0, `rgba(0, 255, 255, ${anomaly.intensity})`);
-      gradient.addColorStop(1, 'rgba(0, 255, 255, 0)');
+      gradient.addColorStop(0, `rgba(255, 150, 0, ${hazard.severity})`);
+      gradient.addColorStop(1, 'rgba(255, 150, 0, 0)');
       
       ctx.beginPath();
-      ctx.arc(anomaly.x, anomaly.y, anomaly.radius, 0, 2 * Math.PI);
+      ctx.arc(hazard.x, hazard.y, hazard.radius, 0, 2 * Math.PI);
       ctx.fillStyle = gradient;
       ctx.fill();
       
-      ctx.strokeStyle = '#00ffff';
+      ctx.strokeStyle = '#ff9600';
       ctx.lineWidth = 2;
       ctx.setLineDash([5, 5]);
       ctx.stroke();
       ctx.setLineDash([]);
     });
 
-    // Draw grid
-    ctx.strokeStyle = 'rgba(0, 255, 0, 0.2)';
+    // Draw navigation grid
+    ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
     ctx.lineWidth = 1;
     for (let x = 0; x <= canvas.width; x += 50) {
       ctx.beginPath();
@@ -127,37 +131,37 @@ const CanvasDemo = () => {
 
     setCoordinates({ x: Math.round(x), y: Math.round(y) });
 
-    if (currentTool === 'star') {
-      const newStar: StarData = {
+    if (currentTool === 'vehicle') {
+      const newVehicle: VehicleData = {
         x,
         y,
-        brightness: Math.random() * 0.8 + 0.2,
-        id: `star-${Date.now()}`,
-        anomaly: false
+        signalStrength: Math.random() * 0.8 + 0.2,
+        id: `unit-${Date.now()}`,
+        offline: false
       };
-      setStars(prev => [...prev, newStar]);
+      setVehicles(prev => [...prev, newVehicle]);
       toast({
-        title: "Star Catalogued",
-        description: `New stellar object recorded at coordinates (${Math.round(x)}, ${Math.round(y)})`,
+        title: "Vehicle Deployed",
+        description: `Remote unit dispatched to coordinates (${Math.round(x)}, ${Math.round(y)})`,
       });
-    } else if (currentTool === 'anomaly') {
-      const newAnomaly: TemporalAnomaly = {
+    } else if (currentTool === 'hazard') {
+      const newHazard: TerrainHazard = {
         x,
         y,
-        radius: 20 + Math.random() * 30,
-        id: `anomaly-${Date.now()}`,
-        intensity: 0.3 + Math.random() * 0.4
+        radius: 15 + Math.random() * 25,
+        id: `hazard-${Date.now()}`,
+        severity: 0.3 + Math.random() * 0.4
       };
-      setAnomalies(prev => [...prev, newAnomaly]);
+      setHazards(prev => [...prev, newHazard]);
       toast({
-        title: "Temporal Anomaly Detected",
-        description: `Distortion field marked at coordinates (${Math.round(x)}, ${Math.round(y)})`,
+        title: "Terrain Hazard Marked",
+        description: `Dangerous area identified at coordinates (${Math.round(x)}, ${Math.round(y)})`,
         variant: "destructive"
       });
-    } else if (currentTool === 'navigation') {
+    } else if (currentTool === 'waypoint') {
       toast({
-        title: "Navigation Point Set",
-        description: `Warp coordinates locked: (${Math.round(x)}, ${Math.round(y)})`,
+        title: "Waypoint Established",
+        description: `Navigation point set: (${Math.round(x)}, ${Math.round(y)})`,
       });
     }
   };
@@ -172,11 +176,11 @@ const CanvasDemo = () => {
 
     setCoordinates({ x: Math.round(x), y: Math.round(y) });
 
-    if (isDrawing && currentTool === 'navigation') {
+    if (isDrawing && currentTool === 'waypoint') {
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      ctx.strokeStyle = '#00ff00';
+      ctx.strokeStyle = '#00ffff';
       ctx.lineWidth = 2;
       ctx.lineTo(x, y);
       ctx.stroke();
@@ -184,7 +188,7 @@ const CanvasDemo = () => {
   };
 
   const startDrawing = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    if (currentTool === 'navigation') {
+    if (currentTool === 'waypoint') {
       setIsDrawing(true);
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -205,44 +209,46 @@ const CanvasDemo = () => {
     setIsDrawing(false);
   };
 
-  const clearCanvas = () => {
-    setStars([]);
-    setAnomalies([]);
+  const clearTerrain = () => {
+    setVehicles([]);
+    setHazards([]);
     toast({
-      title: "Star Chart Cleared",
-      description: "All navigation data and stellar objects removed",
+      title: "Terrain Cleared",
+      description: "All remote units and hazard markers removed",
     });
   };
 
-  const saveChart = () => {
+  const saveOperation = () => {
     toast({
-      title: "Star Chart Saved",
-      description: `Chart saved with ${stars.length} stars and ${anomalies.length} anomalies`,
+      title: "Operation Saved",
+      description: `Mission data archived: ${vehicles.length} units, ${hazards.length} hazards`,
     });
   };
 
-  const calculateWarpField = () => {
+  const calculateCommLinks = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Draw warp field calculations
-    ctx.strokeStyle = '#ffaa00';
+    // Draw communication links between vehicles
+    ctx.strokeStyle = '#00aaff';
     ctx.lineWidth = 1;
-    ctx.setLineDash([2, 2]);
+    ctx.setLineDash([3, 3]);
 
-    stars.forEach(star => {
-      anomalies.forEach(anomaly => {
-        const distance = Math.sqrt(
-          Math.pow(star.x - anomaly.x, 2) + Math.pow(star.y - anomaly.y, 2)
-        );
-        if (distance < 100) {
-          ctx.beginPath();
-          ctx.moveTo(star.x, star.y);
-          ctx.lineTo(anomaly.x, anomaly.y);
-          ctx.stroke();
+    vehicles.forEach(vehicle1 => {
+      vehicles.forEach(vehicle2 => {
+        if (vehicle1.id !== vehicle2.id && !vehicle1.offline && !vehicle2.offline) {
+          const distance = Math.sqrt(
+            Math.pow(vehicle1.x - vehicle2.x, 2) + Math.pow(vehicle1.y - vehicle2.y, 2)
+          );
+          if (distance < 80) {
+            ctx.beginPath();
+            ctx.moveTo(vehicle1.x, vehicle1.y);
+            ctx.lineTo(vehicle2.x, vehicle2.y);
+            ctx.stroke();
+          }
         }
       });
     });
@@ -250,8 +256,8 @@ const CanvasDemo = () => {
     ctx.setLineDash([]);
 
     toast({
-      title: "Warp Field Calculated",
-      description: "Gravitational field interactions mapped successfully",
+      title: "Communication Network Mapped",
+      description: "Vehicle-to-vehicle data links established",
     });
   };
 
@@ -262,8 +268,8 @@ const CanvasDemo = () => {
         <div className="container mx-auto px-4 py-3">
           <div className="flex justify-between items-center mb-4 text-xs nasa-display">
             <div className="flex gap-6">
-              <span className="text-primary">◉ CARTOGRAPHY SYSTEMS ONLINE</span>
-              <span className="text-accent">⚠ STELLAR OBJECTS: {stars.length}</span>
+              <span className="text-primary">◉ REMOTE OPERATIONS ACTIVE</span>
+              <span className="text-accent">⚠ DEPLOYED UNITS: {vehicles.length}</span>
               <span className="text-foreground">□ COORDINATES: ({coordinates.x}, {coordinates.y})</span>
             </div>
             <div className="flex items-center gap-4">
@@ -282,7 +288,7 @@ const CanvasDemo = () => {
               </Link>
               <div>
                 <h1 className="text-2xl font-black text-primary font-futura tracking-wide">CANVAS DEMO</h1>
-                <p className="text-sm text-muted-foreground font-futura">Stellar Cartography & Temporal Anomaly Mapping</p>
+                <p className="text-sm text-muted-foreground font-futura">Remote Vehicle Operations & Terrain Mapping</p>
               </div>
             </div>
             <Badge variant="destructive" className="font-futura">ADVANCED</Badge>
@@ -295,18 +301,18 @@ const CanvasDemo = () => {
         <div className="nasa-panel p-6 mb-8">
           <h2 className="text-lg font-black text-primary font-futura tracking-wide mb-4">MISSION SUMMARY</h2>
           <p className="text-foreground mb-4">
-            Create interactive star charts and map temporal anomalies using advanced canvas graphics. 
-            Test coordinate-based interactions, drawing operations, and visual manipulation of 
-            stellar cartography data within warp field calculations.
+            Deploy and control remote vehicles across unknown terrain using advanced canvas-based 
+            command interface. Test coordinate-based vehicle deployment, hazard identification, 
+            and real-time communication network mapping for autonomous operations.
           </p>
           <div className="space-y-2">
             <h3 className="text-sm font-bold text-accent font-futura tracking-wide">TEST PROTOCOLS:</h3>
             <ul className="text-sm text-muted-foreground space-y-1 pl-4">
-              <li>• Interactive star placement and stellar object cataloging</li>
-              <li>• Temporal anomaly detection and mapping visualization</li>
-              <li>• Navigation route plotting and coordinate tracking</li>
-              <li>• Canvas graphics manipulation and drawing operations</li>
-              <li>• Warp field calculations and gravitational interaction mapping</li>
+              <li>• Remote vehicle deployment and signal strength monitoring</li>
+              <li>• Terrain hazard identification and warning zone mapping</li>
+              <li>• Waypoint navigation and route plotting systems</li>
+              <li>• Canvas graphics manipulation and coordinate tracking</li>
+              <li>• Communication network analysis and link optimization</li>
             </ul>
           </div>
         </div>
@@ -318,38 +324,38 @@ const CanvasDemo = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 font-futura">
                   <Target className="h-5 w-5" />
-                  Cartography Tools
+                  Operation Tools
                 </CardTitle>
-                <CardDescription>Stellar Mapping Interface</CardDescription>
+                <CardDescription>Remote Control Interface</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Button
-                    id="star-tool-btn"
-                    variant={currentTool === 'star' ? 'default' : 'outline'}
+                    id="vehicle-tool-btn"
+                    variant={currentTool === 'vehicle' ? 'default' : 'outline'}
                     className="w-full justify-start"
-                    onClick={() => setCurrentTool('star')}
+                    onClick={() => setCurrentTool('vehicle')}
                   >
-                    <MapPin className="h-4 w-4 mr-2" />
-                    Star Placement
+                    <Radio className="h-4 w-4 mr-2" />
+                    Deploy Vehicle
                   </Button>
                   <Button
-                    id="anomaly-tool-btn"
-                    variant={currentTool === 'anomaly' ? 'default' : 'outline'}
+                    id="hazard-tool-btn"
+                    variant={currentTool === 'hazard' ? 'default' : 'outline'}
                     className="w-full justify-start"
-                    onClick={() => setCurrentTool('anomaly')}
+                    onClick={() => setCurrentTool('hazard')}
                   >
-                    <Zap className="h-4 w-4 mr-2" />
-                    Temporal Anomaly
+                    <AlertTriangle className="h-4 w-4 mr-2" />
+                    Mark Hazard
                   </Button>
                   <Button
-                    id="navigation-tool-btn"
-                    variant={currentTool === 'navigation' ? 'default' : 'outline'}
+                    id="waypoint-tool-btn"
+                    variant={currentTool === 'waypoint' ? 'default' : 'outline'}
                     className="w-full justify-start"
-                    onClick={() => setCurrentTool('navigation')}
+                    onClick={() => setCurrentTool('waypoint')}
                   >
                     <Target className="h-4 w-4 mr-2" />
-                    Navigation Plot
+                    Set Waypoint
                   </Button>
                 </div>
               </CardContent>
@@ -358,56 +364,56 @@ const CanvasDemo = () => {
             <Card className="nasa-panel">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 font-futura">
-                  <Zap className="h-5 w-5" />
-                  Chart Operations
+                  <Radio className="h-5 w-5" />
+                  Mission Control
                 </CardTitle>
-                <CardDescription>Data Management</CardDescription>
+                <CardDescription>Operations Management</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Button
-                  id="generate-stars-btn"
+                  id="deploy-fleet-btn"
                   variant="secondary"
                   className="w-full"
-                  onClick={generateStarField}
+                  onClick={deployVehicles}
                 >
-                  Generate Star Field
+                  Deploy Vehicle Fleet
                 </Button>
                 <Button
-                  id="calculate-warp-btn"
+                  id="comm-network-btn"
                   variant="outline"
                   className="w-full"
-                  onClick={calculateWarpField}
+                  onClick={calculateCommLinks}
                 >
-                  Calculate Warp Field
+                  Map Comm Network
                 </Button>
                 <Button
-                  id="clear-canvas-btn"
+                  id="clear-terrain-btn"
                   variant="outline"
                   className="w-full"
-                  onClick={clearCanvas}
+                  onClick={clearTerrain}
                 >
                   <RotateCcw className="h-4 w-4 mr-2" />
-                  Clear Chart
+                  Clear Terrain
                 </Button>
                 <div className="flex gap-2">
                   <Button
-                    id="save-chart-btn"
+                    id="save-operation-btn"
                     variant="outline"
                     className="flex-1"
-                    onClick={saveChart}
+                    onClick={saveOperation}
                   >
                     <Save className="h-4 w-4 mr-2" />
                     Save
                   </Button>
                   <Button
-                    id="download-chart-btn"
+                    id="export-terrain-btn"
                     variant="outline"
                     className="flex-1"
                     onClick={() => {
                       const canvas = canvasRef.current;
                       if (canvas) {
                         const link = document.createElement('a');
-                        link.download = 'star-chart.png';
+                        link.download = 'terrain-map.png';
                         link.href = canvas.toDataURL();
                         link.click();
                       }
@@ -422,23 +428,23 @@ const CanvasDemo = () => {
 
             <Card className="nasa-panel">
               <CardHeader>
-                <CardTitle className="font-futura">Stellar Statistics</CardTitle>
+                <CardTitle className="font-futura">Operation Status</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Stars Catalogued:</span>
-                  <span id="star-count" className="text-primary">{stars.length}</span>
+                  <span>Units Deployed:</span>
+                  <span id="vehicle-count" className="text-primary">{vehicles.length}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span>Anomalies Detected:</span>
-                  <span id="anomaly-count" className="text-destructive">{anomalies.length}</span>
+                  <span>Hazards Marked:</span>
+                  <span id="hazard-count" className="text-destructive">{hazards.length}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Active Tool:</span>
                   <span id="active-tool" className="text-accent">{currentTool.toUpperCase()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span>Coordinates:</span>
+                  <span>Grid Position:</span>
                   <span id="current-coordinates" className="text-foreground">({coordinates.x}, {coordinates.y})</span>
                 </div>
               </CardContent>
@@ -450,18 +456,18 @@ const CanvasDemo = () => {
             <Card className="nasa-panel">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 font-futura">
-                  <MapPin className="h-5 w-5" />
-                  Interactive Star Chart
+                  <Radio className="h-5 w-5" />
+                  Terrain Command Interface
                 </CardTitle>
                 <CardDescription>
-                  Click to place {currentTool === 'star' ? 'stars' : currentTool === 'anomaly' ? 'temporal anomalies' : 'navigation points'}
+                  Click to {currentTool === 'vehicle' ? 'deploy vehicles' : currentTool === 'hazard' ? 'mark terrain hazards' : 'set navigation waypoints'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="border-2 border-primary rounded bg-black p-2">
                   <canvas
                     ref={canvasRef}
-                    id="star-chart-canvas"
+                    id="terrain-map-canvas"
                     width={600}
                     height={400}
                     className="border border-secondary rounded cursor-crosshair"
@@ -473,8 +479,8 @@ const CanvasDemo = () => {
                   />
                 </div>
                 <div className="mt-4 text-xs text-muted-foreground text-center">
-                  Current Tool: <span className="text-primary">{currentTool.toUpperCase()}</span> | 
-                  Coordinates: <span className="text-accent">({coordinates.x}, {coordinates.y})</span>
+                  Active Mode: <span className="text-primary">{currentTool.toUpperCase()}</span> | 
+                  Grid Position: <span className="text-accent">({coordinates.x}, {coordinates.y})</span>
                 </div>
               </CardContent>
             </Card>
