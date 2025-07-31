@@ -8,34 +8,34 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Light mode: Clean NASA documentation and bright displays */
-    --background: 0 0% 98%;     /* Clean white background */
-    --foreground: 0 0% 10%;     /* Dark text for readability */
+    /* Light mode: Vibrant NASA mission control interface */
+    --background: 0 0% 99%;     /* Pure white background */
+    --foreground: 0 0% 8%;      /* Rich dark text */
 
-    --card: 0 0% 95%;           /* Light grey panels */
-    --card-foreground: 0 0% 15%;
+    --card: 0 0% 97%;           /* Bright white panels */
+    --card-foreground: 0 0% 12%;
 
-    --popover: 0 0% 98%;
-    --popover-foreground: 0 0% 10%;
+    --popover: 0 0% 99%;
+    --popover-foreground: 0 0% 8%;
 
-    --primary: 120 70% 35%;     /* NASA green (darker for light mode) */
-    --primary-foreground: 0 0% 98%;
+    --primary: 120 85% 42%;     /* Vibrant NASA green */
+    --primary-foreground: 0 0% 99%;
 
-    --secondary: 0 0% 88%;      /* Light grey controls */
-    --secondary-foreground: 0 0% 20%;
+    --secondary: 200 30% 92%;   /* Subtle blue-grey controls */
+    --secondary-foreground: 0 0% 15%;
 
-    --muted: 0 0% 92%;          /* Very light grey */
-    --muted-foreground: 0 0% 40%;
+    --muted: 0 0% 96%;          /* Light muted background */
+    --muted-foreground: 0 0% 35%;
 
-    --accent: 45 85% 45%;       /* Amber warnings (darker for contrast) */
-    --accent-foreground: 0 0% 98%;
+    --accent: 45 95% 52%;       /* Bright amber accents */
+    --accent-foreground: 0 0% 8%;
 
-    --destructive: 0 75% 40%;   /* Red alerts (darker) */
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 85% 48%;   /* Vibrant red alerts */
+    --destructive-foreground: 0 0% 99%;
 
-    --border: 0 0% 80%;         /* Subtle borders */
-    --input: 0 0% 95%;          /* Light input fields */
-    --ring: 120 70% 35%;        /* Focus rings */
+    --border: 0 0% 88%;         /* Crisp borders */
+    --input: 0 0% 98%;          /* Clean input fields */
+    --ring: 120 85% 42%;        /* Bright focus rings */
 
     /* Mission Control Light Mode */
     --console-green: 120 70% 35%;
