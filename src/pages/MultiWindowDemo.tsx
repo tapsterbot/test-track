@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { ArrowLeft, ExternalLink, Monitor, Satellite, Zap, Eye } from "lucide-react";
-import { Link } from "react-router-dom";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ExternalLink, Monitor, Satellite, Zap, Eye } from "lucide-react";
+import { ModuleHeader } from "@/components/ModuleHeader";
 
 interface WindowData {
   id: string;
@@ -228,38 +227,11 @@ const MultiWindowDemo = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex justify-between items-center mb-4 text-xs nasa-display">
-            <div className="flex gap-6">
-              <span className="text-primary">◉ MULTI-VIEWPORT ACTIVE</span>
-              <span className="text-accent">⚠ WINDOWS OPEN: {activeWindows}</span>
-              <span className="text-foreground">□ SECURITY LEVEL: DELTA</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-primary">MODULE 015 ACTIVE</div>
-              <ThemeToggle />
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link to="/">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <ArrowLeft className="h-4 w-4" />
-                  Return to Mission Control
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-2xl font-black text-primary font-futura tracking-wide">MULTI-WINDOW DEMO</h1>
-                <p className="text-sm text-muted-foreground font-futura">Parallel Universe Command Centers</p>
-              </div>
-            </div>
-            <Badge variant="destructive" className="font-futura">ADVANCED</Badge>
-          </div>
-        </div>
-      </div>
+      <ModuleHeader 
+        moduleNumber="015"
+        title="MULTI-WINDOW DEMO"
+        description="PARALLEL UNIVERSE COMMAND CENTERS"
+      />
 
       <div className="container mx-auto px-4 py-8">
         {/* Mission Summary */}

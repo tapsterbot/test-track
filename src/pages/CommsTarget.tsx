@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Satellite, RadioIcon, ArrowLeft, MessageSquare } from "lucide-react";
-import { Link } from "react-router-dom";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { Satellite, RadioIcon, MessageSquare } from "lucide-react";
+import { ModuleHeader } from "@/components/ModuleHeader";
 
 interface MessageLog {
   id: string;
@@ -117,40 +116,11 @@ const CommsTarget = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="nasa-panel border-b-2 border-primary bg-card">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex justify-between items-center mb-4 text-xs nasa-display">
-            <div className="flex gap-6">
-              <span className="text-primary">◉ COMMUNICATIONS TARGET ACTIVE</span>
-              <span className={`${getStatusColor(connectionStatus)}`}>
-                ⚡ STATUS: {connectionStatus.toUpperCase()}
-              </span>
-              <span className="text-foreground">□ PROTOCOL: PostMessage API</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-primary">COMMS MODULE TARGET</div>
-              <ThemeToggle />
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link to="/multi-window-demo">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Control Center
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-2xl font-black text-primary font-futura tracking-wide">COMMUNICATIONS TARGET</h1>
-                <p className="text-sm text-muted-foreground font-futura">Same-Origin Message Receiver</p>
-              </div>
-            </div>
-            <Badge variant="secondary" className="font-futura">TARGET WINDOW</Badge>
-          </div>
-        </div>
-      </div>
+      <ModuleHeader 
+        moduleNumber="TARGET"
+        title="COMMUNICATIONS TARGET"
+        description="SAME-ORIGIN MESSAGE RECEIVER"
+      />
 
       <div className="container mx-auto px-4 py-8">
         {/* Mission Summary */}
