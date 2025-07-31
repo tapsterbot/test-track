@@ -126,7 +126,7 @@ const ModalDemo = () => {
               <div className="flex items-center gap-3">
                 <FileText className="w-5 h-5 text-primary" />
                 <div>
-                  <CardTitle className="font-futura text-lg">Dialog Modals</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">Dialog Modals</CardTitle>
                   <CardDescription>Standard dialog interfaces</CardDescription>
                 </div>
               </div>
@@ -231,7 +231,7 @@ const ModalDemo = () => {
               <div className="flex items-center gap-3">
                 <AlertTriangle className="w-5 h-5 text-destructive" />
                 <div>
-                  <CardTitle className="font-futura text-lg">Alert Dialogs</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">Alert Dialogs</CardTitle>
                   <CardDescription>Critical system warnings</CardDescription>
                 </div>
               </div>
@@ -306,7 +306,7 @@ const ModalDemo = () => {
               <div className="flex items-center gap-3">
                 <Settings className="w-5 h-5 text-accent" />
                 <div>
-                  <CardTitle className="font-futura text-lg">Tooltips & Popovers</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">Tooltips & Popovers</CardTitle>
                   <CardDescription>Information overlays and hints</CardDescription>
                 </div>
               </div>
@@ -385,7 +385,7 @@ const ModalDemo = () => {
               <div className="flex items-center gap-3">
                 <Users className="w-5 h-5 text-primary" />
                 <div>
-                  <CardTitle className="font-futura text-lg">Control Panel</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">Control Panel</CardTitle>
                   <CardDescription>System reset and actions</CardDescription>
                 </div>
               </div>
@@ -423,7 +423,7 @@ const ModalDemo = () => {
               <div className="flex items-center gap-3">
                 <Activity className="w-5 h-5 text-primary" />
                 <div>
-                  <CardTitle className="font-futura text-lg">Mission Summary</CardTitle>
+                  <CardTitle className="font-futura tracking-wide text-primary">Mission Summary</CardTitle>
                   <CardDescription>Modal interaction analytics</CardDescription>
                 </div>
               </div>
@@ -456,7 +456,23 @@ const ModalDemo = () => {
                     <span className="text-foreground">□ INTERACTION TRACKING ENABLED</span>
                   </div>
                 </div>
-              </div>
+                </div>
+                
+                <div className="mt-6 p-4 bg-muted rounded nasa-panel">
+                  <h4 className="font-semibold text-accent mb-2">TEST PROTOCOLS:</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
+                    <div>
+                      <p>• Test modal opening and closing functionality</p>
+                      <p>• Verify alert dialog confirmation/cancellation</p>
+                      <p>• Test tooltip display on hover interactions</p>
+                    </div>
+                    <div>
+                      <p>• Check modal form submission and validation</p>
+                      <p>• Test keyboard navigation and focus management</p>
+                      <p>• Verify overlay backdrop click behavior</p>
+                    </div>
+                  </div>
+                </div>
             </CardContent>
           </Card>
         </div>

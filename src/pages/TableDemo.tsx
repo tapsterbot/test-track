@@ -467,6 +467,22 @@ const TableDemo = () => {
                     <div className="text-accent text-xs">⚠ REAL-TIME SYNC ACTIVE</div>
                   </div>
                 </div>
+                
+                <div className="mt-6 p-4 bg-muted rounded nasa-panel">
+                  <h4 className="font-semibold text-accent mb-2">TEST PROTOCOLS:</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
+                    <div>
+                      <p>• Test table sorting functionality by clicking column headers</p>
+                      <p>• Verify search functionality filters results correctly</p>
+                      <p>• Test row selection checkboxes and select all</p>
+                    </div>
+                    <div>
+                      <p>• Test pagination controls and navigation</p>
+                      <p>• Verify data extraction for selected rows</p>
+                      <p>• Check responsive behavior and data display</p>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>

@@ -291,6 +291,22 @@ const CheckboxRadioDemo = () => {
                   </ul>
                 </div>
               </div>
+              
+              <div className="mt-6 p-4 bg-muted rounded nasa-panel">
+                <h4 className="font-semibold text-accent mb-2">TEST PROTOCOLS:</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground">
+                  <div>
+                    <p>• Toggle each checkbox and verify state tracking</p>
+                    <p>• Test radio button selection exclusivity</p>
+                    <p>• Verify label click functionality</p>
+                  </div>
+                  <div>
+                    <p>• Check form accessibility with keyboard navigation</p>
+                    <p>• Test toast notifications for selection changes</p>
+                    <p>• Verify proper checkbox/radio styling</p>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
