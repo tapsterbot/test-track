@@ -190,14 +190,14 @@ const Index = () => {
       <div className="nasa-panel border-b-2 border-primary bg-card">
         <div className="container mx-auto px-4 py-3">
           {/* Mission Status Bar */}
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2 md:gap-0 text-xs nasa-display">
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-6">
+          <div className="mb-4 text-xs nasa-display">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 mb-4 md:mb-0">
               <span className="text-primary">◉ SYSTEM OPERATIONAL</span>
               <span className="text-accent">⚠ TELEMETRY ACTIVE</span>
               <span className="text-foreground">□ MISSION TIME: {currentTime.toLocaleTimeString()}</span>
+              <div className="text-primary">CONSOLE 001 READY</div>
             </div>
-            <div className="flex items-center justify-between sm:justify-end gap-4">
-              <div className="text-primary text-xs">CONSOLE 001 READY</div>
+            <div className="flex justify-end">
               <ThemeToggle />
             </div>
           </div>
