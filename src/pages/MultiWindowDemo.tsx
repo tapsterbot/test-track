@@ -228,7 +228,7 @@ const MultiWindowDemo = () => {
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader 
-        moduleNumber="015"
+        moduleNumber="014"
         title="MULTI-WINDOW DEMO"
         description="PARALLEL UNIVERSE COMMAND CENTERS"
       />

@@ -157,7 +157,7 @@ const DynamicDemo = () => {
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader 
-        moduleNumber="013"
+        moduleNumber="012"
         title="DYNAMIC CONTENT DEMO"
         description="REAL-TIME ALIEN INTELLIGENCE MONITORING"
       />
