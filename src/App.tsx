@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import ButtonDemo from "./pages/ButtonDemo";
 import TextInputDemo from "./pages/TextInputDemo";
 import LoginDemo from "./pages/LoginDemo";
+import CheckboxRadioDemo from "./pages/CheckboxRadioDemo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/button-demo" element={<ButtonDemo />} />
           <Route path="/text-input-demo" element={<TextInputDemo />} />
           <Route path="/login-demo" element={<LoginDemo />} />
+          <Route path="/checkbox-radio-demo" element={<CheckboxRadioDemo />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
