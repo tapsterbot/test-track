@@ -240,7 +240,7 @@ const ModalDemo = () => {
           <Card className="nasa-panel">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-3">
-                <AlertTriangle className="w-5 h-5 text-destructive" />
+                <AlertTriangle className="w-5 h-5 text-primary" />
                 <div>
                   <CardTitle className="font-futura tracking-wide text-primary">Alert Dialogs</CardTitle>
                   <CardDescription>Critical system warnings</CardDescription>
@@ -315,7 +315,7 @@ const ModalDemo = () => {
           <Card className="nasa-panel">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-3">
-                <Settings className="w-5 h-5 text-accent" />
+                <Settings className="w-5 h-5 text-primary" />
                 <div>
                   <CardTitle className="font-futura tracking-wide text-primary">Tooltips & Popovers</CardTitle>
                   <CardDescription>Information overlays and hints</CardDescription>
