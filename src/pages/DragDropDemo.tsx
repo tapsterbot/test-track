@@ -16,7 +16,7 @@ interface DraggableItem {
 
 const DragDropDemo = () => {
   const [items, setItems] = useState<DraggableItem[]>([
-    { id: '1', name: 'Shadow Protocol', type: 'entity', icon: Eye },
+    { id: '1', name: 'Flux Capacitor', type: 'entity', icon: Eye },
     { id: '2', name: 'Codex Fragment', type: 'anomaly', icon: Shield },
     { id: '3', name: 'Temporal Echo', type: 'artifact', icon: Clock },
     { id: '4', name: 'Neural Interface', type: 'component', icon: Zap },
