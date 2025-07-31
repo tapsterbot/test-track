@@ -311,7 +311,7 @@ const Index = () => {
                   <div className={`text-xs font-futura tracking-wide ${
                     demo.implemented ? 'text-primary' : 'text-muted-foreground'
                   }`}>
-                    {demo.implemented ? '◉ READY FOR DEPLOYMENT' : '🔧 UNDER DEVELOPMENT'}
+                    {demo.implemented ? '◉ READY FOR DEPLOYMENT' : '⬛ CLASSIFIED'}
                   </div>
                 </div>
               </div>
