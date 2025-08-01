@@ -17,7 +17,8 @@ export default function VehicleSimulator() {
     altitude: 0,
     battery: 100,
     temperature: 25,
-    position: { x: 0, y: 0, z: 0 }
+    position: { x: -40, y: 1, z: -40 },
+    objectiveComplete: false
   });
 
   const handleStartSimulation = () => {
@@ -37,7 +38,8 @@ export default function VehicleSimulator() {
       altitude: 0,
       battery: 100,
       temperature: 25,
-      position: { x: -40, y: 1, z: -40 }
+      position: { x: -40, y: 1, z: -40 },
+      objectiveComplete: false
     });
   };
 
@@ -190,6 +192,32 @@ export default function VehicleSimulator() {
                         <div className="flex justify-between gap-4">
                           <span>Z:</span>
                           <span className="text-primary">{vehicleData.position.z.toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Bottom Left - Target Status */}
+                    <div className="absolute bottom-4 left-4 bg-black/80 border border-primary/30 rounded p-3 text-white">
+                      <div className="text-xs font-futura text-primary mb-2 uppercase tracking-wider">TARGET STATUS</div>
+                      <div className="space-y-1 text-xs font-mono">
+                        <div className="flex justify-between gap-4">
+                          <span>STATUS:</span>
+                          <span className={vehicleData.objectiveComplete ? 'text-green-400' : 'text-yellow-400'}>
+                            {vehicleData.objectiveComplete ? 'TARGET REACHED' : 'EN ROUTE'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <span>TARGET:</span>
+                          <span className="text-primary">ZONE ALPHA</span>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <span>DISTANCE:</span>
+                          <span className="text-primary">
+                            {Math.sqrt(
+                              Math.pow(vehicleData.position.x - 40, 2) + 
+                              Math.pow(vehicleData.position.z - 40, 2)
+                            ).toFixed(1)}m
+                          </span>
                         </div>
                       </div>
                     </div>

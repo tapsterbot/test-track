@@ -12,7 +12,7 @@ interface VehicleData {
   battery: number;
   temperature: number;
   position: { x: number; y: number; z: number };
-  objectiveComplete?: boolean;
+  objectiveComplete: boolean;
 }
 
 interface SimpleSimulatorProps {
