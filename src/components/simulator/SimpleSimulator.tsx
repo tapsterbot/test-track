@@ -54,7 +54,7 @@ function HiddenQRCode() {
   if (!qrTexture) return null;
 
   return (
-    <mesh position={[0, 0, -2]} rotation={[0, 0, 0]}>
+    <mesh position={[0, -2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[104, 104]} />
       <meshLambertMaterial
         map={qrTexture} 
@@ -70,56 +70,56 @@ function Ground() {
   return (
     <>
       {/* Floor */}
-      <mesh rotation={[0, 0, 0]} position={[0, 0, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
         <planeGeometry args={[120, 120]} />
         <meshLambertMaterial color="#E5E7EB" />
       </mesh>
       
       {/* Maze walls - simple child-friendly layout */}
       {/* Outer walls */}
-      <mesh position={[0, -60, 2]}>
-        <boxGeometry args={[120, 2, 4]} />
+      <mesh position={[0, 2, -60]}>
+        <boxGeometry args={[120, 4, 2]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[0, 60, 2]}>
-        <boxGeometry args={[120, 2, 4]} />
+      <mesh position={[0, 2, 60]}>
+        <boxGeometry args={[120, 4, 2]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[-60, 0, 2]}>
-        <boxGeometry args={[2, 120, 4]} />
+      <mesh position={[-60, 2, 0]}>
+        <boxGeometry args={[2, 4, 120]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[60, 0, 2]}>
-        <boxGeometry args={[2, 120, 4]} />
+      <mesh position={[60, 2, 0]}>
+        <boxGeometry args={[2, 4, 120]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       
       {/* Simple maze walls - adjusted for bottom-left to top-right path */}
-      <mesh position={[-20, 20, 2]}>
-        <boxGeometry args={[2, 40, 4]} />
+      <mesh position={[-20, 2, 20]}>
+        <boxGeometry args={[2, 4, 40]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[20, -10, 2]}>
-        <boxGeometry args={[2, 60, 4]} />
+      <mesh position={[20, 2, -10]}>
+        <boxGeometry args={[2, 4, 60]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[0, 40, 2]}>
-        <boxGeometry args={[40, 2, 4]} />
+      <mesh position={[0, 2, 40]}>
+        <boxGeometry args={[40, 4, 2]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[40, -20, 2]}>
-        <boxGeometry args={[40, 2, 4]} />
+      <mesh position={[40, 2, -20]}>
+        <boxGeometry args={[40, 4, 2]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       
       {/* Start marker (bottom left) */}
-      <mesh position={[-40, 40, 0.5]}>
+      <mesh position={[-40, 0.5, 40]}>
         <cylinderGeometry args={[3, 3, 1]} />
         <meshLambertMaterial color="#10B981" />
       </mesh>
       
       {/* End marker (top right) */}
-      <mesh position={[40, -40, 0.5]}>
+      <mesh position={[40, 0.5, -40]}>
         <cylinderGeometry args={[3, 3, 1]} />
         <meshLambertMaterial color="#EF4444" />
       </mesh>
@@ -146,106 +146,106 @@ function SimpleVehicle({ position, rotation }: {
   return (
     <group ref={meshRef}>
       {/* Main Roomba body - circular and flat */}
-      <mesh position={[0, 0, 1]}>
+      <mesh position={[0, 1, 0]}>
         <cylinderGeometry args={[4, 4, 1.5]} />
         <meshLambertMaterial color="#2D3748" />
       </mesh>
       
       {/* Top cover - slightly smaller circle */}
-      <mesh position={[0, 0, 1.8]}>
+      <mesh position={[0, 1.8, 0]}>
         <cylinderGeometry args={[3.8, 3.8, 0.2]} />
         <meshLambertMaterial color="#4A5568" />
       </mesh>
       
       {/* Center button */}
-      <mesh position={[0, 0, 2]}>
+      <mesh position={[0, 2, 0]}>
         <cylinderGeometry args={[0.8, 0.8, 0.3]} />
         <meshLambertMaterial color="#1A202C" />
       </mesh>
       
       {/* Power button LED */}
-      <mesh position={[0, 0, 2.2]}>
+      <mesh position={[0, 2.2, 0]}>
         <sphereGeometry args={[0.2]} />
         <meshLambertMaterial color="#48BB78" />
       </mesh>
       
       {/* Front sensor bar */}
-      <mesh position={[0, 3.5, 1.5]}>
-        <boxGeometry args={[3, 0.6, 0.4]} />
+      <mesh position={[0, 1.5, 3.5]}>
+        <boxGeometry args={[3, 0.4, 0.6]} />
         <meshLambertMaterial color="#1A202C" />
       </mesh>
       
       {/* Sensor cameras/IR sensors */}
-      <mesh position={[-1, 3.7, 1.5]}>
+      <mesh position={[-1, 1.5, 3.7]}>
         <sphereGeometry args={[0.15]} />
         <meshLambertMaterial color="#2B6CB0" />
       </mesh>
-      <mesh position={[0, 3.7, 1.5]}>
+      <mesh position={[0, 1.5, 3.7]}>
         <sphereGeometry args={[0.15]} />
         <meshLambertMaterial color="#2B6CB0" />
       </mesh>
-      <mesh position={[1, 3.7, 1.5]}>
+      <mesh position={[1, 1.5, 3.7]}>
         <sphereGeometry args={[0.15]} />
         <meshLambertMaterial color="#2B6CB0" />
       </mesh>
       
       {/* Side sensors */}
-      <mesh position={[-3.7, 0, 1.5]}>
+      <mesh position={[-3.7, 1.5, 0]}>
         <sphereGeometry args={[0.12]} />
         <meshLambertMaterial color="#2B6CB0" />
       </mesh>
-      <mesh position={[3.7, 0, 1.5]}>
+      <mesh position={[3.7, 1.5, 0]}>
         <sphereGeometry args={[0.12]} />
         <meshLambertMaterial color="#2B6CB0" />
       </mesh>
       
       {/* Main drive wheels (hidden inside but we'll show them slightly) */}
-      <mesh position={[-1.5, 0, 0.3]} rotation={[Math.PI / 2, 0, 0]}>
+      <mesh position={[-1.5, 0.3, 0]} rotation={[0, 0, Math.PI / 2]}>
         <cylinderGeometry args={[0.8, 0.8, 0.6]} />
         <meshLambertMaterial color="#1A202C" />
       </mesh>
-      <mesh position={[1.5, 0, 0.3]} rotation={[Math.PI / 2, 0, 0]}>
+      <mesh position={[1.5, 0.3, 0]} rotation={[0, 0, Math.PI / 2]}>
         <cylinderGeometry args={[0.8, 0.8, 0.6]} />
         <meshLambertMaterial color="#1A202C" />
       </mesh>
       
       {/* Front caster wheel */}
-      <mesh position={[0, 2.5, 0.2]}>
+      <mesh position={[0, 0.2, 2.5]}>
         <sphereGeometry args={[0.4]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       
       {/* Back caster wheel */}
-      <mesh position={[0, -2.5, 0.2]}>
+      <mesh position={[0, 0.2, -2.5]}>
         <sphereGeometry args={[0.4]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       
       {/* Charging contacts */}
-      <mesh position={[-2, -3, 0.1]}>
+      <mesh position={[-2, 0.1, -3]}>
         <cylinderGeometry args={[0.2, 0.2, 0.1]} />
         <meshLambertMaterial color="#F6AD55" />
       </mesh>
-      <mesh position={[2, -3, 0.1]}>
+      <mesh position={[2, 0.1, -3]}>
         <cylinderGeometry args={[0.2, 0.2, 0.1]} />
         <meshLambertMaterial color="#F6AD55" />
       </mesh>
       
       
       {/* Status LED strip */}
-      <mesh position={[0, 1.5, 2]}>
-        <boxGeometry args={[2, 0.3, 0.1]} />
+      <mesh position={[0, 2, 1.5]}>
+        <boxGeometry args={[2, 0.1, 0.3]} />
         <meshLambertMaterial color="#4299E1" />
       </mesh>
       
       {/* Roomba branding area */}
-      <mesh position={[0, -1, 1.9]}>
+      <mesh position={[0, 1.9, -1]}>
         <cylinderGeometry args={[1.2, 1.2, 0.05]} />
         <meshLambertMaterial color="#E2E8F0" />
       </mesh>
       
       {/* WiFi indicator */}
-      <mesh position={[1.5, 1, 2]}>
+      <mesh position={[1.5, 2, 1]}>
         <sphereGeometry args={[0.1]} />
         <meshLambertMaterial color="#38B2AC" />
       </mesh>
@@ -267,20 +267,20 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
   // Initialize vehicle only once
   if (!vehicleRef.current) {
     vehicleRef.current = {
-      position: new THREE.Vector3(-40, 40, 1),
+      position: new THREE.Vector3(-40, 1, 40),
       rotation: new THREE.Euler(0, 0, 0),
       speed: 0,
       update: function(controls: any) {
         const deltaTime = 1/60;
         const walls = [
-          { x: 0, y: -60, width: 120, height: 2 },
-          { x: 0, y: 60, width: 120, height: 2 },
-          { x: -60, y: 0, width: 2, height: 120 },
-          { x: 60, y: 0, width: 2, height: 120 },
-          { x: -20, y: 20, width: 2, height: 40 },
-          { x: 20, y: -10, width: 2, height: 60 },
-          { x: 0, y: 40, width: 40, height: 2 },
-          { x: 40, y: -20, width: 40, height: 2 },
+          { x: 0, z: -60, width: 120, height: 2 },
+          { x: 0, z: 60, width: 120, height: 2 },
+          { x: -60, z: 0, width: 2, height: 120 },
+          { x: 60, z: 0, width: 2, height: 120 },
+          { x: -20, z: 20, width: 2, height: 40 },
+          { x: 20, z: -10, width: 2, height: 60 },
+          { x: 0, z: 40, width: 40, height: 2 },
+          { x: 40, z: -20, width: 40, height: 2 },
         ];
         
         // Movement logic
@@ -293,13 +293,13 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
         }
         
         if (controls.left && Math.abs(this.speed) > 0.1) {
-          this.rotation.z += 0.02;
+          this.rotation.y += 0.02;
         }
         if (controls.right && Math.abs(this.speed) > 0.1) {
-          this.rotation.z -= 0.02;
+          this.rotation.y -= 0.02;
         }
         
-        const direction = new THREE.Vector3(0, 1, 0);
+        const direction = new THREE.Vector3(0, 0, -1);
         direction.applyEuler(this.rotation);
         direction.multiplyScalar(this.speed * deltaTime);
         
@@ -311,13 +311,13 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
         for (const wall of walls) {
           const wallLeft = wall.x - wall.width / 2;
           const wallRight = wall.x + wall.width / 2;
-          const wallTop = wall.y + wall.height / 2;
-          const wallBottom = wall.y - wall.height / 2;
+          const wallTop = wall.z - wall.height / 2;
+          const wallBottom = wall.z + wall.height / 2;
           
           if (newPosition.x + robotRadius > wallLeft && 
               newPosition.x - robotRadius < wallRight &&
-              newPosition.y + robotRadius > wallBottom && 
-              newPosition.y - robotRadius < wallTop) {
+              newPosition.z + robotRadius > wallTop && 
+              newPosition.z - robotRadius < wallBottom) {
             collision = true;
             break;
           }
@@ -329,13 +329,13 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
           this.speed = 0;
         }
         
-        this.position.z = 1;
+        this.position.y = 1;
       },
       getSpeed: function() {
         return Math.abs(this.speed);
       },
       reset: function() {
-        this.position.set(-40, 40, 1);
+        this.position.set(-40, 1, 40);
         this.rotation.set(0, 0, 0);
         this.speed = 0;
       }
@@ -355,15 +355,15 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
       
       const distanceToEnd = Math.sqrt(
         Math.pow(vehicleRef.current.position.x - 40, 2) + 
-        Math.pow(vehicleRef.current.position.y - (-40), 2)
+        Math.pow(vehicleRef.current.position.z - (-40), 2)
       );
       
       const objectiveComplete = distanceToEnd < 8;
       
       onVehicleUpdate({
         speed: vehicleRef.current.getSpeed(),
-        heading: (vehicleRef.current.rotation.z * 180 / Math.PI) % 360,
-        altitude: vehicleRef.current.position.z,
+        heading: (vehicleRef.current.rotation.y * 180 / Math.PI) % 360,
+        altitude: vehicleRef.current.position.y,
         battery: 95,
         temperature: 25,
         position: { 
@@ -398,9 +398,8 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
     <Canvas
       style={{ width: '100%', height: '100%', display: 'block' }}
       camera={{ 
-        position: [0, 0, 80], 
-        fov: 60,
-        up: [0, 0, 1]
+        position: [0, 80, 80], 
+        fov: 60 
       }}
     >
       <SceneContent {...props} />
