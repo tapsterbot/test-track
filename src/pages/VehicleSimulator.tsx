@@ -3,7 +3,7 @@ import { ModuleHeader } from "@/components/ModuleHeader";
 import { SystemPanel } from "@/components/apollo/SystemPanel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { SimulatorEngine } from "@/components/simulator/SimulatorEngine";
+import { SimpleSimulator } from "@/components/simulator/SimpleSimulator";
 import { MissionHUD } from "@/components/simulator/MissionHUD";
 import { ControlPanel } from "@/components/simulator/ControlPanel";
 import { Play, Pause, RotateCcw } from "lucide-react";
@@ -140,7 +140,7 @@ export default function VehicleSimulator() {
           <div className="lg:col-span-3">
             <SystemPanel title="TERRAIN VIEWPORT" className="h-[600px] p-2">
               <div className="relative w-full h-full rounded-sm overflow-hidden bg-black">
-                <SimulatorEngine
+                <SimpleSimulator
                   isActive={isSimulationActive}
                   onVehicleUpdate={setVehicleData}
                 />
