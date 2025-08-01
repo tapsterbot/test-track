@@ -21,7 +21,7 @@ import CanvasDemo from "./pages/CanvasDemo";
 import MultiWindowDemo from "./pages/MultiWindowDemo";
 import AdvancedButtonDemo from "./pages/AdvancedButtonDemo";
 import CommsTarget from "./pages/CommsTarget";
-import StarshipControlDemo from "./pages/StarshipControlDemo";
+import { QuantumBridge } from "./pages/QuantumBridge";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,7 +51,7 @@ const App = () => (
           <Route path="/multi-window-demo" element={<MultiWindowDemo />} />
           <Route path="/advanced-button-demo" element={<AdvancedButtonDemo />} />
           <Route path="/comms-target" element={<CommsTarget />} />
-          <Route path="/starship-control-demo" element={<StarshipControlDemo />} />
+          <Route path="/starship-control-demo" element={<QuantumBridge />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
