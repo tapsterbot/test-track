@@ -42,9 +42,9 @@ export default function VehicleSimulator() {
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader
-        moduleNumber="VS-001"
-        title="VEHICLE SIMULATOR"
-        description="MARS ROVER TERRAIN NAVIGATION SYSTEM"
+        moduleNumber="RS-001"
+        title="ROBOT SIMULATOR"
+        description="AUTONOMOUS NAVIGATION TRAINING SYSTEM"
       />
 
       <div className="container mx-auto px-4 py-8">
@@ -55,17 +55,17 @@ export default function VehicleSimulator() {
               <Card className="nasa-panel">
                 <CardHeader>
                   <CardTitle className="text-lg font-futura text-primary">OBJECTIVE</CardTitle>
-                  <CardDescription>Mars surface exploration and terrain mapping</CardDescription>
+                  <CardDescription>Autonomous maze navigation challenge</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Navigate the Mars Rover across challenging terrain to collect geological samples and map surface features. 
-                    Monitor vehicle telemetry and maintain mission parameters within safe operating limits.
+                    Navigate the autonomous robot through a maze environment from the green start zone to the red target zone. 
+                    Use keyboard controls to guide the robot while avoiding walls and obstacles.
                   </p>
                   <div className="space-y-2 text-xs">
-                    <div>□ TERRAIN: Martian highlands with craters and rocky outcrops</div>
-                    <div>□ VEHICLE: All-terrain rover with 6-wheel suspension</div>
-                    <div>□ MISSION: Explore 5km² area and reach designated waypoints</div>
+                    <div>□ ROBOT: Roomba-style autonomous vacuum robot</div>
+                    <div>□ ENVIRONMENT: Indoor maze with walls and obstacles</div>
+                    <div>□ MISSION: Navigate from start (green) to target (red) zone</div>
                   </div>
                 </CardContent>
               </Card>
@@ -141,7 +141,7 @@ export default function VehicleSimulator() {
             <div className="h-[600px] nasa-panel border-2 border-muted-foreground/30 rounded-sm overflow-hidden">
               <div className="px-4 pt-4 pb-2 border-b border-muted-foreground/20">
                 <h3 className="text-sm font-futura font-bold text-muted-foreground uppercase tracking-wider nasa-display">
-                  TERRAIN VIEWPORT
+                  MAZE VIEWPORT
                 </h3>
               </div>
               <div className="relative w-full h-[calc(100%-60px)] bg-black">
