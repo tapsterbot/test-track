@@ -342,7 +342,7 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
     };
   }
   
-  const controls = useSimpleControls();
+  const controls = useSimpleControls(isActive);
   
   // Handle reset when shouldReset changes
   useFrame(() => {
