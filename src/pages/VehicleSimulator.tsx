@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ModuleHeader } from "@/components/ModuleHeader";
 import { SystemPanel } from "@/components/apollo/SystemPanel";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { ControlPanel } from "@/components/simulator/ControlPanel";
 import { Play, Pause, RotateCcw } from "lucide-react";
 
 export default function VehicleSimulator() {
+  const simulatorRef = useRef<{ reset: () => void }>(null);
   const [isSimulationActive, setIsSimulationActive] = useState(false);
   const [vehicleData, setVehicleData] = useState({
     speed: 0,
@@ -29,13 +30,17 @@ export default function VehicleSimulator() {
 
   const handleResetSimulation = () => {
     setIsSimulationActive(false);
+    // Reset the 3D vehicle position
+    if (simulatorRef.current) {
+      simulatorRef.current.reset();
+    }
     setVehicleData({
       speed: 0,
       heading: 0,
       altitude: 0,
       battery: 100,
       temperature: 25,
-      position: { x: 0, y: 0, z: 0 }
+      position: { x: -40, y: 1, z: -40 } // Reset to start position
     });
   };
 
@@ -146,6 +151,7 @@ export default function VehicleSimulator() {
               </div>
               <div className="relative w-full h-[calc(100%-60px)] bg-black">
                 <SimpleSimulator
+                  ref={simulatorRef}
                   isActive={isSimulationActive}
                   onVehicleUpdate={setVehicleData}
                 />

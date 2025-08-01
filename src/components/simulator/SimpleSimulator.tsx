@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useImperativeHandle, forwardRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -19,6 +19,10 @@ interface VehicleData {
 interface SimpleSimulatorProps {
   isActive: boolean;
   onVehicleUpdate: (data: VehicleData) => void;
+}
+
+interface SimpleSimulatorRef {
+  reset: () => void;
 }
 
 // Simple maze ground
@@ -208,8 +212,11 @@ function SimpleVehicle({ position, rotation }: {
 }
 
 // Scene content
-function SceneContent({ isActive, onVehicleUpdate, controls }: SimpleSimulatorProps & { controls: any }) {
+function SceneContent({ isActive, onVehicleUpdate, controls, resetRef }: SimpleSimulatorProps & { controls: any; resetRef: React.MutableRefObject<(() => void) | undefined> }) {
   const vehicle = useSimpleVehicle();
+  
+  // Store reset function reference
+  resetRef.current = vehicle.reset;
   
   useFrame(() => {
     if (isActive) {
@@ -253,8 +260,17 @@ function SceneContent({ isActive, onVehicleUpdate, controls }: SimpleSimulatorPr
   );
 }
 
-export function SimpleSimulator(props: SimpleSimulatorProps) {
-  const controls = useSimpleControls(); // Move hook to main component
+export const SimpleSimulator = forwardRef<SimpleSimulatorRef, SimpleSimulatorProps>((props, ref) => {
+  const controls = useSimpleControls();
+  const vehicleResetRef = useRef<() => void>();
+
+  useImperativeHandle(ref, () => ({
+    reset: () => {
+      if (vehicleResetRef.current) {
+        vehicleResetRef.current();
+      }
+    }
+  }));
 
   return (
     <Canvas
@@ -264,7 +280,7 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
         fov: 60 
       }}
     >
-      <SceneContent {...props} controls={controls} />
+      <SceneContent {...props} controls={controls} resetRef={vehicleResetRef} />
       <OrbitControls 
         target={[0, 0, 0]}
         enablePan={true}
@@ -273,4 +289,4 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
       />
     </Canvas>
   );
-}
+});
