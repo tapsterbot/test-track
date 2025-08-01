@@ -1,4 +1,4 @@
-import { useRef, useImperativeHandle, forwardRef } from "react";
+import { useRef, useImperativeHandle, forwardRef, MutableRefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -212,7 +212,7 @@ function SimpleVehicle({ position, rotation }: {
 }
 
 // Scene content
-function SceneContent({ isActive, onVehicleUpdate, controls, resetRef }: SimpleSimulatorProps & { controls: any; resetRef: React.MutableRefObject<(() => void) | undefined> }) {
+function SceneContent({ isActive, onVehicleUpdate, controls, resetRef }: SimpleSimulatorProps & { controls: any; resetRef: MutableRefObject<(() => void) | undefined> }) {
   const vehicle = useSimpleVehicle();
   
   // Store reset function reference
