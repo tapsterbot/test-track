@@ -170,10 +170,6 @@ export default function VehicleSimulator() {
                           <span>HEADING:</span>
                           <span className="text-primary">{Math.abs(vehicleData.heading).toFixed(0)}°</span>
                         </div>
-                        <div className="flex justify-between gap-4">
-                          <span>ALTITUDE:</span>
-                          <span className="text-primary">{vehicleData.altitude.toFixed(1)} m</span>
-                        </div>
                       </div>
                     </div>
                     
