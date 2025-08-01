@@ -68,14 +68,14 @@ function Ground() {
         <meshLambertMaterial color="#374151" />
       </mesh>
       
-      {/* Start marker (top left) */}
-      <mesh position={[-40, 0.5, -40]}>
+      {/* Start marker (bottom left) */}
+      <mesh position={[-40, 0.5, 40]}>
         <cylinderGeometry args={[3, 3, 1]} />
         <meshLambertMaterial color="#10B981" />
       </mesh>
       
-      {/* End marker (bottom right) */}
-      <mesh position={[40, 0.5, 40]}>
+      {/* End marker (top right) */}
+      <mesh position={[40, 0.5, -40]}>
         <cylinderGeometry args={[3, 3, 1]} />
         <meshLambertMaterial color="#EF4444" />
       </mesh>
@@ -221,7 +221,7 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
   // Initialize vehicle only once
   if (!vehicleRef.current) {
     vehicleRef.current = {
-      position: new THREE.Vector3(-40, 1, -40),
+      position: new THREE.Vector3(-40, 1, 40),
       rotation: new THREE.Euler(0, 0, 0),
       speed: 0,
       update: function(controls: any) {
@@ -289,7 +289,7 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
         return Math.abs(this.speed);
       },
       reset: function() {
-        this.position.set(-40, 1, -40);
+        this.position.set(-40, 1, 40);
         this.rotation.set(0, 0, 0);
         this.speed = 0;
       }
@@ -309,7 +309,7 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
       
       const distanceToEnd = Math.sqrt(
         Math.pow(vehicleRef.current.position.x - 40, 2) + 
-        Math.pow(vehicleRef.current.position.z - 40, 2)
+        Math.pow(vehicleRef.current.position.z - (-40), 2)
       );
       
       const objectiveComplete = distanceToEnd < 8;

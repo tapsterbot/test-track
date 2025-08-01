@@ -17,7 +17,7 @@ export default function VehicleSimulator() {
     altitude: 0,
     battery: 100,
     temperature: 25,
-    position: { x: -40, y: 1, z: -40 },
+    position: { x: -40, y: 1, z: 40 },
     objectiveComplete: false
   });
 
@@ -38,7 +38,7 @@ export default function VehicleSimulator() {
       altitude: 0,
       battery: 100,
       temperature: 25,
-      position: { x: -40, y: 1, z: -40 },
+      position: { x: -40, y: 1, z: 40 },
       objectiveComplete: false
     });
   };
@@ -66,8 +66,8 @@ export default function VehicleSimulator() {
                     Navigate the robot through the maze to reach the red target zone.
                   </p>
                   <div className="space-y-2 text-xs">
-                    <div>□ START: Green circle (top left)</div>
-                    <div>□ TARGET: Red circle (bottom right)</div>
+                    <div>□ START: Green circle (bottom left)</div>
+                    <div>□ TARGET: Red circle (top right)</div>
                     <div>□ AVOID: Gray walls and obstacles</div>
                   </div>
                 </CardContent>
@@ -207,11 +207,11 @@ export default function VehicleSimulator() {
                         </div>
                         <div className="flex justify-between gap-4">
                           <span>DISTANCE:</span>
-                          <span className="text-primary">
-                            {Math.sqrt(
-                              Math.pow(vehicleData.position.x - 40, 2) + 
-                              Math.pow(vehicleData.position.z - 40, 2)
-                            ).toFixed(1)}m
+          <span className="text-primary">
+            {Math.sqrt(
+              Math.pow(vehicleData.position.x - 40, 2) + 
+              Math.pow(vehicleData.position.z - (-40), 2)
+            ).toFixed(1)}m
                           </span>
                         </div>
                       </div>
