@@ -54,9 +54,9 @@ function HiddenQRCode() {
   if (!qrTexture) return null;
 
   return (
-    <mesh position={[0, -3, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[80, 80]} />
-      <meshLambertMaterial 
+    <mesh position={[0, -2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[104, 104]} />
+      <meshLambertMaterial
         map={qrTexture} 
         transparent={false}
         side={THREE.DoubleSide}
