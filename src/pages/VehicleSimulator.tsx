@@ -46,7 +46,7 @@ export default function VehicleSimulator() {
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader
-        moduleNumber="VS-001"
+        moduleNumber="025"
         title="VEHICLE SIMULATOR"
         description="AUTONOMOUS NAVIGATION TRAINING"
       />
