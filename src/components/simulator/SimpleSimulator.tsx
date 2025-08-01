@@ -4,7 +4,7 @@ import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import QRCode from "qrcode";
 import { useSimpleVehicle } from "@/hooks/useSimpleVehicle";
-import { useSimpleControls } from "@/hooks/useSimpleControls";
+import { useMultiInput } from "@/hooks/useMultiInput";
 
 interface VehicleData {
   speed: number;
@@ -20,6 +20,12 @@ interface SimpleSimulatorProps {
   isActive: boolean;
   onVehicleUpdate: (data: VehicleData) => void;
   shouldReset?: boolean;
+  virtualJoystickControls?: {
+    forward: boolean;
+    backward: boolean;
+    left: boolean;
+    right: boolean;
+  };
 }
 
 // Hidden QR Code component
@@ -254,7 +260,7 @@ function SimpleVehicle({ position, rotation }: {
 }
 
 // Scene content
-function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulatorProps) {
+function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickControls }: SimpleSimulatorProps) {
   const vehicleRef = useRef<{
     position: THREE.Vector3;
     rotation: THREE.Euler;
@@ -342,7 +348,16 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
     };
   }
   
-  const controls = useSimpleControls(isActive);
+  const keyboardControls = useMultiInput();
+  
+  // Combine keyboard and virtual joystick controls
+  const controls = {
+    forward: (isActive && keyboardControls.forward) || (virtualJoystickControls?.forward || false),
+    backward: (isActive && keyboardControls.backward) || (virtualJoystickControls?.backward || false),
+    left: (isActive && keyboardControls.left) || (virtualJoystickControls?.left || false),
+    right: (isActive && keyboardControls.right) || (virtualJoystickControls?.right || false),
+    brake: isActive && keyboardControls.brake
+  };
   
   // Handle reset when shouldReset changes
   useFrame(() => {

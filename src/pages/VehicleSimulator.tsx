@@ -4,6 +4,7 @@ import { SystemPanel } from "@/components/apollo/SystemPanel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { SimpleSimulator } from "@/components/simulator/SimpleSimulator";
+import { VirtualJoystick } from "@/components/simulator/VirtualJoystick";
 import { MissionHUD } from "@/components/simulator/MissionHUD";
 import { ControlPanel } from "@/components/simulator/ControlPanel";
 import { Play, Pause, RotateCcw } from "lucide-react";
@@ -11,6 +12,12 @@ import { Play, Pause, RotateCcw } from "lucide-react";
 export default function VehicleSimulator() {
   const [isSimulationActive, setIsSimulationActive] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  const [virtualJoystickControls, setVirtualJoystickControls] = useState({
+    forward: false,
+    backward: false,
+    left: false,
+    right: false,
+  });
   const [vehicleData, setVehicleData] = useState({
     speed: 0,
     heading: 0,
@@ -153,6 +160,11 @@ export default function VehicleSimulator() {
                   key={resetKey}
                   isActive={isSimulationActive}
                   onVehicleUpdate={setVehicleData}
+                  virtualJoystickControls={virtualJoystickControls}
+                />
+                <VirtualJoystick
+                  isActive={isSimulationActive}
+                  onControlChange={setVirtualJoystickControls}
                 />
                 
                 {/* HUD Overlay */}
