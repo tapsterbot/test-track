@@ -180,13 +180,13 @@ export const TacticalDisplay = ({ redAlert, scannerData, className }: TacticalDi
         ref={canvasRef}
         width={300}
         height={300}
-        className="border border-primary/30 bg-card/20 rounded-lg backdrop-blur-sm"
+        className="w-full h-full border border-primary/30 bg-card/20 rounded-lg backdrop-blur-sm"
       />
-      <div className="absolute bottom-2 left-2 text-xs text-primary font-mono bg-background/80 px-2 py-1 rounded">
-        TACTICAL DISPLAY
+      <div className="absolute bottom-1 left-1 text-xs text-primary font-mono bg-background/80 px-1 py-0.5 rounded">
+        TACTICAL
       </div>
-      <div className="absolute top-2 right-2 text-xs text-accent font-mono bg-background/80 px-2 py-1 rounded">
-        {redAlert ? 'COMBAT MODE' : 'SCANNING'}
+      <div className="absolute top-1 right-1 text-xs text-accent font-mono bg-background/80 px-1 py-0.5 rounded">
+        {redAlert ? 'COMBAT' : 'SCAN'}
       </div>
     </div>
   );

@@ -504,42 +504,13 @@ export default function StarshipControlDemo() {
                 </div>
               </div>
               
-              {/* Unified Main Canvas */}
-              <div className="relative bg-black/50 rounded border border-primary/30 overflow-hidden" style={{ height: 'calc(100% - 40px)' }}>
-                <canvas
-                  ref={canvasRef}
-                  width={600}
-                  height={400}
+              {/* Tactical Display Component */}
+              <div className="relative h-full">
+                <TacticalDisplay 
+                  redAlert={redAlert} 
+                  scannerData={scannerData}
                   className="w-full h-full"
                 />
-                
-                {/* Overlay Info */}
-                <div className="absolute top-2 left-2 space-y-1">
-                  <div className="bg-black/50 px-1 py-0.5 rounded text-xs font-mono text-primary">
-                    SECTOR: 7-ALPHA
-                  </div>
-                  <div className="bg-black/50 px-1 py-0.5 rounded text-xs font-mono text-primary">
-                    HDG: 045.7°
-                  </div>
-                  <div className="bg-black/50 px-1 py-0.5 rounded text-xs font-mono text-primary">
-                    WARP: {warpCore > 50 ? 'RDY' : 'CHG'}
-                  </div>
-                </div>
-                
-                {/* Scanner Data */}
-                <div className="absolute top-2 right-2 space-y-1">
-                  {scannerData.slice(-2).map((contact, i) => (
-                    <div key={contact.id} className="bg-black/50 px-1 py-0.5 rounded text-xs font-mono flex items-center gap-1">
-                      <div className={`w-1.5 h-1.5 rounded-full ${
-                        contact.type === 'friendly' ? 'bg-green-400' : 
-                        contact.type === 'hostile' ? 'bg-red-400' : 'bg-yellow-400'
-                      }`} />
-                      <span className="text-primary text-xs">
-                        {contact.type.charAt(0).toUpperCase()}-{contact.distance}K
-                      </span>
-                    </div>
-                  ))}
-                </div>
               </div>
             </Card>
           </div>
