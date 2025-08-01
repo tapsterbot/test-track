@@ -17,7 +17,7 @@ export default function VehicleSimulator() {
     altitude: 0,
     battery: 100,
     temperature: 25,
-    position: { x: -40, y: 1, z: 40 },
+    position: { x: -40, y: 40, z: 1 },
     objectiveComplete: false
   });
 
@@ -38,7 +38,7 @@ export default function VehicleSimulator() {
       altitude: 0,
       battery: 100,
       temperature: 25,
-      position: { x: -40, y: 1, z: 40 },
+      position: { x: -40, y: 40, z: 1 },
       objectiveComplete: false
     });
   };
@@ -211,7 +211,7 @@ export default function VehicleSimulator() {
           <span className="text-primary">
             {Math.sqrt(
               Math.pow(vehicleData.position.x - 40, 2) + 
-              Math.pow(vehicleData.position.z - (-40), 2)
+              Math.pow(vehicleData.position.y - (-40), 2)
             ).toFixed(1)}m
                           </span>
                         </div>
