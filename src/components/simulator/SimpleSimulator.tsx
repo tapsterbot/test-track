@@ -113,14 +113,14 @@ function Ground() {
       </mesh>
       
       {/* Start marker (bottom left) */}
-      <mesh position={[-40, 0.2, 40]}>
-        <cylinderGeometry args={[6, 6, 0.4]} />
+      <mesh position={[-40, 0.05, 40]}>
+        <cylinderGeometry args={[6, 6, 0.1]} />
         <meshLambertMaterial color="#10B981" />
       </mesh>
       
       {/* End marker (top right) */}
-      <mesh position={[40, 0.2, -40]}>
-        <cylinderGeometry args={[6, 6, 0.4]} />
+      <mesh position={[40, 0.05, -40]}>
+        <cylinderGeometry args={[6, 6, 0.1]} />
         <meshLambertMaterial color="#EF4444" />
       </mesh>
       
