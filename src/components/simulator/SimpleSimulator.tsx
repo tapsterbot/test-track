@@ -64,70 +64,110 @@ function SimpleVehicle({ position, rotation }: {
 
   return (
     <group ref={meshRef}>
-      {/* Main cooler body - igloo shaped */}
-      <mesh position={[0, 2, 0]}>
-        <boxGeometry args={[20, 8, 25]} />
+      {/* Truck cab */}
+      <mesh position={[0, 4, -8]}>
+        <boxGeometry args={[12, 6, 8]} />
+        <meshLambertMaterial color="#FFFFFF" />
+      </mesh>
+      
+      {/* Windshield */}
+      <mesh position={[0, 6, -12.5]}>
+        <boxGeometry args={[10, 4, 1]} />
+        <meshLambertMaterial color="#60A5FA" transparent opacity={0.7} />
+      </mesh>
+      
+      {/* Side windows */}
+      <mesh position={[-6.2, 5, -8]}>
+        <boxGeometry args={[0.5, 3, 6]} />
+        <meshLambertMaterial color="#60A5FA" transparent opacity={0.7} />
+      </mesh>
+      <mesh position={[6.2, 5, -8]}>
+        <boxGeometry args={[0.5, 3, 6]} />
+        <meshLambertMaterial color="#60A5FA" transparent opacity={0.7} />
+      </mesh>
+      
+      {/* Cargo box */}
+      <mesh position={[0, 5, 8]}>
+        <boxGeometry args={[12, 8, 16]} />
         <meshLambertMaterial color="#F1F5F9" />
       </mesh>
       
-      {/* Cooler lid */}
-      <mesh position={[0, 6.5, 0]}>
-        <boxGeometry args={[19, 1, 24]} />
-        <meshLambertMaterial color="#E2E8F0" />
+      {/* Cargo door */}
+      <mesh position={[0, 5, 16.2]}>
+        <boxGeometry args={[10, 6, 0.5]} />
+        <meshLambertMaterial color="#E5E7EB" />
       </mesh>
       
-      {/* Cooler handle */}
-      <mesh position={[0, 8, -10]}>
-        <boxGeometry args={[8, 1.5, 2]} />
+      {/* Cargo door handle */}
+      <mesh position={[4, 3, 16.5]}>
+        <boxGeometry args={[1.5, 0.5, 0.3]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       
-      {/* 6 Wheels for delivery robot */}
-      <mesh position={[-8, -1, -8]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[2, 2, 1.5]} />
+      {/* 4 Truck wheels */}
+      <mesh position={[-7, -1, -6]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[2.5, 2.5, 2]} />
         <meshLambertMaterial color="#1F2937" />
       </mesh>
-      <mesh position={[8, -1, -8]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[2, 2, 1.5]} />
+      <mesh position={[7, -1, -6]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[2.5, 2.5, 2]} />
         <meshLambertMaterial color="#1F2937" />
       </mesh>
-      <mesh position={[-8, -1, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[2, 2, 1.5]} />
+      <mesh position={[-7, -1, 6]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[2.5, 2.5, 2]} />
         <meshLambertMaterial color="#1F2937" />
       </mesh>
-      <mesh position={[8, -1, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[2, 2, 1.5]} />
-        <meshLambertMaterial color="#1F2937" />
-      </mesh>
-      <mesh position={[-8, -1, 8]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[2, 2, 1.5]} />
-        <meshLambertMaterial color="#1F2937" />
-      </mesh>
-      <mesh position={[8, -1, 8]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[2, 2, 1.5]} />
+      <mesh position={[7, -1, 6]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[2.5, 2.5, 2]} />
         <meshLambertMaterial color="#1F2937" />
       </mesh>
       
-      {/* Delivery robot branding */}
-      <mesh position={[0, 4, 12.6]}>
-        <boxGeometry args={[12, 4, 0.2]} />
+      {/* Grille */}
+      <mesh position={[0, 3, -12.8]}>
+        <boxGeometry args={[8, 2, 0.5]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      
+      {/* Headlights */}
+      <mesh position={[-4, 3, -12.9]}>
+        <sphereGeometry args={[0.8]} />
+        <meshLambertMaterial color="#FEF3C7" />
+      </mesh>
+      <mesh position={[4, 3, -12.9]}>
+        <sphereGeometry args={[0.8]} />
+        <meshLambertMaterial color="#FEF3C7" />
+      </mesh>
+      
+      {/* Company logo/branding */}
+      <mesh position={[0, 7, 8]}>
+        <boxGeometry args={[8, 3, 0.2]} />
         <meshLambertMaterial color="#3B82F6" />
       </mesh>
       
-      {/* LED lights */}
-      <mesh position={[-6, 4, 12.7]}>
+      {/* Delivery text panel */}
+      <mesh position={[0, 4, 8]}>
+        <boxGeometry args={[10, 1.5, 0.2]} />
+        <meshLambertMaterial color="#1D4ED8" />
+      </mesh>
+      
+      {/* Tail lights */}
+      <mesh position={[-4, 4, 16.3]}>
         <sphereGeometry args={[0.5]} />
         <meshLambertMaterial color="#EF4444" />
       </mesh>
-      <mesh position={[6, 4, 12.7]}>
+      <mesh position={[4, 4, 16.3]}>
         <sphereGeometry args={[0.5]} />
         <meshLambertMaterial color="#EF4444" />
       </mesh>
       
-      {/* Navigation sensor */}
-      <mesh position={[0, 8, 0]}>
-        <cylinderGeometry args={[1, 1, 2]} />
-        <meshLambertMaterial color="#6B7280" />
+      {/* Side mirrors */}
+      <mesh position={[-7, 6, -10]}>
+        <boxGeometry args={[1, 0.5, 0.3]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      <mesh position={[7, 6, -10]}>
+        <boxGeometry args={[1, 0.5, 0.3]} />
+        <meshLambertMaterial color="#374151" />
       </mesh>
     </group>
   );
