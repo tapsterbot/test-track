@@ -4,7 +4,7 @@ import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import QRCode from "qrcode";
 import { useSimpleVehicle } from "@/hooks/useSimpleVehicle";
-import { useMultiInput } from "@/hooks/useMultiInput";
+import { useSimpleControls } from "@/hooks/useSimpleControls";
 
 interface VehicleData {
   speed: number;
@@ -348,15 +348,14 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
     };
   }
   
-  const keyboardControls = useMultiInput();
+  const keyboardControls = useSimpleControls(isActive);
   
   // Combine keyboard and virtual joystick controls
   const controls = {
-    forward: (isActive && keyboardControls.forward) || (virtualJoystickControls?.forward || false),
-    backward: (isActive && keyboardControls.backward) || (virtualJoystickControls?.backward || false),
-    left: (isActive && keyboardControls.left) || (virtualJoystickControls?.left || false),
-    right: (isActive && keyboardControls.right) || (virtualJoystickControls?.right || false),
-    brake: isActive && keyboardControls.brake
+    forward: keyboardControls.forward || (virtualJoystickControls?.forward || false),
+    backward: keyboardControls.backward || (virtualJoystickControls?.backward || false),
+    left: keyboardControls.left || (virtualJoystickControls?.left || false),
+    right: keyboardControls.right || (virtualJoystickControls?.right || false)
   };
   
   // Handle reset when shouldReset changes
