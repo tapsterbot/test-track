@@ -23,8 +23,8 @@ interface SimulatorEngineProps {
 function Terrain() {
   const meshRef = useRef<THREE.Mesh>(null);
   
-  // Create heightmap terrain
-  const geometry = new THREE.PlaneGeometry(200, 200, 128, 128);
+  // Create larger terrain with finer detail
+  const geometry = new THREE.PlaneGeometry(400, 400, 256, 256);
   const vertices = geometry.attributes.position.array as Float32Array;
   
   // Generate random terrain heights
@@ -33,11 +33,11 @@ function Terrain() {
     const y = vertices[i + 1];
     const distance = Math.sqrt(x * x + y * y);
     
-    // Create hills and valleys
-    vertices[i + 2] = Math.sin(distance * 0.02) * 8 + 
-                      Math.cos(x * 0.01) * 4 + 
-                      Math.sin(y * 0.015) * 3 +
-                      (Math.random() - 0.5) * 2;
+    // Create more subtle terrain features
+    vertices[i + 2] = Math.sin(distance * 0.005) * 12 + 
+                      Math.cos(x * 0.003) * 6 + 
+                      Math.sin(y * 0.004) * 4 +
+                      (Math.random() - 0.5) * 1;
   }
   
   geometry.computeVertexNormals();
@@ -111,14 +111,14 @@ function CameraController({ vehiclePosition }: { vehiclePosition: THREE.Vector3 
   const { camera } = useThree();
   
   useFrame(() => {
-    // Follow the vehicle
+    // Follow the vehicle with more distance and slower tracking
     const targetPosition = new THREE.Vector3(
-      vehiclePosition.x - 15,
-      vehiclePosition.y + 10,
-      vehiclePosition.z + 10
+      vehiclePosition.x - 25,
+      vehiclePosition.y + 15,
+      vehiclePosition.z + 20
     );
     
-    camera.position.lerp(targetPosition, 0.05);
+    camera.position.lerp(targetPosition, 0.02);
     camera.lookAt(vehiclePosition);
   });
   
@@ -186,10 +186,10 @@ export function SimulatorEngine(props: SimulatorEngineProps) {
         shadows
         style={{ width: '100%', height: '100%' }}
         camera={{ 
-          position: [-15, 10, 10], 
-          fov: 60,
+          position: [-25, 15, 20], 
+          fov: 45,
           near: 0.1,
-          far: 1000
+          far: 2000
         }}
       >
         <SceneContent {...props} />

@@ -16,10 +16,10 @@ export function useVehiclePhysics() {
   const angularVelocity = useRef(0);
   const distanceTraveled = useRef(0);
 
-  const maxSpeed = 8;
-  const acceleration = 0.15;
-  const deceleration = 0.3;
-  const turnSpeed = 0.008;
+  const maxSpeed = 4;
+  const acceleration = 0.08;
+  const deceleration = 0.15;
+  const turnSpeed = 0.004;
   const brakeForce = 0.6;
 
   const controls = {
@@ -88,9 +88,9 @@ export function useVehiclePhysics() {
   // Simple terrain height calculation (matches the terrain generation)
   function getTerrainHeight(x: number, z: number): number {
     const distance = Math.sqrt(x * x + z * z);
-    return Math.sin(distance * 0.02) * 8 + 
-           Math.cos(x * 0.01) * 4 + 
-           Math.sin(z * 0.015) * 3 + 1; // +1 for vehicle clearance
+    return Math.sin(distance * 0.005) * 12 + 
+           Math.cos(x * 0.003) * 6 + 
+           Math.sin(z * 0.004) * 4 + 1; // +1 for vehicle clearance
   }
 
   return {
