@@ -149,6 +149,50 @@ export default function VehicleSimulator() {
                   isActive={isSimulationActive}
                   onVehicleUpdate={setVehicleData}
                 />
+                
+                {/* HUD Overlay */}
+                {isSimulationActive && (
+                  <div className="absolute inset-0 pointer-events-none">
+                    {/* Top Left - Vehicle Telemetry */}
+                    <div className="absolute top-4 left-4 bg-black/80 border border-primary/30 rounded p-3 text-white">
+                      <div className="text-xs font-futura text-primary mb-2 uppercase tracking-wider">VEHICLE TELEMETRY</div>
+                      <div className="space-y-1 text-xs font-mono">
+                        <div className="flex justify-between gap-4">
+                          <span>SPEED:</span>
+                          <span className="text-primary">{vehicleData.speed.toFixed(1)} m/s</span>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <span>HEADING:</span>
+                          <span className="text-primary">{Math.abs(vehicleData.heading).toFixed(0)}°</span>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <span>ALTITUDE:</span>
+                          <span className="text-primary">{vehicleData.altitude.toFixed(1)} m</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Top Right - Position */}
+                    <div className="absolute top-4 right-4 bg-black/80 border border-primary/30 rounded p-3 text-white">
+                      <div className="text-xs font-futura text-primary mb-2 uppercase tracking-wider">POSITION</div>
+                      <div className="space-y-1 text-xs font-mono">
+                        <div className="flex justify-between gap-4">
+                          <span>X:</span>
+                          <span className="text-primary">{vehicleData.position.x.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <span>Y:</span>
+                          <span className="text-primary">{vehicleData.position.y.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <span>Z:</span>
+                          <span className="text-primary">{vehicleData.position.z.toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 {!isSimulationActive && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50">
                     <div className="text-center">
