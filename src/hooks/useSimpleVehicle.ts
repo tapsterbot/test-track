@@ -2,7 +2,7 @@ import { useRef, useCallback } from "react";
 import * as THREE from "three";
 
 export function useSimpleVehicle() {
-  const position = useRef(new THREE.Vector3(0, 1, 0));
+  const position = useRef(new THREE.Vector3(0, 0.5, 0));
   const rotation = useRef(new THREE.Euler(0, 0, 0));
   const velocity = useRef(new THREE.Vector3(0, 0, 0));
   const speed = useRef(0);
@@ -33,13 +33,13 @@ export function useSimpleVehicle() {
     direction.multiplyScalar(speed.current * deltaTime);
     
     position.current.add(direction);
-    position.current.y = 1; // Keep on ground - adjusted for bigger vehicle
+    position.current.y = 0.5; // Keep on ground - adjusted for even bigger vehicle
   }, []);
   
   const getSpeed = useCallback(() => Math.abs(speed.current), []);
   
   const reset = useCallback(() => {
-    position.current.set(0, 1, 0);
+    position.current.set(0, 0.5, 0);
     rotation.current.set(0, 0, 0);
     velocity.current.set(0, 0, 0);
     speed.current = 0;
