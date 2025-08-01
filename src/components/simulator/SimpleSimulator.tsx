@@ -19,12 +19,31 @@ interface SimpleSimulatorProps {
   onVehicleUpdate: (data: VehicleData) => void;
 }
 
-// Simple ground plane
+// Procedural terrain with noise-like generation
 function Ground() {
+  const geometry = new THREE.PlaneGeometry(120, 120, 64, 64);
+  const vertices = geometry.attributes.position.array as Float32Array;
+  
+  // Generate terrain using noise-like functions
+  for (let i = 0; i < vertices.length; i += 3) {
+    const x = vertices[i];
+    const y = vertices[i + 1];
+    
+    // Create varied terrain using multiple sine waves (simulating perlin noise)
+    const noise1 = Math.sin(x * 0.05) * Math.cos(y * 0.05) * 3;
+    const noise2 = Math.sin(x * 0.1) * Math.cos(y * 0.08) * 2;
+    const noise3 = Math.sin(x * 0.2) * Math.cos(y * 0.15) * 1;
+    const noise4 = Math.sin(x * 0.4) * Math.cos(y * 0.3) * 0.5;
+    
+    vertices[i + 2] = noise1 + noise2 + noise3 + noise4;
+  }
+  
+  geometry.computeVertexNormals();
+  
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-      <planeGeometry args={[100, 100]} />
-      <meshLambertMaterial color="#4A3728" />
+      <primitive object={geometry} />
+      <meshLambertMaterial color="#4A3728" wireframe={false} />
     </mesh>
   );
 }
@@ -45,40 +64,64 @@ function SimpleVehicle({ position, rotation }: {
 
   return (
     <group ref={meshRef}>
-      {/* Main body - even bigger */}
+      {/* Main body - way bigger */}
       <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[6, 1.5, 9]} />
+        <boxGeometry args={[12, 3, 18]} />
         <meshLambertMaterial color="#E2E8F0" />
       </mesh>
       
-      {/* Wheels - bigger and rotated to face forward/back */}
-      <mesh position={[-2.5, -0.8, -3]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.8, 0.8, 0.5]} />
+      {/* Wheels - much bigger */}
+      <mesh position={[-5, -1.8, -6]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[1.5, 1.5, 1]} />
         <meshLambertMaterial color="#1A202C" />
       </mesh>
-      <mesh position={[2.5, -0.8, -3]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.8, 0.8, 0.5]} />
+      <mesh position={[5, -1.8, -6]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[1.5, 1.5, 1]} />
         <meshLambertMaterial color="#1A202C" />
       </mesh>
-      <mesh position={[-2.5, -0.8, 3]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.8, 0.8, 0.5]} />
+      <mesh position={[-5, -1.8, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[1.5, 1.5, 1]} />
         <meshLambertMaterial color="#1A202C" />
       </mesh>
-      <mesh position={[2.5, -0.8, 3]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.8, 0.8, 0.5]} />
+      <mesh position={[5, -1.8, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[1.5, 1.5, 1]} />
+        <meshLambertMaterial color="#1A202C" />
+      </mesh>
+      <mesh position={[-5, -1.8, 6]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[1.5, 1.5, 1]} />
+        <meshLambertMaterial color="#1A202C" />
+      </mesh>
+      <mesh position={[5, -1.8, 6]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[1.5, 1.5, 1]} />
         <meshLambertMaterial color="#1A202C" />
       </mesh>
       
-      {/* Equipment on top - bigger */}
-      <mesh position={[0, 1.2, 0]}>
-        <boxGeometry args={[3, 0.3, 4]} />
+      {/* Equipment deck - bigger */}
+      <mesh position={[0, 2, 0]}>
+        <boxGeometry args={[8, 0.5, 12]} />
         <meshLambertMaterial color="#3182CE" />
       </mesh>
       
+      {/* Solar panels */}
+      <mesh position={[-3, 3, 0]}>
+        <boxGeometry args={[4, 0.1, 10]} />
+        <meshLambertMaterial color="#1A365D" />
+      </mesh>
+      <mesh position={[3, 3, 0]}>
+        <boxGeometry args={[4, 0.1, 10]} />
+        <meshLambertMaterial color="#1A365D" />
+      </mesh>
+      
       {/* Camera mast */}
-      <mesh position={[0, 2.5, -2]}>
-        <cylinderGeometry args={[0.2, 0.2, 2]} />
+      <mesh position={[0, 5, -4]}>
+        <cylinderGeometry args={[0.3, 0.3, 4]} />
         <meshLambertMaterial color="#718096" />
+      </mesh>
+      
+      {/* Antenna */}
+      <mesh position={[2, 4.5, 2]}>
+        <cylinderGeometry args={[0.1, 0.1, 3]} />
+        <meshLambertMaterial color="#E53E3E" />
       </mesh>
     </group>
   );
@@ -125,7 +168,7 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
     <Canvas
       style={{ width: '100%', height: '100%', display: 'block' }}
       camera={{ 
-        position: [0, 25, 25], 
+        position: [0, 40, 40], 
         fov: 60 
       }}
     >
