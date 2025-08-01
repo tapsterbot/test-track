@@ -48,7 +48,7 @@ export default function VehicleSimulator() {
       <ModuleHeader
         moduleNumber="VS-001"
         title="VEHICLE SIMULATOR"
-        description="MARS ROVER TERRAIN NAVIGATION SYSTEM"
+        description="AUTONOMOUS NAVIGATION TRAINING"
       />
 
       <div className="container mx-auto px-4 py-8">
