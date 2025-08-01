@@ -16,22 +16,22 @@ export function useVehiclePhysics() {
   const angularVelocity = useRef(0);
   const distanceTraveled = useRef(0);
 
-  const maxSpeed = 20;
-  const acceleration = 0.5;
-  const deceleration = 0.8;
-  const turnSpeed = 0.02;
-  const brakeForce = 1.5;
+  const maxSpeed = 8;
+  const acceleration = 0.15;
+  const deceleration = 0.3;
+  const turnSpeed = 0.008;
+  const brakeForce = 0.6;
 
   const controls = {
     update: (inputs: Controls) => {
       const deltaTime = 1 / 60; // Assuming 60fps
       
-      // Handle rotation
+      // Handle rotation (slower turning)
       if (inputs.left) {
-        angularVelocity.current += turnSpeed;
+        angularVelocity.current += turnSpeed * deltaTime * 60;
       }
       if (inputs.right) {
-        angularVelocity.current -= turnSpeed;
+        angularVelocity.current -= turnSpeed * deltaTime * 60;
       }
       
       // Apply angular damping
@@ -43,18 +43,18 @@ export function useVehiclePhysics() {
       forward.applyEuler(rotation.current);
 
       if (inputs.forward) {
-        velocity.current.add(forward.multiplyScalar(acceleration * deltaTime));
+        velocity.current.add(forward.multiplyScalar(acceleration * deltaTime * 60));
       }
       if (inputs.backward) {
-        velocity.current.add(forward.multiplyScalar(-acceleration * 0.5 * deltaTime));
+        velocity.current.add(forward.multiplyScalar(-acceleration * 0.5 * deltaTime * 60));
       }
 
       // Apply braking
       if (inputs.brake) {
-        velocity.current.multiplyScalar(1 - brakeForce * deltaTime);
+        velocity.current.multiplyScalar(1 - brakeForce * deltaTime * 60);
       } else {
-        // Natural deceleration
-        velocity.current.multiplyScalar(1 - deceleration * deltaTime);
+        // Natural deceleration (friction)
+        velocity.current.multiplyScalar(1 - deceleration * deltaTime * 60);
       }
 
       // Limit speed
@@ -62,9 +62,10 @@ export function useVehiclePhysics() {
         velocity.current.normalize().multiplyScalar(maxSpeed);
       }
 
-      // Update position
+      // Update position (scaled movement)
       const oldPosition = position.current.clone();
-      position.current.add(velocity.current.clone().multiplyScalar(deltaTime));
+      const scaledVelocity = velocity.current.clone().multiplyScalar(deltaTime * 60);
+      position.current.add(scaledVelocity);
       
       // Simple terrain following (keep vehicle on ground)
       position.current.y = Math.max(0, getTerrainHeight(position.current.x, position.current.z));

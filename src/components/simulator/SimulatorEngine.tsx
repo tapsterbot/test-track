@@ -184,6 +184,7 @@ export function SimulatorEngine(props: SimulatorEngineProps) {
     <div className="w-full h-full">
       <Canvas
         shadows
+        style={{ width: '100%', height: '100%' }}
         camera={{ 
           position: [-15, 10, 10], 
           fov: 60,
