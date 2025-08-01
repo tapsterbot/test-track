@@ -36,8 +36,12 @@ function HiddenQRCode() {
           color: { dark: '#000000', light: '#FFFFFF' }
         });
         
+        console.log('QR Code generated successfully');
         const loader = new THREE.TextureLoader();
-        const texture = loader.load(qrDataURL);
+        const texture = loader.load(qrDataURL, () => {
+          console.log('QR texture loaded successfully');
+        });
+        texture.flipY = false;
         setQrTexture(texture);
       } catch (error) {
         console.error('Failed to generate QR code:', error);
@@ -50,9 +54,13 @@ function HiddenQRCode() {
   if (!qrTexture) return null;
 
   return (
-    <mesh position={[0, -2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+    <mesh position={[0, -10, 0]} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[80, 80]} />
-      <meshLambertMaterial map={qrTexture} transparent />
+      <meshLambertMaterial 
+        map={qrTexture} 
+        transparent={false}
+        side={THREE.DoubleSide}
+      />
     </mesh>
   );
 }
