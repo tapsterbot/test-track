@@ -22,7 +22,6 @@ import MultiWindowDemo from "./pages/MultiWindowDemo";
 import AdvancedButtonDemo from "./pages/AdvancedButtonDemo";
 import CommsTarget from "./pages/CommsTarget";
 
-import { SeveranceWorkstation } from "./pages/SeveranceWorkstation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,7 +50,6 @@ const App = () => (
           <Route path="/canvas-demo" element={<CanvasDemo />} />
           <Route path="/multi-window-demo" element={<MultiWindowDemo />} />
           <Route path="/advanced-button-demo" element={<AdvancedButtonDemo />} />
-            <Route path="/severance-workstation" element={<SeveranceWorkstation />} />
             <Route path="/comms-target" element={<CommsTarget />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
