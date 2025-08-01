@@ -56,20 +56,23 @@ function Terrain() {
 }
 
 // Vehicle/Rover Component
-function Vehicle({ position, rotation, isActive }: { 
+function Vehicle({ position, rotation, isActive, controls }: { 
   position: THREE.Vector3; 
   rotation: THREE.Euler;
   isActive: boolean;
+  controls?: any;
 }) {
   const meshRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
-    if (meshRef.current && isActive) {
+    if (meshRef.current) {
       meshRef.current.position.copy(position);
       meshRef.current.rotation.copy(rotation);
       
-      // Add subtle bounce animation
-      meshRef.current.position.y += Math.sin(state.clock.elapsedTime * 4) * 0.05;
+      // Only add bounce animation when vehicle is moving
+      if (isActive && controls && controls.getSpeed() > 0.1) {
+        meshRef.current.position.y += Math.sin(state.clock.elapsedTime * 8) * 0.02;
+      }
     }
   });
 
@@ -107,19 +110,29 @@ function Vehicle({ position, rotation, isActive }: {
 }
 
 // Camera Controller
-function CameraController({ vehiclePosition }: { vehiclePosition: THREE.Vector3 }) {
+function CameraController({ vehiclePosition, vehicleSpeed }: { 
+  vehiclePosition: THREE.Vector3; 
+  vehicleSpeed: number;
+}) {
   const { camera } = useThree();
+  const lastPosition = useRef(new THREE.Vector3(-25, 15, 20));
   
   useFrame(() => {
-    // Follow the vehicle with more distance and slower tracking
+    // Only update camera if vehicle is moving or camera needs to catch up
     const targetPosition = new THREE.Vector3(
       vehiclePosition.x - 25,
       vehiclePosition.y + 15,
       vehiclePosition.z + 20
     );
     
-    camera.position.lerp(targetPosition, 0.02);
-    camera.lookAt(vehiclePosition);
+    const distance = lastPosition.current.distanceTo(targetPosition);
+    
+    // Only move camera if vehicle moved significantly or camera is far from target
+    if (vehicleSpeed > 0.01 || distance > 0.1) {
+      camera.position.lerp(targetPosition, vehicleSpeed > 0.01 ? 0.02 : 0.001);
+      camera.lookAt(vehiclePosition);
+      lastPosition.current.copy(camera.position);
+    }
   });
   
   return null;
@@ -135,8 +148,9 @@ function SceneContent({ isActive, onVehicleUpdate }: SimulatorEngineProps) {
       controls.update(inputs);
       
       // Update parent with vehicle data
+      const currentSpeed = controls.getSpeed();
       onVehicleUpdate({
-        speed: controls.getSpeed(),
+        speed: currentSpeed,
         heading: (rotation.y * 180 / Math.PI) % 360,
         altitude: position.y,
         battery: Math.max(0, 100 - controls.getDistanceTraveled() * 0.01),
@@ -160,7 +174,12 @@ function SceneContent({ isActive, onVehicleUpdate }: SimulatorEngineProps) {
       
       {/* Environment */}
       <Terrain />
-      <Vehicle position={position} rotation={rotation} isActive={isActive} />
+      <Vehicle 
+        position={position} 
+        rotation={rotation} 
+        isActive={isActive}
+        controls={controls}
+      />
       
       {/* Sky gradient */}
       <mesh scale={[500, 500, 500]}>
@@ -174,7 +193,10 @@ function SceneContent({ isActive, onVehicleUpdate }: SimulatorEngineProps) {
       </mesh>
       
       {/* Camera controller */}
-      <CameraController vehiclePosition={position} />
+      <CameraController 
+        vehiclePosition={position} 
+        vehicleSpeed={controls.getSpeed()}
+      />
     </>
   );
 }
