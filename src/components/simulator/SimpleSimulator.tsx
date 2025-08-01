@@ -12,6 +12,7 @@ interface VehicleData {
   battery: number;
   temperature: number;
   position: { x: number; y: number; z: number };
+  objectiveComplete?: boolean;
 }
 
 interface SimpleSimulatorProps {
@@ -19,32 +20,65 @@ interface SimpleSimulatorProps {
   onVehicleUpdate: (data: VehicleData) => void;
 }
 
-// Procedural terrain with noise-like generation
+// Simple maze ground
 function Ground() {
-  const geometry = new THREE.PlaneGeometry(120, 120, 64, 64);
-  const vertices = geometry.attributes.position.array as Float32Array;
-  
-  // Generate terrain using noise-like functions
-  for (let i = 0; i < vertices.length; i += 3) {
-    const x = vertices[i];
-    const y = vertices[i + 1];
-    
-    // Create subtle terrain using multiple sine waves (more subtle noise)
-    const noise1 = Math.sin(x * 0.02) * Math.cos(y * 0.02) * 0.8;
-    const noise2 = Math.sin(x * 0.05) * Math.cos(y * 0.04) * 0.5;
-    const noise3 = Math.sin(x * 0.1) * Math.cos(y * 0.08) * 0.3;
-    const noise4 = Math.sin(x * 0.2) * Math.cos(y * 0.15) * 0.1;
-    
-    vertices[i + 2] = noise1 + noise2 + noise3 + noise4;
-  }
-  
-  geometry.computeVertexNormals();
-  
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-      <primitive object={geometry} />
-      <meshLambertMaterial color="#22C55E" wireframe={false} />
-    </mesh>
+    <>
+      {/* Floor */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+        <planeGeometry args={[120, 120]} />
+        <meshLambertMaterial color="#E5E7EB" />
+      </mesh>
+      
+      {/* Maze walls - simple child-friendly layout */}
+      {/* Outer walls */}
+      <mesh position={[0, 2, -60]}>
+        <boxGeometry args={[120, 4, 2]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      <mesh position={[0, 2, 60]}>
+        <boxGeometry args={[120, 4, 2]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      <mesh position={[-60, 2, 0]}>
+        <boxGeometry args={[2, 4, 120]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      <mesh position={[60, 2, 0]}>
+        <boxGeometry args={[2, 4, 120]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      
+      {/* Simple maze walls */}
+      <mesh position={[-20, 2, -20]}>
+        <boxGeometry args={[2, 4, 40]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      <mesh position={[20, 2, 10]}>
+        <boxGeometry args={[2, 4, 60]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      <mesh position={[0, 2, -40]}>
+        <boxGeometry args={[40, 4, 2]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      <mesh position={[-40, 2, 20]}>
+        <boxGeometry args={[40, 4, 2]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      
+      {/* Start marker (top left) */}
+      <mesh position={[-40, 0.5, -40]}>
+        <cylinderGeometry args={[3, 3, 1]} />
+        <meshLambertMaterial color="#10B981" />
+      </mesh>
+      
+      {/* End marker (bottom right) */}
+      <mesh position={[40, 0.5, 40]}>
+        <cylinderGeometry args={[3, 3, 1]} />
+        <meshLambertMaterial color="#EF4444" />
+      </mesh>
+    </>
   );
 }
 
@@ -181,6 +215,14 @@ function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
     if (isActive) {
       vehicle.update(controls);
       
+      // Check if robot reached the end (bottom right corner)
+      const distanceToEnd = Math.sqrt(
+        Math.pow(vehicle.position.x - 40, 2) + 
+        Math.pow(vehicle.position.z - 40, 2)
+      );
+      
+      const objectiveComplete = distanceToEnd < 8;
+      
       onVehicleUpdate({
         speed: vehicle.getSpeed(),
         heading: (vehicle.rotation.y * 180 / Math.PI) % 360,
@@ -191,7 +233,8 @@ function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
           x: vehicle.position.x, 
           y: vehicle.position.y, 
           z: vehicle.position.z 
-        }
+        },
+        objectiveComplete
       });
     }
   });
@@ -213,7 +256,7 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
     <Canvas
       style={{ width: '100%', height: '100%', display: 'block' }}
       camera={{ 
-        position: [0, 20, 20], 
+        position: [0, 80, 80], 
         fov: 60 
       }}
     >

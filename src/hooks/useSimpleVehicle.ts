@@ -2,7 +2,7 @@ import { useRef, useCallback } from "react";
 import * as THREE from "three";
 
 export function useSimpleVehicle() {
-  const position = useRef(new THREE.Vector3(0, 1, 0));
+  const position = useRef(new THREE.Vector3(-40, 1, -40)); // Start at top left
   const rotation = useRef(new THREE.Euler(0, 0, 0));
   const velocity = useRef(new THREE.Vector3(0, 0, 0));
   const speed = useRef(0);
@@ -34,15 +34,14 @@ export function useSimpleVehicle() {
     
     position.current.add(direction);
     
-    // Simple terrain following for Roomba
-    const terrainHeight = getTerrainHeight(position.current.x, position.current.z);
-    position.current.y = terrainHeight + 1; // Keep Roomba just above terrain
+    // Keep Roomba on flat ground
+    position.current.y = 1;
   }, []);
   
   const getSpeed = useCallback(() => Math.abs(speed.current), []);
   
   const reset = useCallback(() => {
-    position.current.set(0, 1, 0);
+    position.current.set(-40, 1, -40); // Reset to start position
     rotation.current.set(0, 0, 0);
     velocity.current.set(0, 0, 0);
     speed.current = 0;
@@ -55,14 +54,4 @@ export function useSimpleVehicle() {
     getSpeed,
     reset
   };
-}
-
-// Simple terrain height calculation matching the ground generation
-function getTerrainHeight(x: number, z: number): number {
-  const noise1 = Math.sin(x * 0.02) * Math.cos(z * 0.02) * 0.8;
-  const noise2 = Math.sin(x * 0.05) * Math.cos(z * 0.04) * 0.5;
-  const noise3 = Math.sin(x * 0.1) * Math.cos(z * 0.08) * 0.3;
-  const noise4 = Math.sin(x * 0.2) * Math.cos(z * 0.15) * 0.1;
-  
-  return noise1 + noise2 + noise3 + noise4;
 }
