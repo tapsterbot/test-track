@@ -1,34 +1,32 @@
 import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Sphere, OrbitControls, Stars } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { cn } from "@/lib/utils";
 
 function LunarSurface() {
   const meshRef = useRef<THREE.Mesh>(null);
   
-  // Create lunar surface texture
+  // Simple lunar surface texture
   const lunarTexture = useMemo(() => {
     const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 512;
-    const ctx = canvas.getContext('2d')!;
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    
+    if (!ctx) return null;
     
     // Base lunar gray
     ctx.fillStyle = '#8a8a8a';
-    ctx.fillRect(0, 0, 512, 512);
+    ctx.fillRect(0, 0, 256, 256);
     
-    // Add craters and surface details
-    for (let i = 0; i < 50; i++) {
-      const x = Math.random() * 512;
-      const y = Math.random() * 512;
-      const radius = Math.random() * 30 + 5;
+    // Add simple craters
+    for (let i = 0; i < 20; i++) {
+      const x = Math.random() * 256;
+      const y = Math.random() * 256;
+      const radius = Math.random() * 15 + 3;
       
-      const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-      gradient.addColorStop(0, '#6a6a6a');
-      gradient.addColorStop(1, '#4a4a4a');
-      
-      ctx.fillStyle = gradient;
+      ctx.fillStyle = '#6a6a6a';
       ctx.beginPath();
       ctx.arc(x, y, radius, 0, Math.PI * 2);
       ctx.fill();
@@ -39,58 +37,61 @@ function LunarSurface() {
 
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.02;
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.01;
     }
   });
 
+  if (!lunarTexture) return null;
+
   return (
-    <>
-      {/* Lunar surface */}
-      <Sphere ref={meshRef} args={[8, 64, 32]} position={[0, -12, 0]}>
-        <meshLambertMaterial map={lunarTexture} />
-      </Sphere>
-      
-      {/* Distant Earth */}
-      <Sphere args={[0.3, 32, 16]} position={[-15, 8, -20]}>
-        <meshBasicMaterial color="#4a90e2" />
-      </Sphere>
-    </>
+    <mesh ref={meshRef} position={[0, -8, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[20, 20, 32, 32]} />
+      <meshLambertMaterial map={lunarTexture} />
+    </mesh>
   );
 }
 
-function LunarParticles() {
-  const particlesRef = useRef<THREE.Points>(null);
-  
-  const particles = useMemo(() => {
-    const count = 200;
-    const positions = new Float32Array(count * 3);
-    
-    for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 30;
-      positions[i * 3 + 1] = Math.random() * 2 - 8;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 30;
-    }
-    
-    return positions;
-  }, []);
+function DistantEarth() {
+  const earthRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
-    if (particlesRef.current) {
-      particlesRef.current.rotation.y = state.clock.elapsedTime * 0.01;
+    if (earthRef.current) {
+      earthRef.current.rotation.y = state.clock.elapsedTime * 0.02;
     }
   });
 
   return (
-    <points ref={particlesRef}>
+    <mesh ref={earthRef} position={[-10, 5, -15]}>
+      <sphereGeometry args={[0.5, 16, 16]} />
+      <meshBasicMaterial color="#4a90e2" />
+    </mesh>
+  );
+}
+
+function StarField() {
+  const starsRef = useRef<THREE.Points>(null);
+  
+  const starPositions = useMemo(() => {
+    const positions = new Float32Array(1000 * 3);
+    for (let i = 0; i < 1000; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 100;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+    }
+    return positions;
+  }, []);
+
+  return (
+    <points ref={starsRef}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={particles.length / 3}
-          array={particles}
+          count={starPositions.length / 3}
+          array={starPositions}
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial color="#c0c0c0" size={0.02} />
+      <pointsMaterial color="#ffffff" size={0.5} />
     </points>
   );
 }
@@ -117,31 +118,33 @@ export function LunarViewport({ className }: LunarViewportProps) {
         <div className="absolute inset-2 border border-white/10 rounded-sm pointer-events-none" />
       </div>
 
-      <Canvas camera={{ position: [0, 2, 15], fov: 60 }}>
-        <ambientLight intensity={0.2} />
+      <Canvas 
+        camera={{ position: [0, 2, 12], fov: 60 }}
+        gl={{ antialias: true }}
+      >
+        <ambientLight intensity={0.3} />
         <directionalLight 
-          position={[10, 10, 5]} 
-          intensity={1} 
+          position={[5, 5, 5]} 
+          intensity={0.8} 
           color="#ffffff"
-          castShadow
         />
         
-        <Stars radius={100} depth={50} count={2000} factor={4} fade />
+        <StarField />
         <LunarSurface />
-        <LunarParticles />
+        <DistantEarth />
         
         <OrbitControls 
           enableZoom={false}
           enablePan={false}
           autoRotate
-          autoRotateSpeed={0.5}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 4}
+          autoRotateSpeed={0.2}
+          maxPolarAngle={Math.PI / 2.2}
+          minPolarAngle={Math.PI / 6}
         />
       </Canvas>
       
       {/* HUD overlay */}
-      <div className="absolute bottom-4 left-4 right-4 flex justify-between text-xs font-mono text-nasa-green">
+      <div className="absolute bottom-4 left-4 right-4 flex justify-between text-xs font-futura text-nasa-green">
         <div>ALT: 15.2 KM</div>
         <div>LUNAR SURFACE</div>
         <div>VEL: 1.7 KM/S</div>
