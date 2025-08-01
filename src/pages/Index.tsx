@@ -199,6 +199,13 @@ const Index = () => {
     elements: ["touch gestures", "mobile viewport", "orientation change", "touch events", "mobile interactions"],
     implemented: false
   }, {
+    title: "Severance Workstation",
+    path: "/severance-workstation",
+    description: "Corporate macrodata refinement terminal inspired by Lumon Industries",
+    difficulty: "Advanced", 
+    elements: ["corporate interface", "data refinement", "employee monitoring", "productivity tracking", "terminal commands"],
+    implemented: true
+  }, {
     title: "WebSocket & Real-time Demo",
     path: "/websocket-demo",
     description: "Test WebSocket connections, real-time updates, and live data streams",
