@@ -112,24 +112,23 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
   if (!isActive) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 md:hidden">
+    <div className="fixed bottom-4 right-4 z-50 md:hidden pointer-events-auto">
       <div 
         ref={joystickRef}
-        className="relative w-24 h-24 bg-gray-800/60 border-2 border-gray-600/80 rounded-full backdrop-blur-sm"
+        className="relative w-20 h-20 bg-black/40 border-2 border-white/30 rounded-full cursor-pointer select-none touch-none"
         onTouchStart={handleTouchStart}
         onMouseDown={handleMouseDown}
       >
         <div 
           ref={knobRef}
-          className="absolute top-1/2 left-1/2 w-8 h-8 bg-blue-500 rounded-full border-2 border-blue-300 transform -translate-x-1/2 -translate-y-1/2 shadow-lg"
+          className="absolute w-6 h-6 bg-white/80 border border-white rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-none"
           style={{ 
+            left: '50%',
+            top: '50%',
             transition: isDragging ? 'none' : 'transform 0.2s ease-out',
             touchAction: 'none'
           }}
         />
-      </div>
-      <div className="text-center mt-2 text-white/70 text-xs font-medium">
-        Joystick
       </div>
     </div>
   );
