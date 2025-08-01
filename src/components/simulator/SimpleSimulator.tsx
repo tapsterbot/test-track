@@ -26,6 +26,7 @@ interface SimpleSimulatorProps {
     left: boolean;
     right: boolean;
   };
+  onToggle?: () => void;
 }
 
 // Hidden QR Code component
@@ -408,21 +409,30 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
 }
 
 export function SimpleSimulator(props: SimpleSimulatorProps) {
+  const handleCanvasClick = (event: React.MouseEvent) => {
+    // Only toggle if clicking on the canvas itself, not during camera controls
+    if (props.onToggle && event.detail === 1) {
+      props.onToggle();
+    }
+  };
+
   return (
-    <Canvas
-      style={{ width: '100%', height: '100%', display: 'block' }}
-      camera={{ 
-        position: [0, 80, 80], 
-        fov: 60 
-      }}
-    >
-      <SceneContent {...props} />
-      <OrbitControls 
-        target={[0, 0, 0]}
-        enablePan={true}
-        enableZoom={true}
-        enableRotate={true}
-      />
-    </Canvas>
+    <div onClick={handleCanvasClick} style={{ width: '100%', height: '100%' }}>
+      <Canvas
+        style={{ width: '100%', height: '100%', display: 'block' }}
+        camera={{ 
+          position: [0, 80, 80], 
+          fov: 60 
+        }}
+      >
+        <SceneContent {...props} />
+        <OrbitControls 
+          target={[0, 0, 0]}
+          enablePan={true}
+          enableZoom={true}
+          enableRotate={true}
+        />
+      </Canvas>
+    </div>
   );
 }

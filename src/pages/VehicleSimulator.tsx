@@ -36,6 +36,10 @@ export default function VehicleSimulator() {
     setIsSimulationActive(false);
   };
 
+  const handleToggleSimulation = () => {
+    setIsSimulationActive(prev => !prev);
+  };
+
   const handleResetSimulation = () => {
     setIsSimulationActive(false);
     setResetKey(prev => prev + 1);
@@ -161,6 +165,7 @@ export default function VehicleSimulator() {
                   isActive={isSimulationActive}
                   onVehicleUpdate={setVehicleData}
                   virtualJoystickControls={virtualJoystickControls}
+                  onToggle={handleToggleSimulation}
                 />
                 <VirtualJoystick
                   isActive={isSimulationActive}
