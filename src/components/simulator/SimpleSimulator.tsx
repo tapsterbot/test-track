@@ -208,9 +208,8 @@ function SimpleVehicle({ position, rotation }: {
 }
 
 // Scene content
-function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
+function SceneContent({ isActive, onVehicleUpdate, controls }: SimpleSimulatorProps & { controls: any }) {
   const vehicle = useSimpleVehicle();
-  const controls = useSimpleControls();
   
   useFrame(() => {
     if (isActive) {
@@ -255,6 +254,8 @@ function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
 }
 
 export function SimpleSimulator(props: SimpleSimulatorProps) {
+  const controls = useSimpleControls(); // Move hook to main component
+
   return (
     <Canvas
       style={{ width: '100%', height: '100%', display: 'block' }}
@@ -263,7 +264,7 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
         fov: 60 
       }}
     >
-      <SceneContent {...props} />
+      <SceneContent {...props} controls={controls} />
       <OrbitControls 
         target={[0, 0, 0]}
         enablePan={true}
