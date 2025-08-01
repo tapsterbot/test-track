@@ -64,161 +64,114 @@ function SimpleVehicle({ position, rotation }: {
 
   return (
     <group ref={meshRef}>
-      {/* Main van body with realistic proportions */}
-      <mesh position={[0, 3.5, 0]}>
-        <boxGeometry args={[8, 5, 14]} />
-        <meshLambertMaterial color="#FFFFFF" />
-      </mesh>
-      
-      {/* Hood/front section */}
-      <mesh position={[0, 3, -8.5]}>
-        <boxGeometry args={[7.5, 3, 3]} />
-        <meshLambertMaterial color="#FFFFFF" />
-      </mesh>
-      
-      {/* Windshield - angled */}
-      <mesh position={[0, 5.2, -6.5]} rotation={[0.3, 0, 0]}>
-        <boxGeometry args={[7, 2.5, 0.2]} />
-        <meshLambertMaterial color="#87CEEB" transparent opacity={0.8} />
-      </mesh>
-      
-      {/* Side windows */}
-      <mesh position={[-4.2, 4.5, 2]}>
-        <boxGeometry args={[0.2, 2, 8]} />
-        <meshLambertMaterial color="#87CEEB" transparent opacity={0.8} />
-      </mesh>
-      <mesh position={[4.2, 4.5, 2]}>
-        <boxGeometry args={[0.2, 2, 8]} />
-        <meshLambertMaterial color="#87CEEB" transparent opacity={0.8} />
-      </mesh>
-      
-      {/* Rear window */}
-      <mesh position={[0, 4.5, 7.2]}>
-        <boxGeometry args={[6, 2, 0.2]} />
-        <meshLambertMaterial color="#87CEEB" transparent opacity={0.8} />
-      </mesh>
-      
-      {/* Realistic wheels with rims */}
-      <group>
-        {/* Front left wheel */}
-        <mesh position={[-4.5, 1, -3]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[1.5, 1.5, 1]} />
-          <meshLambertMaterial color="#2D3748" />
-        </mesh>
-        <mesh position={[-4.5, 1, -3]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[1, 1, 1.1]} />
-          <meshLambertMaterial color="#718096" />
-        </mesh>
-        
-        {/* Front right wheel */}
-        <mesh position={[4.5, 1, -3]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[1.5, 1.5, 1]} />
-          <meshLambertMaterial color="#2D3748" />
-        </mesh>
-        <mesh position={[4.5, 1, -3]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[1, 1, 1.1]} />
-          <meshLambertMaterial color="#718096" />
-        </mesh>
-        
-        {/* Rear left wheel */}
-        <mesh position={[-4.5, 1, 3]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[1.5, 1.5, 1]} />
-          <meshLambertMaterial color="#2D3748" />
-        </mesh>
-        <mesh position={[-4.5, 1, 3]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[1, 1, 1.1]} />
-          <meshLambertMaterial color="#718096" />
-        </mesh>
-        
-        {/* Rear right wheel */}
-        <mesh position={[4.5, 1, 3]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[1.5, 1.5, 1]} />
-          <meshLambertMaterial color="#2D3748" />
-        </mesh>
-        <mesh position={[4.5, 1, 3]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[1, 1, 1.1]} />
-          <meshLambertMaterial color="#718096" />
-        </mesh>
-      </group>
-      
-      {/* Front bumper */}
-      <mesh position={[0, 2, -10.2]}>
-        <boxGeometry args={[8, 1, 0.8]} />
-        <meshLambertMaterial color="#E5E7EB" />
-      </mesh>
-      
-      {/* Grille */}
-      <mesh position={[0, 3.5, -10.1]}>
-        <boxGeometry args={[5, 1.5, 0.2]} />
-        <meshLambertMaterial color="#1F2937" />
-      </mesh>
-      
-      {/* Headlights - more realistic */}
-      <mesh position={[-3, 3.5, -10.2]}>
-        <sphereGeometry args={[0.7]} />
-        <meshLambertMaterial color="#F7F7F7" />
-      </mesh>
-      <mesh position={[3, 3.5, -10.2]}>
-        <sphereGeometry args={[0.7]} />
-        <meshLambertMaterial color="#F7F7F7" />
-      </mesh>
-      
-      {/* Side mirrors */}
-      <mesh position={[-4.8, 5, -4]} rotation={[0, -0.5, 0]}>
-        <boxGeometry args={[0.6, 0.4, 0.8]} />
-        <meshLambertMaterial color="#2D3748" />
-      </mesh>
-      <mesh position={[4.8, 5, -4]} rotation={[0, 0.5, 0]}>
-        <boxGeometry args={[0.6, 0.4, 0.8]} />
+      {/* Main Roomba body - circular and flat */}
+      <mesh position={[0, 1, 0]}>
+        <cylinderGeometry args={[4, 4, 1.5]} />
         <meshLambertMaterial color="#2D3748" />
       </mesh>
       
-      {/* Rear bumper */}
-      <mesh position={[0, 2, 7.8]}>
-        <boxGeometry args={[8, 1, 0.8]} />
-        <meshLambertMaterial color="#E5E7EB" />
+      {/* Top cover - slightly smaller circle */}
+      <mesh position={[0, 1.8, 0]}>
+        <cylinderGeometry args={[3.8, 3.8, 0.2]} />
+        <meshLambertMaterial color="#4A5568" />
       </mesh>
       
-      {/* Rear doors */}
-      <mesh position={[-2, 3.5, 7.3]}>
-        <boxGeometry args={[3.5, 3.5, 0.3]} />
-        <meshLambertMaterial color="#F9FAFB" />
-      </mesh>
-      <mesh position={[2, 3.5, 7.3]}>
-        <boxGeometry args={[3.5, 3.5, 0.3]} />
-        <meshLambertMaterial color="#F9FAFB" />
+      {/* Center button */}
+      <mesh position={[0, 2, 0]}>
+        <cylinderGeometry args={[0.8, 0.8, 0.3]} />
+        <meshLambertMaterial color="#1A202C" />
       </mesh>
       
-      {/* Door handles */}
-      <mesh position={[-0.5, 2.5, 7.5]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.8]} />
+      {/* Power button LED */}
+      <mesh position={[0, 2.2, 0]}>
+        <sphereGeometry args={[0.2]} />
+        <meshLambertMaterial color="#48BB78" />
+      </mesh>
+      
+      {/* Front sensor bar */}
+      <mesh position={[0, 1.5, 3.5]}>
+        <boxGeometry args={[3, 0.4, 0.6]} />
+        <meshLambertMaterial color="#1A202C" />
+      </mesh>
+      
+      {/* Sensor cameras/IR sensors */}
+      <mesh position={[-1, 1.5, 3.7]}>
+        <sphereGeometry args={[0.15]} />
+        <meshLambertMaterial color="#2B6CB0" />
+      </mesh>
+      <mesh position={[0, 1.5, 3.7]}>
+        <sphereGeometry args={[0.15]} />
+        <meshLambertMaterial color="#2B6CB0" />
+      </mesh>
+      <mesh position={[1, 1.5, 3.7]}>
+        <sphereGeometry args={[0.15]} />
+        <meshLambertMaterial color="#2B6CB0" />
+      </mesh>
+      
+      {/* Side sensors */}
+      <mesh position={[-3.7, 1.5, 0]}>
+        <sphereGeometry args={[0.12]} />
+        <meshLambertMaterial color="#2B6CB0" />
+      </mesh>
+      <mesh position={[3.7, 1.5, 0]}>
+        <sphereGeometry args={[0.12]} />
+        <meshLambertMaterial color="#2B6CB0" />
+      </mesh>
+      
+      {/* Main drive wheels (hidden inside but we'll show them slightly) */}
+      <mesh position={[-1.5, 0.3, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.8, 0.8, 0.6]} />
+        <meshLambertMaterial color="#1A202C" />
+      </mesh>
+      <mesh position={[1.5, 0.3, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.8, 0.8, 0.6]} />
+        <meshLambertMaterial color="#1A202C" />
+      </mesh>
+      
+      {/* Front caster wheel */}
+      <mesh position={[0, 0.2, 2.5]}>
+        <sphereGeometry args={[0.4]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[0.5, 2.5, 7.5]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.8]} />
+      
+      {/* Back caster wheel */}
+      <mesh position={[0, 0.2, -2.5]}>
+        <sphereGeometry args={[0.4]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       
-      {/* Tail lights */}
-      <mesh position={[-3, 3, 7.5]}>
-        <boxGeometry args={[0.8, 0.6, 0.2]} />
-        <meshLambertMaterial color="#DC2626" />
+      {/* Charging contacts */}
+      <mesh position={[-2, 0.1, -3]}>
+        <cylinderGeometry args={[0.2, 0.2, 0.1]} />
+        <meshLambertMaterial color="#F6AD55" />
       </mesh>
-      <mesh position={[3, 3, 7.5]}>
-        <boxGeometry args={[0.8, 0.6, 0.2]} />
-        <meshLambertMaterial color="#DC2626" />
-      </mesh>
-      
-      {/* Company logo */}
-      <mesh position={[0, 4.5, 0]}>
-        <boxGeometry args={[6, 1.5, 0.1]} />
-        <meshLambertMaterial color="#3B82F6" />
+      <mesh position={[2, 0.1, -3]}>
+        <cylinderGeometry args={[0.2, 0.2, 0.1]} />
+        <meshLambertMaterial color="#F6AD55" />
       </mesh>
       
-      {/* Roof rack/equipment */}
-      <mesh position={[0, 6.2, 0]}>
-        <boxGeometry args={[7, 0.3, 12]} />
-        <meshLambertMaterial color="#374151" />
+      {/* Edge-sweeping brush */}
+      <mesh position={[3, 0.1, 3]} rotation={[0, 0, 0]}>
+        <cylinderGeometry args={[0.8, 0.8, 0.1]} />
+        <meshLambertMaterial color="#E53E3E" />
+      </mesh>
+      
+      {/* Status LED strip */}
+      <mesh position={[0, 2, 1.5]}>
+        <boxGeometry args={[2, 0.1, 0.3]} />
+        <meshLambertMaterial color="#4299E1" />
+      </mesh>
+      
+      {/* Roomba branding area */}
+      <mesh position={[0, 1.9, -1]}>
+        <cylinderGeometry args={[1.2, 1.2, 0.05]} />
+        <meshLambertMaterial color="#E2E8F0" />
+      </mesh>
+      
+      {/* WiFi indicator */}
+      <mesh position={[1.5, 2, 1]}>
+        <sphereGeometry args={[0.1]} />
+        <meshLambertMaterial color="#38B2AC" />
       </mesh>
     </group>
   );
@@ -265,7 +218,7 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
     <Canvas
       style={{ width: '100%', height: '100%', display: 'block' }}
       camera={{ 
-        position: [0, 60, 60], 
+        position: [0, 20, 20], 
         fov: 60 
       }}
     >
