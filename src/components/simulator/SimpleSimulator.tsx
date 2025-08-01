@@ -150,11 +150,6 @@ function SimpleVehicle({ position, rotation }: {
         <meshLambertMaterial color="#F6AD55" />
       </mesh>
       
-      {/* Edge-sweeping brush */}
-      <mesh position={[3, 0.1, 3]} rotation={[0, 0, 0]}>
-        <cylinderGeometry args={[0.8, 0.8, 0.1]} />
-        <meshLambertMaterial color="#E53E3E" />
-      </mesh>
       
       {/* Status LED strip */}
       <mesh position={[0, 2, 1.5]}>

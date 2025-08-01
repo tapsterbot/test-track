@@ -12,9 +12,9 @@ export function useSimpleVehicle() {
     
     // Simple forward/backward movement
     if (controls.forward) {
-      speed.current = Math.min(speed.current + 0.1, 5);
+      speed.current = Math.min(speed.current + 0.2, 12);
     } else if (controls.backward) {
-      speed.current = Math.max(speed.current - 0.1, -2);
+      speed.current = Math.max(speed.current - 0.2, -6);
     } else {
       speed.current *= 0.95; // Friction
     }
