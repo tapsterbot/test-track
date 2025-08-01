@@ -7,6 +7,38 @@ export function useSimpleVehicle() {
   const velocity = useRef(new THREE.Vector3(0, 0, 0));
   const speed = useRef(0);
   
+  // Wall collision detection
+  const checkWallCollision = useCallback((newPos: THREE.Vector3) => {
+    const robotRadius = 4; // Roomba radius
+    
+    // Maze walls (same as in SimpleSimulator.tsx)
+    const walls = [
+      // Outer walls
+      { x: 0, z: -60, width: 120, height: 2 },
+      { x: 0, z: 60, width: 120, height: 2 },
+      { x: -60, z: 0, width: 2, height: 120 },
+      { x: 60, z: 0, width: 2, height: 120 },
+      
+      // Inner maze walls
+      { x: -20, z: -20, width: 2, height: 40 },
+      { x: 20, z: 10, width: 2, height: 60 },
+      { x: 0, z: -40, width: 40, height: 2 },
+      { x: -40, z: 20, width: 40, height: 2 },
+    ];
+    
+    for (const wall of walls) {
+      // Check collision with each wall
+      const distX = Math.abs(newPos.x - wall.x);
+      const distZ = Math.abs(newPos.z - wall.z);
+      
+      if (distX < (wall.width / 2 + robotRadius) && distZ < (wall.height / 2 + robotRadius)) {
+        return true; // Collision detected
+      }
+    }
+    
+    return false;
+  }, []);
+
   const update = useCallback((controls: any) => {
     const deltaTime = 1/60;
     
@@ -27,16 +59,24 @@ export function useSimpleVehicle() {
       rotation.current.y -= 0.02;
     }
     
-    // Move based on rotation and speed
+    // Calculate new position
     const direction = new THREE.Vector3(0, 0, -1);
     direction.applyEuler(rotation.current);
     direction.multiplyScalar(speed.current * deltaTime);
     
-    position.current.add(direction);
+    const newPosition = position.current.clone().add(direction);
+    
+    // Check for wall collision before moving
+    if (!checkWallCollision(newPosition)) {
+      position.current.copy(newPosition);
+    } else {
+      // Stop the robot if it hits a wall
+      speed.current = 0;
+    }
     
     // Keep Roomba on flat ground
     position.current.y = 1;
-  }, []);
+  }, [checkWallCollision]);
   
   const getSpeed = useCallback(() => Math.abs(speed.current), []);
   
