@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 export function useSimpleVehicle() {
   const position = useRef(new THREE.Vector3(-40, 1, -40)); // Start at top left
-  const rotation = useRef(new THREE.Euler(0, 0, 0));
+  const rotation = useRef(new THREE.Euler(0, Math.PI, 0)); // 180 degrees rotation
   const velocity = useRef(new THREE.Vector3(0, 0, 0));
   const speed = useRef(0);
   
@@ -82,7 +82,7 @@ export function useSimpleVehicle() {
   
   const reset = useCallback(() => {
     position.current.set(-40, 1, -40); // Reset to start position
-    rotation.current.set(0, 0, 0);
+    rotation.current.set(0, Math.PI, 0); // Reset with 180 degrees rotation
     velocity.current.set(0, 0, 0);
     speed.current = 0;
   }, []);
