@@ -84,46 +84,6 @@ export function MissionHUD({ vehicleData }: MissionHUDProps) {
         </div>
       </SystemPanel>
 
-      <SystemPanel title="POWER & SYSTEMS">
-        <div className="space-y-4">
-          {/* Battery */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <Battery className="w-4 h-4 text-accent" />
-                <span className="text-sm font-semibold">BATTERY</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-mono">{vehicleData.battery.toFixed(0)}%</span>
-                <IndicatorLight 
-                  color={batteryStatus.color as "green" | "red" | "amber"}
-                  label="PWR"
-                  status="on"
-                />
-              </div>
-            </div>
-            <Progress value={vehicleData.battery} className="h-2" />
-            <div className="text-xs text-muted-foreground mt-1">
-              Status: {batteryStatus.status}
-            </div>
-          </div>
-
-          {/* Temperature */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Thermometer className="w-4 h-4 text-accent" />
-              <span className="text-sm font-semibold">TEMP</span>
-            </div>
-            <div className="text-right">
-              <div className="text-lg font-mono text-primary">
-                {vehicleData.temperature.toFixed(1)}°C
-              </div>
-              <div className="text-xs text-muted-foreground">Internal</div>
-            </div>
-          </div>
-        </div>
-      </SystemPanel>
-
       <SystemPanel title="POSITION">
         <div className="space-y-2 text-xs font-mono">
           <div className="flex justify-between">
