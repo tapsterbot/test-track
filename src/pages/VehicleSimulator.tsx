@@ -138,8 +138,13 @@ export default function VehicleSimulator() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* 3D Viewport */}
           <div className="lg:col-span-3">
-            <SystemPanel title="TERRAIN VIEWPORT" className="h-[600px]" fullWidth={true}>
-              <div className="relative w-full h-full bg-black">
+            <div className="h-[600px] nasa-panel border-2 border-muted-foreground/30 rounded-sm overflow-hidden">
+              <div className="px-4 pt-4 pb-2 border-b border-muted-foreground/20">
+                <h3 className="text-sm font-futura font-bold text-muted-foreground uppercase tracking-wider nasa-display">
+                  TERRAIN VIEWPORT
+                </h3>
+              </div>
+              <div className="relative w-full h-[calc(100%-60px)] bg-black">
                 <SimpleSimulator
                   isActive={isSimulationActive}
                   onVehicleUpdate={setVehicleData}
@@ -153,7 +158,7 @@ export default function VehicleSimulator() {
                   </div>
                 )}
               </div>
-            </SystemPanel>
+            </div>
           </div>
 
           {/* Mission Telemetry */}

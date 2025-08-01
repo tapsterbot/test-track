@@ -109,21 +109,20 @@ function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
 
 export function SimpleSimulator(props: SimpleSimulatorProps) {
   return (
-    <div className="w-full h-full">
-      <Canvas
-        camera={{ 
-          position: [0, 15, 15], 
-          fov: 60 
-        }}
-      >
-        <SceneContent {...props} />
-        <OrbitControls 
-          target={[0, 0, 0]}
-          enablePan={true}
-          enableZoom={true}
-          enableRotate={true}
-        />
-      </Canvas>
-    </div>
+    <Canvas
+      style={{ width: '100%', height: '100%', display: 'block' }}
+      camera={{ 
+        position: [0, 15, 15], 
+        fov: 60 
+      }}
+    >
+      <SceneContent {...props} />
+      <OrbitControls 
+        target={[0, 0, 0]}
+        enablePan={true}
+        enableZoom={true}
+        enableRotate={true}
+      />
+    </Canvas>
   );
 }
