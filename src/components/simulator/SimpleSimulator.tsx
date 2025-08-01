@@ -23,8 +23,8 @@ interface SimpleSimulatorProps {
 function Ground() {
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-      <planeGeometry args={[200, 200]} />
-      <meshLambertMaterial color="#8B4513" />
+      <planeGeometry args={[100, 100]} />
+      <meshLambertMaterial color="#4A3728" />
     </mesh>
   );
 }
@@ -45,28 +45,34 @@ function SimpleVehicle({ position, rotation }: {
 
   return (
     <group ref={meshRef}>
-      {/* Main body */}
+      {/* Main body - bigger */}
       <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[2, 0.5, 3]} />
-        <meshLambertMaterial color="#4A5568" />
+        <boxGeometry args={[4, 1, 6]} />
+        <meshLambertMaterial color="#E2E8F0" />
       </mesh>
       
-      {/* Wheels */}
-      <mesh position={[-1, -0.3, -1]}>
-        <cylinderGeometry args={[0.3, 0.3, 0.2]} />
-        <meshLambertMaterial color="#2D3748" />
+      {/* Wheels - rotated to face forward/back */}
+      <mesh position={[-1.5, -0.5, -2]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.5, 0.5, 0.3]} />
+        <meshLambertMaterial color="#1A202C" />
       </mesh>
-      <mesh position={[1, -0.3, -1]}>
-        <cylinderGeometry args={[0.3, 0.3, 0.2]} />
-        <meshLambertMaterial color="#2D3748" />
+      <mesh position={[1.5, -0.5, -2]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.5, 0.5, 0.3]} />
+        <meshLambertMaterial color="#1A202C" />
       </mesh>
-      <mesh position={[-1, -0.3, 1]}>
-        <cylinderGeometry args={[0.3, 0.3, 0.2]} />
-        <meshLambertMaterial color="#2D3748" />
+      <mesh position={[-1.5, -0.5, 2]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.5, 0.5, 0.3]} />
+        <meshLambertMaterial color="#1A202C" />
       </mesh>
-      <mesh position={[1, -0.3, 1]}>
-        <cylinderGeometry args={[0.3, 0.3, 0.2]} />
-        <meshLambertMaterial color="#2D3748" />
+      <mesh position={[1.5, -0.5, 2]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.5, 0.5, 0.3]} />
+        <meshLambertMaterial color="#1A202C" />
+      </mesh>
+      
+      {/* Equipment on top */}
+      <mesh position={[0, 0.8, 0]}>
+        <boxGeometry args={[2, 0.2, 3]} />
+        <meshLambertMaterial color="#3182CE" />
       </mesh>
     </group>
   );
@@ -98,8 +104,9 @@ function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
 
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
+      <ambientLight intensity={0.3} />
+      <directionalLight position={[10, 20, 5]} intensity={1.5} castShadow />
+      <directionalLight position={[-10, 10, -5]} intensity={0.8} />
       
       <Ground />
       <SimpleVehicle position={vehicle.position} rotation={vehicle.rotation} />
