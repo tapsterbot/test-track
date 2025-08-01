@@ -1,7 +1,8 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
+import QRCode from "qrcode";
 import { useSimpleVehicle } from "@/hooks/useSimpleVehicle";
 import { useSimpleControls } from "@/hooks/useSimpleControls";
 
@@ -19,6 +20,41 @@ interface SimpleSimulatorProps {
   isActive: boolean;
   onVehicleUpdate: (data: VehicleData) => void;
   shouldReset?: boolean;
+}
+
+// Hidden QR Code component
+function HiddenQRCode() {
+  const [qrTexture, setQrTexture] = useState<THREE.Texture | null>(null);
+  
+  useEffect(() => {
+    const generateQRCode = async () => {
+      try {
+        const secretMessage = "Congratulations! You found the hidden Easter egg. The simulation has no limits when you think outside the maze.";
+        const qrDataURL = await QRCode.toDataURL(secretMessage, {
+          width: 512,
+          margin: 2,
+          color: { dark: '#000000', light: '#FFFFFF' }
+        });
+        
+        const loader = new THREE.TextureLoader();
+        const texture = loader.load(qrDataURL);
+        setQrTexture(texture);
+      } catch (error) {
+        console.error('Failed to generate QR code:', error);
+      }
+    };
+    
+    generateQRCode();
+  }, []);
+
+  if (!qrTexture) return null;
+
+  return (
+    <mesh position={[0, 30, -65]} rotation={[0, 0, 0]}>
+      <planeGeometry args={[20, 20]} />
+      <meshLambertMaterial map={qrTexture} transparent />
+    </mesh>
+  );
 }
 
 // Simple maze ground
@@ -79,6 +115,8 @@ function Ground() {
         <cylinderGeometry args={[3, 3, 1]} />
         <meshLambertMaterial color="#EF4444" />
       </mesh>
+      
+      <HiddenQRCode />
     </>
   );
 }
