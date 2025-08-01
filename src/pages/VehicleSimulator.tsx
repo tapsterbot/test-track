@@ -162,9 +162,8 @@ export default function VehicleSimulator() {
           </div>
 
           {/* Mission Telemetry */}
-          <div className="space-y-6">
+          <div>
             <MissionHUD vehicleData={vehicleData} />
-            <ControlPanel isActive={isSimulationActive} />
           </div>
         </div>
       </div>
