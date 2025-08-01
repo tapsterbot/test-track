@@ -19,10 +19,10 @@ export function ToggleSwitch({
   className 
 }: ToggleSwitchProps) {
   const colors = {
-    red: "bg-destructive border-destructive text-destructive-foreground",
-    amber: "bg-nasa-amber border-nasa-amber text-card-foreground",
-    white: "bg-card border-border text-card-foreground",
-    green: "bg-nasa-green border-nasa-green text-card-foreground"
+    red: "bg-destructive border-destructive text-destructive-foreground shadow-destructive/50",
+    amber: "bg-nasa-amber border-nasa-amber text-card-foreground shadow-nasa-amber/50",
+    white: "bg-card border-border text-card-foreground shadow-card/50",
+    green: "bg-nasa-green border-nasa-green text-card-foreground shadow-nasa-green/50"
   };
 
   const sizes = {
@@ -40,7 +40,7 @@ export function ToggleSwitch({
         onClick={() => onChange(!value)}
         className={cn(
           "relative border-2 rounded-sm transition-all duration-200",
-          "shadow-inner font-mono font-bold uppercase",
+          "shadow-inner font-futura font-bold uppercase nasa-panel",
           "hover:shadow-lg active:shadow-none active:scale-95",
           sizes[size],
           value ? colors[color] : "bg-muted border-muted-foreground text-muted-foreground"

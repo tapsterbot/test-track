@@ -22,16 +22,16 @@ export function PushButton({
 
   const colors = {
     red: active 
-      ? "bg-destructive border-destructive text-destructive-foreground shadow-destructive" 
+      ? "bg-destructive border-destructive text-destructive-foreground shadow-destructive/50" 
       : "bg-destructive/80 border-destructive/80 text-destructive-foreground",
     amber: active 
-      ? "bg-nasa-amber border-nasa-amber text-card-foreground shadow-nasa-amber" 
+      ? "bg-nasa-amber border-nasa-amber text-card-foreground shadow-nasa-amber/50" 
       : "bg-nasa-amber/80 border-nasa-amber/80 text-card-foreground",
     white: active 
-      ? "bg-card border-border text-card-foreground shadow-card" 
+      ? "bg-card border-border text-card-foreground shadow-card/50" 
       : "bg-card/80 border-border/80 text-card-foreground",
     green: active 
-      ? "bg-nasa-green border-nasa-green text-card-foreground shadow-nasa-green" 
+      ? "bg-nasa-green border-nasa-green text-card-foreground shadow-nasa-green/50" 
       : "bg-nasa-green/80 border-nasa-green/80 text-card-foreground"
   };
 
@@ -50,7 +50,7 @@ export function PushButton({
         onClick={onClick}
         className={cn(
           "border-2 rounded-sm transition-all duration-100",
-          "font-mono font-bold uppercase tracking-wider",
+          "font-futura font-bold uppercase tracking-wider nasa-panel",
           "hover:brightness-110 active:scale-95",
           sizes[size],
           colors[color],

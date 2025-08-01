@@ -33,7 +33,7 @@ export function MissionTimer({ className }: MissionTimerProps) {
   return (
     <div className={cn(
       "bg-black border-2 border-muted-foreground rounded-sm p-4",
-      "font-mono text-nasa-green shadow-inner",
+      "font-futura text-nasa-green shadow-inner nasa-panel",
       className
     )}>
       <div className="space-y-2">

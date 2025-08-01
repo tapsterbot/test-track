@@ -3,7 +3,7 @@ import { ModuleHeader } from "@/components/ModuleHeader";
 import { ToggleSwitch } from "@/components/apollo/ToggleSwitch";
 import { IndicatorLight } from "@/components/apollo/IndicatorLight";
 import { PushButton } from "@/components/apollo/PushButton";
-import { ViewportWindow } from "@/components/apollo/ViewportWindow";
+import { LunarViewport } from "@/components/apollo/LunarViewport";
 import { SystemPanel } from "@/components/apollo/SystemPanel";
 import { MissionTimer } from "@/components/apollo/MissionTimer";
 import { toast } from "sonner";
@@ -88,7 +88,7 @@ export default function StarshipControlDemo() {
   }, [spsArmed]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-card to-muted relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted relative overflow-hidden font-futura">
       <ModuleHeader
         moduleNumber="011"
         title="APOLLO COMMAND MODULE"
@@ -96,11 +96,11 @@ export default function StarshipControlDemo() {
       />
 
       <div className="container mx-auto px-4 py-4 relative z-10">
-        {/* Apollo Control Panel Layout */}
-        <div className="grid grid-cols-12 grid-rows-8 gap-4 h-[calc(100vh-120px)]">
+        {/* Unified Apollo Dashboard */}
+        <div className="nasa-panel border-2 border-muted-foreground rounded-sm p-6 h-[calc(100vh-120px)] flex flex-col gap-4">
           
-          {/* Upper Panel - Mission Timer & Master Alarm */}
-          <div className="col-span-12 row-span-1 flex justify-between items-center">
+          {/* Top Status Bar */}
+          <div className="flex justify-between items-center bg-black/50 p-4 rounded-sm border border-muted-foreground/30">
             <MissionTimer className="w-48" />
             
             <div className="flex items-center gap-6">
@@ -124,170 +124,178 @@ export default function StarshipControlDemo() {
               />
             </div>
 
-            <div className="text-right">
-              <div className="text-sm font-mono text-muted-foreground">MISSION</div>
-              <div className="text-lg font-mono font-bold">APOLLO 11</div>
+            <div className="text-right nasa-display">
+              <div className="text-sm text-muted-foreground">MISSION</div>
+              <div className="text-lg font-bold">APOLLO 11</div>
             </div>
           </div>
 
-          {/* Left Panel - Environmental Control System */}
-          <div className="col-span-3 row-span-7">
-            <SystemPanel title="ENVIRONMENTAL CONTROL SYSTEM">
-              <div className="grid grid-cols-2 gap-3">
-                <ToggleSwitch 
-                  label="ECS" 
-                  value={environmentalControl} 
-                  onChange={setEnvironmentalControl}
-                  color="green"
-                />
-                
-                <IndicatorLight 
-                  label="O2 FLOW" 
-                  status={oxygenLevel > 95 ? "on" : "blink"} 
-                  color="green" 
-                />
-                
-                <div className="col-span-2 text-center">
-                  <div className="text-xs text-muted-foreground">CABIN PRESSURE</div>
-                  <div className="text-lg font-mono font-bold">{cabinPressure.toFixed(1)} PSI</div>
+          {/* Main Console Layout */}
+          <div className="flex-1 flex gap-4">
+            
+            {/* Left Control Strip */}
+            <div className="w-64 space-y-4">
+              <SystemPanel title="ENVIRONMENTAL CONTROL SYSTEM">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <ToggleSwitch 
+                      label="ECS" 
+                      value={environmentalControl} 
+                      onChange={setEnvironmentalControl}
+                      color="green"
+                    />
+                    <IndicatorLight 
+                      label="O2 FLOW" 
+                      status={oxygenLevel > 95 ? "on" : "blink"} 
+                      color="green" 
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3 text-center">
+                    <div>
+                      <div className="text-xs text-muted-foreground">CABIN PSI</div>
+                      <div className="text-sm font-futura font-bold">{cabinPressure.toFixed(1)}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground">O2 %</div>
+                      <div className="text-sm font-futura">{oxygenLevel.toFixed(1)}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground">CO2 PPM</div>
+                      <div className="text-sm font-futura">{(co2Level * 1000).toFixed(0)}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground">TEMP °F</div>
+                      <div className="text-sm font-futura">{cabinTemp}</div>
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">O2 %</div>
-                  <div className="text-sm font-mono">{oxygenLevel.toFixed(1)}</div>
-                </div>
-                
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">CO2 PPM</div>
-                  <div className="text-sm font-mono">{(co2Level * 1000).toFixed(0)}</div>
-                </div>
-                
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">TEMP °F</div>
-                  <div className="text-sm font-mono">{cabinTemp}</div>
-                </div>
-                
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground">H2O %</div>
-                  <div className="text-sm font-mono">{waterLevel}</div>
-                </div>
-              </div>
-            </SystemPanel>
-          </div>
+              </SystemPanel>
 
-          {/* Center Panel - Viewport Window */}
-          <div className="col-span-6 row-span-7 flex flex-col">
-            <div className="text-center mb-2">
-              <div className="text-sm font-mono text-muted-foreground uppercase tracking-wider">
-                Command Module Viewport
-              </div>
+              <SystemPanel title="SERVICE PROPULSION">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <ToggleSwitch 
+                      label="SPS ARM" 
+                      value={spsArmed} 
+                      onChange={setSpsArmed}
+                      color="red"
+                    />
+                    <PushButton 
+                      label="SPS FIRE" 
+                      onClick={handleSPSFire}
+                      color="red"
+                      active={spsArmed}
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-4 gap-1">
+                    {rcsQuads.map((active, i) => (
+                      <IndicatorLight 
+                        key={i}
+                        label={`RCS ${String.fromCharCode(65 + i)}`} 
+                        status={active ? "on" : "off"} 
+                        color="green"
+                        size="sm"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </SystemPanel>
             </div>
-            <ViewportWindow className="flex-1" />
-          </div>
 
-          {/* Right Panel - Propulsion & Navigation */}
-          <div className="col-span-3 row-span-7 space-y-4">
-            <SystemPanel title="SERVICE PROPULSION SYSTEM">
-              <div className="grid grid-cols-2 gap-3">
-                <ToggleSwitch 
-                  label="SPS ARM" 
-                  value={spsArmed} 
-                  onChange={setSpsArmed}
-                  color="red"
-                />
-                
-                <PushButton 
-                  label="SPS FIRE" 
-                  onClick={handleSPSFire}
-                  color="red"
-                  active={spsArmed}
-                />
-                
-                <div className="col-span-2 grid grid-cols-4 gap-1">
-                  {rcsQuads.map((active, i) => (
-                    <IndicatorLight 
-                      key={i}
-                      label={`RCS ${String.fromCharCode(65 + i)}`} 
-                      status={active ? "on" : "off"} 
-                      color="green"
-                      size="sm"
-                    />
-                  ))}
+            {/* Center Viewport */}
+            <div className="flex-1 flex flex-col">
+              <div className="text-center mb-2 nasa-display">
+                <div className="text-sm text-muted-foreground uppercase tracking-wider">
+                  LUNAR ORBIT COMMAND MODULE VIEWPORT
                 </div>
               </div>
-            </SystemPanel>
+              <LunarViewport className="flex-1" />
+            </div>
 
-            <SystemPanel title="GUIDANCE & NAVIGATION">
-              <div className="grid grid-cols-2 gap-3">
-                <ToggleSwitch 
-                  label="CMC" 
-                  value={guidanceComputer} 
-                  onChange={setGuidanceComputer}
-                  color="white"
-                />
-                
-                <IndicatorLight 
-                  label="IMU" 
-                  status={imuOperating ? "on" : "off"} 
-                  color="green" 
-                />
-                
-                <ToggleSwitch 
-                  label="VHF" 
-                  value={vhfComm} 
-                  onChange={setVhfComm}
-                  color="white"
-                />
-                
-                <ToggleSwitch 
-                  label="S-BAND" 
-                  value={sBandComm} 
-                  onChange={setSBandComm}
-                  color="white"
-                />
-              </div>
-            </SystemPanel>
+            {/* Right Control Strip */}
+            <div className="w-64 space-y-4">
+              <SystemPanel title="GUIDANCE & NAVIGATION">
+                <div className="grid grid-cols-2 gap-3">
+                  <ToggleSwitch 
+                    label="CMC" 
+                    value={guidanceComputer} 
+                    onChange={setGuidanceComputer}
+                    color="white"
+                  />
+                  <IndicatorLight 
+                    label="IMU" 
+                    status={imuOperating ? "on" : "off"} 
+                    color="green" 
+                  />
+                  <ToggleSwitch 
+                    label="VHF" 
+                    value={vhfComm} 
+                    onChange={setVhfComm}
+                    color="white"
+                  />
+                  <ToggleSwitch 
+                    label="S-BAND" 
+                    value={sBandComm} 
+                    onChange={setSBandComm}
+                    color="white"
+                  />
+                </div>
+              </SystemPanel>
 
-            <SystemPanel title="ELECTRICAL POWER">
-              <div className="grid grid-cols-2 gap-2">
-                <ToggleSwitch 
-                  label="MAIN A" 
-                  value={mainBusA} 
-                  onChange={setMainBusA}
-                  color="white"
-                  size="sm"
-                />
-                
-                <ToggleSwitch 
-                  label="MAIN B" 
-                  value={mainBusB} 
-                  onChange={setMainBusB}
-                  color="white"
-                  size="sm"
-                />
-                
-                <div className="col-span-2 grid grid-cols-3 gap-1">
-                  {fuelCells.map((active, i) => (
-                    <IndicatorLight 
-                      key={i}
-                      label={`FC${i + 1}`} 
-                      status={active ? "on" : "off"} 
-                      color="green"
+              <SystemPanel title="ELECTRICAL POWER">
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-2">
+                    <ToggleSwitch 
+                      label="MAIN A" 
+                      value={mainBusA} 
+                      onChange={setMainBusA}
+                      color="white"
                       size="sm"
                     />
-                  ))}
-                </div>
-                
-                <div className="col-span-2">
+                    <ToggleSwitch 
+                      label="MAIN B" 
+                      value={mainBusB} 
+                      onChange={setMainBusB}
+                      color="white"
+                      size="sm"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-1">
+                    {fuelCells.map((active, i) => (
+                      <IndicatorLight 
+                        key={i}
+                        label={`FC${i + 1}`} 
+                        status={active ? "on" : "off"} 
+                        color="green"
+                        size="sm"
+                      />
+                    ))}
+                  </div>
+                  
                   <PushButton 
                     label="EMRG PWR" 
                     onClick={handleEmergencyPowerDown}
                     color="red"
                     size="sm"
+                    className="w-full"
                   />
                 </div>
-              </div>
-            </SystemPanel>
+              </SystemPanel>
+            </div>
+          </div>
+
+          {/* Bottom Telemetry Strip */}
+          <div className="bg-black p-3 rounded-sm border border-muted-foreground/30">
+            <div className="flex justify-between items-center text-xs font-futura text-nasa-green">
+              <div>VELOCITY: 7.9 KM/S</div>
+              <div>ALTITUDE: 111.2 KM</div>
+              <div>PERIOD: 89.4 MIN</div>
+              <div>INCLINATION: 28.5°</div>
+              <div>LUNAR DISTANCE: 384,400 KM</div>
+            </div>
           </div>
         </div>
       </div>
