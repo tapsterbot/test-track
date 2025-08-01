@@ -1,34 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { ModuleHeader } from '@/components/ModuleHeader';
-import { SeveranceTerminal } from '@/components/severance/SeveranceTerminal';
-import { WorkerProfile } from '@/components/severance/WorkerProfile';
-import { ProductivityTracker } from '@/components/severance/ProductivityTracker';
-import { CorporateMessages } from '@/components/severance/CorporateMessages';
-import { DataRefinement } from '@/components/severance/DataRefinement';
+import { MDRInterface } from '@/components/severance/MDRInterface';
+import { TemperDisplay } from '@/components/severance/TemperDisplay';
+import { NumberGrid } from '@/components/severance/NumberGrid';
 import { useToast } from '@/hooks/use-toast';
 
 export function SeveranceWorkstation() {
   const { toast } = useToast();
-  const [currentWorker] = useState({
-    name: "M. SCOUT",
-    department: "MACRODATA REFINEMENT", 
-    employeeId: "MDR-4417",
-    startTime: "09:00:00",
-    quotaProgress: 73
-  });
+  
+  const [currentNumbers] = useState([
+    137, 892, 445, 729, 283, 956, 671, 384, 
+    517, 203, 748, 621, 859, 394, 176, 825,
+    463, 702, 318, 597, 481, 736, 259, 614,
+    387, 923, 541, 806, 275, 638, 419, 784
+  ]);
 
-  const [workSession, setWorkSession] = useState({
-    timeRemaining: "06:42:18",
-    tasksCompleted: 147,
-    quotaTarget: 200,
-    currentFile: "LUMON_DATA_BATCH_4417.CSV"
-  });
+  const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
+  const [targetTemper, setTargetTemper] = useState('WRATH');
+  const [quotaProgress, setQuotaProgress] = useState(73);
+  const [sessionScore, setSessionScore] = useState(147);
+
+  const tempers = [
+    { name: 'WRATH', color: '#ff4444', description: 'Anger, hostility, aggression' },
+    { name: 'FROLIC', color: '#44ff44', description: 'Joy, playfulness, mirth' },
+    { name: 'DREAD', color: '#4444ff', description: 'Fear, anxiety, apprehension' },
+    { name: 'MALICE', color: '#ff44ff', description: 'Spite, cruelty, ill-will' }
+  ];
+
+  const [timeRemaining, setTimeRemaining] = useState("06:42:18");
 
   useEffect(() => {
-    // Simulate work session countdown
+    // Countdown timer
     const interval = setInterval(() => {
-      setWorkSession(prev => {
-        const [hours, minutes, seconds] = prev.timeRemaining.split(':').map(Number);
+      setTimeRemaining(prev => {
+        const [hours, minutes, seconds] = prev.split(':').map(Number);
         let totalSeconds = hours * 3600 + minutes * 60 + seconds - 1;
         
         if (totalSeconds <= 0) {
@@ -43,142 +48,145 @@ export function SeveranceWorkstation() {
         const newMinutes = Math.floor((totalSeconds % 3600) / 60);
         const newSeconds = totalSeconds % 60;
         
-        return {
-          ...prev,
-          timeRemaining: `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}:${String(newSeconds).padStart(2, '0')}`
-        };
+        return `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}:${String(newSeconds).padStart(2, '0')}`;
       });
     }, 1000);
 
     return () => clearInterval(interval);
   }, [toast]);
 
-  const handleDataRefinement = () => {
-    setWorkSession(prev => ({
-      ...prev,
-      tasksCompleted: prev.tasksCompleted + 1
-    }));
-    
-    if (workSession.tasksCompleted + 1 >= workSession.quotaTarget) {
-      toast({
-        title: "QUOTA ACHIEVED",
-        description: "Excellent work. Proceed to Music/Dance Experience.",
-      });
+  const handleNumberSelect = (number: number) => {
+    if (selectedNumbers.includes(number)) {
+      setSelectedNumbers(selectedNumbers.filter(n => n !== number));
+    } else {
+      setSelectedNumbers([...selectedNumbers, number]);
     }
   };
 
+  const handleRefinement = () => {
+    if (selectedNumbers.length === 0) {
+      toast({
+        title: "NO NUMBERS SELECTED",
+        description: "Please select numbers that evoke the target temper.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Simulate refinement
+    const isCorrect = Math.random() > 0.3; // 70% success rate
+    
+    if (isCorrect) {
+      setSessionScore(prev => prev + selectedNumbers.length);
+      setQuotaProgress(prev => Math.min(100, prev + (selectedNumbers.length * 2)));
+      toast({
+        title: "REFINEMENT SUCCESSFUL",
+        description: `${selectedNumbers.length} numbers refined for ${targetTemper}`,
+      });
+    } else {
+      toast({
+        title: "REFINEMENT FAILED",
+        description: "Those numbers do not evoke the target temper.",
+        variant: "destructive"
+      });
+    }
+    
+    setSelectedNumbers([]);
+    
+    // Rotate target temper
+    const currentIndex = tempers.findIndex(t => t.name === targetTemper);
+    const nextIndex = (currentIndex + 1) % tempers.length;
+    setTargetTemper(tempers[nextIndex].name);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-secondary/10">
+    <div className="min-h-screen bg-[#2a3c5c] text-[#e8f4f8]">
       <ModuleHeader 
-        moduleNumber="LMN-001"
-        title="LUMON INDUSTRIES WORKSTATION"
-        description="Macrodata Refinement Division - Sublevel C"
+        moduleNumber="MDR-01"
+        title="MACRODATA REFINEMENT TERMINAL"
+        description="Lumon Industries - Sublevel C"
       />
 
-      <div className="container mx-auto p-6 space-y-6">
-        {/* Corporate Header */}
-        <div className="bg-card border-2 border-primary/20 rounded-none shadow-lg">
-          <div className="bg-primary/10 px-6 py-3 border-b border-primary/20">
+      <div className="container mx-auto p-4 space-y-4">
+        {/* Main MDR Interface */}
+        <div className="bg-[#1e2a3a] border-4 border-[#4a6b8a] rounded-lg shadow-2xl">
+          {/* Header Bar */}
+          <div className="bg-[#4a6b8a] px-6 py-3 border-b-2 border-[#6a8baa]">
             <div className="flex justify-between items-center">
-              <div className="font-futura text-sm tracking-wider text-primary">
-                LUMON INDUSTRIES EMPLOYEE TERMINAL
+              <div className="font-mono text-lg font-bold text-white">
+                LUMON INDUSTRIES MDR TERMINAL v2.1.4
               </div>
-              <div className="font-mono text-xs text-muted-foreground">
-                SECURITY LEVEL: SEVERED
+              <div className="font-mono text-sm text-[#a8c8e8]">
+                SESSION TIME: {timeRemaining}
               </div>
             </div>
           </div>
-          
+
+          {/* Status Bar */}
+          <div className="bg-[#2a3c5c] px-6 py-2 border-b border-[#4a6b8a]">
+            <div className="grid grid-cols-4 gap-4 text-center text-sm font-mono">
+              <div>
+                <span className="text-[#a8c8e8]">QUOTA: </span>
+                <span className="text-white">{quotaProgress}%</span>
+              </div>
+              <div>
+                <span className="text-[#a8c8e8]">SCORE: </span>
+                <span className="text-white">{sessionScore}</span>
+              </div>
+              <div>
+                <span className="text-[#a8c8e8]">SELECTED: </span>
+                <span className="text-white">{selectedNumbers.length}</span>
+              </div>
+              <div>
+                <span className="text-[#a8c8e8]">TARGET: </span>
+                <span 
+                  className="text-white font-bold"
+                  style={{ color: tempers.find(t => t.name === targetTemper)?.color }}
+                >
+                  {targetTemper}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Interface Area */}
           <div className="p-6">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-              <div className="lg:col-span-1">
-                <div className="text-xs text-muted-foreground mb-2 tracking-wider">EMPLOYEE STATUS</div>
-                <div className="text-lg font-futura text-foreground">{currentWorker.name}</div>
-                <div className="text-sm text-muted-foreground">{currentWorker.department}</div>
-                <div className="text-xs text-muted-foreground mt-2">ID: {currentWorker.employeeId}</div>
-              </div>
               
+              {/* Temper Display */}
               <div className="lg:col-span-1">
-                <div className="text-xs text-muted-foreground mb-2 tracking-wider">WORK SESSION</div>
-                <div className="text-2xl font-mono text-primary">{workSession.timeRemaining}</div>
-                <div className="text-xs text-muted-foreground">TIME REMAINING</div>
+                <TemperDisplay 
+                  tempers={tempers}
+                  currentTemper={targetTemper}
+                />
               </div>
-              
-              <div className="lg:col-span-1">
-                <div className="text-xs text-muted-foreground mb-2 tracking-wider">PRODUCTIVITY</div>
-                <div className="text-2xl font-mono text-secondary">{workSession.tasksCompleted}/{workSession.quotaTarget}</div>
-                <div className="text-xs text-muted-foreground">TASKS COMPLETED</div>
+
+              {/* Number Grid */}
+              <div className="lg:col-span-2">
+                <NumberGrid 
+                  numbers={currentNumbers}
+                  selectedNumbers={selectedNumbers}
+                  onNumberSelect={handleNumberSelect}
+                  targetTemper={targetTemper}
+                />
               </div>
-              
+
+              {/* Controls */}
               <div className="lg:col-span-1">
-                <div className="text-xs text-muted-foreground mb-2 tracking-wider">CURRENT FILE</div>
-                <div className="text-sm font-mono text-foreground break-all">{workSession.currentFile}</div>
+                <MDRInterface 
+                  selectedCount={selectedNumbers.length}
+                  onRefinement={handleRefinement}
+                  quotaProgress={quotaProgress}
+                  sessionScore={sessionScore}
+                />
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Main Work Interface */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Panel - Worker Profile & Messages */}
-          <div className="space-y-6">
-            <WorkerProfile worker={currentWorker} />
-            <CorporateMessages />
-          </div>
-
-          {/* Center Panel - Main Terminal */}
-          <div className="space-y-6">
-            <SeveranceTerminal 
-              onDataRefinement={handleDataRefinement}
-              currentFile={workSession.currentFile}
-              progress={workSession.tasksCompleted / workSession.quotaTarget}
-            />
-          </div>
-
-          {/* Right Panel - Productivity & Data Refinement */}
-          <div className="space-y-6">
-            <ProductivityTracker 
-              completed={workSession.tasksCompleted}
-              target={workSession.quotaTarget}
-              timeRemaining={workSession.timeRemaining}
-            />
-            <DataRefinement onRefine={handleDataRefinement} />
-          </div>
-        </div>
-
-        {/* Bottom Status Bar */}
-        <div className="bg-card border-2 border-primary/20 rounded-none shadow-lg">
-          <div className="px-6 py-4">
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 text-center">
-              <div className="space-y-1">
-                <div className="text-2xl text-primary">●</div>
-                <div className="text-xs text-muted-foreground">WELLNESS</div>
-                <div className="text-sm font-mono text-foreground">OPTIMAL</div>
-              </div>
-              
-              <div className="space-y-1">
-                <div className="text-2xl text-secondary">●</div>
-                <div className="text-xs text-muted-foreground">SECURITY</div>
-                <div className="text-sm font-mono text-foreground">ACTIVE</div>
-              </div>
-              
-              <div className="space-y-1">
-                <div className="text-2xl text-accent">●</div>
-                <div className="text-xs text-muted-foreground">CONNECTION</div>
-                <div className="text-sm font-mono text-foreground">SEVERED</div>
-              </div>
-              
-              <div className="space-y-1">
-                <div className="text-2xl text-primary">●</div>
-                <div className="text-xs text-muted-foreground">COMPLIANCE</div>
-                <div className="text-sm font-mono text-foreground">100%</div>
-              </div>
-              
-              <div className="space-y-1">
-                <div className="text-2xl text-secondary">●</div>
-                <div className="text-xs text-muted-foreground">MORALE</div>
-                <div className="text-sm font-mono text-foreground">EXCELLENT</div>
-              </div>
+          {/* Instructions */}
+          <div className="bg-[#1e2a3a] px-6 py-4 border-t border-[#4a6b8a]">
+            <div className="text-center font-mono text-sm text-[#a8c8e8]">
+              SELECT NUMBERS THAT EVOKE {targetTemper} • CLICK TO SELECT/DESELECT • PRESS REFINE TO SUBMIT
             </div>
           </div>
         </div>
