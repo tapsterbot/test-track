@@ -13,6 +13,7 @@ interface VehicleData {
   temperature: number;
   position: { x: number; y: number; z: number };
   objectiveComplete?: boolean;
+  nearTarget?: boolean;
 }
 
 interface SimpleSimulatorProps {
@@ -222,6 +223,7 @@ function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
       );
       
       const objectiveComplete = distanceToEnd < 8;
+      const nearTarget = distanceToEnd < 15; // Within 15 units of target
       
       onVehicleUpdate({
         speed: vehicle.getSpeed(),
@@ -234,7 +236,8 @@ function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
           y: vehicle.position.y, 
           z: vehicle.position.z 
         },
-        objectiveComplete
+        objectiveComplete,
+        nearTarget
       });
     }
   });

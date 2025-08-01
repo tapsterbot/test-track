@@ -12,6 +12,7 @@ interface VehicleData {
   temperature: number;
   position: { x: number; y: number; z: number };
   objectiveComplete?: boolean;
+  nearTarget?: boolean;
 }
 
 interface MissionHUDProps {
@@ -57,6 +58,20 @@ export function MissionHUD({ vehicleData }: MissionHUDProps) {
             <span className="text-sm font-mono">{vehicleData.battery.toFixed(0)}%</span>
           </div>
           <Progress value={vehicleData.battery} className="h-2" />
+        </div>
+
+        {/* Target Status */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold">TARGET STATUS</span>
+            <div className={`text-sm font-mono ${
+              vehicleData.objectiveComplete ? 'text-green-400' : 
+              vehicleData.nearTarget ? 'text-yellow-400' : 'text-muted-foreground'
+            }`}>
+              {vehicleData.objectiveComplete ? 'AT TARGET' : 
+               vehicleData.nearTarget ? 'APPROACHING' : 'DISTANT'}
+            </div>
+          </div>
         </div>
 
         {/* Mission Objective */}
