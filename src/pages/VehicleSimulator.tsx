@@ -183,11 +183,11 @@ export default function VehicleSimulator() {
                         </div>
                         <div className="flex justify-between gap-4">
                           <span>Y:</span>
-                          <span className="text-primary">{vehicleData.position.y.toFixed(2)}</span>
+                          <span className="text-primary">{vehicleData.position.z.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between gap-4">
                           <span>Z:</span>
-                          <span className="text-primary">{vehicleData.position.z.toFixed(2)}</span>
+                          <span className="text-primary">{vehicleData.position.y.toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
