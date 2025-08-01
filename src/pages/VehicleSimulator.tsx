@@ -59,17 +59,16 @@ export default function VehicleSimulator() {
               <Card className="nasa-panel">
                 <CardHeader>
                   <CardTitle className="text-lg font-futura text-primary">OBJECTIVE</CardTitle>
-                  <CardDescription>Mars surface exploration and terrain mapping</CardDescription>
+                  <CardDescription>Navigate robot to target zone</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Navigate the Mars Rover across challenging terrain to collect geological samples and map surface features. 
-                    Monitor vehicle telemetry and maintain mission parameters within safe operating limits.
+                    Navigate the robot through the maze to reach the red target zone.
                   </p>
                   <div className="space-y-2 text-xs">
-                    <div>□ TERRAIN: Martian highlands with craters and rocky outcrops</div>
-                    <div>□ VEHICLE: All-terrain rover with 6-wheel suspension</div>
-                    <div>□ MISSION: Explore 5km² area and reach designated waypoints</div>
+                    <div>□ START: Green circle (top left)</div>
+                    <div>□ TARGET: Red circle (bottom right)</div>
+                    <div>□ AVOID: Gray walls and obstacles</div>
                   </div>
                 </CardContent>
               </Card>
@@ -77,21 +76,17 @@ export default function VehicleSimulator() {
               <Card className="nasa-panel">
                 <CardHeader>
                   <CardTitle className="text-lg font-futura text-primary">CONTROLS</CardTitle>
-                  <CardDescription>Multi-platform input system</CardDescription>
+                  <CardDescription>Use keyboard, mouse, or touch</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3 text-xs">
                     <div>
                       <div className="font-semibold text-accent mb-1">KEYBOARD</div>
-                      <div>W/↑ Forward • S/↓ Reverse • A/← Left • D/→ Right • Space Brake</div>
+                      <div>W/↑ Forward • S/↓ Reverse • A/← Turn Left • D/→ Turn Right</div>
                     </div>
                     <div>
                       <div className="font-semibold text-accent mb-1">MOUSE</div>
-                      <div>Click+Drag Camera • Wheel Zoom • Right-click Reset View</div>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-accent mb-1">TOUCH</div>
-                      <div>Virtual joystick • Pinch zoom • Tap to focus</div>
+                      <div>Drag to rotate camera • Scroll to zoom</div>
                     </div>
                   </div>
                 </CardContent>
