@@ -224,7 +224,9 @@ export default function VehicleSimulator() {
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50">
                     <div className="text-center">
                       <div className="text-2xl font-futura text-primary mb-2">SIMULATION READY</div>
-                      <div className="text-sm text-muted-foreground">Click START to begin</div>
+                      <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
+                        Click <Play className="w-3 h-3" /> START to begin
+                      </div>
                     </div>
                   </div>
                 )}
