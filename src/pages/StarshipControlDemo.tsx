@@ -4,7 +4,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Zap, Shield, Navigation, Radar, Cpu, Activity, AlertTriangle, CheckCircle, Settings, Power, Wifi, Gauge } from "lucide-react";
+import { Zap, Shield, Navigation, Radar, Cpu, Activity, AlertTriangle, CheckCircle, Settings, Power, Wifi, Gauge, Volume2, VolumeX } from "lucide-react";
+import { TacticalDisplay } from "@/components/starship/TacticalDisplay";
+import { WeaponsConsole } from "@/components/starship/WeaponsConsole";
+import { EngineeringPanel } from "@/components/starship/EngineeringPanel";
+import { ScienceStation } from "@/components/starship/ScienceStation";
+import { WarpFieldDisplay } from "@/components/starship/WarpFieldDisplay";
+import { toast } from "sonner";
 
 export default function StarshipControlDemo() {
   const [powerLevel, setPowerLevel] = useState(87);
@@ -21,6 +27,13 @@ export default function StarshipControlDemo() {
   const [oxygenLevel, setOxygenLevel] = useState(98);
   const [gravityField, setGravityField] = useState(1.0);
   const [communicationsArray, setCommunicationsArray] = useState(true);
+  const [audioAlerts, setAudioAlerts] = useState(true);
+  const [missionObjectives, setMissionObjectives] = useState([
+    "Maintain course to Sector 7",
+    "Monitor long-range sensors",
+    "Optimize power distribution"
+  ]);
+  const [currentMission, setCurrentMission] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particleRef = useRef<HTMLCanvasElement>(null);
   const holoDisplayRef = useRef<HTMLCanvasElement>(null);
@@ -388,7 +401,22 @@ export default function StarshipControlDemo() {
 
   const handleAutoMode = useCallback(() => {
     setAutoMode(!autoMode);
+    toast(autoMode ? "Manual control resumed" : "Auto-pilot engaged");
   }, [autoMode]);
+
+  const handleWeaponFire = useCallback((weapon: string) => {
+    toast(`${weapon.toUpperCase()} fired!`, { 
+      description: "Target impact confirmed",
+      duration: 2000 
+    });
+  }, []);
+
+  const handleEmergencyProtocols = useCallback(() => {
+    toast("Emergency protocols activated", { 
+      description: "All hands to battle stations",
+      duration: 3000 
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
@@ -440,6 +468,69 @@ export default function StarshipControlDemo() {
           </div>
         </div>
 
+        {/* Advanced Display Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+          {/* Tactical Display */}
+          <div className="lg:col-span-1">
+            <TacticalDisplay 
+              redAlert={redAlert} 
+              scannerData={scannerData}
+              className="animate-fade-in"
+            />
+          </div>
+          
+          {/* Warp Field Display */}
+          <div className="lg:col-span-1">
+            <WarpFieldDisplay 
+              warpCore={warpCore}
+              redAlert={redAlert}
+              className="animate-fade-in"
+            />
+          </div>
+          
+          {/* Mission Objectives */}
+          <div className="lg:col-span-2">
+            <Card className="nasa-panel border-accent/30 backdrop-blur-sm animate-fade-in h-full">
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <CheckCircle className="w-6 h-6 text-accent" />
+                  <h3 className="text-xl font-mono text-primary">MISSION STATUS</h3>
+                </div>
+                <div className="space-y-3">
+                  {missionObjectives.map((objective, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <Badge variant={index === currentMission ? "default" : "secondary"} className="text-xs">
+                        {index === currentMission ? "ACTIVE" : "COMPLETE"}
+                      </Badge>
+                      <span className="text-sm text-muted-foreground">{objective}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 pt-4 border-t border-border">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Mission Progress</span>
+                    <span className="text-sm font-mono text-accent">{Math.round((currentMission / missionObjectives.length) * 100)}%</span>
+                  </div>
+                  <Progress value={(currentMission / missionObjectives.length) * 100} className="h-2 mt-2" />
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+
+        {/* Main Control Systems Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Weapons Console */}
+          <WeaponsConsole redAlert={redAlert} onWeaponFire={handleWeaponFire} />
+          
+          {/* Science Station */}
+          <ScienceStation redAlert={redAlert} scannerData={scannerData} />
+          
+          {/* Engineering Panel */}
+          <EngineeringPanel redAlert={redAlert} warpCore={warpCore} engineTemp={engineTemp} />
+        </div>
+
+        {/* Secondary Systems Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Power Systems */}
           <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in">
