@@ -10,6 +10,7 @@ import { Play, Pause, RotateCcw } from "lucide-react";
 
 export default function VehicleSimulator() {
   const [isSimulationActive, setIsSimulationActive] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
   const [vehicleData, setVehicleData] = useState({
     speed: 0,
     heading: 0,
@@ -29,13 +30,14 @@ export default function VehicleSimulator() {
 
   const handleResetSimulation = () => {
     setIsSimulationActive(false);
+    setResetKey(prev => prev + 1);
     setVehicleData({
       speed: 0,
       heading: 0,
       altitude: 0,
       battery: 100,
       temperature: 25,
-      position: { x: 0, y: 0, z: 0 }
+      position: { x: -40, y: 1, z: -40 }
     });
   };
 
@@ -146,6 +148,7 @@ export default function VehicleSimulator() {
               </div>
               <div className="relative w-full h-[calc(100%-60px)] bg-black">
                 <SimpleSimulator
+                  key={resetKey}
                   isActive={isSimulationActive}
                   onVehicleUpdate={setVehicleData}
                 />

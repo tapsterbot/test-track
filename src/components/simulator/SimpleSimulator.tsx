@@ -18,6 +18,7 @@ interface VehicleData {
 interface SimpleSimulatorProps {
   isActive: boolean;
   onVehicleUpdate: (data: VehicleData) => void;
+  shouldReset?: boolean;
 }
 
 // Simple maze ground
@@ -207,7 +208,7 @@ function SimpleVehicle({ position, rotation }: {
 }
 
 // Scene content
-function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
+function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulatorProps) {
   const vehicleRef = useRef<{
     position: THREE.Vector3;
     rotation: THREE.Euler;
@@ -297,7 +298,12 @@ function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
   
   const controls = useSimpleControls();
   
+  // Handle reset when shouldReset changes
   useFrame(() => {
+    if (shouldReset && vehicleRef.current) {
+      vehicleRef.current.reset();
+    }
+    
     if (isActive && vehicleRef.current) {
       vehicleRef.current.update(controls);
       
