@@ -1,4 +1,4 @@
-import { useRef, useImperativeHandle, forwardRef, MutableRefObject } from "react";
+import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -13,16 +13,11 @@ interface VehicleData {
   temperature: number;
   position: { x: number; y: number; z: number };
   objectiveComplete?: boolean;
-  nearTarget?: boolean;
 }
 
 interface SimpleSimulatorProps {
   isActive: boolean;
   onVehicleUpdate: (data: VehicleData) => void;
-}
-
-interface SimpleSimulatorRef {
-  reset: () => void;
 }
 
 // Simple maze ground
@@ -212,11 +207,9 @@ function SimpleVehicle({ position, rotation }: {
 }
 
 // Scene content
-function SceneContent({ isActive, onVehicleUpdate, controls, resetRef }: SimpleSimulatorProps & { controls: any; resetRef: MutableRefObject<(() => void) | undefined> }) {
+function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
   const vehicle = useSimpleVehicle();
-  
-  // Store reset function reference
-  resetRef.current = vehicle.reset;
+  const controls = useSimpleControls();
   
   useFrame(() => {
     if (isActive) {
@@ -229,7 +222,6 @@ function SceneContent({ isActive, onVehicleUpdate, controls, resetRef }: SimpleS
       );
       
       const objectiveComplete = distanceToEnd < 8;
-      const nearTarget = distanceToEnd < 15; // Within 15 units of target
       
       onVehicleUpdate({
         speed: vehicle.getSpeed(),
@@ -242,8 +234,7 @@ function SceneContent({ isActive, onVehicleUpdate, controls, resetRef }: SimpleS
           y: vehicle.position.y, 
           z: vehicle.position.z 
         },
-        objectiveComplete,
-        nearTarget
+        objectiveComplete
       });
     }
   });
@@ -260,18 +251,7 @@ function SceneContent({ isActive, onVehicleUpdate, controls, resetRef }: SimpleS
   );
 }
 
-export const SimpleSimulator = forwardRef<SimpleSimulatorRef, SimpleSimulatorProps>((props, ref) => {
-  const controls = useSimpleControls();
-  const vehicleResetRef = useRef<() => void>();
-
-  useImperativeHandle(ref, () => ({
-    reset: () => {
-      if (vehicleResetRef.current) {
-        vehicleResetRef.current();
-      }
-    }
-  }));
-
+export function SimpleSimulator(props: SimpleSimulatorProps) {
   return (
     <Canvas
       style={{ width: '100%', height: '100%', display: 'block' }}
@@ -280,7 +260,7 @@ export const SimpleSimulator = forwardRef<SimpleSimulatorRef, SimpleSimulatorPro
         fov: 60 
       }}
     >
-      <SceneContent {...props} controls={controls} resetRef={vehicleResetRef} />
+      <SceneContent {...props} />
       <OrbitControls 
         target={[0, 0, 0]}
         enablePan={true}
@@ -289,4 +269,4 @@ export const SimpleSimulator = forwardRef<SimpleSimulatorRef, SimpleSimulatorPro
       />
     </Canvas>
   );
-});
+}

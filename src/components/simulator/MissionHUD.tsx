@@ -11,8 +11,6 @@ interface VehicleData {
   battery: number;
   temperature: number;
   position: { x: number; y: number; z: number };
-  objectiveComplete?: boolean;
-  nearTarget?: boolean;
 }
 
 interface MissionHUDProps {
@@ -35,54 +33,118 @@ export function MissionHUD({ vehicleData }: MissionHUDProps) {
   const batteryStatus = getBatteryStatus(vehicleData.battery);
 
   return (
-    <SystemPanel title="MISSION STATUS">
-      <div className="space-y-4">
-        {/* Speed & Position */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Gauge className="w-4 h-4 text-accent" />
-            <span className="text-sm font-semibold">SPEED</span>
-          </div>
-          <div className="text-lg font-mono text-primary">
-            {vehicleData.speed.toFixed(1)} m/s
-          </div>
-        </div>
-
-        {/* Battery */}
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <Battery className="w-4 h-4 text-accent" />
-              <span className="text-sm font-semibold">BATTERY</span>
-            </div>
-            <span className="text-sm font-mono">{vehicleData.battery.toFixed(0)}%</span>
-          </div>
-          <Progress value={vehicleData.battery} className="h-2" />
-        </div>
-
-        {/* Target Status */}
-        <div className="space-y-2">
+    <div className="space-y-4">
+      <SystemPanel title="VEHICLE TELEMETRY">
+        <div className="space-y-4">
+          {/* Speed */}
           <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold">TARGET STATUS</span>
-            <div className={`text-sm font-mono ${
-              vehicleData.objectiveComplete ? 'text-green-400' : 
-              vehicleData.nearTarget ? 'text-yellow-400' : 'text-muted-foreground'
-            }`}>
-              {vehicleData.objectiveComplete ? 'AT TARGET' : 
-               vehicleData.nearTarget ? 'APPROACHING' : 'DISTANT'}
+            <div className="flex items-center gap-2">
+              <Gauge className="w-4 h-4 text-accent" />
+              <span className="text-sm font-semibold">SPEED</span>
+            </div>
+            <div className="text-right">
+              <div className="text-lg font-mono text-primary">
+                {vehicleData.speed.toFixed(1)} m/s
+              </div>
+              <Badge variant="outline" className="text-xs">
+                {getSpeedStatus(vehicleData.speed)}
+              </Badge>
+            </div>
+          </div>
+
+          {/* Heading */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Compass className="w-4 h-4 text-accent" />
+              <span className="text-sm font-semibold">HEADING</span>
+            </div>
+            <div className="text-right">
+              <div className="text-lg font-mono text-primary">
+                {Math.abs(vehicleData.heading).toFixed(0)}°
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {vehicleData.heading >= 0 ? 'E' : 'W'} of N
+              </div>
+            </div>
+          </div>
+
+          {/* Altitude */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-accent" />
+              <span className="text-sm font-semibold">ALTITUDE</span>
+            </div>
+            <div className="text-right">
+              <div className="text-lg font-mono text-primary">
+                {vehicleData.altitude.toFixed(1)} m
+              </div>
+              <div className="text-xs text-muted-foreground">MSL</div>
             </div>
           </div>
         </div>
+      </SystemPanel>
 
-        {/* Mission Objective */}
-        {vehicleData.objectiveComplete && (
-          <div className="p-3 bg-green-500/20 border border-green-500/30 rounded">
-            <div className="text-center text-green-400 font-semibold">
-              🎯 OBJECTIVE COMPLETE!
+      <SystemPanel title="POWER & SYSTEMS">
+        <div className="space-y-4">
+          {/* Battery */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Battery className="w-4 h-4 text-accent" />
+                <span className="text-sm font-semibold">BATTERY</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-mono">{vehicleData.battery.toFixed(0)}%</span>
+                <IndicatorLight 
+                  color={batteryStatus.color as "green" | "red" | "amber"}
+                  label="PWR"
+                  status="on"
+                />
+              </div>
+            </div>
+            <Progress value={vehicleData.battery} className="h-2" />
+            <div className="text-xs text-muted-foreground mt-1">
+              Status: {batteryStatus.status}
             </div>
           </div>
-        )}
-      </div>
-    </SystemPanel>
+
+          {/* Temperature */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Thermometer className="w-4 h-4 text-accent" />
+              <span className="text-sm font-semibold">TEMP</span>
+            </div>
+            <div className="text-right">
+              <div className="text-lg font-mono text-primary">
+                {vehicleData.temperature.toFixed(1)}°C
+              </div>
+              <div className="text-xs text-muted-foreground">Internal</div>
+            </div>
+          </div>
+        </div>
+      </SystemPanel>
+
+      <SystemPanel title="POSITION">
+        <div className="space-y-2 text-xs font-mono">
+          <div className="flex justify-between">
+            <span>X:</span>
+            <span className="text-primary">{vehicleData.position.x.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Y:</span>
+            <span className="text-primary">{vehicleData.position.y.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Z:</span>
+            <span className="text-primary">{vehicleData.position.z.toFixed(2)}</span>
+          </div>
+          <div className="pt-2 border-t border-muted-foreground/20">
+            <div className="text-center text-muted-foreground">
+              MARS COORDINATE SYSTEM
+            </div>
+          </div>
+        </div>
+      </SystemPanel>
+    </div>
   );
 }

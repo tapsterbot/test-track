@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { ModuleHeader } from "@/components/ModuleHeader";
 import { SystemPanel } from "@/components/apollo/SystemPanel";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,6 @@ import { ControlPanel } from "@/components/simulator/ControlPanel";
 import { Play, Pause, RotateCcw } from "lucide-react";
 
 export default function VehicleSimulator() {
-  const simulatorRef = useRef<{ reset: () => void }>(null);
   const [isSimulationActive, setIsSimulationActive] = useState(false);
   const [vehicleData, setVehicleData] = useState({
     speed: 0,
@@ -30,26 +29,22 @@ export default function VehicleSimulator() {
 
   const handleResetSimulation = () => {
     setIsSimulationActive(false);
-    // Reset the 3D vehicle position
-    if (simulatorRef.current) {
-      simulatorRef.current.reset();
-    }
     setVehicleData({
       speed: 0,
       heading: 0,
       altitude: 0,
       battery: 100,
       temperature: 25,
-      position: { x: -40, y: 1, z: -40 } // Reset to start position
+      position: { x: 0, y: 0, z: 0 }
     });
   };
 
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader
-        moduleNumber="RS-001"
-        title="ROBOT SIMULATOR"
-        description="AUTONOMOUS NAVIGATION TRAINING SYSTEM"
+        moduleNumber="VS-001"
+        title="VEHICLE SIMULATOR"
+        description="MARS ROVER TERRAIN NAVIGATION SYSTEM"
       />
 
       <div className="container mx-auto px-4 py-8">
@@ -60,17 +55,17 @@ export default function VehicleSimulator() {
               <Card className="nasa-panel">
                 <CardHeader>
                   <CardTitle className="text-lg font-futura text-primary">OBJECTIVE</CardTitle>
-                  <CardDescription>Autonomous maze navigation challenge</CardDescription>
+                  <CardDescription>Mars surface exploration and terrain mapping</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Navigate the autonomous robot through a maze environment from the green start zone to the red target zone. 
-                    Use keyboard controls to guide the robot while avoiding walls and obstacles.
+                    Navigate the Mars Rover across challenging terrain to collect geological samples and map surface features. 
+                    Monitor vehicle telemetry and maintain mission parameters within safe operating limits.
                   </p>
                   <div className="space-y-2 text-xs">
-                    <div>□ ROBOT: Roomba-style autonomous vacuum robot</div>
-                    <div>□ ENVIRONMENT: Indoor maze with walls and obstacles</div>
-                    <div>□ MISSION: Navigate from start (green) to target (red) zone</div>
+                    <div>□ TERRAIN: Martian highlands with craters and rocky outcrops</div>
+                    <div>□ VEHICLE: All-terrain rover with 6-wheel suspension</div>
+                    <div>□ MISSION: Explore 5km² area and reach designated waypoints</div>
                   </div>
                 </CardContent>
               </Card>
@@ -146,12 +141,11 @@ export default function VehicleSimulator() {
             <div className="h-[600px] nasa-panel border-2 border-muted-foreground/30 rounded-sm overflow-hidden">
               <div className="px-4 pt-4 pb-2 border-b border-muted-foreground/20">
                 <h3 className="text-sm font-futura font-bold text-muted-foreground uppercase tracking-wider nasa-display">
-                  MAZE VIEWPORT
+                  TERRAIN VIEWPORT
                 </h3>
               </div>
               <div className="relative w-full h-[calc(100%-60px)] bg-black">
                 <SimpleSimulator
-                  ref={simulatorRef}
                   isActive={isSimulationActive}
                   onVehicleUpdate={setVehicleData}
                 />
@@ -168,8 +162,9 @@ export default function VehicleSimulator() {
           </div>
 
           {/* Mission Telemetry */}
-          <div>
+          <div className="space-y-6">
             <MissionHUD vehicleData={vehicleData} />
+            <ControlPanel isActive={isSimulationActive} />
           </div>
         </div>
       </div>
