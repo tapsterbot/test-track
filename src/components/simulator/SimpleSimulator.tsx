@@ -29,7 +29,7 @@ function HiddenQRCode() {
   useEffect(() => {
     const generateQRCode = async () => {
       try {
-        const secretMessage = "🌟 EXTRAORDINARY EXPLORER! 🌟 You've discovered what others miss by looking beyond the obvious. True innovation comes from those who dare to explore every angle, question every boundary, and seek what's hidden in plain sight. You have the curiosity and persistence of a true pioneer. Keep exploring, keep questioning, keep pushing limits - the world needs more minds like yours! 🚀✨";
+        const secretMessage = "\"I have no special talent. I am only passionately curious.\" - Albert Einstein. You found this by looking where others don't. Keep exploring! 🔬✨";
         const qrDataURL = await QRCode.toDataURL(secretMessage, {
           width: 512,
           margin: 2,
