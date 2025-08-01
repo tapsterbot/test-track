@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useMemo } from "react";
 import * as THREE from "three";
 
 export function useSimpleVehicle() {
@@ -8,7 +8,7 @@ export function useSimpleVehicle() {
   const speed = useRef(0);
   
   // Wall boundaries for collision detection
-  const walls = [
+  const walls = useMemo(() => [
     // Outer walls
     { x: 0, z: -60, width: 120, height: 2 }, // Top wall
     { x: 0, z: 60, width: 120, height: 2 },  // Bottom wall
@@ -20,7 +20,7 @@ export function useSimpleVehicle() {
     { x: 20, z: 10, width: 2, height: 60 },   // Vertical wall 2
     { x: 0, z: -40, width: 40, height: 2 },   // Horizontal wall 1
     { x: -40, z: 20, width: 40, height: 2 },  // Horizontal wall 2
-  ];
+  ], []);
 
   const checkCollision = useCallback((newPos: THREE.Vector3) => {
     const robotRadius = 4; // Robot radius for collision
@@ -40,7 +40,7 @@ export function useSimpleVehicle() {
       }
     }
     return false; // No collision
-  }, []);
+  }, [walls]);
 
   const update = useCallback((controls: any) => {
     const deltaTime = 1/60;
