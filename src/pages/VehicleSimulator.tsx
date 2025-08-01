@@ -145,7 +145,7 @@ export default function VehicleSimulator() {
             <div className="h-[600px] nasa-panel border-2 border-muted-foreground/30 rounded-sm overflow-hidden">
               <div className="px-4 pt-4 pb-2 border-b border-muted-foreground/20">
                 <h3 className="text-sm font-futura font-bold text-muted-foreground uppercase tracking-wider nasa-display">
-                  TERRAIN VIEWPORT
+                  MAZE VIEWPORT
                 </h3>
               </div>
               <div className="relative w-full h-[calc(100%-60px)] bg-black">
@@ -224,7 +224,7 @@ export default function VehicleSimulator() {
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50">
                     <div className="text-center">
                       <div className="text-2xl font-futura text-primary mb-2">SIMULATION READY</div>
-                      <div className="text-sm text-muted-foreground">Click START MISSION to begin</div>
+                      <div className="text-sm text-muted-foreground">Click START to begin</div>
                     </div>
                   </div>
                 )}
