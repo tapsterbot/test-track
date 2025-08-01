@@ -22,11 +22,7 @@ export function SystemPanel({ title, children, className, fullWidth = false }: S
           {title}
         </h3>
       </div>
-      <div className={cn(
-        fullWidth ? "" : "space-y-3"
-      )}>
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
