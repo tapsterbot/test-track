@@ -431,457 +431,263 @@ export default function StarshipControlDemo() {
       <ModuleHeader
         moduleNumber="015"
         title="STARSHIP COMMAND"
-        description="ADVANCED CONTROL SYSTEMS - STELLAR CLASS VII"
+        description="UNIFIED BRIDGE INTERFACE - STELLAR CLASS VII"
       />
 
-      <div className="container mx-auto px-4 py-8 relative z-10">
-        {/* Enhanced Mission Time & Status */}
-        <div className="mb-8 text-center">
-          <div className={`text-3xl font-mono mb-2 transition-all duration-300 ${redAlert ? 'text-destructive animate-pulse' : 'text-primary'}`}>
-            STELLAR DATE: {time.toISOString().slice(0, 10).replace(/-/g, '.')} • {time.toLocaleTimeString('en-US', { hour12: false })}
-          </div>
-          <div className="flex justify-center gap-4 mb-4">
+      <div className="container mx-auto px-4 py-4 relative z-10 h-screen">
+        {/* Status Bar */}
+        <div className="mb-4 flex items-center justify-between bg-card/20 backdrop-blur-sm border border-primary/20 rounded-lg p-3">
+          <div className="flex items-center gap-6">
+            <div className={`text-lg font-mono transition-all duration-300 ${redAlert ? 'text-destructive animate-pulse' : 'text-primary'}`}>
+              STELLAR DATE: {time.toISOString().slice(0, 10).replace(/-/g, '.')} • {time.toLocaleTimeString('en-US', { hour12: false })}
+            </div>
             <Badge variant={systemAlerts === 0 && !redAlert ? "default" : "destructive"} className="animate-fade-in">
-              {redAlert ? "⚠ RED ALERT ACTIVE" : systemAlerts === 0 ? "ALL SYSTEMS NOMINAL" : `${systemAlerts} ALERTS ACTIVE`}
-            </Badge>
-            <Badge variant={navigationActive ? "default" : "secondary"} className="animate-fade-in">
-              {navigationActive ? "NAV ONLINE" : "NAV OFFLINE"}
-            </Badge>
-            <Badge variant={autoMode ? "default" : "secondary"} className="animate-fade-in">
-              {autoMode ? "AUTO MODE" : "MANUAL MODE"}
+              {redAlert ? "⚠ RED ALERT" : systemAlerts === 0 ? "ALL SYSTEMS NOMINAL" : `${systemAlerts} ALERTS`}
             </Badge>
           </div>
           
-          {/* Holographic ship display */}
-          <div className="flex justify-center mb-4">
-            <div className="relative">
-              <canvas
-                ref={holoDisplayRef}
-                width={120}
-                height={80}
-                className="border border-primary/30 bg-card/50 rounded"
-              />
-              <div className="absolute bottom-1 left-1 text-xs text-primary font-mono">
-                HOLO-DISPLAY
-              </div>
+          <div className="flex items-center gap-4">
+            <div className="flex gap-2">
+              <Badge variant={navigationActive ? "default" : "secondary"}>NAV {navigationActive ? "ONLINE" : "OFFLINE"}</Badge>
+              <Badge variant={autoMode ? "default" : "secondary"}>{autoMode ? "AUTO" : "MANUAL"}</Badge>
+            </div>
+            
+            {/* Mission Controls */}
+            <div className="flex gap-2">
+              <Button 
+                onClick={handleRedAlert} 
+                variant={redAlert ? "destructive" : "outline"}
+                size="sm"
+                className="font-mono"
+              >
+                {redAlert ? "CANCEL ALERT" : "RED ALERT"}
+              </Button>
+              <Button 
+                onClick={handleAutoMode} 
+                variant={autoMode ? "default" : "outline"}
+                size="sm"
+                className="font-mono"
+              >
+                {autoMode ? "MANUAL" : "AUTO-PILOT"}
+              </Button>
+              <Button 
+                onClick={handleEmergencyProtocols}
+                variant="outline"
+                size="sm"
+                className="font-mono text-amber-400 border-amber-400/50 hover:bg-amber-400/10"
+              >
+                EMERGENCY
+              </Button>
             </div>
           </div>
         </div>
 
-        {/* Advanced Display Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-          {/* Tactical Display */}
-          <div className="lg:col-span-1">
-            <TacticalDisplay 
-              redAlert={redAlert} 
-              scannerData={scannerData}
-              className="animate-fade-in"
-            />
-          </div>
-          
-          {/* Warp Field Display */}
-          <div className="lg:col-span-1">
-            <WarpFieldDisplay 
-              warpCore={warpCore}
-              redAlert={redAlert}
-              className="animate-fade-in"
-            />
-          </div>
-          
-          {/* Mission Objectives */}
-          <div className="lg:col-span-2">
-            <Card className="nasa-panel border-accent/30 backdrop-blur-sm animate-fade-in h-full">
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <CheckCircle className="w-6 h-6 text-accent" />
-                  <h3 className="text-xl font-mono text-primary">MISSION STATUS</h3>
+        {/* Main Unified Dashboard */}
+        <div className="grid grid-cols-12 gap-4 h-full max-h-[calc(100vh-200px)]">
+          {/* Left Panel - Systems Status */}
+          <div className="col-span-3 space-y-4">
+            {/* Ship Status */}
+            <Card className="bg-card/40 backdrop-blur-sm border-primary/20 p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Cpu className="h-5 w-5 text-primary" />
+                <h3 className="font-mono text-primary font-bold">SHIP STATUS</h3>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="font-mono">POWER</span>
+                    <span className={`font-mono ${getStatusColor(powerLevel)}`}>{powerLevel}%</span>
+                  </div>
+                  <Progress value={powerLevel} className="h-2" />
                 </div>
-                <div className="space-y-3">
-                  {missionObjectives.map((objective, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <Badge variant={index === currentMission ? "default" : "secondary"} className="text-xs">
-                        {index === currentMission ? "ACTIVE" : "COMPLETE"}
-                      </Badge>
-                      <span className="text-sm text-muted-foreground">{objective}</span>
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="font-mono">SHIELDS</span>
+                    <span className={`font-mono ${getStatusColor(shieldStatus)}`}>{shieldStatus}%</span>
+                  </div>
+                  <Progress value={shieldStatus} className="h-2" />
+                </div>
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="font-mono">WARP CORE</span>
+                    <span className={`font-mono ${getStatusColor(warpCore)}`}>{warpCore}%</span>
+                  </div>
+                  <Progress value={warpCore} className="h-2" />
+                </div>
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="font-mono">HULL INTEGRITY</span>
+                    <span className={`font-mono ${getStatusColor(hullIntegrity)}`}>{hullIntegrity}%</span>
+                  </div>
+                  <Progress value={hullIntegrity} className="h-2" />
+                </div>
+              </div>
+            </Card>
+
+            {/* Life Support */}
+            <Card className="bg-card/40 backdrop-blur-sm border-primary/20 p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Activity className="h-5 w-5 text-primary" />
+                <h3 className="font-mono text-primary font-bold">LIFE SUPPORT</h3>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="font-mono text-sm">OXYGEN</span>
+                  <span className={`font-mono text-sm ${getStatusColor(oxygenLevel)}`}>{oxygenLevel}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-mono text-sm">GRAVITY</span>
+                  <span className={`font-mono text-sm ${getStatusColor(gravityField * 100)}`}>{gravityField.toFixed(2)}G</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-mono text-sm">ENGINE TEMP</span>
+                  <span className={`font-mono text-sm ${engineTemp > 100 ? 'text-destructive' : 'text-primary'}`}>{engineTemp}°K</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* Weapons Console */}
+            <WeaponsConsole redAlert={redAlert} onWeaponFire={handleWeaponFire} />
+          </div>
+
+          {/* Center Panel - Main Display */}
+          <div className="col-span-6">
+            <Card className="bg-card/20 backdrop-blur-sm border-primary/20 h-full p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Radar className="h-5 w-5 text-primary" />
+                  <h3 className="font-mono text-primary font-bold">TACTICAL DISPLAY</h3>
+                </div>
+                <div className="flex gap-2">
+                  <Badge variant="outline" className="font-mono text-xs">
+                    {redAlert ? "COMBAT MODE" : "SCANNING"}
+                  </Badge>
+                  <Badge variant="outline" className="font-mono text-xs">
+                    CONTACTS: {scannerData.length}
+                  </Badge>
+                </div>
+              </div>
+              
+              {/* Unified Main Canvas */}
+              <div className="relative bg-black/50 rounded border border-primary/30 overflow-hidden" style={{ height: 'calc(100% - 60px)' }}>
+                <canvas
+                  ref={canvasRef}
+                  width={600}
+                  height={400}
+                  className="w-full h-full"
+                />
+                
+                {/* Overlay Info */}
+                <div className="absolute top-4 left-4 space-y-2">
+                  <div className="bg-black/50 px-2 py-1 rounded text-xs font-mono text-primary">
+                    SECTOR: 7-ALPHA
+                  </div>
+                  <div className="bg-black/50 px-2 py-1 rounded text-xs font-mono text-primary">
+                    HEADING: 045.7°
+                  </div>
+                  <div className="bg-black/50 px-2 py-1 rounded text-xs font-mono text-primary">
+                    WARP: {warpCore > 50 ? 'READY' : 'CHARGING'}
+                  </div>
+                </div>
+                
+                {/* Scanner Data */}
+                <div className="absolute top-4 right-4 space-y-1">
+                  {scannerData.slice(-3).map((contact, i) => (
+                    <div key={contact.id} className="bg-black/50 px-2 py-1 rounded text-xs font-mono flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${
+                        contact.type === 'friendly' ? 'bg-green-400' : 
+                        contact.type === 'hostile' ? 'bg-red-400' : 'bg-yellow-400'
+                      }`} />
+                      <span className="text-primary">
+                        {contact.type.toUpperCase()} - {contact.distance}KM
+                      </span>
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 pt-4 border-t border-border">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Mission Progress</span>
-                    <span className="text-sm font-mono text-accent">{Math.round((currentMission / missionObjectives.length) * 100)}%</span>
-                  </div>
-                  <Progress value={(currentMission / missionObjectives.length) * 100} className="h-2 mt-2" />
+              </div>
+            </Card>
+          </div>
+
+          {/* Right Panel - Engineering & Science */}
+          <div className="col-span-3 space-y-4">
+            {/* Engineering */}
+            <EngineeringPanel 
+              redAlert={redAlert} 
+              warpCore={warpCore} 
+              engineTemp={engineTemp} 
+            />
+            
+            {/* Science Station */}
+            <ScienceStation 
+              redAlert={redAlert} 
+              scannerData={scannerData} 
+            />
+            
+            {/* Communications */}
+            <Card className="bg-card/40 backdrop-blur-sm border-primary/20 p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Wifi className="h-5 w-5 text-primary" />
+                <h3 className="font-mono text-primary font-bold">COMMS</h3>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs">SUBSPACE</span>
+                  <Badge variant={communicationsArray ? "default" : "secondary"} className="text-xs">
+                    {communicationsArray ? "ONLINE" : "OFFLINE"}
+                  </Badge>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs">AUDIO</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setAudioAlerts(!audioAlerts)}
+                    className="h-6 w-6 p-0"
+                  >
+                    {audioAlerts ? <Volume2 className="h-3 w-3" /> : <VolumeX className="h-3 w-3" />}
+                  </Button>
+                </div>
+                <div className="text-xs font-mono text-muted-foreground">
+                  CHANNEL: STARFLEET-1
                 </div>
               </div>
             </Card>
           </div>
         </div>
 
-        {/* Main Control Systems Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Weapons Console */}
-          <WeaponsConsole redAlert={redAlert} onWeaponFire={handleWeaponFire} />
-          
-          {/* Science Station */}
-          <ScienceStation redAlert={redAlert} scannerData={scannerData} />
-          
-          {/* Engineering Panel */}
-          <EngineeringPanel redAlert={redAlert} warpCore={warpCore} engineTemp={engineTemp} />
-        </div>
-
-        {/* Secondary Systems Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Power Systems */}
-          <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in">
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Zap className="w-6 h-6 text-accent animate-pulse" />
-                <h3 className="text-xl font-mono text-primary">POWER CORE</h3>
+        {/* Bottom Status Bar */}
+        <div className="mt-4 bg-card/20 backdrop-blur-sm border border-primary/20 rounded-lg p-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <div className="text-sm font-mono text-primary">
+                MISSION: {missionObjectives[currentMission]}
               </div>
-              <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between mb-2">
-                      <span className="text-sm text-muted-foreground">Primary Output</span>
-                      <span className={`text-sm font-mono ${getStatusColor(powerLevel)}`}>
-                      {powerLevel.toFixed(1)}%
-                    </span>
-                  </div>
-                  <Progress value={powerLevel} className="h-3 animate-pulse" />
+              <div className="flex gap-4">
+                <div className="text-xs font-mono">
+                  <span className="text-muted-foreground">CREW:</span> <span className="text-primary">847</span>
                 </div>
-                
-                  <div>
-                    <div className="flex justify-between mb-2">
-                      <span className="text-sm text-muted-foreground">Warp Core</span>
-                      <span className={`text-sm font-mono ${getStatusColor(warpCore)}`}>
-                      {warpCore.toFixed(1)}%
-                    </span>
-                  </div>
-                  <Progress value={warpCore} className="h-3" />
+                <div className="text-xs font-mono">
+                  <span className="text-muted-foreground">VELOCITY:</span> <span className="text-primary">WARP {(warpCore / 20).toFixed(1)}</span>
                 </div>
-
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-muted-foreground">Engine Temperature</span>
-                    <span className={`text-sm font-mono ${getStatusColor(120 - engineTemp)}`}>
-                      {engineTemp.toFixed(1)}°C
-                    </span>
-                  </div>
-                  <Progress value={(engineTemp / 120) * 100} className="h-2" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 mt-4">
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="font-mono text-xs border-primary/50 hover:bg-primary/20"
-                    onClick={() => setPowerLevel(Math.min(100, powerLevel + 10))}
-                  >
-                    <Zap className="w-3 h-3 mr-1" />
-                    BOOST
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="font-mono text-xs border-accent/50 hover:bg-accent/20"
-                    onClick={handleAutoMode}
-                  >
-                    <Settings className="w-3 h-3 mr-1" />
-                    {autoMode ? 'MANUAL' : 'AUTO'}
-                  </Button>
+                <div className="text-xs font-mono">
+                  <span className="text-muted-foreground">DESTINATION:</span> <span className="text-primary">SECTOR 7-ALPHA</span>
                 </div>
               </div>
             </div>
-          </Card>
-
-          {/* Scanner & Radar */}
-          <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in">
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Radar className="w-6 h-6 text-primary animate-spin" style={{ animationDuration: '4s' }} />
-                <h3 className="text-xl font-mono text-primary">SCANNER</h3>
-              </div>
-              
-              <div className="relative">
-                <canvas
-                  ref={canvasRef}
-                  width={200}
-                  height={200}
-                  className="w-full h-48 bg-card/50 rounded border border-primary/30"
+            
+            <div className="flex items-center gap-2">
+              {Array.from({ length: 5 }, (_, i) => (
+                <div 
+                  key={i} 
+                  className={`w-2 h-2 rounded-full ${
+                    i < Math.floor(powerLevel / 20) ? 'bg-primary' : 'bg-muted'
+                  }`} 
                 />
-                <div className="absolute bottom-2 left-2 text-xs text-primary font-mono">
-                  RANGE: 50,000 KM
-                </div>
-              </div>
-              
-              <div className="mt-4 space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Active Contacts</span>
-                  <span className="text-primary font-mono">{scannerData.length}/12</span>
-                </div>
-                <div className="grid grid-cols-3 gap-1 text-xs">
-                  <Badge variant="default" className="text-xs">
-                    {scannerData.filter(b => b.type === 'friendly').length} ALLY
-                  </Badge>
-                  <Badge variant="secondary" className="text-xs">
-                    {scannerData.filter(b => b.type === 'unknown').length} UNK
-                  </Badge>
-                  <Badge variant="destructive" className="text-xs">
-                    {scannerData.filter(b => b.type === 'hostile').length} HOST
-                  </Badge>
-                </div>
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex justify-between">
-                    <span>Range:</span>
-                    <span className="text-primary">50,000 KM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Resolution:</span>
-                    <span className="text-primary">{redAlert ? 'ENHANCED' : 'STANDARD'}</span>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          </Card>
-
-          {/* Defense Systems */}
-          <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in">
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Shield className="w-6 h-6 text-primary" />
-                <h3 className="text-xl font-mono text-primary">SHIELDS</h3>
-              </div>
-              
-              <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between mb-2">
-                      <span className="text-sm text-muted-foreground">Shield Integrity</span>
-                      <span className={`text-sm font-mono ${getStatusColor(shieldStatus)}`}>
-                      {shieldStatus.toFixed(1)}%
-                    </span>
-                  </div>
-                  <Progress value={shieldStatus} className="h-3" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-center p-2 bg-muted/30 rounded">
-                    <div className="text-xs text-muted-foreground">FORWARD</div>
-                    <div className="text-sm text-primary font-mono">98%</div>
-                  </div>
-                  <div className="text-center p-2 bg-muted/30 rounded">
-                    <div className="text-xs text-muted-foreground">AFT</div>
-                    <div className="text-sm text-primary font-mono">91%</div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <Button 
-                    size="sm" 
-                    className="font-mono bg-primary hover:bg-primary/80 text-xs"
-                    onClick={() => setShieldStatus(Math.min(100, shieldStatus + 15))}
-                  >
-                    <Shield className="w-3 h-3 mr-1" />
-                    BOOST
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    variant="outline"
-                    className="font-mono border-primary/50 hover:bg-primary/20 text-xs"
-                    onClick={() => setShieldStatus(prev => Math.min(100, prev + 5))}
-                  >
-                    <Power className="w-3 h-3 mr-1" />
-                    REGEN
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          {/* Navigation */}
-          <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in lg:col-span-2">
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Navigation className="w-6 h-6 text-primary" />
-                <h3 className="text-xl font-mono text-primary">NAVIGATION</h3>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-3">
-                  <div className="text-sm text-muted-foreground">Current Position</div>
-                  <div className="font-mono text-xs text-primary space-y-1">
-                    <div>X: 847,239.42</div>
-                    <div>Y: -234,891.17</div>
-                    <div>Z: 95,847.33</div>
-                  </div>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="text-sm text-muted-foreground">Destination</div>
-                  <div className="font-mono text-xs text-primary space-y-1">
-                    <div>KEPLER-442b</div>
-                    <div>1,206 LY</div>
-                    <div>ETA: 47.3 DAYS</div>
-                  </div>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="text-sm text-muted-foreground">Engine Status</div>
-                  <div className="space-y-2">
-                    <Badge variant={getStatusBadgeVariant(warpCore)} className="text-xs">
-                      WARP {warpCore > 80 ? 'READY' : 'CHARGING'}
-                    </Badge>
-                    <div className="text-xs text-muted-foreground">
-                      Speed: {(Math.random() * 0.3 + 0.7).toFixed(2)}c
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          {/* Enhanced System Status */}
-          <Card className="nasa-panel border-primary/30 backdrop-blur-sm animate-fade-in">
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Cpu className="w-6 h-6 text-accent animate-pulse" />
-                <h3 className="text-xl font-mono text-primary">SYSTEMS</h3>
-              </div>
-              
-              <div className="space-y-3">
-                {[
-                  { name: 'Life Support', status: oxygenLevel > 95 ? 'OPTIMAL' : 'STABLE', value: oxygenLevel, icon: Activity },
-                  { name: 'Artificial Gravity', status: Math.abs(gravityField - 1.0) < 0.1 ? 'STABLE' : 'FLUCTUATING', value: gravityField * 100, icon: Gauge },
-                  { name: 'Communications', status: communicationsArray ? 'ACTIVE' : 'OFFLINE', value: communicationsArray ? 100 : 0, icon: Wifi },
-                  { name: 'Hull Integrity', status: hullIntegrity > 90 ? 'NORMAL' : hullIntegrity > 80 ? 'MINOR DAMAGE' : 'WARNING', value: hullIntegrity, icon: hullIntegrity > 80 ? CheckCircle : AlertTriangle }
-                ].map((system, i) => (
-                  <div key={i} className="space-y-1">
-                    <div className="flex items-center justify-between p-2 bg-muted/30 rounded">
-                      <div className="flex items-center gap-2">
-                        <system.icon className={`w-4 h-4 ${redAlert ? 'text-destructive' : 'text-accent'}`} />
-                        <span className="text-xs text-muted-foreground">{system.name}</span>
-                      </div>
-                      <Badge 
-                        variant={system.status.includes('WARNING') || system.status.includes('DAMAGE') ? 'destructive' : 'default'} 
-                        className="text-xs"
-                      >
-                        {system.status}
-                      </Badge>
-                    </div>
-                    <Progress value={system.value} className="h-1" />
-                  </div>
-                ))}
-              </div>
-              
-              <div className="mt-4 pt-3 border-t border-border">
-                <div className="text-xs text-muted-foreground mb-2">System Performance</div>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div className="flex justify-between">
-                    <span>CPU Load:</span>
-                    <span className="text-accent">{Math.floor(Math.random() * 30 + 45)}%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Memory:</span>
-                    <span className="text-accent">{Math.floor(Math.random() * 20 + 60)}%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Enhanced Emergency Controls */}
-        <div className="mt-8 flex justify-center">
-          <Card className={`nasa-panel backdrop-blur-sm animate-fade-in transition-all duration-500 ${
-            redAlert ? 'border-destructive shadow-destructive/50 shadow-lg' : 'border-destructive/50'
-          }`}>
-            <div className="p-6">
-              <div className="flex items-center justify-center gap-6">
-                <AlertTriangle className={`w-8 h-8 transition-all duration-300 ${
-                  redAlert ? 'text-destructive animate-pulse' : 'text-destructive/70'
-                }`} />
-                <div className="text-center">
-                  <div className="text-destructive font-mono text-lg mb-2">EMERGENCY PROTOCOLS</div>
-                  <div className="text-xs text-destructive/70">AUTHORIZATION LEVEL: CAPTAIN</div>
-                </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant={redAlert ? "destructive" : "outline"}
-                    size="sm" 
-                    className={`font-mono transition-all duration-300 ${
-                      redAlert 
-                        ? 'bg-destructive hover:bg-destructive/80 animate-pulse shadow-destructive/50 shadow-lg' 
-                        : 'border-destructive/50 hover:bg-destructive/20'
-                    }`}
-                    onClick={handleRedAlert}
-                  >
-                    <AlertTriangle className="w-4 h-4 mr-2" />
-                    {redAlert ? 'CANCEL ALERT' : 'RED ALERT'}
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    size="sm" 
-                    className="font-mono border-accent/50 hover:bg-accent/20"
-                    onClick={() => {
-                      setPowerLevel(100);
-                      setShieldStatus(100);
-                      setWarpCore(95);
-                      setHullIntegrity(100);
-                      setOxygenLevel(100);
-                    }}
-                  >
-                    <CheckCircle className="w-4 h-4 mr-2" />
-                    RESET ALL
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Card>
+          </div>
         </div>
       </div>
-
-      {/* Enhanced scanning lines effect */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Horizontal scan lines */}
-        <div className={`absolute w-full h-1 bg-gradient-to-r from-transparent to-transparent opacity-40 transition-all duration-300 ${
-          redAlert ? 'via-destructive' : 'via-primary'
-        }`}
-             style={{ 
-               top: '15%',
-               animation: redAlert ? 'scan-line 1.5s ease-in-out infinite' : 'scan-line 3s ease-in-out infinite'
-             }} />
-        <div className={`absolute w-full h-0.5 bg-gradient-to-r from-transparent to-transparent opacity-25 transition-all duration-300 ${
-          redAlert ? 'via-accent' : 'via-primary'
-        }`}
-             style={{ 
-               top: '45%',
-               animation: redAlert ? 'scan-line 2s ease-in-out infinite reverse' : 'scan-line 4s ease-in-out infinite reverse'
-             }} />
-        <div className={`absolute w-full h-0.5 bg-gradient-to-r from-transparent to-transparent opacity-20 transition-all duration-300 ${
-          redAlert ? 'via-destructive' : 'via-accent'
-        }`}
-             style={{ 
-               top: '75%',
-               animation: redAlert ? 'scan-line 1.8s ease-in-out infinite' : 'scan-line 5s ease-in-out infinite'
-             }} />
-        
-        {/* Vertical scan lines */}
-        <div className={`absolute h-full w-0.5 bg-gradient-to-b from-transparent to-transparent opacity-15 transition-all duration-300 ${
-          redAlert ? 'via-destructive' : 'via-primary'
-        }`}
-             style={{ 
-               left: '25%',
-               animation: redAlert ? 'scan-line-vertical 2.5s ease-in-out infinite' : 'scan-line-vertical 6s ease-in-out infinite'
-             }} />
-        <div className={`absolute h-full w-0.5 bg-gradient-to-b from-transparent to-transparent opacity-10 transition-all duration-300 ${
-          redAlert ? 'via-accent' : 'via-primary'
-        }`}
-             style={{ 
-               right: '30%',
-               animation: redAlert ? 'scan-line-vertical 3s ease-in-out infinite reverse' : 'scan-line-vertical 7s ease-in-out infinite reverse'
-             }} />
-      </div>
-      
-
     </div>
   );
 }
