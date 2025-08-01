@@ -98,38 +98,38 @@ export default function VehicleSimulator() {
         {/* Simulation Controls */}
         <div className="mb-6">
           <SystemPanel title="SIMULATION CONTROL">
-            <div className="flex flex-col sm:flex-row gap-3 items-center">
-              <div className="flex gap-2 w-full sm:w-auto">
+            <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 <Button
                   onClick={handleStartSimulation}
                   disabled={isSimulationActive}
-                  className="nasa-button flex-1 sm:flex-initial"
+                  className="nasa-button"
                   size="sm"
                 >
-                  <Play className="w-3 h-3 mr-1" />
-                  START
+                  <Play className="w-3 h-3 sm:mr-1" />
+                  <span className="hidden xs:inline ml-1">START</span>
                 </Button>
                 <Button
                   onClick={handlePauseSimulation}
                   disabled={!isSimulationActive}
                   variant="secondary"
-                  className="nasa-button flex-1 sm:flex-initial"
+                  className="nasa-button"
                   size="sm"
                 >
-                  <Pause className="w-3 h-3 mr-1" />
-                  PAUSE
+                  <Pause className="w-3 h-3 sm:mr-1" />
+                  <span className="hidden xs:inline ml-1">PAUSE</span>
                 </Button>
                 <Button
                   onClick={handleResetSimulation}
                   variant="outline"
-                  className="nasa-button flex-1 sm:flex-initial"
+                  className="nasa-button"
                   size="sm"
                 >
-                  <RotateCcw className="w-3 h-3 mr-1" />
-                  RESET
+                  <RotateCcw className="w-3 h-3 sm:mr-1" />
+                  <span className="hidden xs:inline ml-1">RESET</span>
                 </Button>
               </div>
-              <div className="text-xs sm:text-sm w-full sm:w-auto text-center sm:text-left">
+              <div className="text-xs text-center">
                 STATUS: <span className={`font-semibold ${isSimulationActive ? 'text-green-400' : 'text-yellow-400'}`}>
                   {isSimulationActive ? 'ACTIVE' : 'STANDBY'}
                 </span>
