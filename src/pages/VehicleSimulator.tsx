@@ -98,33 +98,38 @@ export default function VehicleSimulator() {
         {/* Simulation Controls */}
         <div className="mb-6">
           <SystemPanel title="SIMULATION CONTROL">
-            <div className="flex gap-4 items-center">
-              <Button
-                onClick={handleStartSimulation}
-                disabled={isSimulationActive}
-                className="nasa-button"
-              >
-                <Play className="w-4 h-4 mr-2" />
-                START MISSION
-              </Button>
-              <Button
-                onClick={handlePauseSimulation}
-                disabled={!isSimulationActive}
-                variant="secondary"
-                className="nasa-button"
-              >
-                <Pause className="w-4 h-4 mr-2" />
-                PAUSE
-              </Button>
-              <Button
-                onClick={handleResetSimulation}
-                variant="outline"
-                className="nasa-button"
-              >
-                <RotateCcw className="w-4 h-4 mr-2" />
-                RESET
-              </Button>
-              <div className="ml-auto text-sm">
+            <div className="flex flex-col sm:flex-row gap-3 items-center">
+              <div className="flex gap-2 w-full sm:w-auto">
+                <Button
+                  onClick={handleStartSimulation}
+                  disabled={isSimulationActive}
+                  className="nasa-button flex-1 sm:flex-initial"
+                  size="sm"
+                >
+                  <Play className="w-3 h-3 mr-1" />
+                  START
+                </Button>
+                <Button
+                  onClick={handlePauseSimulation}
+                  disabled={!isSimulationActive}
+                  variant="secondary"
+                  className="nasa-button flex-1 sm:flex-initial"
+                  size="sm"
+                >
+                  <Pause className="w-3 h-3 mr-1" />
+                  PAUSE
+                </Button>
+                <Button
+                  onClick={handleResetSimulation}
+                  variant="outline"
+                  className="nasa-button flex-1 sm:flex-initial"
+                  size="sm"
+                >
+                  <RotateCcw className="w-3 h-3 mr-1" />
+                  RESET
+                </Button>
+              </div>
+              <div className="text-xs sm:text-sm w-full sm:w-auto text-center sm:text-left">
                 STATUS: <span className={`font-semibold ${isSimulationActive ? 'text-green-400' : 'text-yellow-400'}`}>
                   {isSimulationActive ? 'ACTIVE' : 'STANDBY'}
                 </span>
