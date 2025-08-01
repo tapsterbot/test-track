@@ -50,20 +50,20 @@ function Ground() {
         <meshLambertMaterial color="#374151" />
       </mesh>
       
-      {/* Simple maze walls */}
-      <mesh position={[-20, 2, -20]}>
+      {/* Simple maze walls - adjusted for bottom-left to top-right path */}
+      <mesh position={[-20, 2, 20]}>
         <boxGeometry args={[2, 4, 40]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[20, 2, 10]}>
+      <mesh position={[20, 2, -10]}>
         <boxGeometry args={[2, 4, 60]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[0, 2, -40]}>
+      <mesh position={[0, 2, 40]}>
         <boxGeometry args={[40, 4, 2]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[-40, 2, 20]}>
+      <mesh position={[40, 2, -20]}>
         <boxGeometry args={[40, 4, 2]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
@@ -231,10 +231,10 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset }: SimpleSimulato
           { x: 0, z: 60, width: 120, height: 2 },
           { x: -60, z: 0, width: 2, height: 120 },
           { x: 60, z: 0, width: 2, height: 120 },
-          { x: -20, z: -20, width: 2, height: 40 },
-          { x: 20, z: 10, width: 2, height: 60 },
-          { x: 0, z: -40, width: 40, height: 2 },
-          { x: -40, z: 20, width: 40, height: 2 },
+          { x: -20, z: 20, width: 2, height: 40 },
+          { x: 20, z: -10, width: 2, height: 60 },
+          { x: 0, z: 40, width: 40, height: 2 },
+          { x: 40, z: -20, width: 40, height: 2 },
         ];
         
         // Movement logic
