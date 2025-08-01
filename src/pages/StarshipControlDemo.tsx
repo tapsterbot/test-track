@@ -434,142 +434,78 @@ export default function StarshipControlDemo() {
         description="UNIFIED BRIDGE INTERFACE - STELLAR CLASS VII"
       />
 
-      <div className="container mx-auto px-4 py-4 relative z-10 h-screen">
+      <div className="container mx-auto px-2 sm:px-4 py-4 relative z-10 h-screen">
         {/* Status Bar */}
-        <div className="mb-4 flex items-center justify-between bg-card/20 backdrop-blur-sm border border-primary/20 rounded-lg p-3">
-          <div className="flex items-center gap-6">
-            <div className={`text-lg font-mono transition-all duration-300 ${redAlert ? 'text-destructive animate-pulse' : 'text-primary'}`}>
-              STELLAR DATE: {time.toISOString().slice(0, 10).replace(/-/g, '.')} • {time.toLocaleTimeString('en-US', { hour12: false })}
+        <div className="mb-2 sm:mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-card/20 backdrop-blur-sm border border-primary/20 rounded-lg p-2 sm:p-3 gap-2 sm:gap-0">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 w-full sm:w-auto">
+            <div className={`text-sm sm:text-lg font-mono transition-all duration-300 ${redAlert ? 'text-destructive animate-pulse' : 'text-primary'}`}>
+              <span className="hidden sm:inline">STELLAR DATE: {time.toISOString().slice(0, 10).replace(/-/g, '.')} • </span>
+              <span className="sm:hidden">SD: {time.toISOString().slice(5, 10).replace(/-/g, '.')} </span>
+              {time.toLocaleTimeString('en-US', { hour12: false })}
             </div>
-            <Badge variant={systemAlerts === 0 && !redAlert ? "default" : "destructive"} className="animate-fade-in">
-              {redAlert ? "⚠ RED ALERT" : systemAlerts === 0 ? "ALL SYSTEMS NOMINAL" : `${systemAlerts} ALERTS`}
+            <Badge variant={systemAlerts === 0 && !redAlert ? "default" : "destructive"} className="animate-fade-in text-xs">
+              {redAlert ? "⚠ RED ALERT" : systemAlerts === 0 ? "NOMINAL" : `${systemAlerts} ALERTS`}
             </Badge>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
             <div className="flex gap-2">
-              <Badge variant={navigationActive ? "default" : "secondary"}>NAV {navigationActive ? "ONLINE" : "OFFLINE"}</Badge>
-              <Badge variant={autoMode ? "default" : "secondary"}>{autoMode ? "AUTO" : "MANUAL"}</Badge>
+              <Badge variant={navigationActive ? "default" : "secondary"} className="text-xs">NAV {navigationActive ? "ON" : "OFF"}</Badge>
+              <Badge variant={autoMode ? "default" : "secondary"} className="text-xs">{autoMode ? "AUTO" : "MANUAL"}</Badge>
             </div>
             
             {/* Mission Controls */}
-            <div className="flex gap-2">
+            <div className="flex gap-1 sm:gap-2 flex-wrap">
               <Button 
                 onClick={handleRedAlert} 
                 variant={redAlert ? "destructive" : "outline"}
                 size="sm"
-                className="font-mono"
+                className="font-mono text-xs h-7"
               >
-                {redAlert ? "CANCEL ALERT" : "RED ALERT"}
+                {redAlert ? "CANCEL" : "ALERT"}
               </Button>
               <Button 
                 onClick={handleAutoMode} 
                 variant={autoMode ? "default" : "outline"}
                 size="sm"
-                className="font-mono"
+                className="font-mono text-xs h-7"
               >
-                {autoMode ? "MANUAL" : "AUTO-PILOT"}
+                {autoMode ? "MANUAL" : "AUTO"}
               </Button>
               <Button 
                 onClick={handleEmergencyProtocols}
                 variant="outline"
                 size="sm"
-                className="font-mono text-amber-400 border-amber-400/50 hover:bg-amber-400/10"
+                className="font-mono text-amber-400 border-amber-400/50 hover:bg-amber-400/10 text-xs h-7"
               >
-                EMERGENCY
+                EMERG
               </Button>
             </div>
           </div>
         </div>
 
         {/* Main Unified Dashboard */}
-        <div className="grid grid-cols-12 gap-4 h-full max-h-[calc(100vh-200px)]">
-          {/* Left Panel - Systems Status */}
-          <div className="col-span-3 space-y-4">
-            {/* Ship Status */}
-            <Card className="bg-card/40 backdrop-blur-sm border-primary/20 p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Cpu className="h-5 w-5 text-primary" />
-                <h3 className="font-mono text-primary font-bold">SHIP STATUS</h3>
-              </div>
-              <div className="space-y-3">
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="font-mono">POWER</span>
-                    <span className={`font-mono ${getStatusColor(powerLevel)}`}>{powerLevel}%</span>
-                  </div>
-                  <Progress value={powerLevel} className="h-2" />
-                </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="font-mono">SHIELDS</span>
-                    <span className={`font-mono ${getStatusColor(shieldStatus)}`}>{shieldStatus}%</span>
-                  </div>
-                  <Progress value={shieldStatus} className="h-2" />
-                </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="font-mono">WARP CORE</span>
-                    <span className={`font-mono ${getStatusColor(warpCore)}`}>{warpCore}%</span>
-                  </div>
-                  <Progress value={warpCore} className="h-2" />
-                </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="font-mono">HULL INTEGRITY</span>
-                    <span className={`font-mono ${getStatusColor(hullIntegrity)}`}>{hullIntegrity}%</span>
-                  </div>
-                  <Progress value={hullIntegrity} className="h-2" />
-                </div>
-              </div>
-            </Card>
-
-            {/* Life Support */}
-            <Card className="bg-card/40 backdrop-blur-sm border-primary/20 p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Activity className="h-5 w-5 text-primary" />
-                <h3 className="font-mono text-primary font-bold">LIFE SUPPORT</h3>
-              </div>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="font-mono text-sm">OXYGEN</span>
-                  <span className={`font-mono text-sm ${getStatusColor(oxygenLevel)}`}>{oxygenLevel}%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-mono text-sm">GRAVITY</span>
-                  <span className={`font-mono text-sm ${getStatusColor(gravityField * 100)}`}>{gravityField.toFixed(2)}G</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-mono text-sm">ENGINE TEMP</span>
-                  <span className={`font-mono text-sm ${engineTemp > 100 ? 'text-destructive' : 'text-primary'}`}>{engineTemp}°K</span>
-                </div>
-              </div>
-            </Card>
-
-            {/* Weapons Console */}
-            <WeaponsConsole redAlert={redAlert} onWeaponFire={handleWeaponFire} />
-          </div>
-
-          {/* Center Panel - Main Display */}
-          <div className="col-span-6">
-            <Card className="bg-card/20 backdrop-blur-sm border-primary/20 h-full p-4">
-              <div className="flex items-center justify-between mb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-4 h-full max-h-[calc(100vh-200px)]">
+          {/* Mobile: Main Display First */}
+          <div className="lg:col-span-6 lg:order-2 order-1">
+            <Card className="bg-card/20 backdrop-blur-sm border-primary/20 h-full p-2 sm:p-4">
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
                 <div className="flex items-center gap-2">
-                  <Radar className="h-5 w-5 text-primary" />
-                  <h3 className="font-mono text-primary font-bold">TACTICAL DISPLAY</h3>
+                  <Radar className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                  <h3 className="font-mono text-primary font-bold text-sm sm:text-base">TACTICAL</h3>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-1 sm:gap-2">
                   <Badge variant="outline" className="font-mono text-xs">
-                    {redAlert ? "COMBAT MODE" : "SCANNING"}
+                    {redAlert ? "COMBAT" : "SCAN"}
                   </Badge>
                   <Badge variant="outline" className="font-mono text-xs">
-                    CONTACTS: {scannerData.length}
+                    {scannerData.length}
                   </Badge>
                 </div>
               </div>
               
               {/* Unified Main Canvas */}
-              <div className="relative bg-black/50 rounded border border-primary/30 overflow-hidden" style={{ height: 'calc(100% - 60px)' }}>
+              <div className="relative bg-black/50 rounded border border-primary/30 overflow-hidden" style={{ height: 'calc(100% - 40px)' }}>
                 <canvas
                   ref={canvasRef}
                   width={600}
@@ -578,28 +514,28 @@ export default function StarshipControlDemo() {
                 />
                 
                 {/* Overlay Info */}
-                <div className="absolute top-4 left-4 space-y-2">
-                  <div className="bg-black/50 px-2 py-1 rounded text-xs font-mono text-primary">
+                <div className="absolute top-2 left-2 space-y-1">
+                  <div className="bg-black/50 px-1 py-0.5 rounded text-xs font-mono text-primary">
                     SECTOR: 7-ALPHA
                   </div>
-                  <div className="bg-black/50 px-2 py-1 rounded text-xs font-mono text-primary">
-                    HEADING: 045.7°
+                  <div className="bg-black/50 px-1 py-0.5 rounded text-xs font-mono text-primary">
+                    HDG: 045.7°
                   </div>
-                  <div className="bg-black/50 px-2 py-1 rounded text-xs font-mono text-primary">
-                    WARP: {warpCore > 50 ? 'READY' : 'CHARGING'}
+                  <div className="bg-black/50 px-1 py-0.5 rounded text-xs font-mono text-primary">
+                    WARP: {warpCore > 50 ? 'RDY' : 'CHG'}
                   </div>
                 </div>
                 
                 {/* Scanner Data */}
-                <div className="absolute top-4 right-4 space-y-1">
-                  {scannerData.slice(-3).map((contact, i) => (
-                    <div key={contact.id} className="bg-black/50 px-2 py-1 rounded text-xs font-mono flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${
+                <div className="absolute top-2 right-2 space-y-1">
+                  {scannerData.slice(-2).map((contact, i) => (
+                    <div key={contact.id} className="bg-black/50 px-1 py-0.5 rounded text-xs font-mono flex items-center gap-1">
+                      <div className={`w-1.5 h-1.5 rounded-full ${
                         contact.type === 'friendly' ? 'bg-green-400' : 
                         contact.type === 'hostile' ? 'bg-red-400' : 'bg-yellow-400'
                       }`} />
-                      <span className="text-primary">
-                        {contact.type.toUpperCase()} - {contact.distance}KM
+                      <span className="text-primary text-xs">
+                        {contact.type.charAt(0).toUpperCase()}-{contact.distance}K
                       </span>
                     </div>
                   ))}
@@ -608,32 +544,104 @@ export default function StarshipControlDemo() {
             </Card>
           </div>
 
-          {/* Right Panel - Engineering & Science */}
-          <div className="col-span-3 space-y-4">
+          {/* Left Panel - Systems Status (Mobile: Row 2) */}
+          <div className="lg:col-span-3 lg:order-1 order-2 space-y-2 sm:space-y-4">
+            {/* Ship Status */}
+            <Card className="bg-card/40 backdrop-blur-sm border-primary/20 p-2 sm:p-4">
+              <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                <Cpu className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                <h3 className="font-mono text-primary font-bold text-sm sm:text-base">SYSTEMS</h3>
+              </div>
+              <div className="space-y-2 sm:space-y-3">
+                <div>
+                  <div className="flex justify-between text-xs sm:text-sm mb-1">
+                    <span className="font-mono">PWR</span>
+                    <span className={`font-mono ${getStatusColor(powerLevel)}`}>{powerLevel}%</span>
+                  </div>
+                  <Progress value={powerLevel} className="h-1.5 sm:h-2" />
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs sm:text-sm mb-1">
+                    <span className="font-mono">SHD</span>
+                    <span className={`font-mono ${getStatusColor(shieldStatus)}`}>{shieldStatus}%</span>
+                  </div>
+                  <Progress value={shieldStatus} className="h-1.5 sm:h-2" />
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs sm:text-sm mb-1">
+                    <span className="font-mono">WARP</span>
+                    <span className={`font-mono ${getStatusColor(warpCore)}`}>{warpCore}%</span>
+                  </div>
+                  <Progress value={warpCore} className="h-1.5 sm:h-2" />
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs sm:text-sm mb-1">
+                    <span className="font-mono">HULL</span>
+                    <span className={`font-mono ${getStatusColor(hullIntegrity)}`}>{hullIntegrity}%</span>
+                  </div>
+                  <Progress value={hullIntegrity} className="h-1.5 sm:h-2" />
+                </div>
+              </div>
+            </Card>
+
+            {/* Life Support - Mobile: Horizontal Layout */}
+            <Card className="bg-card/40 backdrop-blur-sm border-primary/20 p-2 sm:p-4">
+              <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                <h3 className="font-mono text-primary font-bold text-sm sm:text-base">LIFE SUPPORT</h3>
+              </div>
+              <div className="grid grid-cols-3 gap-2 sm:space-y-3 sm:grid-cols-1">
+                <div className="text-center sm:text-left sm:flex sm:justify-between">
+                  <span className="font-mono text-xs sm:text-sm block sm:inline">O2</span>
+                  <span className={`font-mono text-xs sm:text-sm ${getStatusColor(oxygenLevel)} block sm:inline`}>{oxygenLevel}%</span>
+                </div>
+                <div className="text-center sm:text-left sm:flex sm:justify-between">
+                  <span className="font-mono text-xs sm:text-sm block sm:inline">GRAV</span>
+                  <span className={`font-mono text-xs sm:text-sm ${getStatusColor(gravityField * 100)} block sm:inline`}>{gravityField.toFixed(2)}G</span>
+                </div>
+                <div className="text-center sm:text-left sm:flex sm:justify-between">
+                  <span className="font-mono text-xs sm:text-sm block sm:inline">TEMP</span>
+                  <span className={`font-mono text-xs sm:text-sm ${engineTemp > 100 ? 'text-destructive' : 'text-primary'} block sm:inline`}>{engineTemp}°K</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* Weapons Console - Mobile: Compact */}
+            <div className="lg:block">
+              <WeaponsConsole redAlert={redAlert} onWeaponFire={handleWeaponFire} />
+            </div>
+          </div>
+
+          {/* Right Panel - Engineering & Science (Mobile: Row 3) */}
+          <div className="lg:col-span-3 lg:order-3 order-3 space-y-2 sm:space-y-4">
             {/* Engineering */}
-            <EngineeringPanel 
-              redAlert={redAlert} 
-              warpCore={warpCore} 
-              engineTemp={engineTemp} 
-            />
+            <div className="lg:block">
+              <EngineeringPanel 
+                redAlert={redAlert} 
+                warpCore={warpCore} 
+                engineTemp={engineTemp} 
+              />
+            </div>
             
             {/* Science Station */}
-            <ScienceStation 
-              redAlert={redAlert} 
-              scannerData={scannerData} 
-            />
+            <div className="lg:block">
+              <ScienceStation 
+                redAlert={redAlert} 
+                scannerData={scannerData} 
+              />
+            </div>
             
-            {/* Communications */}
-            <Card className="bg-card/40 backdrop-blur-sm border-primary/20 p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Wifi className="h-5 w-5 text-primary" />
-                <h3 className="font-mono text-primary font-bold">COMMS</h3>
+            {/* Communications - Mobile: Compact */}
+            <Card className="bg-card/40 backdrop-blur-sm border-primary/20 p-2 sm:p-4">
+              <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                <Wifi className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                <h3 className="font-mono text-primary font-bold text-sm sm:text-base">COMMS</h3>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1 sm:space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs">SUBSPACE</span>
                   <Badge variant={communicationsArray ? "default" : "secondary"} className="text-xs">
-                    {communicationsArray ? "ONLINE" : "OFFLINE"}
+                    {communicationsArray ? "ON" : "OFF"}
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
@@ -642,44 +650,44 @@ export default function StarshipControlDemo() {
                     variant="ghost"
                     size="sm"
                     onClick={() => setAudioAlerts(!audioAlerts)}
-                    className="h-6 w-6 p-0"
+                    className="h-5 w-5 p-0"
                   >
                     {audioAlerts ? <Volume2 className="h-3 w-3" /> : <VolumeX className="h-3 w-3" />}
                   </Button>
                 </div>
                 <div className="text-xs font-mono text-muted-foreground">
-                  CHANNEL: STARFLEET-1
+                  CH: STARFLEET-1
                 </div>
               </div>
             </Card>
           </div>
         </div>
 
-        {/* Bottom Status Bar */}
-        <div className="mt-4 bg-card/20 backdrop-blur-sm border border-primary/20 rounded-lg p-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <div className="text-sm font-mono text-primary">
+        {/* Bottom Status Bar - Mobile: Simplified */}
+        <div className="mt-2 sm:mt-4 bg-card/20 backdrop-blur-sm border border-primary/20 rounded-lg p-2 sm:p-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 w-full sm:w-auto">
+              <div className="text-xs sm:text-sm font-mono text-primary">
                 MISSION: {missionObjectives[currentMission]}
               </div>
-              <div className="flex gap-4">
-                <div className="text-xs font-mono">
+              <div className="flex gap-2 sm:gap-4 text-xs">
+                <div className="font-mono">
                   <span className="text-muted-foreground">CREW:</span> <span className="text-primary">847</span>
                 </div>
-                <div className="text-xs font-mono">
-                  <span className="text-muted-foreground">VELOCITY:</span> <span className="text-primary">WARP {(warpCore / 20).toFixed(1)}</span>
+                <div className="font-mono">
+                  <span className="text-muted-foreground">VEL:</span> <span className="text-primary">W{(warpCore / 20).toFixed(1)}</span>
                 </div>
-                <div className="text-xs font-mono">
-                  <span className="text-muted-foreground">DESTINATION:</span> <span className="text-primary">SECTOR 7-ALPHA</span>
+                <div className="font-mono hidden sm:inline">
+                  <span className="text-muted-foreground">DEST:</span> <span className="text-primary">SECTOR 7-ALPHA</span>
                 </div>
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               {Array.from({ length: 5 }, (_, i) => (
                 <div 
                   key={i} 
-                  className={`w-2 h-2 rounded-full ${
+                  className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
                     i < Math.floor(powerLevel / 20) ? 'bg-primary' : 'bg-muted'
                   }`} 
                 />
