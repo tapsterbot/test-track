@@ -199,6 +199,13 @@ const Index = () => {
     elements: ["touch gestures", "mobile viewport", "orientation change", "touch events", "mobile interactions"],
     implemented: false
   }, {
+    title: "Vehicle Simulator",
+    path: "/vehicle-simulator",
+    description: "3D Mars rover terrain navigation with physics-based controls",
+    difficulty: "Expert",
+    elements: ["three.js", "vehicle physics", "terrain generation", "multi-input controls", "telemetry display"],
+    implemented: true
+  }, {
     title: "WebSocket & Real-time Demo",
     path: "/websocket-demo",
     description: "Test WebSocket connections, real-time updates, and live data streams",
