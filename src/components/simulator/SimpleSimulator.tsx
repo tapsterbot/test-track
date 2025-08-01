@@ -208,31 +208,116 @@ function SimpleVehicle({ position, rotation }: {
 
 // Scene content
 function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
-  const vehicle = useSimpleVehicle();
+  const vehicleRef = useRef<{
+    position: THREE.Vector3;
+    rotation: THREE.Euler;
+    speed: number;
+    update: (controls: any) => void;
+    getSpeed: () => number;
+    reset: () => void;
+  } | null>(null);
+  
+  // Initialize vehicle only once
+  if (!vehicleRef.current) {
+    vehicleRef.current = {
+      position: new THREE.Vector3(-40, 1, -40),
+      rotation: new THREE.Euler(0, 0, 0),
+      speed: 0,
+      update: function(controls: any) {
+        const deltaTime = 1/60;
+        const walls = [
+          { x: 0, z: -60, width: 120, height: 2 },
+          { x: 0, z: 60, width: 120, height: 2 },
+          { x: -60, z: 0, width: 2, height: 120 },
+          { x: 60, z: 0, width: 2, height: 120 },
+          { x: -20, z: -20, width: 2, height: 40 },
+          { x: 20, z: 10, width: 2, height: 60 },
+          { x: 0, z: -40, width: 40, height: 2 },
+          { x: -40, z: 20, width: 40, height: 2 },
+        ];
+        
+        // Movement logic
+        if (controls.forward) {
+          this.speed = Math.min(this.speed + 0.2, 12);
+        } else if (controls.backward) {
+          this.speed = Math.max(this.speed - 0.2, -6);
+        } else {
+          this.speed *= 0.95;
+        }
+        
+        if (controls.left && Math.abs(this.speed) > 0.1) {
+          this.rotation.y += 0.02;
+        }
+        if (controls.right && Math.abs(this.speed) > 0.1) {
+          this.rotation.y -= 0.02;
+        }
+        
+        const direction = new THREE.Vector3(0, 0, -1);
+        direction.applyEuler(this.rotation);
+        direction.multiplyScalar(this.speed * deltaTime);
+        
+        const newPosition = this.position.clone().add(direction);
+        
+        // Collision detection
+        const robotRadius = 4;
+        let collision = false;
+        for (const wall of walls) {
+          const wallLeft = wall.x - wall.width / 2;
+          const wallRight = wall.x + wall.width / 2;
+          const wallTop = wall.z - wall.height / 2;
+          const wallBottom = wall.z + wall.height / 2;
+          
+          if (newPosition.x + robotRadius > wallLeft && 
+              newPosition.x - robotRadius < wallRight &&
+              newPosition.z + robotRadius > wallTop && 
+              newPosition.z - robotRadius < wallBottom) {
+            collision = true;
+            break;
+          }
+        }
+        
+        if (!collision) {
+          this.position.copy(newPosition);
+        } else {
+          this.speed = 0;
+        }
+        
+        this.position.y = 1;
+      },
+      getSpeed: function() {
+        return Math.abs(this.speed);
+      },
+      reset: function() {
+        this.position.set(-40, 1, -40);
+        this.rotation.set(0, 0, 0);
+        this.speed = 0;
+      }
+    };
+  }
+  
   const controls = useSimpleControls();
   
   useFrame(() => {
-    if (isActive) {
-      vehicle.update(controls);
+    if (isActive && vehicleRef.current) {
+      vehicleRef.current.update(controls);
       
-      // Check if robot reached the end (bottom right corner)
       const distanceToEnd = Math.sqrt(
-        Math.pow(vehicle.position.x - 40, 2) + 
-        Math.pow(vehicle.position.z - 40, 2)
+        Math.pow(vehicleRef.current.position.x - 40, 2) + 
+        Math.pow(vehicleRef.current.position.z - 40, 2)
       );
       
       const objectiveComplete = distanceToEnd < 8;
       
       onVehicleUpdate({
-        speed: vehicle.getSpeed(),
-        heading: (vehicle.rotation.y * 180 / Math.PI) % 360,
-        altitude: vehicle.position.y,
+        speed: vehicleRef.current.getSpeed(),
+        heading: (vehicleRef.current.rotation.y * 180 / Math.PI) % 360,
+        altitude: vehicleRef.current.position.y,
         battery: 95,
         temperature: 25,
         position: { 
-          x: vehicle.position.x, 
-          y: vehicle.position.y, 
-          z: vehicle.position.z 
+          x: vehicleRef.current.position.x, 
+          y: vehicleRef.current.position.y, 
+          z: vehicleRef.current.position.z 
         },
         objectiveComplete
       });
@@ -246,7 +331,12 @@ function SceneContent({ isActive, onVehicleUpdate }: SimpleSimulatorProps) {
       <directionalLight position={[-10, 10, -5]} intensity={0.8} />
       
       <Ground />
-      <SimpleVehicle position={vehicle.position} rotation={vehicle.rotation} />
+      {vehicleRef.current && (
+        <SimpleVehicle 
+          position={vehicleRef.current.position} 
+          rotation={vehicleRef.current.rotation} 
+        />
+      )}
     </>
   );
 }
