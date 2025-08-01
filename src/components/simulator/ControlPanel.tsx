@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { SystemPanel } from "@/components/apollo/SystemPanel";
 import { IndicatorLight } from "@/components/apollo/IndicatorLight";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +18,52 @@ interface ControlPanelProps {
 }
 
 export function ControlPanel({ isActive }: ControlPanelProps) {
+  const [inputStatus, setInputStatus] = useState({
+    touch: false,
+    gamepad: false
+  });
+
+  useEffect(() => {
+    // Check for touch support
+    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    // Check for gamepad support
+    const checkGamepad = () => {
+      const gamepads = navigator.getGamepads();
+      const hasGamepad = Array.from(gamepads).some(gamepad => gamepad !== null);
+      return hasGamepad;
+    };
+
+    // Initial check
+    setInputStatus({
+      touch: hasTouch,
+      gamepad: checkGamepad()
+    });
+
+    // Monitor gamepad connections
+    const handleGamepadConnect = () => {
+      setInputStatus(prev => ({ ...prev, gamepad: true }));
+    };
+    
+    const handleGamepadDisconnect = () => {
+      setInputStatus(prev => ({ ...prev, gamepad: checkGamepad() }));
+    };
+
+    window.addEventListener('gamepadconnected', handleGamepadConnect);
+    window.addEventListener('gamepaddisconnected', handleGamepadDisconnect);
+
+    // Periodic gamepad check
+    const gamepadInterval = setInterval(() => {
+      setInputStatus(prev => ({ ...prev, gamepad: checkGamepad() }));
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('gamepadconnected', handleGamepadConnect);
+      window.removeEventListener('gamepaddisconnected', handleGamepadDisconnect);
+      clearInterval(gamepadInterval);
+    };
+  }, []);
+
   return (
     <div className="space-y-4">
       <SystemPanel title="INPUT STATUS">
@@ -42,7 +89,11 @@ export function ControlPanel({ isActive }: ControlPanelProps) {
               <Smartphone className="w-4 h-4" />
               <span className="text-sm">TOUCH</span>
             </div>
-            <IndicatorLight color="amber" label="STB" status="on" />
+            <IndicatorLight 
+              color={inputStatus.touch ? "green" : "red"} 
+              label={inputStatus.touch ? "RDY" : "N/A"} 
+              status={inputStatus.touch ? "on" : "off"} 
+            />
           </div>
           
           <div className="flex items-center justify-between">
@@ -50,7 +101,11 @@ export function ControlPanel({ isActive }: ControlPanelProps) {
               <Gamepad2 className="w-4 h-4" />
               <span className="text-sm">GAMEPAD</span>
             </div>
-            <IndicatorLight color="red" label="OFF" status="off" />
+            <IndicatorLight 
+              color={inputStatus.gamepad ? "green" : "red"} 
+              label={inputStatus.gamepad ? "RDY" : "OFF"} 
+              status={inputStatus.gamepad ? "on" : "off"} 
+            />
           </div>
         </div>
       </SystemPanel>
