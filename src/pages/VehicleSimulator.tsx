@@ -203,7 +203,7 @@ export default function VehicleSimulator() {
                         </div>
                         <div className="flex justify-between gap-4">
                           <span>TARGET:</span>
-                          <span className="text-primary">ZONE ALPHA</span>
+                          <span className="text-primary">(40, -40)</span>
                         </div>
                         <div className="flex justify-between gap-4">
                           <span>DISTANCE:</span>
