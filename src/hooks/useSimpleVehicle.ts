@@ -2,7 +2,7 @@ import { useRef, useCallback } from "react";
 import * as THREE from "three";
 
 export function useSimpleVehicle() {
-  const position = useRef(new THREE.Vector3(0, 2, 0));
+  const position = useRef(new THREE.Vector3(0, 4, 0));
   const rotation = useRef(new THREE.Euler(0, 0, 0));
   const velocity = useRef(new THREE.Vector3(0, 0, 0));
   const speed = useRef(0);
@@ -34,15 +34,15 @@ export function useSimpleVehicle() {
     
     position.current.add(direction);
     
-    // Simple terrain following for big vehicle
+    // Simple terrain following for delivery robot
     const terrainHeight = getTerrainHeight(position.current.x, position.current.z);
-    position.current.y = terrainHeight + 2; // Keep vehicle above terrain
+    position.current.y = terrainHeight + 4; // Keep robot above terrain
   }, []);
   
   const getSpeed = useCallback(() => Math.abs(speed.current), []);
   
   const reset = useCallback(() => {
-    position.current.set(0, 2, 0);
+    position.current.set(0, 4, 0);
     rotation.current.set(0, 0, 0);
     velocity.current.set(0, 0, 0);
     speed.current = 0;
@@ -59,10 +59,10 @@ export function useSimpleVehicle() {
 
 // Simple terrain height calculation matching the ground generation
 function getTerrainHeight(x: number, z: number): number {
-  const noise1 = Math.sin(x * 0.05) * Math.cos(z * 0.05) * 3;
-  const noise2 = Math.sin(x * 0.1) * Math.cos(z * 0.08) * 2;
-  const noise3 = Math.sin(x * 0.2) * Math.cos(z * 0.15) * 1;
-  const noise4 = Math.sin(x * 0.4) * Math.cos(z * 0.3) * 0.5;
+  const noise1 = Math.sin(x * 0.02) * Math.cos(z * 0.02) * 0.8;
+  const noise2 = Math.sin(x * 0.05) * Math.cos(z * 0.04) * 0.5;
+  const noise3 = Math.sin(x * 0.1) * Math.cos(z * 0.08) * 0.3;
+  const noise4 = Math.sin(x * 0.2) * Math.cos(z * 0.15) * 0.1;
   
   return noise1 + noise2 + noise3 + noise4;
 }
