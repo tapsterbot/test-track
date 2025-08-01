@@ -138,8 +138,8 @@ export default function VehicleSimulator() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* 3D Viewport */}
           <div className="lg:col-span-3">
-            <SystemPanel title="TERRAIN VIEWPORT" className="h-[600px] p-2">
-              <div className="relative w-full h-full rounded-sm overflow-hidden bg-black">
+            <SystemPanel title="TERRAIN VIEWPORT" className="h-[600px]" fullWidth={true}>
+              <div className="relative w-full h-full bg-black">
                 <SimpleSimulator
                   isActive={isSimulationActive}
                   onVehicleUpdate={setVehicleData}
