@@ -7,7 +7,7 @@ export function useSimpleVehicle() {
   const velocity = useRef(new THREE.Vector3(0, 0, 0));
   const speed = useRef(0);
   
-  // Wall boundaries for collision detection - Calculator keypad maze
+  // Wall boundaries for collision detection
   const walls = useMemo(() => [
     // Outer walls
     { x: 0, z: -60, width: 120, height: 2 }, // Top wall
@@ -15,24 +15,11 @@ export function useSimpleVehicle() {
     { x: -60, z: 0, width: 2, height: 120 }, // Left wall
     { x: 60, z: 0, width: 2, height: 120 },  // Right wall
     
-    // Calculator keypad grid walls with strategic openings for 1→4→7→8→5→2→3→6→9 path
-    // Vertical dividers (with gaps for path)
-    { x: -20, z: 40, width: 2, height: 20 }, // Left divider, bottom section (blocks zone 1→2)
-    { x: -20, z: 20, width: 2, height: 20 }, // Left divider, bottom section (blocks zone 4→5)
-    { x: -20, z: -30, width: 2, height: 20 }, // Left divider, top section (blocks zone 7→8)
-    
-    { x: 20, z: 40, width: 2, height: 20 }, // Right divider, bottom section (blocks zone 2→3)
-    { x: 20, z: 0, width: 2, height: 20 }, // Right divider, middle section (blocks zone 5→6)
-    { x: 20, z: -40, width: 2, height: 20 }, // Right divider, top section (blocks zone 8→9)
-    
-    // Horizontal dividers (with gaps for path)
-    { x: -40, z: -20, width: 20, height: 2 }, // Top divider, left section (blocks zone 4→7)
-    { x: 10, z: -20, width: 20, height: 2 }, // Top divider, right section (blocks zone 8→9)
-    { x: 30, z: -20, width: 20, height: 2 }, // Top divider, far right section
-    
-    { x: -40, z: 20, width: 20, height: 2 }, // Bottom divider, left section (blocks zone 1→4)
-    { x: -10, z: 20, width: 20, height: 2 }, // Bottom divider, center section (blocks zone 2→5)
-    { x: 30, z: 20, width: 20, height: 2 }, // Bottom divider, right section (blocks zone 3→6)
+    // Inner maze walls - adjusted for bottom-left to top-right path
+    { x: -20, z: 20, width: 2, height: 40 },   // Vertical wall 1
+    { x: 20, z: -10, width: 2, height: 60 },   // Vertical wall 2  
+    { x: 0, z: 40, width: 40, height: 2 },     // Horizontal wall 1
+    { x: 40, z: -20, width: 40, height: 2 },   // Horizontal wall 2
   ], []);
 
   const checkCollision = useCallback((newPos: THREE.Vector3) => {
