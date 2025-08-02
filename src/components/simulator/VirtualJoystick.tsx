@@ -25,7 +25,7 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
 
   const updateControls = useCallback((deltaX: number, deltaY: number) => {
     const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    const maxDistance = 40;
+    const maxDistance = 60;
     const normalizedMagnitude = Math.min(magnitude / maxDistance, 1);
     
     if (normalizedMagnitude < 0.1) {
@@ -55,7 +55,7 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
     const deltaX = clientX - joystickCenter.x;
     const deltaY = clientY - joystickCenter.y;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    const maxDistance = 40;
+    const maxDistance = 60;
 
     let finalX = deltaX;
     let finalY = deltaY;
@@ -114,16 +114,16 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
   if (!isActive) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 md:hidden pointer-events-auto">
+    <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 md:hidden pointer-events-auto">
       <div 
         ref={joystickRef}
-        className="relative w-20 h-20 bg-black/40 border-2 border-white/30 rounded-full cursor-pointer select-none touch-none"
+        className="relative w-32 h-32 bg-black/40 border-2 border-white/30 rounded-full cursor-pointer select-none touch-none"
         onTouchStart={handleTouchStart}
         onMouseDown={handleMouseDown}
       >
         <div 
           ref={knobRef}
-          className="absolute w-6 h-6 bg-white/80 border border-white rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-none"
+          className="absolute w-8 h-8 bg-white/80 border border-white rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-none"
           style={{ 
             left: '50%',
             top: '50%',
