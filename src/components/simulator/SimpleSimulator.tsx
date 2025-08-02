@@ -401,7 +401,7 @@ function SceneContent({
             this.speed = joystickData.forward * maxSpeed;
             
             // Turning - can turn while stationary in first-person mode
-            this.rotation.y += joystickData.turn * maxTurnRate;
+            this.rotation.y -= joystickData.turn * maxTurnRate;
           } else {
             // Orbit mode: "follow me" control
             // Convert joystick angle to robot rotation (joystick angle is screen-relative)
