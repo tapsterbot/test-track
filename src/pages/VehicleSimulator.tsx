@@ -288,7 +288,7 @@ export default function VehicleSimulator() {
               </div>
               
               {/* Virtual Joystick - Below the viewport, inside the border */}
-              <div className="relative px-4 pt-4 pb-0 md:hidden bg-black/50">
+              <div className="relative p-4 md:hidden bg-black/50">
                 <VirtualJoystick
                   isActive={isSimulationActive}
                   onControlChange={setVirtualJoystickControls}
