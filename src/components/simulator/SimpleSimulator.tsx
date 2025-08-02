@@ -286,7 +286,8 @@ function CameraController({
   onSaveCameraState?: (mode: 'orbit' | 'follow', position: [number, number, number], target: [number, number, number]) => void;
 }) {
   const prevCameraMode = useRef<'orbit' | 'follow'>('orbit');
-  const hasRestoredCamera = useRef(false);
+  const targetOrbitPosition = useRef<THREE.Vector3 | null>(null);
+  const isTransitioning = useRef(false);
 
   useFrame((state) => {
     // Check if camera mode has changed
@@ -305,20 +306,15 @@ function CameraController({
         onSaveCameraState(prevCameraMode.current, currentPosition, currentTarget);
       }
 
-      prevCameraMode.current = cameraMode;
-      hasRestoredCamera.current = false;
-    }
-
-    // Restore orbit camera position once after mode change
-    if (cameraMode === 'orbit' && !hasRestoredCamera.current) {
-      if (savedCameraStates && savedCameraStates.orbit) {
-        console.log('Restoring orbit camera position:', savedCameraStates.orbit.position);
-        state.camera.position.set(...savedCameraStates.orbit.position);
-      } else {
-        console.log('Setting default orbit camera position');
-        state.camera.position.set(0, 110, 60);
+      // Set up transition to orbit mode
+      if (cameraMode === 'orbit') {
+        const targetPos = savedCameraStates?.orbit?.position || [0, 110, 60];
+        targetOrbitPosition.current = new THREE.Vector3(...targetPos);
+        isTransitioning.current = true;
+        console.log('Starting transition to orbit position:', targetPos);
       }
-      hasRestoredCamera.current = true;
+
+      prevCameraMode.current = cameraMode;
     }
 
     if (cameraMode === 'follow') {
@@ -337,6 +333,17 @@ function CameraController({
       const lookAtPoint = vehiclePosition.clone().add(lookAhead);
       
       state.camera.lookAt(lookAtPoint);
+    } else if (cameraMode === 'orbit' && isTransitioning.current && targetOrbitPosition.current) {
+      // Smooth transition to orbit position
+      state.camera.position.lerp(targetOrbitPosition.current, 0.08);
+      
+      // Check if we're close enough to stop transitioning
+      const distance = state.camera.position.distanceTo(targetOrbitPosition.current);
+      if (distance < 1) {
+        isTransitioning.current = false;
+        targetOrbitPosition.current = null;
+        console.log('Transition to orbit complete');
+      }
     }
   });
 
