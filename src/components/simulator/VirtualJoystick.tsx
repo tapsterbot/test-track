@@ -136,29 +136,37 @@ export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit
     };
   }, [isDragging, handleMove, handleEnd, handleTouchMove]);
 
-  if (!isActive) return null;
-
   return (
     <>
-      {/* Background overlay to prevent page scrolling */}
-      <div 
-        className="fixed bottom-0 left-0 w-full h-48 bg-black/20 backdrop-blur-sm z-40 md:hidden"
-        style={{ touchAction: 'none' }}
-        onTouchStart={(e) => e.preventDefault()}
-        onTouchMove={(e) => e.preventDefault()}
-      />
+      {/* Background overlay to prevent page scrolling when active */}
+      {isActive && (
+        <div 
+          className="fixed bottom-0 left-0 w-full h-48 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+          style={{ touchAction: 'none' }}
+          onTouchStart={(e) => e.preventDefault()}
+          onTouchMove={(e) => e.preventDefault()}
+        />
+      )}
       
-      {/* Joystick */}
-      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 md:hidden pointer-events-auto">
+      {/* Joystick - Always visible, pinned to bottom */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50 md:hidden pointer-events-auto">
         <div 
           ref={joystickRef}
-          className="relative w-32 h-32 bg-black/40 border-2 border-white/30 rounded-full cursor-pointer select-none touch-none"
+          className={`relative w-24 h-24 border-2 rounded-full cursor-pointer select-none touch-none transition-all duration-300 ${
+            isActive 
+              ? 'bg-black/60 border-primary/60 shadow-lg shadow-primary/20' 
+              : 'bg-black/30 border-white/20'
+          }`}
           onTouchStart={handleTouchStart}
           onMouseDown={handleMouseDown}
         >
           <div 
             ref={knobRef}
-            className="absolute w-8 h-8 bg-white/80 border border-white rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-none"
+            className={`absolute w-6 h-6 border rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all ${
+              isActive 
+                ? 'bg-primary/80 border-primary' 
+                : 'bg-white/40 border-white/60'
+            }`}
             style={{ 
               left: '50%',
               top: '50%',
@@ -166,6 +174,13 @@ export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit
               touchAction: 'none'
             }}
           />
+          
+          {/* Status indicator */}
+          <div className={`absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs font-mono ${
+            isActive ? 'text-primary' : 'text-white/50'
+          }`}>
+            {isActive ? 'ACTIVE' : 'STANDBY'}
+          </div>
         </div>
       </div>
     </>
