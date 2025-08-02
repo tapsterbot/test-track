@@ -15,11 +15,11 @@ export function useSimpleVehicle() {
     { x: -60, z: 0, width: 2, height: 120 }, // Left wall
     { x: 60, z: 0, width: 2, height: 120 },  // Right wall
     
-    // Inner maze walls - adjusted for bottom-left to top-right path
-    { x: -20, z: 20, width: 2, height: 40 },   // Vertical wall 1
-    { x: 20, z: -10, width: 2, height: 60 },   // Vertical wall 2  
-    { x: 0, z: 40, width: 40, height: 2 },     // Horizontal wall 1
-    { x: 40, z: -20, width: 40, height: 2 },   // Horizontal wall 2
+    // Calculator keypad grid walls
+    { x: -20, z: 40, width: 2, height: 26.67 }, // Between zones 1 and 2
+    { x: -20, z: 0, width: 2, height: 26.67 },  // Between zones 4 and 5
+    { x: 20, z: -40, width: 2, height: 26.67 }, // Between zones 8 and 9
+    { x: 20, z: 0, width: 2, height: 26.67 },   // Between zones 5 and 6
   ], []);
 
   const checkCollision = useCallback((newPos: THREE.Vector3) => {
