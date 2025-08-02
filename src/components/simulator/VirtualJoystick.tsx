@@ -114,24 +114,35 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
   if (!isActive) return null;
 
   return (
-    <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 md:hidden pointer-events-auto">
+    <>
+      {/* Background overlay to prevent page scrolling */}
       <div 
-        ref={joystickRef}
-        className="relative w-32 h-32 bg-black/40 border-2 border-white/30 rounded-full cursor-pointer select-none touch-none"
-        onTouchStart={handleTouchStart}
-        onMouseDown={handleMouseDown}
-      >
+        className="fixed bottom-0 left-0 w-full h-40 z-40 md:hidden"
+        style={{ touchAction: 'none' }}
+        onTouchStart={(e) => e.preventDefault()}
+        onTouchMove={(e) => e.preventDefault()}
+      />
+      
+      {/* Joystick */}
+      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 md:hidden pointer-events-auto">
         <div 
-          ref={knobRef}
-          className="absolute w-8 h-8 bg-white/80 border border-white rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-none"
-          style={{ 
-            left: '50%',
-            top: '50%',
-            transition: isDragging ? 'none' : 'transform 0.2s ease-out',
-            touchAction: 'none'
-          }}
-        />
+          ref={joystickRef}
+          className="relative w-32 h-32 bg-black/40 border-2 border-white/30 rounded-full cursor-pointer select-none touch-none"
+          onTouchStart={handleTouchStart}
+          onMouseDown={handleMouseDown}
+        >
+          <div 
+            ref={knobRef}
+            className="absolute w-8 h-8 bg-white/80 border border-white rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-none"
+            style={{ 
+              left: '50%',
+              top: '50%',
+              transition: isDragging ? 'none' : 'transform 0.2s ease-out',
+              touchAction: 'none'
+            }}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
