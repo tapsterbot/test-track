@@ -200,6 +200,7 @@ export default function VehicleSimulator() {
                 <VirtualJoystick
                   isActive={isSimulationActive}
                   onControlChange={setVirtualJoystickControls}
+                  cameraMode={cameraMode}
                 />
                 
                 {/* HUD Overlay */}

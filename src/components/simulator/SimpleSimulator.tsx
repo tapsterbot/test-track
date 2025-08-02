@@ -375,7 +375,7 @@ function SceneContent({
       position: new THREE.Vector3(-40, 1, 40),
       rotation: new THREE.Euler(0, 0, 0),
       speed: 0,
-      update: function(controls: any, joystickData?: { angle: number; magnitude: number }) {
+      update: function(controls: any, joystickData?: { angle: number; magnitude: number; forward?: number; turn?: number }) {
         const deltaTime = 1/60;
         const walls = [
           // Outer walls
@@ -390,27 +390,40 @@ function SceneContent({
           { x: 20, z: 0, width: 2, height: 40 },   // Between zones 5 and 6
         ];
         
-        // Handle joystick "follow me" control
+        // Handle joystick controls
         if (joystickData && joystickData.magnitude > 0) {
-          // Convert joystick angle to robot rotation (joystick angle is screen-relative)
-          // Adjust for coordinate system: joystick right=0, down=π/2, left=π, up=3π/2
-          // Robot: forward=-Z, so we need to offset by π/2 to align properly
-          const targetRotation = joystickData.angle + Math.PI / 2;
-          
-          // Smooth rotation towards target
-          let angleDiff = targetRotation - this.rotation.y;
-          
-          // Normalize angle difference to [-π, π]
-          while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
-          while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
-          
-          // Apply rotation smoothing
-          const rotationSpeed = 0.08;
-          this.rotation.y += angleDiff * rotationSpeed;
-          
-          // Set speed based on joystick magnitude
-          const maxSpeed = 18;
-          this.speed = joystickData.magnitude * maxSpeed;
+          if (joystickData.forward !== undefined && joystickData.turn !== undefined) {
+            // First-person mode: tank-style controls
+            const maxSpeed = 18;
+            const maxTurnRate = 0.04;
+            
+            // Forward/backward movement
+            this.speed = joystickData.forward * maxSpeed;
+            
+            // Turning - can turn while stationary in first-person mode
+            this.rotation.y += joystickData.turn * maxTurnRate;
+          } else {
+            // Orbit mode: "follow me" control
+            // Convert joystick angle to robot rotation (joystick angle is screen-relative)
+            // Adjust for coordinate system: joystick right=0, down=π/2, left=π, up=3π/2
+            // Robot: forward=-Z, so we need to offset by π/2 to align properly
+            const targetRotation = joystickData.angle + Math.PI / 2;
+            
+            // Smooth rotation towards target
+            let angleDiff = targetRotation - this.rotation.y;
+            
+            // Normalize angle difference to [-π, π]
+            while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
+            while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
+            
+            // Apply rotation smoothing
+            const rotationSpeed = 0.08;
+            this.rotation.y += angleDiff * rotationSpeed;
+            
+            // Set speed based on joystick magnitude
+            const maxSpeed = 18;
+            this.speed = joystickData.magnitude * maxSpeed;
+          }
         } else {
           // Handle keyboard controls (tank-style)
           if (controls.forward) {

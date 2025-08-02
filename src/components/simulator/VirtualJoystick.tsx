@@ -3,14 +3,17 @@ import { useRef, useEffect, useState, useCallback } from "react";
 interface JoystickState {
   angle: number;
   magnitude: number;
+  forward?: number;
+  turn?: number;
 }
 
 interface VirtualJoystickProps {
   onControlChange: (state: JoystickState) => void;
   isActive: boolean;
+  cameraMode?: 'orbit' | 'follow';
 }
 
-export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickProps) {
+export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit' }: VirtualJoystickProps) {
   const joystickRef = useRef<HTMLDivElement>(null);
   const knobRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -20,7 +23,7 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
     if (knobRef.current) {
       knobRef.current.style.transform = 'translate(-50%, -50%)';
     }
-    onControlChange({ angle: 0, magnitude: 0 });
+    onControlChange({ angle: 0, magnitude: 0, forward: 0, turn: 0 });
   }, [onControlChange]);
 
   const updateControls = useCallback((deltaX: number, deltaY: number) => {
@@ -29,14 +32,28 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
     const normalizedMagnitude = Math.min(magnitude / maxDistance, 1);
     
     if (normalizedMagnitude < 0.1) {
-      onControlChange({ angle: 0, magnitude: 0 });
+      onControlChange({ angle: 0, magnitude: 0, forward: 0, turn: 0 });
+    } else if (cameraMode === 'follow') {
+      // First-person mode: tank-style controls
+      // Up/Down controls forward/backward movement
+      // Left/Right controls turning rate
+      const forward = -deltaY / maxDistance; // Negative because up is negative deltaY
+      const turn = deltaX / maxDistance; // Positive deltaX is right turn
+      
+      onControlChange({ 
+        angle: 0, 
+        magnitude: normalizedMagnitude,
+        forward: Math.max(-1, Math.min(1, forward)),
+        turn: Math.max(-1, Math.min(1, turn))
+      });
     } else {
+      // Orbit mode: original angle-based controls
       // Calculate angle - don't flip deltaY for correct up/down mapping
       // UP joystick = robot away from camera (-Z), DOWN = toward camera (+Z)
       const angle = Math.atan2(deltaY, -deltaX);
-      onControlChange({ angle, magnitude: normalizedMagnitude });
+      onControlChange({ angle, magnitude: normalizedMagnitude, forward: 0, turn: 0 });
     }
-  }, [onControlChange]);
+  }, [onControlChange, cameraMode]);
 
   const handleStart = useCallback((clientX: number, clientY: number) => {
     if (!isActive || !joystickRef.current) return;
