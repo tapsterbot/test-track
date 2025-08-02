@@ -16,10 +16,10 @@ export function useSimpleVehicle() {
     { x: 60, z: 0, width: 2, height: 120 },  // Right wall
     
     // Calculator keypad grid walls
-    { x: -20, z: 40, width: 2, height: 26.67 }, // Between zones 1 and 2
-    { x: -20, z: 0, width: 2, height: 26.67 },  // Between zones 4 and 5
-    { x: 20, z: -40, width: 2, height: 26.67 }, // Between zones 8 and 9
-    { x: 20, z: 0, width: 2, height: 26.67 },   // Between zones 5 and 6
+    { x: -20, z: 40, width: 2, height: 40 }, // Between zones 1 and 2
+    { x: -20, z: 0, width: 2, height: 40 },  // Between zones 4 and 5
+    { x: 20, z: -40, width: 2, height: 40 }, // Between zones 8 and 9
+    { x: 20, z: 0, width: 2, height: 40 },   // Between zones 5 and 6
   ], []);
 
   const checkCollision = useCallback((newPos: THREE.Vector3) => {

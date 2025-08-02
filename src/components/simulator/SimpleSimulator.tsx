@@ -102,22 +102,22 @@ function Ground() {
       {/* Calculator keypad grid walls */}
       {/* Wall between zones 1 and 2 (x=-20, z=40) */}
       <mesh position={[-20, 2, 40]}>
-        <boxGeometry args={[2, 4, 26.67]} />
+        <boxGeometry args={[2, 4, 40]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       {/* Wall between zones 4 and 5 (x=-20, z=0) */}
       <mesh position={[-20, 2, 0]}>
-        <boxGeometry args={[2, 4, 26.67]} />
+        <boxGeometry args={[2, 4, 40]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       {/* Wall between zones 8 and 9 (x=20, z=-40) */}
       <mesh position={[20, 2, -40]}>
-        <boxGeometry args={[2, 4, 26.67]} />
+        <boxGeometry args={[2, 4, 40]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       {/* Wall between zones 5 and 6 (x=20, z=0) */}
       <mesh position={[20, 2, 0]}>
-        <boxGeometry args={[2, 4, 26.67]} />
+        <boxGeometry args={[2, 4, 40]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       
@@ -288,10 +288,10 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
           { x: -60, z: 0, width: 2, height: 120 },
           { x: 60, z: 0, width: 2, height: 120 },
           // Calculator keypad grid walls
-          { x: -20, z: 40, width: 2, height: 26.67 }, // Between zones 1 and 2
-          { x: -20, z: 0, width: 2, height: 26.67 },  // Between zones 4 and 5
-          { x: 20, z: -40, width: 2, height: 26.67 }, // Between zones 8 and 9
-          { x: 20, z: 0, width: 2, height: 26.67 },   // Between zones 5 and 6
+          { x: -20, z: 40, width: 2, height: 40 }, // Between zones 1 and 2
+          { x: -20, z: 0, width: 2, height: 40 },  // Between zones 4 and 5
+          { x: 20, z: -40, width: 2, height: 40 }, // Between zones 8 and 9
+          { x: 20, z: 0, width: 2, height: 40 },   // Between zones 5 and 6
         ];
         
         // Handle joystick "follow me" control
