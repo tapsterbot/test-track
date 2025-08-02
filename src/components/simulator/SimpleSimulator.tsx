@@ -99,25 +99,21 @@ function Ground() {
         <meshLambertMaterial color="#374151" />
       </mesh>
       
-      {/* Inner maze walls - creating up-over-down-over-up path */}
-      <mesh position={[-30, 2, 20]}>
-        <boxGeometry args={[2, 4, 30]} />
-        <meshLambertMaterial color="#374151" />
-      </mesh>
-      <mesh position={[-10, 2, 10]}>
-        <boxGeometry args={[30, 4, 2]} />
-        <meshLambertMaterial color="#374151" />
-      </mesh>
-      <mesh position={[10, 2, -10]}>
+      {/* Simple maze walls - adjusted for bottom-left to top-right path */}
+      <mesh position={[-20, 2, 20]}>
         <boxGeometry args={[2, 4, 40]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[30, 2, 5]}>
-        <boxGeometry args={[30, 4, 2]} />
+      <mesh position={[20, 2, -10]}>
+        <boxGeometry args={[2, 4, 60]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[35, 2, -30]}>
-        <boxGeometry args={[2, 4, 20]} />
+      <mesh position={[0, 2, 40]}>
+        <boxGeometry args={[40, 4, 2]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      <mesh position={[40, 2, -20]}>
+        <boxGeometry args={[40, 4, 2]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       
@@ -286,11 +282,10 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
           { x: 0, z: 60, width: 120, height: 2 },
           { x: -60, z: 0, width: 2, height: 120 },
           { x: 60, z: 0, width: 2, height: 120 },
-          { x: -30, z: 20, width: 2, height: 30 },
-          { x: -10, z: 10, width: 30, height: 2 },
-          { x: 10, z: -10, width: 2, height: 40 },
-          { x: 30, z: 5, width: 30, height: 2 },
-          { x: 35, z: -30, width: 2, height: 20 },
+          { x: -20, z: 20, width: 2, height: 40 },
+          { x: 20, z: -10, width: 2, height: 60 },
+          { x: 0, z: 40, width: 40, height: 2 },
+          { x: 40, z: -20, width: 40, height: 2 },
         ];
         
         // Handle joystick "follow me" control
