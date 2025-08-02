@@ -11,9 +11,10 @@ interface VirtualJoystickProps {
   onControlChange: (state: JoystickState) => void;
   isActive: boolean;
   cameraMode?: 'orbit' | 'follow';
+  onToggleSimulation?: () => void;
 }
 
-export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit' }: VirtualJoystickProps) {
+export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit', onToggleSimulation }: VirtualJoystickProps) {
   const joystickRef = useRef<HTMLDivElement>(null);
   const knobRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -141,7 +142,10 @@ export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit
   return (
     <>
       {/* Joystick - Always visible, centered */}
-      <div className="flex justify-center pointer-events-auto">
+      <div 
+        className="flex justify-center pointer-events-auto cursor-pointer"
+        onClick={onToggleSimulation}
+      >
         <div 
           ref={joystickRef}
           className={`relative w-24 h-24 border-2 rounded-full cursor-pointer select-none touch-none transition-all duration-300 ${

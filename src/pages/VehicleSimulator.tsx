@@ -293,6 +293,7 @@ export default function VehicleSimulator() {
                   isActive={isSimulationActive}
                   onControlChange={setVirtualJoystickControls}
                   cameraMode={cameraMode}
+                  onToggleSimulation={handleToggleSimulation}
                 />
               </div>
             </div>
