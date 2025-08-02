@@ -21,10 +21,8 @@ interface SimpleSimulatorProps {
   onVehicleUpdate: (data: VehicleData) => void;
   shouldReset?: boolean;
   virtualJoystickControls?: {
-    forward: boolean;
-    backward: boolean;
-    left: boolean;
-    right: boolean;
+    angle: number;
+    magnitude: number;
   };
   onToggle?: () => void;
 }
@@ -266,7 +264,7 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
     position: THREE.Vector3;
     rotation: THREE.Euler;
     speed: number;
-    update: (controls: any) => void;
+    update: (controls: any, joystickData?: { angle: number; magnitude: number }) => void;
     getSpeed: () => number;
     reset: () => void;
   } | null>(null);
@@ -277,7 +275,7 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
       position: new THREE.Vector3(-40, 1, 40),
       rotation: new THREE.Euler(0, 0, 0),
       speed: 0,
-      update: function(controls: any) {
+      update: function(controls: any, joystickData?: { angle: number; magnitude: number }) {
         const deltaTime = 1/60;
         const walls = [
           { x: 0, z: -60, width: 120, height: 2 },
@@ -290,20 +288,44 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
           { x: 40, z: -20, width: 40, height: 2 },
         ];
         
-        // Movement logic
-        if (controls.forward) {
-          this.speed = Math.min(this.speed + 0.2, 12);
-        } else if (controls.backward) {
-          this.speed = Math.max(this.speed - 0.2, -6);
+        // Handle joystick "follow me" control
+        if (joystickData && joystickData.magnitude > 0) {
+          // Convert joystick angle to robot rotation (joystick angle is screen-relative)
+          // Adjust for coordinate system: joystick right=0, down=π/2, left=π, up=3π/2
+          // Robot: forward=-Z, so we need to offset by π/2 to align properly
+          const targetRotation = joystickData.angle + Math.PI / 2;
+          
+          // Smooth rotation towards target
+          let angleDiff = targetRotation - this.rotation.y;
+          
+          // Normalize angle difference to [-π, π]
+          while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
+          while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
+          
+          // Apply rotation smoothing
+          const rotationSpeed = 0.08;
+          this.rotation.y += angleDiff * rotationSpeed;
+          
+          // Set speed based on joystick magnitude
+          const maxSpeed = 12;
+          this.speed = joystickData.magnitude * maxSpeed;
         } else {
-          this.speed *= 0.95;
-        }
-        
-        if (controls.left && Math.abs(this.speed) > 0.1) {
-          this.rotation.y += 0.02;
-        }
-        if (controls.right && Math.abs(this.speed) > 0.1) {
-          this.rotation.y -= 0.02;
+          // Handle keyboard controls (tank-style)
+          if (controls.forward) {
+            this.speed = Math.min(this.speed + 0.2, 12);
+          } else if (controls.backward) {
+            this.speed = Math.max(this.speed - 0.2, -6);
+          } else {
+            this.speed *= 0.95;
+          }
+          
+          // Simple turning (only when moving for keyboard)
+          if (controls.left && Math.abs(this.speed) > 0.1) {
+            this.rotation.y += 0.02;
+          }
+          if (controls.right && Math.abs(this.speed) > 0.1) {
+            this.rotation.y -= 0.02;
+          }
         }
         
         const direction = new THREE.Vector3(0, 0, -1);
@@ -351,13 +373,8 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
   
   const keyboardControls = useSimpleControls(isActive);
   
-  // Combine keyboard and virtual joystick controls
-  const controls = {
-    forward: keyboardControls.forward || (virtualJoystickControls?.forward || false),
-    backward: keyboardControls.backward || (virtualJoystickControls?.backward || false),
-    left: keyboardControls.left || (virtualJoystickControls?.left || false),
-    right: keyboardControls.right || (virtualJoystickControls?.right || false)
-  };
+  // Use keyboard controls
+  const controls = keyboardControls;
   
   // Handle reset when shouldReset changes
   useFrame(() => {
@@ -366,7 +383,7 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
     }
     
     if (isActive && vehicleRef.current) {
-      vehicleRef.current.update(controls);
+      vehicleRef.current.update(controls, virtualJoystickControls);
       
       const distanceToEnd = Math.sqrt(
         Math.pow(vehicleRef.current.position.x - 40, 2) + 

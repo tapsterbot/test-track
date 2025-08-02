@@ -42,24 +42,47 @@ export function useSimpleVehicle() {
     return false; // No collision
   }, [walls]);
 
-  const update = useCallback((controls: any) => {
+  const update = useCallback((controls: any, joystickData?: { angle: number; magnitude: number }) => {
     const deltaTime = 1/60;
     
-    // Simple forward/backward movement
-    if (controls.forward) {
-      speed.current = Math.min(speed.current + 0.2, 12);
-    } else if (controls.backward) {
-      speed.current = Math.max(speed.current - 0.2, -6);
+    // Handle joystick "follow me" control
+    if (joystickData && joystickData.magnitude > 0) {
+      // Convert joystick angle to robot rotation (joystick angle is screen-relative)
+      // Adjust for coordinate system: joystick right=0, down=π/2, left=π, up=3π/2
+      // Robot: forward=-Z, so we need to offset by π/2 to align properly
+      const targetRotation = joystickData.angle + Math.PI / 2;
+      
+      // Smooth rotation towards target
+      let angleDiff = targetRotation - rotation.current.y;
+      
+      // Normalize angle difference to [-π, π]
+      while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
+      while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
+      
+      // Apply rotation smoothing
+      const rotationSpeed = 0.08;
+      rotation.current.y += angleDiff * rotationSpeed;
+      
+      // Set speed based on joystick magnitude
+      const maxSpeed = 12;
+      speed.current = joystickData.magnitude * maxSpeed;
     } else {
-      speed.current *= 0.95; // Friction
-    }
-    
-    // Simple turning
-    if (controls.left && Math.abs(speed.current) > 0.1) {
-      rotation.current.y += 0.02;
-    }
-    if (controls.right && Math.abs(speed.current) > 0.1) {
-      rotation.current.y -= 0.02;
+      // Handle keyboard controls (tank-style)
+      if (controls.forward) {
+        speed.current = Math.min(speed.current + 0.2, 12);
+      } else if (controls.backward) {
+        speed.current = Math.max(speed.current - 0.2, -6);
+      } else {
+        speed.current *= 0.95; // Friction
+      }
+      
+      // Simple turning (only when moving for keyboard)
+      if (controls.left && Math.abs(speed.current) > 0.1) {
+        rotation.current.y += 0.02;
+      }
+      if (controls.right && Math.abs(speed.current) > 0.1) {
+        rotation.current.y -= 0.02;
+      }
     }
     
     // Calculate new position

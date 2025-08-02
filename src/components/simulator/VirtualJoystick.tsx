@@ -1,10 +1,8 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 
 interface JoystickState {
-  forward: boolean;
-  backward: boolean;
-  left: boolean;
-  right: boolean;
+  angle: number;
+  magnitude: number;
 }
 
 interface VirtualJoystickProps {
@@ -22,18 +20,21 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
     if (knobRef.current) {
       knobRef.current.style.transform = 'translate(-50%, -50%)';
     }
-    onControlChange({ forward: false, backward: false, left: false, right: false });
+    onControlChange({ angle: 0, magnitude: 0 });
   }, [onControlChange]);
 
   const updateControls = useCallback((deltaX: number, deltaY: number) => {
-    const threshold = 20;
-    const controls = {
-      forward: deltaY < -threshold,
-      backward: deltaY > threshold,
-      left: deltaX < -threshold,
-      right: deltaX > threshold,
-    };
-    onControlChange(controls);
+    const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const maxDistance = 40;
+    const normalizedMagnitude = Math.min(magnitude / maxDistance, 1);
+    
+    if (normalizedMagnitude < 0.1) {
+      onControlChange({ angle: 0, magnitude: 0 });
+    } else {
+      // Calculate angle in radians (0 = right, π/2 = down, π = left, 3π/2 = up)
+      const angle = Math.atan2(deltaY, deltaX);
+      onControlChange({ angle, magnitude: normalizedMagnitude });
+    }
   }, [onControlChange]);
 
   const handleStart = useCallback((clientX: number, clientY: number) => {

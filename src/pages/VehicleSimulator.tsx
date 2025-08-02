@@ -13,10 +13,8 @@ export default function VehicleSimulator() {
   const [isSimulationActive, setIsSimulationActive] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [virtualJoystickControls, setVirtualJoystickControls] = useState({
-    forward: false,
-    backward: false,
-    left: false,
-    right: false,
+    angle: 0,
+    magnitude: 0
   });
   const [vehicleData, setVehicleData] = useState({
     speed: 0,
