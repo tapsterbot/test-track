@@ -195,7 +195,7 @@ export default function VehicleSimulator() {
                   MAZE VIEWPORT
                 </h3>
               </div>
-              <div className="relative w-full h-[calc(100%-60px)] bg-black">
+              <div className="relative w-full h-[calc(100%-60px)] bg-black overflow-hidden">
                 <SimpleSimulator
                   key={resetKey}
                   isActive={isSimulationActive}
