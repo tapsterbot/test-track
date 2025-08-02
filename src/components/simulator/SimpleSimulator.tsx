@@ -25,6 +25,7 @@ interface SimpleSimulatorProps {
     magnitude: number;
   };
   onToggle?: () => void;
+  cameraMode?: 'orbit' | 'follow';
 }
 
 // Hidden QR Code component
@@ -262,8 +263,37 @@ function SimpleVehicle({ position, rotation }: {
   );
 }
 
+// Camera Controller component for follow mode
+function CameraController({ vehiclePosition, vehicleRotation, cameraMode }: {
+  vehiclePosition: THREE.Vector3;
+  vehicleRotation: THREE.Euler;
+  cameraMode: 'orbit' | 'follow';
+}) {
+  useFrame((state) => {
+    if (cameraMode === 'follow') {
+      // Position camera behind and above the vehicle
+      const offset = new THREE.Vector3(0, 12, 15);
+      offset.applyEuler(vehicleRotation);
+      
+      const targetPosition = vehiclePosition.clone().add(offset);
+      
+      // Smooth camera movement
+      state.camera.position.lerp(targetPosition, 0.1);
+      
+      // Look at point slightly ahead of the vehicle
+      const lookAhead = new THREE.Vector3(0, 2, -10);
+      lookAhead.applyEuler(vehicleRotation);
+      const lookAtPoint = vehiclePosition.clone().add(lookAhead);
+      
+      state.camera.lookAt(lookAtPoint);
+    }
+  });
+
+  return null;
+}
+
 // Scene content
-function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickControls }: SimpleSimulatorProps) {
+function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickControls, cameraMode = 'orbit' }: SimpleSimulatorProps) {
   const vehicleRef = useRef<{
     position: THREE.Vector3;
     rotation: THREE.Euler;
@@ -422,10 +452,17 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
       
       <Ground />
       {vehicleRef.current && (
-        <SimpleVehicle 
-          position={vehicleRef.current.position} 
-          rotation={vehicleRef.current.rotation} 
-        />
+        <>
+          <SimpleVehicle 
+            position={vehicleRef.current.position} 
+            rotation={vehicleRef.current.rotation} 
+          />
+          <CameraController 
+            vehiclePosition={vehicleRef.current.position}
+            vehicleRotation={vehicleRef.current.rotation}
+            cameraMode={cameraMode}
+          />
+        </>
       )}
     </>
   );
@@ -451,9 +488,9 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
         <SceneContent {...props} />
         <OrbitControls 
           target={[0, 0, 0]}
-          enablePan={true}
+          enablePan={props.cameraMode === 'orbit'}
           enableZoom={true}
-          enableRotate={true}
+          enableRotate={props.cameraMode === 'orbit'}
         />
       </Canvas>
     </div>

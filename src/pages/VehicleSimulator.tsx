@@ -7,11 +7,12 @@ import { SimpleSimulator } from "@/components/simulator/SimpleSimulator";
 import { VirtualJoystick } from "@/components/simulator/VirtualJoystick";
 import { MissionHUD } from "@/components/simulator/MissionHUD";
 import { ControlPanel } from "@/components/simulator/ControlPanel";
-import { Play, Pause, RotateCcw } from "lucide-react";
+import { Play, Pause, RotateCcw, Camera } from "lucide-react";
 
 export default function VehicleSimulator() {
   const [isSimulationActive, setIsSimulationActive] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  const [cameraMode, setCameraMode] = useState<'orbit' | 'follow'>('orbit');
   const [virtualJoystickControls, setVirtualJoystickControls] = useState({
     angle: 0,
     magnitude: 0
@@ -50,6 +51,10 @@ export default function VehicleSimulator() {
       position: { x: -40, y: 1, z: 40 },
       objectiveComplete: false
     });
+  };
+
+  const handleToggleCameraMode = () => {
+    setCameraMode(prev => prev === 'orbit' ? 'follow' : 'orbit');
   };
 
   return (
@@ -108,7 +113,7 @@ export default function VehicleSimulator() {
         <div className="mb-6">
           <SystemPanel title="SIMULATION CONTROL">
             <div className="flex flex-col gap-3">
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-4 gap-2">
                 <Button
                   onClick={handleStartSimulation}
                   disabled={isSimulationActive}
@@ -137,6 +142,16 @@ export default function VehicleSimulator() {
                   <RotateCcw className="w-3 h-3 sm:mr-1" />
                   <span className="hidden xs:inline ml-1">RESET</span>
                 </Button>
+                <Button
+                  onClick={handleToggleCameraMode}
+                  variant={cameraMode === 'follow' ? 'default' : 'outline'}
+                  className="nasa-button"
+                  size="sm"
+                  title={`Switch to ${cameraMode === 'orbit' ? 'follow' : 'orbit'} camera`}
+                >
+                  <Camera className="w-3 h-3 sm:mr-1" />
+                  <span className="hidden xs:inline ml-1">{cameraMode === 'orbit' ? 'FOLLOW' : 'ORBIT'}</span>
+                </Button>
               </div>
               <div className="text-xs text-center">
                 STATUS: <span className={`font-semibold ${isSimulationActive ? 'text-green-400' : 'text-yellow-400'}`}>
@@ -164,6 +179,7 @@ export default function VehicleSimulator() {
                   onVehicleUpdate={setVehicleData}
                   virtualJoystickControls={virtualJoystickControls}
                   onToggle={handleToggleSimulation}
+                  cameraMode={cameraMode}
                 />
                 <VirtualJoystick
                   isActive={isSimulationActive}
