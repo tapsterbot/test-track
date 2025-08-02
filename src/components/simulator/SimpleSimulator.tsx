@@ -313,12 +313,12 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
           this.rotation.y += angleDiff * rotationSpeed;
           
           // Set speed based on joystick magnitude
-          const maxSpeed = 12;
+          const maxSpeed = 16;
           this.speed = joystickData.magnitude * maxSpeed;
         } else {
           // Handle keyboard controls (tank-style)
           if (controls.forward) {
-            this.speed = Math.min(this.speed + 0.2, 12);
+            this.speed = Math.min(this.speed + 0.2, 16);
           } else if (controls.backward) {
             this.speed = Math.max(this.speed - 0.2, -6);
           } else {
