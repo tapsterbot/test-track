@@ -364,7 +364,7 @@ function SceneContent({
     position: THREE.Vector3;
     rotation: THREE.Euler;
     speed: number;
-    update: (controls: any, joystickData?: { angle: number; magnitude: number }) => void;
+    update: (controls: any, joystickData?: { angle: number; magnitude: number; forward?: number; turn?: number }, cameraMode?: 'orbit' | 'follow') => void;
     getSpeed: () => number;
     reset: () => void;
   } | null>(null);
@@ -375,7 +375,7 @@ function SceneContent({
       position: new THREE.Vector3(-40, 1, 40),
       rotation: new THREE.Euler(0, 0, 0),
       speed: 0,
-      update: function(controls: any, joystickData?: { angle: number; magnitude: number; forward?: number; turn?: number }) {
+      update: function(controls: any, joystickData?: { angle: number; magnitude: number; forward?: number; turn?: number }, cameraMode: 'orbit' | 'follow' = 'orbit') {
         const deltaTime = 1/60;
         const walls = [
           // Outer walls
@@ -392,7 +392,7 @@ function SceneContent({
         
         // Handle joystick controls
         if (joystickData && joystickData.magnitude > 0) {
-          if (joystickData.forward !== undefined && joystickData.turn !== undefined) {
+          if (cameraMode === 'follow') {
             // First-person mode: tank-style controls
             const maxSpeed = 18;
             const maxTurnRate = 0.04;
@@ -498,7 +498,7 @@ function SceneContent({
     }
     
     if (isActive && vehicleRef.current) {
-      vehicleRef.current.update(controls, virtualJoystickControls);
+      vehicleRef.current.update(controls, virtualJoystickControls, cameraMode);
       
       const distanceToEnd = Math.sqrt(
         Math.pow(vehicleRef.current.position.x - 40, 2) + 

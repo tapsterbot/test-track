@@ -23,8 +23,12 @@ export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit
     if (knobRef.current) {
       knobRef.current.style.transform = 'translate(-50%, -50%)';
     }
-    onControlChange({ angle: 0, magnitude: 0, forward: 0, turn: 0 });
-  }, [onControlChange]);
+    if (cameraMode === 'follow') {
+      onControlChange({ angle: 0, magnitude: 0, forward: 0, turn: 0 });
+    } else {
+      onControlChange({ angle: 0, magnitude: 0 });
+    }
+  }, [onControlChange, cameraMode]);
 
   const updateControls = useCallback((deltaX: number, deltaY: number) => {
     const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -32,7 +36,11 @@ export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit
     const normalizedMagnitude = Math.min(magnitude / maxDistance, 1);
     
     if (normalizedMagnitude < 0.1) {
-      onControlChange({ angle: 0, magnitude: 0, forward: 0, turn: 0 });
+      if (cameraMode === 'follow') {
+        onControlChange({ angle: 0, magnitude: 0, forward: 0, turn: 0 });
+      } else {
+        onControlChange({ angle: 0, magnitude: 0 });
+      }
     } else if (cameraMode === 'follow') {
       // First-person mode: tank-style controls
       // Up/Down controls forward/backward movement
@@ -51,7 +59,7 @@ export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit
       // Calculate angle - don't flip deltaY for correct up/down mapping
       // UP joystick = robot away from camera (-Z), DOWN = toward camera (+Z)
       const angle = Math.atan2(deltaY, -deltaX);
-      onControlChange({ angle, magnitude: normalizedMagnitude, forward: 0, turn: 0 });
+      onControlChange({ angle, magnitude: normalizedMagnitude });
     }
   }, [onControlChange, cameraMode]);
 
