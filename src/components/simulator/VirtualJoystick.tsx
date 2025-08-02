@@ -32,8 +32,8 @@ export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit
 
   const updateControls = useCallback((deltaX: number, deltaY: number) => {
     const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    // Large circle radius (48px) + small knob radius (12px) = 60px max distance
-    const maxDistance = 60;
+    // Large circle radius is 48px (w-24 = 96px, so radius = 48px)
+    const maxDistance = 48;
     const normalizedMagnitude = Math.min(magnitude / maxDistance, 1);
     
     if (normalizedMagnitude < 0.1) {
@@ -81,8 +81,8 @@ export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit
     const deltaX = clientX - joystickCenter.x;
     const deltaY = clientY - joystickCenter.y;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    // Large circle radius (48px) + small knob radius (12px) = 60px max distance
-    const maxDistance = 60;
+    // Large circle radius is 48px (w-24 = 96px, so radius = 48px)
+    const maxDistance = 48;
 
     let finalX = deltaX;
     let finalY = deltaY;
