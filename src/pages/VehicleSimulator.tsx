@@ -206,11 +206,6 @@ export default function VehicleSimulator() {
                   savedCameraStates={savedCameraStates}
                   onSaveCameraState={handleSaveCameraState}
                 />
-                <VirtualJoystick
-                  isActive={isSimulationActive}
-                  onControlChange={setVirtualJoystickControls}
-                  cameraMode={cameraMode}
-                />
                 
                 {/* HUD Overlay */}
                 {isSimulationActive && (
@@ -291,6 +286,15 @@ export default function VehicleSimulator() {
                   </div>
                 )}
               </div>
+            </div>
+            
+            {/* Virtual Joystick - Below the viewport */}
+            <div className="relative mt-4 md:hidden">
+              <VirtualJoystick
+                isActive={isSimulationActive}
+                onControlChange={setVirtualJoystickControls}
+                cameraMode={cameraMode}
+              />
             </div>
           </div>
 

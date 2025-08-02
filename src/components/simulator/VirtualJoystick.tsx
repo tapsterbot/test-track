@@ -148,8 +148,8 @@ export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit
         />
       )}
       
-      {/* Joystick - Always visible, pinned to bottom */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50 md:hidden pointer-events-auto">
+      {/* Joystick - Always visible, centered */}
+      <div className="flex justify-center pointer-events-auto">
         <div 
           ref={joystickRef}
           className={`relative w-24 h-24 border-2 rounded-full cursor-pointer select-none touch-none transition-all duration-300 ${
