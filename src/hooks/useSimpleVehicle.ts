@@ -48,9 +48,9 @@ export function useSimpleVehicle() {
     // Handle joystick "follow me" control
     if (joystickData && joystickData.magnitude > 0) {
       // Convert joystick angle to robot rotation (joystick angle is screen-relative)
-      // Adjust for coordinate system: joystick right=0, down=π/2, left=π, up=3π/2
-      // Robot: forward=-Z, so we need to offset by π/2 to align properly
-      const targetRotation = joystickData.angle + Math.PI / 2;
+      // Map joystick directions directly to world directions for top-down view
+      // Negate angle to properly map screen coordinates to world coordinates
+      const targetRotation = -joystickData.angle;
       
       // Smooth rotation towards target
       let angleDiff = targetRotation - rotation.current.y;
