@@ -117,7 +117,7 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
     <>
       {/* Background overlay to prevent page scrolling */}
       <div 
-        className="fixed bottom-0 left-0 w-full h-40 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+        className="fixed bottom-0 left-0 w-full h-48 bg-black/20 backdrop-blur-sm z-40 md:hidden"
         style={{ touchAction: 'none' }}
         onTouchStart={(e) => e.preventDefault()}
         onTouchMove={(e) => e.preventDefault()}
