@@ -444,7 +444,7 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
       <Canvas
         style={{ width: '100%', height: '100%', display: 'block' }}
         camera={{ 
-          position: window.innerWidth < 768 ? [0, 120, 60] : [0, 100, 50], 
+          position: window.innerWidth < 768 ? [0, 130, 70] : [0, 110, 60], 
           fov: 60 
         }}
       >
