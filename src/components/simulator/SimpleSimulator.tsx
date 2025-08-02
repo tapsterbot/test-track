@@ -550,19 +550,45 @@ function SceneContent({
 }
 
 export function SimpleSimulator(props: SimpleSimulatorProps) {
-  const handleCanvasClick = (event: React.MouseEvent) => {
-    // Only toggle if clicking on the canvas itself, not during camera controls
-    if (props.onToggle && event.detail === 1) {
-      props.onToggle();
+  const isDraggingRef = useRef(false);
+  const mouseDownPosRef = useRef({ x: 0, y: 0 });
+  const DRAG_THRESHOLD = 5; // pixels
+
+  const handleMouseDown = (event: React.MouseEvent) => {
+    isDraggingRef.current = false;
+    mouseDownPosRef.current = { x: event.clientX, y: event.clientY };
+  };
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    if (mouseDownPosRef.current) {
+      const deltaX = Math.abs(event.clientX - mouseDownPosRef.current.x);
+      const deltaY = Math.abs(event.clientY - mouseDownPosRef.current.y);
+      
+      if (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD) {
+        isDraggingRef.current = true;
+      }
     }
   };
 
+  const handleMouseUp = (event: React.MouseEvent) => {
+    // Only toggle if it was a click (not a drag) and clicked on the canvas
+    if (props.onToggle && !isDraggingRef.current) {
+      props.onToggle();
+    }
+    isDraggingRef.current = false;
+  };
+
   return (
-    <div onClick={handleCanvasClick} style={{ width: '100%', height: '100%' }}>
+    <div 
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      style={{ width: '100%', height: '100%' }}
+    >
       <Canvas
         style={{ width: '100%', height: '100%', display: 'block' }}
         camera={{ 
-          position: window.innerWidth < 768 ? [0, 130, 70] : [0, 110, 60], 
+          position: window.innerWidth < 768 ? [0, 130, 70] : [0, 110, 60],
           fov: 60 
         }}
       >
