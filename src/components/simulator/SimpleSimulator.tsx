@@ -26,6 +26,11 @@ interface SimpleSimulatorProps {
   };
   onToggle?: () => void;
   cameraMode?: 'orbit' | 'follow';
+  savedCameraStates?: {
+    orbit: { position: [number, number, number]; target: [number, number, number] } | null;
+    follow: { position: [number, number, number]; target: [number, number, number] } | null;
+  };
+  onSaveCameraState?: (mode: 'orbit' | 'follow', position: [number, number, number], target: [number, number, number]) => void;
 }
 
 // Hidden QR Code component
@@ -264,12 +269,54 @@ function SimpleVehicle({ position, rotation }: {
 }
 
 // Camera Controller component for follow mode
-function CameraController({ vehiclePosition, vehicleRotation, cameraMode }: {
+function CameraController({ 
+  vehiclePosition, 
+  vehicleRotation, 
+  cameraMode, 
+  savedCameraStates, 
+  onSaveCameraState 
+}: {
   vehiclePosition: THREE.Vector3;
   vehicleRotation: THREE.Euler;
   cameraMode: 'orbit' | 'follow';
+  savedCameraStates?: {
+    orbit: { position: [number, number, number]; target: [number, number, number] } | null;
+    follow: { position: [number, number, number]; target: [number, number, number] } | null;
+  };
+  onSaveCameraState?: (mode: 'orbit' | 'follow', position: [number, number, number], target: [number, number, number]) => void;
 }) {
+  const prevCameraMode = useRef<'orbit' | 'follow'>('orbit');
+  const orbitControlsRef = useRef<any>(null);
+
   useFrame((state) => {
+    // Check if camera mode has changed
+    if (prevCameraMode.current !== cameraMode) {
+      // Save current camera state before switching
+      if (onSaveCameraState && orbitControlsRef.current) {
+        const currentPosition: [number, number, number] = [
+          state.camera.position.x,
+          state.camera.position.y,
+          state.camera.position.z
+        ];
+        const currentTarget: [number, number, number] = [
+          orbitControlsRef.current.target.x,
+          orbitControlsRef.current.target.y,
+          orbitControlsRef.current.target.z
+        ];
+        onSaveCameraState(prevCameraMode.current, currentPosition, currentTarget);
+      }
+
+      // Restore saved camera state for new mode
+      if (savedCameraStates && cameraMode === 'orbit' && savedCameraStates.orbit) {
+        state.camera.position.set(...savedCameraStates.orbit.position);
+        if (orbitControlsRef.current) {
+          orbitControlsRef.current.target.set(...savedCameraStates.orbit.target);
+        }
+      }
+
+      prevCameraMode.current = cameraMode;
+    }
+
     if (cameraMode === 'follow') {
       // Position camera behind and above the vehicle
       const offset = new THREE.Vector3(0, 12, 15);
@@ -289,11 +336,27 @@ function CameraController({ vehiclePosition, vehicleRotation, cameraMode }: {
     }
   });
 
+  // Store reference to OrbitControls
+  useEffect(() => {
+    const controls = document.querySelector('canvas')?.parentElement?.querySelector('[data-orbit-controls]');
+    if (controls) {
+      orbitControlsRef.current = (controls as any).__orbitControls;
+    }
+  }, []);
+
   return null;
 }
 
 // Scene content
-function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickControls, cameraMode = 'orbit' }: SimpleSimulatorProps) {
+function SceneContent({ 
+  isActive, 
+  onVehicleUpdate, 
+  shouldReset, 
+  virtualJoystickControls, 
+  cameraMode = 'orbit',
+  savedCameraStates,
+  onSaveCameraState
+}: SimpleSimulatorProps) {
   const vehicleRef = useRef<{
     position: THREE.Vector3;
     rotation: THREE.Euler;
@@ -461,6 +524,8 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
             vehiclePosition={vehicleRef.current.position}
             vehicleRotation={vehicleRef.current.rotation}
             cameraMode={cameraMode}
+            savedCameraStates={savedCameraStates}
+            onSaveCameraState={onSaveCameraState}
           />
         </>
       )}
@@ -491,6 +556,12 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
           enablePan={props.cameraMode === 'orbit'}
           enableZoom={true}
           enableRotate={props.cameraMode === 'orbit'}
+          ref={(ref) => {
+            if (ref) {
+              (ref as any).__orbitControls = ref;
+              ref.domElement.setAttribute('data-orbit-controls', 'true');
+            }
+          }}
         />
       </Canvas>
     </div>

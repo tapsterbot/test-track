@@ -13,6 +13,13 @@ export default function VehicleSimulator() {
   const [isSimulationActive, setIsSimulationActive] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [cameraMode, setCameraMode] = useState<'orbit' | 'follow'>('orbit');
+  const [savedCameraStates, setSavedCameraStates] = useState<{
+    orbit: { position: [number, number, number]; target: [number, number, number] } | null;
+    follow: { position: [number, number, number]; target: [number, number, number] } | null;
+  }>({
+    orbit: null,
+    follow: null
+  });
   const [virtualJoystickControls, setVirtualJoystickControls] = useState({
     angle: 0,
     magnitude: 0
@@ -55,6 +62,13 @@ export default function VehicleSimulator() {
 
   const handleToggleCameraMode = () => {
     setCameraMode(prev => prev === 'orbit' ? 'follow' : 'orbit');
+  };
+
+  const handleSaveCameraState = (mode: 'orbit' | 'follow', position: [number, number, number], target: [number, number, number]) => {
+    setSavedCameraStates(prev => ({
+      ...prev,
+      [mode]: { position, target }
+    }));
   };
 
   return (
@@ -180,6 +194,8 @@ export default function VehicleSimulator() {
                   virtualJoystickControls={virtualJoystickControls}
                   onToggle={handleToggleSimulation}
                   cameraMode={cameraMode}
+                  savedCameraStates={savedCameraStates}
+                  onSaveCameraState={handleSaveCameraState}
                 />
                 <VirtualJoystick
                   isActive={isSimulationActive}
