@@ -31,9 +31,9 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
     if (normalizedMagnitude < 0.1) {
       onControlChange({ angle: 0, magnitude: 0 });
     } else {
-      // Calculate angle in radians - flip both axes for correct mapping
-      // LEFT joystick = left robot movement, RIGHT = right, UP = forward, DOWN = backward
-      const angle = Math.atan2(-deltaY, -deltaX);
+      // Calculate angle - don't flip deltaY for correct up/down mapping
+      // UP joystick = robot away from camera (-Z), DOWN = toward camera (+Z)
+      const angle = Math.atan2(deltaY, -deltaX);
       onControlChange({ angle, magnitude: normalizedMagnitude });
     }
   }, [onControlChange]);
