@@ -559,7 +559,9 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
           ref={(ref) => {
             if (ref) {
               (ref as any).__orbitControls = ref;
-              ref.domElement.setAttribute('data-orbit-controls', 'true');
+              if (ref.domElement) {
+                ref.domElement.setAttribute('data-orbit-controls', 'true');
+              }
             }
           }}
         />
