@@ -47,8 +47,8 @@ export function useSimpleVehicle() {
     
     // Handle joystick "follow me" control
     if (joystickData && joystickData.magnitude > 0) {
-      // Direct mapping - joystick LEFT = robot left, RIGHT = robot right
-      const targetRotation = joystickData.angle;
+      // Map joystick angle to robot rotation (robot forward = -Z axis)
+      const targetRotation = joystickData.angle - Math.PI / 2;
       
       // Smooth rotation towards target
       let angleDiff = targetRotation - rotation.current.y;
