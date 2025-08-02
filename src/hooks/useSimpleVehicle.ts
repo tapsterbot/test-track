@@ -47,14 +47,9 @@ export function useSimpleVehicle() {
     
     // Handle joystick "follow me" control
     if (joystickData && joystickData.magnitude > 0) {
-      // Debug: Log the joystick input
-      console.log('Joystick angle:', joystickData.angle, 'magnitude:', joystickData.magnitude);
-      
-      // Joystick coordinate system: Right=0, Down=π/2, Left=π, Up=3π/2
-      // Robot coordinate system: Forward=-Z, rotation.y=0 means facing -Z
-      // We need: Joystick UP (3π/2) = Robot forward (-Z direction) = rotation.y=0
-      // So: targetRotation = joystickData.angle - 3π/2
-      const targetRotation = joystickData.angle - (3 * Math.PI / 2);
+      // With corrected joystick angles, map directly to robot rotation
+      // Joystick RIGHT (0) → Robot forward, so add π/2 offset
+      const targetRotation = joystickData.angle + Math.PI / 2;
       
       // Smooth rotation towards target
       let angleDiff = targetRotation - rotation.current.y;

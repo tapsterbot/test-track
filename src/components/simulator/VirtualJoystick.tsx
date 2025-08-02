@@ -32,7 +32,8 @@ export function VirtualJoystick({ onControlChange, isActive }: VirtualJoystickPr
       onControlChange({ angle: 0, magnitude: 0 });
     } else {
       // Calculate angle in radians (0 = right, π/2 = down, π = left, 3π/2 = up)
-      const angle = Math.atan2(deltaY, deltaX);
+      // Flip Y-axis so UP gives negative Y (forward movement expectation)
+      const angle = Math.atan2(-deltaY, deltaX);
       onControlChange({ angle, magnitude: normalizedMagnitude });
     }
   }, [onControlChange]);
