@@ -70,7 +70,7 @@ export function ControlPanel({ isActive }: ControlPanelProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <Keyboard className="w-3 h-3" />
-            <span>KBD</span>
+            <span>KEYBOARD</span>
           </div>
           <IndicatorLight color="green" label="RDY" status="on" />
         </div>
@@ -78,7 +78,7 @@ export function ControlPanel({ isActive }: ControlPanelProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <Mouse className="w-3 h-3" />
-            <span>MSE</span>
+            <span>MOUSE</span>
           </div>
           <IndicatorLight color="green" label="RDY" status="on" />
         </div>
@@ -86,7 +86,7 @@ export function ControlPanel({ isActive }: ControlPanelProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <Smartphone className="w-3 h-3" />
-            <span>TCH</span>
+            <span>TOUCH</span>
           </div>
           <IndicatorLight 
             color={inputStatus.touch ? "green" : "red"} 
@@ -98,7 +98,7 @@ export function ControlPanel({ isActive }: ControlPanelProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <Gamepad2 className="w-3 h-3" />
-            <span>PAD</span>
+            <span>GAMEPAD</span>
           </div>
           <IndicatorLight 
             color={inputStatus.gamepad ? "green" : "red"} 
