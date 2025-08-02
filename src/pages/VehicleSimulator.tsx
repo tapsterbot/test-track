@@ -189,13 +189,13 @@ export default function VehicleSimulator() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* 3D Viewport */}
           <div className="lg:col-span-3">
-            <div className="h-[600px] nasa-panel border-2 border-muted-foreground/30 rounded-sm overflow-hidden">
+            <div className="h-[600px] nasa-panel border-2 border-muted-foreground/30 rounded-sm overflow-hidden bg-black">
               <div className="px-4 pt-4 pb-2 border-b border-muted-foreground/20">
                 <h3 className="text-sm font-futura font-bold text-muted-foreground uppercase tracking-wider nasa-display">
                   MAZE VIEWPORT
                 </h3>
               </div>
-              <div className="relative w-full h-[calc(100%-60px)] bg-black overflow-hidden">
+              <div className="relative w-full h-[calc(100%-60px)] bg-black">
                 <SimpleSimulator
                   key={resetKey}
                   isActive={isSimulationActive}
