@@ -138,16 +138,6 @@ export function VirtualJoystick({ onControlChange, isActive, cameraMode = 'orbit
 
   return (
     <>
-      {/* Background overlay to prevent page scrolling when active */}
-      {isActive && (
-        <div 
-          className="fixed bottom-0 left-0 w-full h-48 bg-black/20 backdrop-blur-sm z-40 md:hidden"
-          style={{ touchAction: 'none' }}
-          onTouchStart={(e) => e.preventDefault()}
-          onTouchMove={(e) => e.preventDefault()}
-        />
-      )}
-      
       {/* Joystick - Always visible, centered */}
       <div className="flex justify-center pointer-events-auto">
         <div 
