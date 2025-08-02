@@ -286,35 +286,39 @@ function CameraController({
   onSaveCameraState?: (mode: 'orbit' | 'follow', position: [number, number, number], target: [number, number, number]) => void;
 }) {
   const prevCameraMode = useRef<'orbit' | 'follow'>('orbit');
-  const orbitControlsRef = useRef<any>(null);
+  const hasRestoredCamera = useRef(false);
 
   useFrame((state) => {
     // Check if camera mode has changed
     if (prevCameraMode.current !== cameraMode) {
+      console.log('Camera mode changed from', prevCameraMode.current, 'to', cameraMode);
+      
       // Save current camera state before switching
-      if (onSaveCameraState && orbitControlsRef.current) {
+      if (onSaveCameraState) {
         const currentPosition: [number, number, number] = [
           state.camera.position.x,
           state.camera.position.y,
           state.camera.position.z
         ];
-        const currentTarget: [number, number, number] = [
-          orbitControlsRef.current.target.x,
-          orbitControlsRef.current.target.y,
-          orbitControlsRef.current.target.z
-        ];
+        const currentTarget: [number, number, number] = [0, 0, 0];
+        console.log('Saving camera state for', prevCameraMode.current, currentPosition);
         onSaveCameraState(prevCameraMode.current, currentPosition, currentTarget);
       }
 
-      // Restore saved camera state for new mode
-      if (savedCameraStates && cameraMode === 'orbit' && savedCameraStates.orbit) {
-        state.camera.position.set(...savedCameraStates.orbit.position);
-        if (orbitControlsRef.current) {
-          orbitControlsRef.current.target.set(...savedCameraStates.orbit.target);
-        }
-      }
-
       prevCameraMode.current = cameraMode;
+      hasRestoredCamera.current = false;
+    }
+
+    // Restore orbit camera position once after mode change
+    if (cameraMode === 'orbit' && !hasRestoredCamera.current) {
+      if (savedCameraStates && savedCameraStates.orbit) {
+        console.log('Restoring orbit camera position:', savedCameraStates.orbit.position);
+        state.camera.position.set(...savedCameraStates.orbit.position);
+      } else {
+        console.log('Setting default orbit camera position');
+        state.camera.position.set(0, 110, 60);
+      }
+      hasRestoredCamera.current = true;
     }
 
     if (cameraMode === 'follow') {
@@ -335,14 +339,6 @@ function CameraController({
       state.camera.lookAt(lookAtPoint);
     }
   });
-
-  // Store reference to OrbitControls
-  useEffect(() => {
-    const controls = document.querySelector('canvas')?.parentElement?.querySelector('[data-orbit-controls]');
-    if (controls) {
-      orbitControlsRef.current = (controls as any).__orbitControls;
-    }
-  }, []);
 
   return null;
 }
@@ -556,14 +552,6 @@ export function SimpleSimulator(props: SimpleSimulatorProps) {
           enablePan={props.cameraMode === 'orbit'}
           enableZoom={true}
           enableRotate={props.cameraMode === 'orbit'}
-          ref={(ref) => {
-            if (ref) {
-              (ref as any).__orbitControls = ref;
-              if (ref.domElement) {
-                ref.domElement.setAttribute('data-orbit-controls', 'true');
-              }
-            }
-          }}
         />
       </Canvas>
     </div>
