@@ -80,7 +80,7 @@ function Ground() {
         <meshLambertMaterial color="#E5E7EB" />
       </mesh>
       
-      {/* Maze walls - simple child-friendly layout */}
+      {/* Calculator keypad maze - forces 1→4→7→8→5→2→3→6→9 path */}
       {/* Outer walls */}
       <mesh position={[0, 2, -60]}>
         <boxGeometry args={[120, 4, 2]} />
@@ -99,34 +99,130 @@ function Ground() {
         <meshLambertMaterial color="#374151" />
       </mesh>
       
-      {/* Simple maze walls - adjusted for bottom-left to top-right path */}
-      <mesh position={[-20, 2, 20]}>
-        <boxGeometry args={[2, 4, 40]} />
+      {/* Grid dividers - create 3x3 calculator keypad zones */}
+      {/* Vertical dividers */}
+      <mesh position={[-20, 2, 0]}>
+        <boxGeometry args={[2, 4, 120]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
-      <mesh position={[20, 2, -10]}>
-        <boxGeometry args={[2, 4, 60]} />
-        <meshLambertMaterial color="#374151" />
-      </mesh>
-      <mesh position={[0, 2, 40]}>
-        <boxGeometry args={[40, 4, 2]} />
-        <meshLambertMaterial color="#374151" />
-      </mesh>
-      <mesh position={[40, 2, -20]}>
-        <boxGeometry args={[40, 4, 2]} />
+      <mesh position={[20, 2, 0]}>
+        <boxGeometry args={[2, 4, 120]} />
         <meshLambertMaterial color="#374151" />
       </mesh>
       
-      {/* Start marker (bottom left) */}
+      {/* Horizontal dividers */}
+      <mesh position={[0, 2, -20]}>
+        <boxGeometry args={[120, 4, 2]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      <mesh position={[0, 2, 20]}>
+        <boxGeometry args={[120, 4, 2]} />
+        <meshLambertMaterial color="#374151" />
+      </mesh>
+      
+      {/* Strategic wall openings to force the path 1→4→7→8→5→2→3→6→9 */}
+      
+      {/* Opening from zone 1 to 4 (bottom-left to center-left) */}
+      <mesh position={[-20, 2, 30]}>
+        <boxGeometry args={[2, 4, 20]} />
+        <meshLambertMaterial color="#E5E7EB" />
+      </mesh>
+      
+      {/* Opening from zone 4 to 7 (center-left to top-left) */}
+      <mesh position={[-20, 2, -10]}>
+        <boxGeometry args={[2, 4, 20]} />
+        <meshLambertMaterial color="#E5E7EB" />
+      </mesh>
+      
+      {/* Opening from zone 7 to 8 (top-left to top-center) */}
+      <mesh position={[-10, 2, -20]}>
+        <boxGeometry args={[20, 4, 2]} />
+        <meshLambertMaterial color="#E5E7EB" />
+      </mesh>
+      
+      {/* Opening from zone 8 to 5 (top-center to center) */}
+      <mesh position={[0, 2, -10]}>
+        <boxGeometry args={[2, 4, 20]} />
+        <meshLambertMaterial color="#E5E7EB" />
+      </mesh>
+      
+      {/* Opening from zone 5 to 2 (center to bottom-center) */}
+      <mesh position={[0, 2, 30]}>
+        <boxGeometry args={[2, 4, 20]} />
+        <meshLambertMaterial color="#E5E7EB" />
+      </mesh>
+      
+      {/* Opening from zone 2 to 3 (bottom-center to bottom-right) */}
+      <mesh position={[10, 2, 20]}>
+        <boxGeometry args={[20, 4, 2]} />
+        <meshLambertMaterial color="#E5E7EB" />
+      </mesh>
+      
+      {/* Opening from zone 3 to 6 (bottom-right to center-right) */}
+      <mesh position={[20, 2, 10]}>
+        <boxGeometry args={[2, 4, 20]} />
+        <meshLambertMaterial color="#E5E7EB" />
+      </mesh>
+      
+      {/* Opening from zone 6 to 9 (center-right to top-right) */}
+      <mesh position={[20, 2, -30]}>
+        <boxGeometry args={[2, 4, 20]} />
+        <meshLambertMaterial color="#E5E7EB" />
+      </mesh>
+      
+      {/* Start marker - Zone 1 (bottom left) */}
       <mesh position={[-40, 0.05, 40]}>
         <cylinderGeometry args={[6, 6, 0.1]} />
         <meshLambertMaterial color="#10B981" />
       </mesh>
       
-      {/* End marker (top right) */}
+      {/* End marker - Zone 9 (top right) */}
       <mesh position={[40, 0.05, -40]}>
         <cylinderGeometry args={[6, 6, 0.1]} />
         <meshLambertMaterial color="#EF4444" />
+      </mesh>
+      
+      {/* Path waypoint markers */}
+      {/* Zone 4 marker */}
+      <mesh position={[-40, 0.05, 0]}>
+        <cylinderGeometry args={[3, 3, 0.1]} />
+        <meshLambertMaterial color="#F59E0B" />
+      </mesh>
+      
+      {/* Zone 7 marker */}
+      <mesh position={[-40, 0.05, -40]}>
+        <cylinderGeometry args={[3, 3, 0.1]} />
+        <meshLambertMaterial color="#F59E0B" />
+      </mesh>
+      
+      {/* Zone 8 marker */}
+      <mesh position={[0, 0.05, -40]}>
+        <cylinderGeometry args={[3, 3, 0.1]} />
+        <meshLambertMaterial color="#F59E0B" />
+      </mesh>
+      
+      {/* Zone 5 marker */}
+      <mesh position={[0, 0.05, 0]}>
+        <cylinderGeometry args={[3, 3, 0.1]} />
+        <meshLambertMaterial color="#F59E0B" />
+      </mesh>
+      
+      {/* Zone 2 marker */}
+      <mesh position={[0, 0.05, 40]}>
+        <cylinderGeometry args={[3, 3, 0.1]} />
+        <meshLambertMaterial color="#F59E0B" />
+      </mesh>
+      
+      {/* Zone 3 marker */}
+      <mesh position={[40, 0.05, 40]}>
+        <cylinderGeometry args={[3, 3, 0.1]} />
+        <meshLambertMaterial color="#F59E0B" />
+      </mesh>
+      
+      {/* Zone 6 marker */}
+      <mesh position={[40, 0.05, 0]}>
+        <cylinderGeometry args={[3, 3, 0.1]} />
+        <meshLambertMaterial color="#F59E0B" />
       </mesh>
       
       <HiddenQRCode />
@@ -278,14 +374,30 @@ function SceneContent({ isActive, onVehicleUpdate, shouldReset, virtualJoystickC
       update: function(controls: any, joystickData?: { angle: number; magnitude: number }) {
         const deltaTime = 1/60;
         const walls = [
+          // Outer walls
           { x: 0, z: -60, width: 120, height: 2 },
           { x: 0, z: 60, width: 120, height: 2 },
           { x: -60, z: 0, width: 2, height: 120 },
           { x: 60, z: 0, width: 2, height: 120 },
-          { x: -20, z: 20, width: 2, height: 40 },
-          { x: 20, z: -10, width: 2, height: 60 },
-          { x: 0, z: 40, width: 40, height: 2 },
-          { x: 40, z: -20, width: 40, height: 2 },
+          
+          // Calculator keypad grid walls with strategic openings
+          // Vertical dividers (with gaps for path)
+          { x: -20, z: 40, width: 2, height: 20 }, // Left divider, bottom section (blocks zone 1→2)
+          { x: -20, z: 20, width: 2, height: 20 }, // Left divider, bottom section (blocks zone 4→5)
+          { x: -20, z: -30, width: 2, height: 20 }, // Left divider, top section (blocks zone 7→8)
+          
+          { x: 20, z: 40, width: 2, height: 20 }, // Right divider, bottom section (blocks zone 2→3)
+          { x: 20, z: 0, width: 2, height: 20 }, // Right divider, middle section (blocks zone 5→6)
+          { x: 20, z: -40, width: 2, height: 20 }, // Right divider, top section (blocks zone 8→9)
+          
+          // Horizontal dividers (with gaps for path)
+          { x: -40, z: -20, width: 20, height: 2 }, // Top divider, left section (blocks zone 4→7)
+          { x: 10, z: -20, width: 20, height: 2 }, // Top divider, right section (blocks zone 8→9)
+          { x: 30, z: -20, width: 20, height: 2 }, // Top divider, far right section
+          
+          { x: -40, z: 20, width: 20, height: 2 }, // Bottom divider, left section (blocks zone 1→4)
+          { x: -10, z: 20, width: 20, height: 2 }, // Bottom divider, center section (blocks zone 2→5)
+          { x: 30, z: 20, width: 20, height: 2 }, // Bottom divider, right section (blocks zone 3→6)
         ];
         
         // Handle joystick "follow me" control
