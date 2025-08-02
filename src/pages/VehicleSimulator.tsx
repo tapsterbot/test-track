@@ -12,7 +12,7 @@ import { Play, Pause, RotateCcw, Eye } from "lucide-react";
 export default function VehicleSimulator() {
   const [isSimulationActive, setIsSimulationActive] = useState(false);
   const [resetKey, setResetKey] = useState(0);
-  const [cameraMode, setCameraMode] = useState<'orbit' | 'follow'>('orbit');
+  const [cameraMode, setCameraMode] = useState<'orbit' | 'follow'>('follow');
   const [savedCameraStates, setSavedCameraStates] = useState<{
     orbit: { position: [number, number, number]; target: [number, number, number] } | null;
     follow: { position: [number, number, number]; target: [number, number, number] } | null;
@@ -109,12 +109,16 @@ export default function VehicleSimulator() {
                 <CardContent>
                   <div className="space-y-3 text-xs">
                     <div>
-                      <div className="font-semibold text-accent mb-1">KEYBOARD</div>
+                      <div className="font-semibold text-accent mb-1">FIRST-PERSON MODE (DEFAULT)</div>
                       <div>W/↑ Forward • S/↓ Reverse • A/← Turn Left • D/→ Turn Right</div>
                     </div>
                     <div>
-                      <div className="font-semibold text-accent mb-1">MOUSE</div>
-                      <div>Drag to rotate camera • Scroll to zoom</div>
+                      <div className="font-semibold text-accent mb-1">MOBILE JOYSTICK</div>
+                      <div>Up: Forward • Down: Reverse • Left: Turn Left • Right: Turn Right</div>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-accent mb-1">CAMERA CONTROL</div>
+                      <div>Eye button toggles First-Person ↔ Overhead view</div>
                     </div>
                   </div>
                 </CardContent>
