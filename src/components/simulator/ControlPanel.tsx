@@ -65,51 +65,48 @@ export function ControlPanel({ isActive }: ControlPanelProps) {
   }, []);
 
   return (
-    <div className="space-y-4">
-      <SystemPanel title="INPUT STATUS">
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Keyboard className="w-4 h-4" />
-              <span className="text-sm">KEYBOARD</span>
-            </div>
-            <IndicatorLight color="green" label="RDY" status="on" />
+    <SystemPanel title="INPUT STATUS">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            <Keyboard className="w-3 h-3" />
+            <span>KBD</span>
           </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Mouse className="w-4 h-4" />
-              <span className="text-sm">MOUSE</span>
-            </div>
-            <IndicatorLight color="green" label="RDY" status="on" />
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Smartphone className="w-4 h-4" />
-              <span className="text-sm">TOUCH</span>
-            </div>
-            <IndicatorLight 
-              color={inputStatus.touch ? "green" : "red"} 
-              label={inputStatus.touch ? "RDY" : "N/A"} 
-              status={inputStatus.touch ? "on" : "off"} 
-            />
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Gamepad2 className="w-4 h-4" />
-              <span className="text-sm">GAMEPAD</span>
-            </div>
-            <IndicatorLight 
-              color={inputStatus.gamepad ? "green" : "red"} 
-              label={inputStatus.gamepad ? "RDY" : "OFF"} 
-              status={inputStatus.gamepad ? "on" : "off"} 
-            />
-          </div>
+          <IndicatorLight color="green" label="RDY" status="on" />
         </div>
-      </SystemPanel>
-
-    </div>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            <Mouse className="w-3 h-3" />
+            <span>MSE</span>
+          </div>
+          <IndicatorLight color="green" label="RDY" status="on" />
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            <Smartphone className="w-3 h-3" />
+            <span>TCH</span>
+          </div>
+          <IndicatorLight 
+            color={inputStatus.touch ? "green" : "red"} 
+            label={inputStatus.touch ? "RDY" : "N/A"} 
+            status={inputStatus.touch ? "on" : "off"} 
+          />
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            <Gamepad2 className="w-3 h-3" />
+            <span>PAD</span>
+          </div>
+          <IndicatorLight 
+            color={inputStatus.gamepad ? "green" : "red"} 
+            label={inputStatus.gamepad ? "RDY" : "OFF"} 
+            status={inputStatus.gamepad ? "on" : "off"} 
+          />
+        </div>
+      </div>
+    </SystemPanel>
   );
 }

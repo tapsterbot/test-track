@@ -127,6 +127,11 @@ export default function VehicleSimulator() {
           </SystemPanel>
         </div>
 
+        {/* Input Status */}
+        <div className="mb-4">
+          <ControlPanel isActive={isSimulationActive} />
+        </div>
+
         {/* Simulation Controls */}
         <div className="mb-6">
           <SystemPanel title="SIMULATION CONTROL">
@@ -292,7 +297,6 @@ export default function VehicleSimulator() {
           {/* Mission Telemetry */}
           <div className="space-y-6">
             <MissionHUD vehicleData={vehicleData} />
-            <ControlPanel isActive={isSimulationActive} />
           </div>
         </div>
       </div>
