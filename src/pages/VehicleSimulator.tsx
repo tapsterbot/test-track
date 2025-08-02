@@ -7,7 +7,7 @@ import { SimpleSimulator } from "@/components/simulator/SimpleSimulator";
 import { VirtualJoystick } from "@/components/simulator/VirtualJoystick";
 import { MissionHUD } from "@/components/simulator/MissionHUD";
 import { ControlPanel } from "@/components/simulator/ControlPanel";
-import { Play, Pause, RotateCcw, Camera } from "lucide-react";
+import { Play, Pause, RotateCcw, Eye } from "lucide-react";
 
 export default function VehicleSimulator() {
   const [isSimulationActive, setIsSimulationActive] = useState(false);
@@ -163,7 +163,7 @@ export default function VehicleSimulator() {
                   size="sm"
                   title={`Switch to ${cameraMode === 'orbit' ? 'follow' : 'orbit'} camera`}
                 >
-                  <Camera className="w-3 h-3 sm:mr-1" />
+                  <Eye className="w-3 h-3 sm:mr-1" />
                   <span className="hidden xs:inline ml-1">{cameraMode === 'orbit' ? 'FOLLOW' : 'ORBIT'}</span>
                 </Button>
               </div>
