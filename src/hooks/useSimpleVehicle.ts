@@ -62,12 +62,12 @@ export function useSimpleVehicle() {
       rotation.current.y += angleDiff * rotationSpeed;
       
       // Set speed based on joystick magnitude
-      const maxSpeed = 16;
+      const maxSpeed = 18;
       speed.current = joystickData.magnitude * maxSpeed;
     } else {
       // Handle keyboard controls (tank-style)
       if (controls.forward) {
-        speed.current = Math.min(speed.current + 0.2, 16);
+        speed.current = Math.min(speed.current + 0.2, 18);
       } else if (controls.backward) {
         speed.current = Math.max(speed.current - 0.2, -6);
       } else {
