@@ -79,7 +79,7 @@ export default function VehicleSimulator() {
         description="AUTONOMOUS NAVIGATION TRAINING"
       />
 
-      <div className="container mx-auto px-4 pt-8 pb-4">
+      <div className="container mx-auto px-4 pt-8 pb-1">
         {/* Mission Briefing */}
         <div className="mb-8">
           <SystemPanel title="MISSION BRIEFING">
