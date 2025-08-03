@@ -84,7 +84,7 @@ export function useSimpleVehicle() {
     }
     
     // Calculate new position
-    const direction = new THREE.Vector3(0, 0, -1);
+    const direction = new THREE.Vector3(0, 0, 1);
     direction.applyEuler(rotation.current);
     direction.multiplyScalar(speed.current * deltaTime);
     
