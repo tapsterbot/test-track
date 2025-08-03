@@ -287,8 +287,8 @@ export default function VehicleSimulator() {
                 )}
               </div>
               
-              {/* Virtual Joystick - Below the viewport, inside the border */}
-              <div className="relative p-4 md:hidden bg-black/50">
+              {/* Virtual Joystick - Positioned for better mobile landscape visibility */}
+              <div className="relative p-4 md:hidden bg-black/50 min-h-[120px] flex items-center justify-center">
                 <VirtualJoystick
                   isActive={isSimulationActive}
                   onControlChange={setVirtualJoystickControls}
