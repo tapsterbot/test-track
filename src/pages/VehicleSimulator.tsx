@@ -287,8 +287,8 @@ export default function VehicleSimulator() {
                 )}
               </div>
               
-              {/* Virtual Joystick - Positioned for better mobile landscape visibility */}
-              <div className="relative p-4 md:hidden bg-black/50 min-h-[120px] flex items-center justify-center">
+              {/* Virtual Joystick - Fixed positioning for mobile landscape */}
+              <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 md:hidden">
                 <VirtualJoystick
                   isActive={isSimulationActive}
                   onControlChange={setVirtualJoystickControls}
