@@ -58,7 +58,7 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Authentic 1960s NASA Mission Control Colors */
+    /* Authentic 1960s Mission Control Colors */
     --background: 0 0% 8%;        /* Control room dark */
     --foreground: 120 20% 85%;    /* Green phosphor display */
 
