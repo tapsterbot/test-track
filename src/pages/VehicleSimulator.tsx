@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { SimpleSimulator } from "@/components/simulator/SimpleSimulator";
 import { VirtualJoystick } from "@/components/simulator/VirtualJoystick";
-import { MissionHUD } from "@/components/simulator/MissionHUD";
+
 import { ControlPanel } from "@/components/simulator/ControlPanel";
 import { Play, Pause, RotateCcw, Eye } from "lucide-react";
 
@@ -301,7 +301,7 @@ export default function VehicleSimulator() {
 
           {/* Mission Telemetry */}
           <div className="space-y-6">
-            <MissionHUD vehicleData={vehicleData} />
+            {/* MissionHUD component removed - was returning null */}
           </div>
         </div>
       </div>
