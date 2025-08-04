@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { SystemPanel } from "@/components/apollo/SystemPanel";
-import { IndicatorLight } from "@/components/apollo/IndicatorLight";
+import { SystemPanel } from "@/components/mission-control/SystemPanel";
+import { IndicatorLight } from "@/components/mission-control/IndicatorLight";
 import { Badge } from "@/components/ui/badge";
 import { 
   Gamepad2, 

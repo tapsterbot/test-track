@@ -5,7 +5,7 @@ A comprehensive test automation demo site for practicing with any automation fra
 ## 🚀 Features
 
 - **Interactive UI Components**: Buttons, forms, modals, dropdowns, and more
-- **Apollo Mission Control**: Retro-styled control panels with working switches and indicators
+- **NASA Mission Control**: Retro-styled control panels with working switches and indicators
 - **Vehicle Simulator**: 3D physics-based vehicle simulation with joystick controls
 - **File Upload/Download**: Test file handling scenarios
 - **Dynamic Content**: Elements that change state for testing dynamic interactions
@@ -66,7 +66,7 @@ npm run lint         # Run ESLint
 src/
 ├── components/          # Reusable UI components
 │   ├── ui/             # shadcn/ui base components
-│   ├── apollo/         # Apollo mission control components
+│   ├── mission-control/ # NASA mission control components
 │   └── simulator/      # Vehicle simulator components
 ├── pages/              # Page components (routes)
 ├── hooks/              # Custom React hooks

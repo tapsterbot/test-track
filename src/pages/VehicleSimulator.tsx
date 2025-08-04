@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ModuleHeader } from "@/components/ModuleHeader";
-import { SystemPanel } from "@/components/apollo/SystemPanel";
+import { SystemPanel } from "@/components/mission-control/SystemPanel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { SimpleSimulator } from "@/components/simulator/SimpleSimulator";
