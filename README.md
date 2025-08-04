@@ -7,7 +7,6 @@ A comprehensive test automation demo site for practicing with any automation fra
 - **Interactive UI Components**: Buttons, forms, modals, dropdowns, and more
 - **Apollo Mission Control**: Retro-styled control panels with working switches and indicators
 - **Vehicle Simulator**: 3D physics-based vehicle simulation with joystick controls
-- **Starship Bridge**: Star Trek-inspired control interfaces
 - **File Upload/Download**: Test file handling scenarios
 - **Dynamic Content**: Elements that change state for testing dynamic interactions
 - **Multi-window Support**: Test scenarios involving multiple browser windows
@@ -68,8 +67,7 @@ src/
 ├── components/          # Reusable UI components
 │   ├── ui/             # shadcn/ui base components
 │   ├── apollo/         # Apollo mission control components
-│   ├── simulator/      # Vehicle simulator components
-│   └── starship/       # Starship bridge components
+│   └── simulator/      # Vehicle simulator components
 ├── pages/              # Page components (routes)
 ├── hooks/              # Custom React hooks
 ├── lib/                # Utility functions
