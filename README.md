@@ -1,6 +1,6 @@
 # Test Track - Test Automation Demo Site
 
-A comprehensive test automation demo site for practicing Selenium WebDriver and browser automation. Built with modern web technologies to provide realistic testing scenarios for QA engineers and developers.
+A comprehensive test automation demo site for practicing with any automation framework or tool. Built with modern web technologies to provide realistic testing scenarios for QA engineers and developers using Selenium, Playwright, Cypress, Puppeteer, or any other automation tool.
 
 ## 🚀 Features
 
