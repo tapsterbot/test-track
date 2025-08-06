@@ -1,5 +1,5 @@
 import { ChessSquare } from '@/hooks/useChessGame';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, memo } from 'react';
 import * as THREE from 'three';
 
 interface ChessSquaresProps {
@@ -10,7 +10,7 @@ interface ChessSquaresProps {
   size?: [number, number]; // [width, height] in squares
 }
 
-export function ChessSquares({ 
+export const ChessSquares = memo(function ChessSquares({ 
   level, 
   selectedSquare, 
   validMoves, 
@@ -20,6 +20,9 @@ export function ChessSquares({
   const [hoveredSquare, setHoveredSquare] = useState<string | null>(null);
   
   const [width, height] = size;
+  
+  // Memoize geometry to prevent recreation
+  const boxGeometry = useMemo(() => new THREE.BoxGeometry(0.9, 0.1, 0.9), []);
   
   // Memoize materials to prevent flickering
   const materials = useMemo(() => ({
@@ -73,6 +76,16 @@ export function ChessSquares({
     })
   }), [level]);
 
+  // Memoize valid moves set for faster lookups
+  const validMovesSet = useMemo(() => {
+    return new Set(validMoves.map(move => `${move.level}-${move.file}-${move.rank}`));
+  }, [validMoves]);
+
+  // Memoize selected square key
+  const selectedSquareKey = useMemo(() => {
+    return selectedSquare ? `${selectedSquare.level}-${selectedSquare.file}-${selectedSquare.rank}` : null;
+  }, [selectedSquare]);
+
   const squares = [];
   
   for (let file = 0; file < width; file++) {
@@ -81,16 +94,8 @@ export function ChessSquares({
       const squareKey = `${level}-${file}-${rank}`;
       const square: ChessSquare = { level, file, rank };
       
-      const isSelected = selectedSquare && 
-        selectedSquare.level === level && 
-        selectedSquare.file === file && 
-        selectedSquare.rank === rank;
-      
-      const isValidMove = validMoves.some(move => 
-        move.level === level && 
-        move.file === file && 
-        move.rank === rank
-      );
+      const isSelected = selectedSquareKey === squareKey;
+      const isValidMove = validMovesSet.has(squareKey);
       
       const isHovered = hoveredSquare === squareKey;
       
@@ -120,7 +125,7 @@ export function ChessSquares({
           castShadow
           receiveShadow
         >
-          <boxGeometry args={[0.9, 0.1, 0.9]} />
+          <primitive object={boxGeometry} />
           <primitive object={material} />
         </mesh>
       );
@@ -143,4 +148,4 @@ export function ChessSquares({
       </mesh>
     </>
   );
-}
+});

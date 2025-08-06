@@ -89,7 +89,7 @@ export function useChessGame() {
     }
   };
 
-  const getValidMoves = (square: ChessSquare): ChessSquare[] => {
+  const getValidMoves = useCallback((square: ChessSquare): ChessSquare[] => {
     const piece = getPieceAt(square);
     if (!piece) return [];
 
@@ -180,9 +180,9 @@ export function useChessGame() {
         });
         break;
     }
-
+    
     return moves;
-  };
+  }, [gameState]);
 
   const makeMove = useCallback((from: ChessSquare, to: ChessSquare): boolean => {
     const piece = getPieceAt(from);
