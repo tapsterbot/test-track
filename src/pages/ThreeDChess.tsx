@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ModuleHeader } from "@/components/ModuleHeader";
 import { SystemPanel } from "@/components/mission-control/SystemPanel";
 import { PushButton } from "@/components/mission-control/PushButton";
@@ -80,6 +80,21 @@ export default function ThreeDChess() {
     // Reset dragging state after a short delay to ensure click event fires with correct state
     setTimeout(() => setIsDragging(false), 50);
   };
+
+  // Prevent keyboard scrolling when game is active
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isGameActive) {
+        // Prevent arrow keys, space, page up/down from scrolling the page
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'PageUp', 'PageDown'].includes(event.code)) {
+          event.preventDefault();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isGameActive]);
 
   const handleSquareClick = (position: any) => {
     setClickedOnGameElement(true);
