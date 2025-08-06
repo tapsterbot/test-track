@@ -211,11 +211,11 @@ export default function ChessGame() {
             <div className="space-y-2 text-xs">
               <div>
                 <span>WHITE LOSSES:</span>
-                <div className="text-muted-foreground">{gameState.capturedPieces.white.length || 'None'}</div>
+                <div className="text-muted-foreground">{gameState.capturedPieces?.white?.length || 'None'}</div>
               </div>
               <div>
                 <span>BLACK LOSSES:</span>
-                <div className="text-muted-foreground">{gameState.capturedPieces.black.length || 'None'}</div>
+                <div className="text-muted-foreground">{gameState.capturedPieces?.black?.length || 'None'}</div>
               </div>
             </div>
           </SystemPanel>
