@@ -206,13 +206,6 @@ const Index = () => {
     elements: ["three.js", "vehicle physics", "terrain generation", "multi-input controls", "telemetry display"],
     implemented: true
   }, {
-    title: "3D Chess Board",
-    path: "/chess-game",
-    description: "Strategic thinking and pattern recognition training through 3D chess",
-    difficulty: "Expert",
-    elements: ["three.js", "chess logic", "strategic AI", "3D interaction", "game state management"],
-    implemented: true
-  }, {
     title: "WebSocket & Real-time Demo",
     path: "/websocket-demo",
     description: "Test WebSocket connections, real-time updates, and live data streams",
