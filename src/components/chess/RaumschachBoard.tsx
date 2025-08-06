@@ -30,11 +30,7 @@ function Square({ position, piece, isSelected, isValidMove, onClick }: SquarePro
   
   const isDark = (position.file + position.rank + position.level) % 2 === 1;
   
-  useFrame(() => {
-    if (meshRef.current && isSelected) {
-      meshRef.current.rotation.y += 0.02;
-    }
-  });
+  // Removed spinning animation for better chess experience
 
   return (
     <group position={[x, y, z]}>
@@ -96,30 +92,54 @@ interface ChessPieceComponentProps {
 function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponentProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   
-  useFrame(() => {
-    if (meshRef.current && isSelected) {
-      meshRef.current.position.y = position[1] + Math.sin(Date.now() * 0.003) * 0.1;
-    }
-  });
+  // Removed floating animation for better chess experience
 
   const color = piece.color === 'white' ? "#ffffff" : "#1f2937";
   
   const renderPieceGeometry = () => {
     switch (piece.type) {
       case 'king':
-        return <coneGeometry args={[0.3, 0.6, 8]} />;
+        return (
+          <group>
+            <cylinderGeometry args={[0.25, 0.3, 0.6, 8]} />
+          </group>
+        );
       case 'queen':
-        return <coneGeometry args={[0.25, 0.5, 6]} />;
+        return (
+          <group>
+            <cylinderGeometry args={[0.2, 0.25, 0.5, 8]} />
+          </group>
+        );
       case 'rook':
-        return <boxGeometry args={[0.4, 0.5, 0.4]} />;
+        return (
+          <group>
+            <boxGeometry args={[0.35, 0.5, 0.35]} />
+          </group>
+        );
       case 'bishop':
-        return <coneGeometry args={[0.2, 0.4, 5]} />;
+        return (
+          <group>
+            <cylinderGeometry args={[0.15, 0.2, 0.6, 6]} />
+          </group>
+        );
       case 'knight':
-        return <dodecahedronGeometry args={[0.25]} />;
+        return (
+          <group>
+            <boxGeometry args={[0.25, 0.4, 0.35]} />
+          </group>
+        );
       case 'unicorn':
-        return <octahedronGeometry args={[0.3]} />;
+        return (
+          <group>
+            <coneGeometry args={[0.2, 0.5, 6]} />
+          </group>
+        );
       case 'pawn':
-        return <sphereGeometry args={[0.2]} />;
+        return (
+          <group>
+            <sphereGeometry args={[0.18]} />
+          </group>
+        );
       default:
         return <sphereGeometry args={[0.2]} />;
     }
