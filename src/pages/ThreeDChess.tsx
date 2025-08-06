@@ -174,20 +174,13 @@ export default function ThreeDChess() {
           <div className="space-y-4">
             {/* Instructions */}
             <SystemPanel title="CONTROLS">
-              <div className="text-xs text-muted-foreground grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="text-xs text-muted-foreground grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <div className="text-primary mb-1">MOUSE:</div>
-                  <div>• Click pieces to select</div>
-                  <div>• Click valid squares to move</div>
+                  <div className="text-primary mb-1">MOUSE/TOUCH:</div>
+                  <div>• Click/tap pieces to select</div>
+                  <div>• Click/tap valid squares to move</div>
                   <div>• Drag to orbit camera</div>
-                  <div>• Scroll to zoom</div>
-                </div>
-                <div>
-                  <div className="text-primary mb-1">TOUCH:</div>
-                  <div>• Tap pieces to select</div>
-                  <div>• Tap valid squares to move</div>
-                  <div>• Drag to orbit camera</div>
-                  <div>• Pinch to zoom</div>
+                  <div>• Scroll/pinch to zoom</div>
                 </div>
                 <div>
                   <div className="text-primary mb-1">KEYBOARD:</div>
