@@ -322,13 +322,12 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
   return (
     <>
       <OrbitControls
-        enablePan={true}
-        enableZoom={true}
-        enableRotate={true}
+        enablePan={isActive}
+        enableZoom={isActive}
+        enableRotate={isActive}
         minDistance={5}
         maxDistance={20}
         target={[0, 3, 0]}
-        enabled={isActive}
       />
       
       <ambientLight intensity={0.6} />
