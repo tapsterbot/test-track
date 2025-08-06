@@ -59,7 +59,7 @@ export function PushButton({
         )}
       >
         <div className={cn(
-          "absolute inset-1 rounded-sm transition-all duration-100",
+          "absolute inset-1 rounded-sm transition-all duration-100 pointer-events-none",
           pressed 
             ? "bg-gradient-to-b from-black/20 to-transparent" 
             : "bg-gradient-to-b from-white/20 to-transparent"
