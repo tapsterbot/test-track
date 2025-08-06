@@ -408,37 +408,80 @@ function GameHUD({
     : null;
 
   return (
-    <div className="absolute top-4 left-4 bg-card/90 backdrop-blur-sm border border-primary/20 rounded-lg p-3 min-w-[200px] transition-all duration-200 nasa-panel">
-      <div className="text-xs space-y-2">
-        {/* Game Status */}
-        <div className="border-b border-primary/20 pb-2">
-          <div className="text-primary font-futura tracking-wide mb-1">GAME STATUS</div>
-          <div className="nasa-display space-y-1">
-            <div>PLAYER: {currentPlayer.toUpperCase()}</div>
-            <div>STATUS: {gameStatus.toUpperCase()}</div>
-            <div>MOVES: {moveCount}</div>
+    <div className="absolute inset-0 pointer-events-none">
+      {/* Top Left - Game Status */}
+      <div className="absolute top-4 left-4 bg-black/80 border border-primary/30 rounded p-3 text-white">
+        <div className="text-xs font-futura text-primary mb-2 uppercase tracking-wider">GAME STATUS</div>
+        <div className="space-y-1 text-xs font-mono">
+          <div className="flex justify-between gap-4">
+            <span>PLAYER:</span>
+            <span className="text-primary">{currentPlayer.toUpperCase()}</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span>MOVES:</span>
+            <span className="text-primary">{moveCount}</span>
           </div>
         </div>
-
-        {/* Selection Info */}
-        <div>
-          <div className="text-primary font-futura tracking-wide mb-1">SELECTION</div>
-          {selectedPosition && selectedPiece ? (
-            <div className="nasa-display space-y-1">
-              <div>PIECE: {selectedPiece.type.toUpperCase()}</div>
-              <div>COLOR: {selectedPiece.color.toUpperCase()}</div>
-              <div>LEVEL: {selectedPosition.level}</div>
-              <div>RANK: {selectedPosition.rank}</div>
-              <div>FILE: {selectedPosition.file}</div>
-              <div>VALID MOVES: {validMoves.length}</div>
-            </div>
-          ) : (
-            <div className="nasa-display text-muted-foreground">
-              NO SELECTION
-            </div>
-          )}
-        </div>
       </div>
+
+      {/* Top Right - Selection Info */}
+      <div className="absolute top-4 right-4 bg-black/80 border border-primary/30 rounded p-3 text-white">
+        <div className="text-xs font-futura text-primary mb-2 uppercase tracking-wider">SELECTION</div>
+        {selectedPosition && selectedPiece ? (
+          <div className="space-y-1 text-xs font-mono">
+            <div className="flex justify-between gap-4">
+              <span>PIECE:</span>
+              <span className="text-primary">{selectedPiece.type.toUpperCase()}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span>COLOR:</span>
+              <span className="text-primary">{selectedPiece.color.toUpperCase()}</span>
+            </div>
+          </div>
+        ) : (
+          <div className="text-xs font-mono text-muted-foreground">
+            NO SELECTION
+          </div>
+        )}
+      </div>
+
+      {/* Bottom Left - Position Details */}
+      {selectedPosition && (
+        <div className="absolute bottom-4 left-4 bg-black/80 border border-primary/30 rounded p-3 text-white">
+          <div className="text-xs font-futura text-primary mb-2 uppercase tracking-wider">POSITION</div>
+          <div className="space-y-1 text-xs font-mono">
+            <div className="flex justify-between gap-4">
+              <span>LEVEL:</span>
+              <span className="text-primary">{selectedPosition.level}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span>RANK:</span>
+              <span className="text-primary">{selectedPosition.rank}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span>FILE:</span>
+              <span className="text-primary">{selectedPosition.file}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bottom Right - Move Info */}
+      {validMoves.length > 0 && (
+        <div className="absolute bottom-4 right-4 bg-black/80 border border-primary/30 rounded p-3 text-white">
+          <div className="text-xs font-futura text-primary mb-2 uppercase tracking-wider">VALID MOVES</div>
+          <div className="space-y-1 text-xs font-mono">
+            <div className="flex justify-between gap-4">
+              <span>COUNT:</span>
+              <span className="text-primary">{validMoves.length}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span>STATUS:</span>
+              <span className="text-yellow-400">READY</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
