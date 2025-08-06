@@ -22,7 +22,6 @@ import MultiWindowDemo from "./pages/MultiWindowDemo";
 import AdvancedButtonDemo from "./pages/AdvancedButtonDemo";
 import CommsTarget from "./pages/CommsTarget";
 import VehicleSimulator from "./pages/VehicleSimulator";
-import ChessGame from "./pages/ChessGame";
 
 import NotFound from "./pages/NotFound";
 
@@ -53,7 +52,6 @@ const App = () => (
           <Route path="/multi-window-demo" element={<MultiWindowDemo />} />
           <Route path="/advanced-button-demo" element={<AdvancedButtonDemo />} />
           <Route path="/vehicle-simulator" element={<VehicleSimulator />} />
-          <Route path="/chess-game" element={<ChessGame />} />
             <Route path="/comms-target" element={<CommsTarget />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
