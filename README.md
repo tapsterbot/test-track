@@ -1,9 +1,10 @@
-# Test Track - Test Automation Demo Site
+# Test Track - Interactive Demo Platform
 
-A comprehensive test automation demo site for practicing with any automation framework or tool. Built with modern web technologies to provide realistic testing scenarios for QA engineers and developers using Selenium, Playwright, Cypress, Puppeteer, or any other automation tool.
+A comprehensive interactive demo platform featuring advanced UI components, 3D simulations, and games. Built with modern web technologies to showcase cutting-edge frontend development techniques and provide engaging user experiences.
 
 ## 🚀 Features
 
+- **3D Chess (Raumschach)**: Full 3D chess game with 5×5×5 board, keyboard navigation, and immersive gameplay
 - **Interactive UI Components**: Buttons, forms, modals, dropdowns, and more
 - **Mission Control**: Retro-styled control panels with working switches and indicators
 - **Vehicle Simulator**: 3D physics-based vehicle simulation with joystick controls
