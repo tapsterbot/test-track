@@ -164,39 +164,6 @@ export default function ThreeDChess() {
             </div>
           </SystemPanel>
 
-          {/* Game Status */}
-          <SystemPanel title="GAME STATUS">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">ACTIVE:</span>
-                <IndicatorLight 
-                  label=""
-                  status={isGameActive ? "on" : "off"} 
-                  color="green" 
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">PLAYER:</span>
-                <span className="text-xs nasa-display">
-                  {getCurrentPlayer().toUpperCase()}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">STATUS:</span>
-                <span className="text-xs nasa-display">
-                  {getGameStatus().toUpperCase()}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">MOVES:</span>
-                <span className="text-xs nasa-display">
-                  {getMoveHistory().length}
-                </span>
-              </div>
-            </div>
-          </SystemPanel>
-
-
           {/* Instructions */}
           <SystemPanel title="CONTROLS">
             <div className="text-xs text-muted-foreground space-y-1">
