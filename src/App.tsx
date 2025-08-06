@@ -52,7 +52,7 @@ const App = () => (
           <Route path="/multi-window-demo" element={<MultiWindowDemo />} />
           <Route path="/advanced-button-demo" element={<AdvancedButtonDemo />} />
           <Route path="/vehicle-simulator" element={<VehicleSimulator />} />
-          <Route path="/three-d-chess" element={<ThreeDChess />} />
+          <Route path="/3d-chess" element={<ThreeDChess />} />
             <Route path="/comms-target" element={<CommsTarget />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
