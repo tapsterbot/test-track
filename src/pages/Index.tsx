@@ -19,7 +19,7 @@ const Index = () => {
     "/button-demo", "/text-input-demo", "/login-demo", "/dropdown-demo", 
     "/checkbox-radio-demo", "/table-demo", "/modal-demo", "/alert-demo", 
     "/file-upload-demo", "/drag-drop-demo", "/frames-demo", "/dynamic-demo", 
-    "/canvas-demo", "/multi-window-demo", "/advanced-button-demo", "/chess-demo"
+    "/canvas-demo", "/multi-window-demo", "/advanced-button-demo"
   ];
 
   const demoPages = [
@@ -206,11 +206,11 @@ const Index = () => {
     elements: ["three.js", "vehicle physics", "terrain generation", "multi-input controls", "telemetry display"],
     implemented: true
   }, {
-    title: "3D Chess Command",
-    path: "/chess-demo",
-    description: "Star Trek-style tri-dimensional chess with multi-level gameplay",
+    title: "3D Chess Board",
+    path: "/chess-game",
+    description: "Strategic thinking and pattern recognition training through 3D chess",
     difficulty: "Expert",
-    elements: ["three.js", "3D chess", "orbit controls", "multi-level boards", "piece selection"],
+    elements: ["three.js", "chess logic", "strategic AI", "3D interaction", "game state management"],
     implemented: true
   }, {
     title: "WebSocket & Real-time Demo",

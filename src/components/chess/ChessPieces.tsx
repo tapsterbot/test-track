@@ -1,179 +1,283 @@
-import { ChessGameState, ChessSquare } from '@/hooks/useChessGame';
-import { useState, useMemo, memo, useCallback } from 'react';
+import { useRef, useState } from 'react';
+import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
+import { ChessPiece } from '@/hooks/useChessLogic';
 
-interface ChessPiecesProps {
-  gameState: ChessGameState;
-  level: 'main' | 'upper-left' | 'upper-right' | 'lower-left' | 'lower-right';
-  selectedSquare: ChessSquare | null;
-  onSquareClick: (square: ChessSquare) => void;
+interface ChessPieceProps {
+  piece: ChessPiece;
+  position: [number, number, number];
+  onClick: () => void;
 }
 
-const PieceGeometry = memo(function PieceGeometry({ piece }: { piece: string }) {
-  const type = piece.toLowerCase();
-  
+function PieceGeometry({ type, materialColor, emissiveColor, isOrbitMode }: { 
+  type: ChessPiece['type'];
+  materialColor: string;
+  emissiveColor: string;
+  isOrbitMode: boolean;
+}) {
+  const material = (
+    <meshStandardMaterial
+      color={materialColor}
+      emissive={emissiveColor}
+      emissiveIntensity={0.05}
+      roughness={0.4}
+      metalness={materialColor === '#f8f8f8' ? 0.1 : 0.3}
+      opacity={isOrbitMode ? 0.7 : 1}
+      transparent={isOrbitMode}
+    />
+  );
+
   switch (type) {
-    case 'k': // King
-      return (
-        <group>
-          <mesh position={[0, 0.3, 0]}>
-            <cylinderGeometry args={[0.3, 0.35, 0.6]} />
-          </mesh>
-          <mesh position={[0, 0.7, 0]}>
-            <boxGeometry args={[0.1, 0.3, 0.1]} />
-          </mesh>
-          <mesh position={[0, 0.8, 0]}>
-            <boxGeometry args={[0.3, 0.1, 0.1]} />
-          </mesh>
-        </group>
-      );
-    
-    case 'q': // Queen
-      return (
-        <group>
-          <mesh position={[0, 0.3, 0]}>
-            <cylinderGeometry args={[0.28, 0.32, 0.6]} />
-          </mesh>
-          <mesh position={[0, 0.65, 0]}>
-            <coneGeometry args={[0.25, 0.3]} />
-          </mesh>
-        </group>
-      );
-    
-    case 'r': // Rook
-      return (
-        <group>
-          <mesh position={[0, 0.25, 0]}>
-            <boxGeometry args={[0.5, 0.5, 0.5]} />
-          </mesh>
-          <mesh position={[0, 0.55, 0]}>
-            <boxGeometry args={[0.6, 0.1, 0.6]} />
-          </mesh>
-        </group>
-      );
-    
-    case 'b': // Bishop
-      return (
-        <group>
-          <mesh position={[0, 0.25, 0]}>
-            <cylinderGeometry args={[0.25, 0.3, 0.5]} />
-          </mesh>
-          <mesh position={[0, 0.55, 0]}>
-            <coneGeometry args={[0.2, 0.3]} />
-          </mesh>
-          <mesh position={[0, 0.75, 0]}>
-            <sphereGeometry args={[0.08]} />
-          </mesh>
-        </group>
-      );
-    
-    case 'n': // Knight
-      return (
-        <group>
-          <mesh position={[0, 0.25, 0]}>
-            <cylinderGeometry args={[0.25, 0.3, 0.5]} />
-          </mesh>
-          <mesh position={[0, 0.5, 0.15]}>
-            <boxGeometry args={[0.2, 0.4, 0.3]} />
-          </mesh>
-          <mesh position={[0, 0.65, 0.25]}>
-            <coneGeometry args={[0.1, 0.2]} />
-          </mesh>
-        </group>
-      );
-    
-    case 'p': // Pawn
+    case 'pawn':
       return (
         <group>
           <mesh position={[0, 0.2, 0]}>
-            <cylinderGeometry args={[0.2, 0.25, 0.4]} />
+            <sphereGeometry args={[0.15, 16, 16]} />
+            {material}
           </mesh>
-          <mesh position={[0, 0.45, 0]}>
-            <sphereGeometry args={[0.15]} />
+          <mesh position={[0, 0.1, 0]}>
+            <cylinderGeometry args={[0.12, 0.18, 0.2, 16]} />
+            {material}
+          </mesh>
+        </group>
+      );
+    
+    case 'rook':
+      return (
+        <group>
+          <mesh position={[0, 0.15, 0]}>
+            <cylinderGeometry args={[0.18, 0.2, 0.3, 16]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.32, 0]}>
+            <boxGeometry args={[0.4, 0.04, 0.4]} />
+            {material}
+          </mesh>
+          <mesh position={[0.15, 0.38, 0]}>
+            <boxGeometry args={[0.08, 0.08, 0.08]} />
+            {material}
+          </mesh>
+          <mesh position={[-0.15, 0.38, 0]}>
+            <boxGeometry args={[0.08, 0.08, 0.08]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.38, 0.15]}>
+            <boxGeometry args={[0.08, 0.08, 0.08]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.38, -0.15]}>
+            <boxGeometry args={[0.08, 0.08, 0.08]} />
+            {material}
+          </mesh>
+        </group>
+      );
+    
+    case 'knight':
+      return (
+        <group>
+          <mesh position={[0, 0.15, 0]}>
+            <cylinderGeometry args={[0.15, 0.2, 0.3, 16]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.35, 0.1]} rotation={[0.3, 0, 0]}>
+            <boxGeometry args={[0.12, 0.25, 0.15]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.45, 0.2]} rotation={[0.5, 0, 0]}>
+            <boxGeometry args={[0.08, 0.08, 0.1]} />
+            {material}
+          </mesh>
+        </group>
+      );
+    
+    case 'bishop':
+      return (
+        <group>
+          <mesh position={[0, 0.15, 0]}>
+            <cylinderGeometry args={[0.15, 0.2, 0.3, 16]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.35, 0]}>
+            <cylinderGeometry args={[0.08, 0.15, 0.2, 16]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.48, 0]}>
+            <sphereGeometry args={[0.08, 16, 16]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.58, 0]}>
+            <coneGeometry args={[0.03, 0.08, 8]} />
+            {material}
+          </mesh>
+        </group>
+      );
+    
+    case 'queen':
+      return (
+        <group>
+          <mesh position={[0, 0.15, 0]}>
+            <cylinderGeometry args={[0.18, 0.22, 0.3, 16]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.35, 0]}>
+            <cylinderGeometry args={[0.12, 0.18, 0.2, 16]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.5, 0]}>
+            <sphereGeometry args={[0.12, 16, 16]} />
+            {material}
+          </mesh>
+          {/* Crown points */}
+          {[0, 1, 2, 3, 4].map((i) => (
+            <mesh
+              key={i}
+              position={[
+                Math.cos((i * Math.PI * 2) / 5) * 0.12,
+                0.65,
+                Math.sin((i * Math.PI * 2) / 5) * 0.12
+              ]}
+            >
+              <coneGeometry args={[0.02, i === 2 ? 0.12 : 0.08, 6]} />
+              {material}
+            </mesh>
+          ))}
+        </group>
+      );
+    
+    case 'king':
+      return (
+        <group>
+          <mesh position={[0, 0.15, 0]}>
+            <cylinderGeometry args={[0.2, 0.25, 0.3, 16]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.35, 0]}>
+            <cylinderGeometry args={[0.15, 0.2, 0.2, 16]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.52, 0]}>
+            <sphereGeometry args={[0.15, 16, 16]} />
+            {material}
+          </mesh>
+          {/* Cross */}
+          <mesh position={[0, 0.75, 0]}>
+            <boxGeometry args={[0.03, 0.15, 0.03]} />
+            {material}
+          </mesh>
+          <mesh position={[0, 0.7, 0]}>
+            <boxGeometry args={[0.08, 0.03, 0.03]} />
+            {material}
           </mesh>
         </group>
       );
     
     default:
       return (
-        <mesh position={[0, 0.25, 0]}>
-          <cylinderGeometry args={[0.2, 0.25, 0.5]} />
+        <mesh>
+          <sphereGeometry args={[0.15, 16, 16]} />
+          {material}
         </mesh>
       );
   }
-});
+}
 
-export const ChessPieces = memo(function ChessPieces({ 
-  gameState, 
-  level, 
-  selectedSquare, 
-  onSquareClick 
-}: ChessPiecesProps) {
-  const [hoveredPiece, setHoveredPiece] = useState<string | null>(null);
-  
-  const boardState = gameState.boards[level];
-  
-  const handlePieceHover = useCallback((pieceKey: string) => {
-    setHoveredPiece(pieceKey);
-  }, []);
-  
-  const handlePieceLeave = useCallback(() => {
-    setHoveredPiece(null);
-  }, []);
+function ChessPiece3D({ piece, position, onClick, cameraMode }: ChessPieceProps & { cameraMode: 'orbit' | 'white' | 'black' }) {
+  const groupRef = useRef<THREE.Group>(null);
+  const [hovered, setHovered] = useState(false);
 
-  const handlePieceClick = useCallback((square: ChessSquare) => {
-    onSquareClick(square);
-  }, [onSquareClick]);
+  useFrame((state) => {
+    if (groupRef.current) {
+      // Subtle hover animation
+      if (hovered) {
+        groupRef.current.position.y = position[1] + 0.1;
+        groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 2) * 0.1;
+      } else {
+        groupRef.current.position.y = position[1];
+        groupRef.current.rotation.y = 0;
+      }
+    }
+  });
+
+  const materialColor = piece.color === 'white' ? '#f8f8f8' : '#2c2c2c';
+  const emissiveColor = piece.color === 'white' ? '#ffffff' : '#000000';
+
+  // Disable interactions in orbit mode
+  const isOrbitMode = cameraMode === 'orbit';
+
+  const handleClick = (e: any) => {
+    if (isOrbitMode) return;
+    e.stopPropagation();
+    onClick();
+  };
+
+  const handlePointerOver = (e: any) => {
+    if (isOrbitMode) return;
+    e.stopPropagation();
+    setHovered(true);
+    document.body.style.cursor = 'pointer';
+  };
+
+  const handlePointerOut = () => {
+    if (isOrbitMode) return;
+    setHovered(false);
+    document.body.style.cursor = 'auto';
+  };
+
+  return (
+    <group
+      ref={groupRef}
+      position={position}
+      onClick={handleClick}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+      userData={{ type: 'piece' }}
+    >
+      <group scale={hovered ? 1.1 : 1}>
+        <PieceGeometry 
+          type={piece.type} 
+          materialColor={materialColor}
+          emissiveColor={emissiveColor}
+          isOrbitMode={isOrbitMode}
+        />
+      </group>
+      
+      {/* Shadow */}
+      <mesh position={[0, -0.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[0.25, 16]} />
+        <meshBasicMaterial color="#000000" transparent opacity={0.2} />
+      </mesh>
+    </group>
+  );
+}
+
+interface ChessPiecesProps {
+  board: (ChessPiece | null)[][];
+  level: number;
+  levelY: number;
+  onPieceClick: (row: number, col: number) => void;
+  cameraMode: 'orbit' | 'white' | 'black';
+}
+
+export function ChessPieces({ board, level, levelY, onPieceClick, cameraMode }: ChessPiecesProps) {
+  const pieces = [];
+  const levelSize = board.length;
   
-  const pieces = useMemo(() => {
-    if (!boardState) return [];
-    
-    const pieceElements = [];
-    
-    for (let file = 0; file < boardState.length; file++) {
-      for (let rank = 0; rank < boardState[file].length; rank++) {
-        const piece = boardState[file][rank];
-        if (!piece) continue;
-        
-        const pieceKey = `${level}-${file}-${rank}-${piece}`;
-        const square: ChessSquare = { level, file, rank };
-        const boardSize = level === 'main' ? [8, 8] : [2, 4];
-        
-        const isSelected = selectedSquare && 
-          selectedSquare.level === level && 
-          selectedSquare.file === file && 
-          selectedSquare.rank === rank;
-        
-        const isHovered = hoveredPiece === pieceKey;
-        const isWhite = piece === piece.toUpperCase();
-        
-        pieceElements.push(
-          <group
-            key={pieceKey}
-            position={[
-              file - (boardSize[0] - 1) / 2,
-              0.15,
-              rank - (boardSize[1] - 1) / 2
-            ]}
-            onPointerOver={() => handlePieceHover(pieceKey)}
-            onPointerOut={handlePieceLeave}
-            onClick={() => handlePieceClick(square)}
-            scale={isHovered ? 1.1 : 1}
-          >
-            <meshStandardMaterial
-              color={isWhite ? '#f5f5f5' : '#2c2c2c'}
-              metalness={0.0}
-              roughness={0.8}
-              emissive={isSelected ? '#3366ff' : '#000000'}
-              emissiveIntensity={isSelected ? 0.2 : 0}
-            />
-            <PieceGeometry piece={piece} />
-          </group>
+  for (let row = 0; row < levelSize; row++) {
+    for (let col = 0; col < levelSize; col++) {
+      const piece = board[row][col];
+      if (piece) {
+        pieces.push(
+          <ChessPiece3D
+            key={`${level}-${row}-${col}`}
+            piece={piece}
+            position={[col - levelSize/2 + 0.5, levelY + 0.15, row - levelSize/2 + 0.5]}
+            onClick={() => onPieceClick(row, col)}
+            cameraMode={cameraMode}
+          />
         );
       }
     }
-    
-    return pieceElements;
-  }, [boardState, level, selectedSquare, hoveredPiece, handlePieceHover, handlePieceLeave, handlePieceClick]);
+  }
   
   return <>{pieces}</>;
-});
+}
