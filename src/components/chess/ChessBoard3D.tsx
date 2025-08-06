@@ -199,18 +199,19 @@ function CameraController({
   useFrame(() => {
     if (!controlsRef.current) return;
 
-    switch (cameraMode) {
-      case 'white':
-        camera.position.lerp(new THREE.Vector3(0, 8, 6), 0.05);
-        controlsRef.current.target.lerp(new THREE.Vector3(0, 0, -1), 0.05);
-        break;
-      case 'black':
-        camera.position.lerp(new THREE.Vector3(0, 8, -6), 0.05);
-        controlsRef.current.target.lerp(new THREE.Vector3(0, 0, 1), 0.05);
-        break;
-      case 'orbit':
-        // Let OrbitControls handle positioning
-        break;
+    // Only override camera position for fixed views, let orbit mode be free
+    if (cameraMode !== 'orbit') {
+      switch (cameraMode) {
+        case 'white':
+          camera.position.lerp(new THREE.Vector3(0, 12, 8), 0.03);
+          controlsRef.current.target.lerp(new THREE.Vector3(0, 0, -1), 0.03);
+          break;
+        case 'black':
+          camera.position.lerp(new THREE.Vector3(0, 12, -8), 0.03);
+          controlsRef.current.target.lerp(new THREE.Vector3(0, 0, 1), 0.03);
+          break;
+      }
+      controlsRef.current.update();
     }
   });
 
@@ -219,10 +220,15 @@ function CameraController({
       ref={controlsRef}
       enablePan={true}
       enableZoom={true}
-      enableRotate={cameraMode === 'orbit'}
-      maxPolarAngle={Math.PI / 2.2}
-      minDistance={5}
-      maxDistance={20}
+      enableRotate={true}
+      enableDamping={true}
+      dampingFactor={0.05}
+      maxPolarAngle={Math.PI / 2}
+      minPolarAngle={Math.PI / 6}
+      minDistance={8}
+      maxDistance={25}
+      target={[0, 0, 0]}
+      makeDefault
     />
   );
 }
@@ -302,9 +308,10 @@ export function ChessBoard3D(props: ChessBoard3DProps) {
   return (
     <div className="w-full h-full" onClick={handleCanvasClick}>
       <Canvas
-        camera={{ position: [0, 8, 6], fov: 50 }}
+        camera={{ position: [0, 15, 10], fov: 60 }}
         shadows
         style={{ background: 'transparent' }}
+        gl={{ antialias: true, alpha: true }}
       >
         <SceneContent {...props} />
       </Canvas>
