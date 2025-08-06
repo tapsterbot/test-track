@@ -96,64 +96,197 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
 
   const color = piece.color === 'white' ? "#ffffff" : "#1f2937";
   
-  const renderPieceGeometry = () => {
+  const renderPiece = () => {
     switch (piece.type) {
       case 'king':
         return (
           <group>
-            <cylinderGeometry args={[0.25, 0.3, 0.6, 8]} />
+            {/* Base cylinder */}
+            <mesh position={[0, -0.1, 0]}>
+              <cylinderGeometry args={[0.25, 0.3, 0.4, 8]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
+            {/* Crown top */}
+            <mesh position={[0, 0.2, 0]}>
+              <cylinderGeometry args={[0.15, 0.2, 0.3, 8]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
           </group>
         );
       case 'queen':
         return (
           <group>
-            <cylinderGeometry args={[0.2, 0.25, 0.5, 8]} />
+            {/* Base cylinder */}
+            <mesh position={[0, -0.05, 0]}>
+              <cylinderGeometry args={[0.2, 0.25, 0.4, 8]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
+            {/* Crown points */}
+            {[0, 1, 2, 3, 4].map((i) => (
+              <mesh key={i} position={[
+                Math.cos((i * Math.PI * 2) / 5) * 0.15,
+                0.25,
+                Math.sin((i * Math.PI * 2) / 5) * 0.15
+              ]}>
+                <sphereGeometry args={[0.05]} />
+                <meshPhongMaterial 
+                  color={color} 
+                  emissive={isSelected ? "#22c55e" : "#000000"}
+                  emissiveIntensity={isSelected ? 0.3 : 0}
+                />
+              </mesh>
+            ))}
           </group>
         );
       case 'rook':
         return (
           <group>
-            <boxGeometry args={[0.35, 0.5, 0.35]} />
+            {/* Base */}
+            <mesh>
+              <boxGeometry args={[0.35, 0.4, 0.35]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
+            {/* Crenellations */}
+            {[-0.1, 0.1].map((x) => 
+              [-0.1, 0.1].map((z) => (
+                <mesh key={`${x}-${z}`} position={[x, 0.25, z]}>
+                  <boxGeometry args={[0.08, 0.1, 0.08]} />
+                  <meshPhongMaterial 
+                    color={color} 
+                    emissive={isSelected ? "#22c55e" : "#000000"}
+                    emissiveIntensity={isSelected ? 0.3 : 0}
+                  />
+                </mesh>
+              ))
+            )}
           </group>
         );
       case 'bishop':
         return (
           <group>
-            <cylinderGeometry args={[0.15, 0.2, 0.6, 6]} />
+            {/* Base */}
+            <mesh position={[0, -0.1, 0]}>
+              <cylinderGeometry args={[0.15, 0.2, 0.4, 8]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
+            {/* Miter top */}
+            <mesh position={[0, 0.2, 0]}>
+              <coneGeometry args={[0.12, 0.25, 8]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
           </group>
         );
       case 'knight':
         return (
           <group>
-            <boxGeometry args={[0.25, 0.4, 0.35]} />
+            {/* Body */}
+            <mesh position={[0, -0.05, 0]}>
+              <boxGeometry args={[0.25, 0.3, 0.35]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
+            {/* Head */}
+            <mesh position={[0, 0.15, 0.15]}>
+              <boxGeometry args={[0.15, 0.2, 0.25]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
           </group>
         );
       case 'unicorn':
         return (
           <group>
-            <coneGeometry args={[0.2, 0.5, 6]} />
+            {/* Body */}
+            <mesh position={[0, -0.05, 0]}>
+              <coneGeometry args={[0.2, 0.4, 6]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
+            {/* Horn */}
+            <mesh position={[0, 0.35, 0]}>
+              <cylinderGeometry args={[0.02, 0.04, 0.3]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
           </group>
         );
       case 'pawn':
         return (
           <group>
-            <sphereGeometry args={[0.18]} />
+            {/* Base */}
+            <mesh position={[0, -0.1, 0]}>
+              <cylinderGeometry args={[0.12, 0.15, 0.2]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
+            {/* Head */}
+            <mesh position={[0, 0.1, 0]}>
+              <sphereGeometry args={[0.15]} />
+              <meshPhongMaterial 
+                color={color} 
+                emissive={isSelected ? "#22c55e" : "#000000"}
+                emissiveIntensity={isSelected ? 0.3 : 0}
+              />
+            </mesh>
           </group>
         );
       default:
-        return <sphereGeometry args={[0.2]} />;
+        return (
+          <mesh>
+            <sphereGeometry args={[0.2]} />
+            <meshPhongMaterial 
+              color={color} 
+              emissive={isSelected ? "#22c55e" : "#000000"}
+              emissiveIntensity={isSelected ? 0.3 : 0}
+            />
+          </mesh>
+        );
     }
   };
 
   return (
-    <mesh ref={meshRef} position={position}>
-      {renderPieceGeometry()}
-      <meshPhongMaterial 
-        color={color} 
-        emissive={isSelected ? "#22c55e" : "#000000"}
-        emissiveIntensity={isSelected ? 0.3 : 0}
-      />
-    </mesh>
+    <group position={position}>
+      {renderPiece()}
+    </group>
   );
 }
 
