@@ -104,9 +104,9 @@ export default function ThreeDChess() {
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader
-        moduleNumber="05"
-        title="RAUMSCHACH"
-        description="5×5×5 THREE-DIMENSIONAL CHESS"
+        moduleNumber="024"
+        title="3D CHESS"
+        description="5×5×5 RAUMSCHACH THREE-DIMENSIONAL CHESS"
       />
       
       <div className="container mx-auto p-4 grid grid-cols-1 lg:grid-cols-4 gap-4">

@@ -206,9 +206,9 @@ const Index = () => {
     elements: ["three.js", "vehicle physics", "terrain generation", "multi-input controls", "telemetry display"],
     implemented: true
   }, {
-    title: "Raumschach",
+    title: "3D Chess",
     path: "/three-d-chess",
-    description: "5×5×5 three-dimensional chess with strategic depth",
+    description: "5×5×5 Raumschach three-dimensional chess with strategic depth",
     difficulty: "Expert",
     elements: ["three.js", "3D chess logic", "multi-level gameplay", "orbit controls", "game state management"],
     implemented: true
