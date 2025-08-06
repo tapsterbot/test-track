@@ -92,7 +92,7 @@ interface ChessPieceComponentProps {
 function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponentProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   
-  // Removed floating animation for better chess experience
+  // Chess piece rendering - no animations for better gameplay
 
   const color = piece.color === 'white' ? "#ffffff" : "#1f2937";
   
