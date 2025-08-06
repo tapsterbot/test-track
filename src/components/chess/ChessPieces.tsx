@@ -9,16 +9,35 @@ interface ChessPieceProps {
   onClick: () => void;
 }
 
-function PieceGeometry({ type }: { type: ChessPiece['type'] }) {
+function PieceGeometry({ type, materialColor, emissiveColor, isOrbitMode }: { 
+  type: ChessPiece['type'];
+  materialColor: string;
+  emissiveColor: string;
+  isOrbitMode: boolean;
+}) {
+  const material = (
+    <meshStandardMaterial
+      color={materialColor}
+      emissive={emissiveColor}
+      emissiveIntensity={0.05}
+      roughness={0.4}
+      metalness={materialColor === '#f8f8f8' ? 0.1 : 0.3}
+      opacity={isOrbitMode ? 0.7 : 1}
+      transparent={isOrbitMode}
+    />
+  );
+
   switch (type) {
     case 'pawn':
       return (
         <group>
           <mesh position={[0, 0.2, 0]}>
             <sphereGeometry args={[0.15, 16, 16]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.1, 0]}>
             <cylinderGeometry args={[0.12, 0.18, 0.2, 16]} />
+            {material}
           </mesh>
         </group>
       );
@@ -28,21 +47,27 @@ function PieceGeometry({ type }: { type: ChessPiece['type'] }) {
         <group>
           <mesh position={[0, 0.15, 0]}>
             <cylinderGeometry args={[0.18, 0.2, 0.3, 16]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.32, 0]}>
             <boxGeometry args={[0.4, 0.04, 0.4]} />
+            {material}
           </mesh>
           <mesh position={[0.15, 0.38, 0]}>
             <boxGeometry args={[0.08, 0.08, 0.08]} />
+            {material}
           </mesh>
           <mesh position={[-0.15, 0.38, 0]}>
             <boxGeometry args={[0.08, 0.08, 0.08]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.38, 0.15]}>
             <boxGeometry args={[0.08, 0.08, 0.08]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.38, -0.15]}>
             <boxGeometry args={[0.08, 0.08, 0.08]} />
+            {material}
           </mesh>
         </group>
       );
@@ -52,12 +77,15 @@ function PieceGeometry({ type }: { type: ChessPiece['type'] }) {
         <group>
           <mesh position={[0, 0.15, 0]}>
             <cylinderGeometry args={[0.15, 0.2, 0.3, 16]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.35, 0.1]} rotation={[0.3, 0, 0]}>
             <boxGeometry args={[0.12, 0.25, 0.15]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.45, 0.2]} rotation={[0.5, 0, 0]}>
             <boxGeometry args={[0.08, 0.08, 0.1]} />
+            {material}
           </mesh>
         </group>
       );
@@ -67,15 +95,19 @@ function PieceGeometry({ type }: { type: ChessPiece['type'] }) {
         <group>
           <mesh position={[0, 0.15, 0]}>
             <cylinderGeometry args={[0.15, 0.2, 0.3, 16]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.35, 0]}>
             <cylinderGeometry args={[0.08, 0.15, 0.2, 16]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.48, 0]}>
             <sphereGeometry args={[0.08, 16, 16]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.58, 0]}>
             <coneGeometry args={[0.03, 0.08, 8]} />
+            {material}
           </mesh>
         </group>
       );
@@ -85,12 +117,15 @@ function PieceGeometry({ type }: { type: ChessPiece['type'] }) {
         <group>
           <mesh position={[0, 0.15, 0]}>
             <cylinderGeometry args={[0.18, 0.22, 0.3, 16]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.35, 0]}>
             <cylinderGeometry args={[0.12, 0.18, 0.2, 16]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.5, 0]}>
             <sphereGeometry args={[0.12, 16, 16]} />
+            {material}
           </mesh>
           {/* Crown points */}
           {[0, 1, 2, 3, 4].map((i) => (
@@ -103,6 +138,7 @@ function PieceGeometry({ type }: { type: ChessPiece['type'] }) {
               ]}
             >
               <coneGeometry args={[0.02, i === 2 ? 0.12 : 0.08, 6]} />
+              {material}
             </mesh>
           ))}
         </group>
@@ -113,19 +149,24 @@ function PieceGeometry({ type }: { type: ChessPiece['type'] }) {
         <group>
           <mesh position={[0, 0.15, 0]}>
             <cylinderGeometry args={[0.2, 0.25, 0.3, 16]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.35, 0]}>
             <cylinderGeometry args={[0.15, 0.2, 0.2, 16]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.52, 0]}>
             <sphereGeometry args={[0.15, 16, 16]} />
+            {material}
           </mesh>
           {/* Cross */}
           <mesh position={[0, 0.75, 0]}>
             <boxGeometry args={[0.03, 0.15, 0.03]} />
+            {material}
           </mesh>
           <mesh position={[0, 0.7, 0]}>
             <boxGeometry args={[0.08, 0.03, 0.03]} />
+            {material}
           </mesh>
         </group>
       );
@@ -134,6 +175,7 @@ function PieceGeometry({ type }: { type: ChessPiece['type'] }) {
       return (
         <mesh>
           <sphereGeometry args={[0.15, 16, 16]} />
+          {material}
         </mesh>
       );
   }
@@ -191,16 +233,12 @@ function ChessPiece3D({ piece, position, onClick, cameraMode }: ChessPieceProps 
       userData={{ type: 'piece' }}
     >
       <group scale={hovered ? 1.1 : 1}>
-        <meshStandardMaterial
-          color={materialColor}
-          emissive={emissiveColor}
-          emissiveIntensity={0.1}
-          roughness={0.3}
-          metalness={piece.color === 'white' ? 0.1 : 0.2}
-          opacity={isOrbitMode ? 0.7 : 1}
-          transparent={isOrbitMode}
+        <PieceGeometry 
+          type={piece.type} 
+          materialColor={materialColor}
+          emissiveColor={emissiveColor}
+          isOrbitMode={isOrbitMode}
         />
-        <PieceGeometry type={piece.type} />
       </group>
       
       {/* Shadow */}
@@ -232,7 +270,7 @@ export function ChessPieces({ board, level, levelY, onPieceClick, cameraMode }: 
           <ChessPiece3D
             key={`${level}-${row}-${col}`}
             piece={piece}
-            position={[col - levelSize/2 + 0.5, levelY + 0.5, row - levelSize/2 + 0.5]}
+            position={[col - levelSize/2 + 0.5, levelY + 0.15, row - levelSize/2 + 0.5]}
             onClick={() => onPieceClick(row, col)}
             cameraMode={cameraMode}
           />

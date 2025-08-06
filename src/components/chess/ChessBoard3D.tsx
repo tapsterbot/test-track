@@ -93,7 +93,7 @@ function ChessSquare({
       onPointerOut={handlePointerOut}
       userData={{ type: 'square' }}
     >
-      <boxGeometry args={[1, 0.2, 1]} />
+      <boxGeometry args={[1, 0.1, 1]} />
       <meshStandardMaterial 
         color={materialColor}
         roughness={0.3}
@@ -101,8 +101,6 @@ function ChessSquare({
         opacity={isOrbitMode ? 0.7 : 1}
         transparent={isOrbitMode}
         side={THREE.DoubleSide}
-        depthWrite={true}
-        depthTest={true}
       />
       {isValidMove && !isOrbitMode && (
         <mesh position={[0, 0.06, 0]}>
