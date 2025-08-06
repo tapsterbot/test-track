@@ -124,6 +124,9 @@ export default function ThreeDChess() {
                 onCanvasPointerMove={handleCanvasPointerMove}
                 onCanvasPointerUp={handleCanvasPointerUp}
                 isActive={isGameActive}
+                currentPlayer={getCurrentPlayer()}
+                gameStatus={getGameStatus()}
+                moveCount={getMoveHistory().length}
               />
             </div>
           </SystemPanel>
@@ -179,19 +182,6 @@ export default function ThreeDChess() {
             </div>
           </SystemPanel>
 
-          {/* Selected Piece Info */}
-          {selectedPosition && (
-            <SystemPanel title="SELECTION">
-              <div className="space-y-2">
-                <div className="text-xs nasa-display">
-                  <div>LEVEL: {selectedPosition.level}</div>
-                  <div>RANK: {selectedPosition.rank}</div>
-                  <div>FILE: {selectedPosition.file}</div>
-                  <div>PIECE: {gameState.board[selectedPosition.level][selectedPosition.rank][selectedPosition.file]?.type.toUpperCase()}</div>
-                </div>
-              </div>
-            </SystemPanel>
-          )}
 
           {/* Instructions */}
           <SystemPanel title="CONTROLS">

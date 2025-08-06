@@ -14,6 +14,9 @@ interface RaumschachBoardProps {
   onCanvasPointerMove?: (event: any) => void;
   onCanvasPointerUp?: () => void;
   isActive: boolean;
+  currentPlayer: string;
+  gameStatus: string;
+  moveCount: number;
 }
 
 interface SquareProps {
@@ -334,7 +337,7 @@ function CameraControls({ isActive }: { isActive: boolean }) {
   );
 }
 
-function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive }: Omit<RaumschachBoardProps, 'onCanvasClick' | 'onCanvasPointerDown' | 'onCanvasPointerMove' | 'onCanvasPointerUp'>) {
+function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive'>) {
   return (
     <>
       <CameraControls isActive={isActive} />
@@ -381,6 +384,65 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
   );
 }
 
+function GameHUD({ 
+  selectedPosition, 
+  validMoves, 
+  gameState, 
+  currentPlayer, 
+  gameStatus, 
+  moveCount, 
+  isActive 
+}: {
+  selectedPosition: Position | null;
+  validMoves: Position[];
+  gameState: GameState;
+  currentPlayer: string;
+  gameStatus: string;
+  moveCount: number;
+  isActive: boolean;
+}) {
+  if (!isActive) return null;
+
+  const selectedPiece = selectedPosition 
+    ? gameState.board[selectedPosition.level][selectedPosition.rank][selectedPosition.file]
+    : null;
+
+  return (
+    <div className="absolute top-4 left-4 bg-card/90 backdrop-blur-sm border border-primary/20 rounded-lg p-3 min-w-[200px] transition-all duration-200 nasa-panel">
+      <div className="text-xs space-y-2">
+        {/* Game Status */}
+        <div className="border-b border-primary/20 pb-2">
+          <div className="text-primary font-futura tracking-wide mb-1">GAME STATUS</div>
+          <div className="nasa-display space-y-1">
+            <div>PLAYER: {currentPlayer.toUpperCase()}</div>
+            <div>STATUS: {gameStatus.toUpperCase()}</div>
+            <div>MOVES: {moveCount}</div>
+          </div>
+        </div>
+
+        {/* Selection Info */}
+        <div>
+          <div className="text-primary font-futura tracking-wide mb-1">SELECTION</div>
+          {selectedPosition && selectedPiece ? (
+            <div className="nasa-display space-y-1">
+              <div>PIECE: {selectedPiece.type.toUpperCase()}</div>
+              <div>COLOR: {selectedPiece.color.toUpperCase()}</div>
+              <div>LEVEL: {selectedPosition.level}</div>
+              <div>RANK: {selectedPosition.rank}</div>
+              <div>FILE: {selectedPosition.file}</div>
+              <div>VALID MOVES: {validMoves.length}</div>
+            </div>
+          ) : (
+            <div className="nasa-display text-muted-foreground">
+              NO SELECTION
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function RaumschachBoard({ 
   gameState, 
   selectedPosition, 
@@ -390,7 +452,10 @@ export function RaumschachBoard({
   onCanvasPointerDown,
   onCanvasPointerMove,
   onCanvasPointerUp,
-  isActive 
+  isActive,
+  currentPlayer,
+  gameStatus,
+  moveCount
 }: RaumschachBoardProps) {
   return (
     <div className="relative w-full h-full nasa-panel">
@@ -411,6 +476,17 @@ export function RaumschachBoard({
         />
       </Canvas>
       
+      {/* Game HUD */}
+      <GameHUD
+        selectedPosition={selectedPosition}
+        validMoves={validMoves}
+        gameState={gameState}
+        currentPlayer={currentPlayer}
+        gameStatus={gameStatus}
+        moveCount={moveCount}
+        isActive={isActive}
+      />
+
       {/* Game Ready Overlay */}
       {!isActive && (
         <div 
