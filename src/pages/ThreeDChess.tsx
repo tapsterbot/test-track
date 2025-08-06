@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function ThreeDChess() {
   const [isGameActive, setIsGameActive] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const { toast } = useToast();
   const {
     gameState,
@@ -42,14 +44,38 @@ export default function ThreeDChess() {
   const handleCanvasClick = () => {
     if (!isGameActive) {
       handleNewGame();
-    } else {
-      // Pause the game when active (for mobile usability)
+    } else if (!isDragging) {
+      // Only pause if it wasn't a drag operation
       setIsGameActive(false);
       toast({
         title: "Game Paused",
         description: "Click to resume",
       });
     }
+  };
+
+  const handleCanvasPointerDown = (event: any) => {
+    setDragStart({ x: event.clientX || event.touches?.[0]?.clientX || 0, y: event.clientY || event.touches?.[0]?.clientY || 0 });
+    setIsDragging(false);
+  };
+
+  const handleCanvasPointerMove = (event: any) => {
+    if (dragStart) {
+      const currentX = event.clientX || event.touches?.[0]?.clientX || 0;
+      const currentY = event.clientY || event.touches?.[0]?.clientY || 0;
+      const distance = Math.sqrt(
+        Math.pow(currentX - dragStart.x, 2) + Math.pow(currentY - dragStart.y, 2)
+      );
+      if (distance > 5) { // 5px threshold for drag detection
+        setIsDragging(true);
+      }
+    }
+  };
+
+  const handleCanvasPointerUp = () => {
+    setDragStart(null);
+    // Reset dragging state after a short delay to ensure click event fires with correct state
+    setTimeout(() => setIsDragging(false), 50);
   };
 
   return (
@@ -71,6 +97,9 @@ export default function ThreeDChess() {
                 validMoves={validMoves}
                 onSquareClick={selectSquare}
                 onCanvasClick={handleCanvasClick}
+                onCanvasPointerDown={handleCanvasPointerDown}
+                onCanvasPointerMove={handleCanvasPointerMove}
+                onCanvasPointerUp={handleCanvasPointerUp}
                 isActive={isGameActive}
               />
             </div>

@@ -10,6 +10,9 @@ interface RaumschachBoardProps {
   validMoves: Position[];
   onSquareClick: (position: Position) => void;
   onCanvasClick?: () => void;
+  onCanvasPointerDown?: (event: any) => void;
+  onCanvasPointerMove?: (event: any) => void;
+  onCanvasPointerUp?: () => void;
   isActive: boolean;
 }
 
@@ -360,13 +363,26 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick }: Omit<
   );
 }
 
-export function RaumschachBoard({ gameState, selectedPosition, validMoves, onSquareClick, onCanvasClick, isActive }: RaumschachBoardProps) {
+export function RaumschachBoard({ 
+  gameState, 
+  selectedPosition, 
+  validMoves, 
+  onSquareClick, 
+  onCanvasClick,
+  onCanvasPointerDown,
+  onCanvasPointerMove,
+  onCanvasPointerUp,
+  isActive 
+}: RaumschachBoardProps) {
   return (
     <div className="relative w-full h-full nasa-panel">
       <Canvas
         camera={{ position: [8, 8, 8], fov: 75 }}
         style={{ background: 'hsl(var(--background))' }}
         onClick={onCanvasClick}
+        onPointerDown={onCanvasPointerDown}
+        onPointerMove={onCanvasPointerMove}
+        onPointerUp={onCanvasPointerUp}
       >
         <OrbitControls
           enablePan={true}
