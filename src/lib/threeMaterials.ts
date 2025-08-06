@@ -48,7 +48,7 @@ export const createSquareMaterials = (level: string) => {
       new THREE.MeshStandardMaterial({ 
         color: '#f0d9b5', 
         metalness: 0.0, 
-        roughness: 0.9,
+        roughness: 0.95,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -58,7 +58,7 @@ export const createSquareMaterials = (level: string) => {
       new THREE.MeshStandardMaterial({ 
         color: '#b58863', 
         metalness: 0.0, 
-        roughness: 0.9,
+        roughness: 0.95,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -68,7 +68,7 @@ export const createSquareMaterials = (level: string) => {
       new THREE.MeshStandardMaterial({ 
         color: '#7fc3ff', 
         metalness: 0.0, 
-        roughness: 0.8,
+        roughness: 0.95,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -78,7 +78,7 @@ export const createSquareMaterials = (level: string) => {
       new THREE.MeshStandardMaterial({ 
         color: '#90ee90', 
         metalness: 0.0, 
-        roughness: 0.8,
+        roughness: 0.95,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -88,7 +88,7 @@ export const createSquareMaterials = (level: string) => {
       new THREE.MeshStandardMaterial({ 
         color: '#e6d3a8', 
         metalness: 0.0, 
-        roughness: 0.9,
+        roughness: 0.95,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -98,7 +98,7 @@ export const createSquareMaterials = (level: string) => {
       new THREE.MeshStandardMaterial({ 
         color: '#a67d4a', 
         metalness: 0.0, 
-        roughness: 0.9,
+        roughness: 0.95,
         transparent,
         opacity,
         side: THREE.DoubleSide
