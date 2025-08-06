@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
-import { useChessLogic } from '@/hooks/useChessLogic';
+import { useChessLogic, Chess3DPosition } from '@/hooks/useChessLogic';
 import { useChessControls } from '@/hooks/useChessControls';
 import { ChessPieces } from './ChessPieces';
 
@@ -19,6 +19,7 @@ function ChessSquare({
   isSelected, 
   isValidMove, 
   isKeyboardCursor,
+  level,
   onClick 
 }: {
   position: [number, number, number];
@@ -26,6 +27,7 @@ function ChessSquare({
   isSelected: boolean;
   isValidMove: boolean;
   isKeyboardCursor: boolean;
+  level: number;
   onClick: () => void;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -84,6 +86,9 @@ function ChessSquare({
   );
 }
 
+const LEVEL_SIZES = [4, 8, 4];
+const LEVEL_POSITIONS = [-4, 0, 4]; // Y positions for each level
+
 function Board({ 
   selectedSquare, 
   validMoves, 
@@ -92,40 +97,91 @@ function Board({
   onSquareClick,
   board
 }: {
-  selectedSquare: any;
-  validMoves: any[];
-  keyboardCursor: any;
+  selectedSquare: Chess3DPosition | null;
+  validMoves: Chess3DPosition[];
+  keyboardCursor: Chess3DPosition;
   isKeyboardMode: boolean;
-  onSquareClick: (row: number, col: number) => void;
-  board: any[][];
+  onSquareClick: (level: number, row: number, col: number) => void;
+  board: any[][][];
 }) {
-  const squares = [];
+  const levels = [];
   
-  for (let row = 0; row < 8; row++) {
-    for (let col = 0; col < 8; col++) {
-      const isLight = (row + col) % 2 === 0;
-      const isSelected = selectedSquare && selectedSquare.row === row && selectedSquare.col === col;
-      const isValidMove = validMoves.some(move => move.row === row && move.col === col);
-      const isKeyboardCursor = isKeyboardMode && keyboardCursor.row === row && keyboardCursor.col === col;
-      
-      squares.push(
-        <ChessSquare
-          key={`${row}-${col}`}
-          position={[col - 3.5, 0, row - 3.5]}
-          color={isLight ? 'light' : 'dark'}
-          isSelected={isSelected}
-          isValidMove={isValidMove}
-          isKeyboardCursor={isKeyboardCursor}
-          onClick={() => onSquareClick(row, col)}
-        />
-      );
+  for (let level = 0; level < 3; level++) {
+    const levelSize = LEVEL_SIZES[level];
+    const levelY = LEVEL_POSITIONS[level];
+    const squares = [];
+    
+    for (let row = 0; row < levelSize; row++) {
+      for (let col = 0; col < levelSize; col++) {
+        const isLight = (row + col) % 2 === 0;
+        const isSelected = selectedSquare && 
+          selectedSquare.level === level && 
+          selectedSquare.row === row && 
+          selectedSquare.col === col;
+        const isValidMove = validMoves.some(move => 
+          move.level === level && move.row === row && move.col === col);
+        const isKeyboardCursor = isKeyboardMode && 
+          keyboardCursor.level === level && 
+          keyboardCursor.row === row && 
+          keyboardCursor.col === col;
+        
+        const offset = (8 - levelSize) / 2;
+        
+        squares.push(
+          <ChessSquare
+            key={`${level}-${row}-${col}`}
+            position={[col - levelSize/2 + 0.5, levelY, row - levelSize/2 + 0.5]}
+            color={isLight ? 'light' : 'dark'}
+            isSelected={isSelected}
+            isValidMove={isValidMove}
+            isKeyboardCursor={isKeyboardCursor}
+            level={level}
+            onClick={() => onSquareClick(level, row, col)}
+          />
+        );
+      }
     }
+    
+    // Add level frame
+    squares.push(
+      <group key={`frame-${level}`} position={[0, levelY - 0.1, 0]}>
+        <mesh>
+          <boxGeometry args={[levelSize + 0.2, 0.2, levelSize + 0.2]} />
+          <meshStandardMaterial color="#8b4513" roughness={0.8} />
+        </mesh>
+      </group>
+    );
+    
+    levels.push(
+      <group key={`level-${level}`}>
+        {squares}
+        <ChessPieces 
+          board={board[level]} 
+          level={level}
+          levelY={levelY}
+          onPieceClick={(row, col) => onSquareClick(level, row, col)} 
+        />
+      </group>
+    );
+  }
+
+  // Add connecting pillars between levels
+  const pillars = [];
+  for (let i = 0; i < 4; i++) {
+    const x = (i % 2) * 8 - 4;
+    const z = Math.floor(i / 2) * 8 - 4;
+    pillars.push(
+      <mesh key={`pillar-${i}`} position={[x, 0, z]}>
+        <cylinderGeometry args={[0.1, 0.1, 8]} />
+        <meshStandardMaterial color="#666666" transparent opacity={0.3} />
+      </mesh>
+    );
   }
 
   return (
     <group>
-      {squares}
-      <ChessPieces board={board} onPieceClick={onSquareClick} />
+      {levels}
+      {pillars}
     </group>
   );
 }
@@ -185,9 +241,9 @@ function SceneContent({
     onGameUpdate(gameState);
   }, [chessLogic.currentPlayer, chessLogic.board, onGameUpdate]);
 
-  const handleSquareClick = (row: number, col: number) => {
-    chessLogic.selectSquare({ row, col });
-    chessControls.setCursorPosition({ row, col });
+  const handleSquareClick = (level: number, row: number, col: number) => {
+    chessLogic.selectSquare({ level, row, col });
+    chessControls.setCursorPosition({ level, row, col });
   };
 
   // Handle keyboard selection
@@ -229,13 +285,6 @@ function SceneContent({
         board={chessLogic.board}
       />
 
-      {/* Board Frame */}
-      <group position={[0, -0.1, 0]}>
-        <mesh>
-          <boxGeometry args={[9, 0.2, 9]} />
-          <meshStandardMaterial color="#8b4513" roughness={0.8} />
-        </mesh>
-      </group>
 
       {/* Camera Controller */}
       <CameraController cameraMode={cameraMode} isActive={isActive} />

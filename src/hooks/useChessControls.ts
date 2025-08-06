@@ -1,70 +1,81 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-export interface ChessPosition {
+interface Chess3DPosition {
+  level: number;
   row: number;
   col: number;
 }
 
 interface ChessControlsState {
-  cursorPosition: ChessPosition;
+  cursorPosition: Chess3DPosition;
   isKeyboardMode: boolean;
 }
 
+const LEVEL_SIZES = [4, 8, 4]; // Size of each level (bottom, main, top)
+
 export function useChessControls() {
-  const [state, setState] = useState<ChessControlsState>({
-    cursorPosition: { row: 7, col: 4 }, // Start at white king
-    isKeyboardMode: false
-  });
+  const [cursorPosition, setCursorPosition] = useState<Chess3DPosition>({ level: 1, row: 7, col: 4 });
+  const [isKeyboardMode, setIsKeyboardMode] = useState(false);
+  const keyboardTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const lastKeyTime = useRef<number>(0);
-  const keyboardTimeout = useRef<NodeJS.Timeout>();
-
-  const enableKeyboardMode = useCallback(() => {
-    setState(prev => ({ ...prev, isKeyboardMode: true }));
-    lastKeyTime.current = Date.now();
+  const enableKeyboardMode = () => {
+    setIsKeyboardMode(true);
     
     // Clear existing timeout
-    if (keyboardTimeout.current) {
-      clearTimeout(keyboardTimeout.current);
+    if (keyboardTimeoutRef.current) {
+      clearTimeout(keyboardTimeoutRef.current);
     }
     
-    // Disable keyboard mode after 3 seconds of inactivity
-    keyboardTimeout.current = setTimeout(() => {
-      setState(prev => ({ ...prev, isKeyboardMode: false }));
+    // Auto-disable after 3 seconds of inactivity
+    keyboardTimeoutRef.current = setTimeout(() => {
+      setIsKeyboardMode(false);
     }, 3000);
-  }, []);
+  };
 
-  const moveCursor = useCallback((direction: 'up' | 'down' | 'left' | 'right') => {
+  const moveCursor = (direction: 'up' | 'down' | 'left' | 'right' | 'levelUp' | 'levelDown') => {
     enableKeyboardMode();
     
-    setState(prev => {
-      const { row, col } = prev.cursorPosition;
-      let newRow = row;
-      let newCol = col;
+    setCursorPosition(prev => {
+      let newLevel = prev.level;
+      let newRow = prev.row;
+      let newCol = prev.col;
       
       switch (direction) {
         case 'up':
-          newRow = Math.max(0, row - 1);
+          newRow = Math.max(0, prev.row - 1);
           break;
         case 'down':
-          newRow = Math.min(7, row + 1);
+          newRow = Math.min(LEVEL_SIZES[prev.level] - 1, prev.row + 1);
           break;
         case 'left':
-          newCol = Math.max(0, col - 1);
+          newCol = Math.max(0, prev.col - 1);
           break;
         case 'right':
-          newCol = Math.min(7, col + 1);
+          newCol = Math.min(LEVEL_SIZES[prev.level] - 1, prev.col + 1);
+          break;
+        case 'levelUp':
+          newLevel = Math.min(2, prev.level + 1);
+          // Adjust position if new level is smaller
+          if (LEVEL_SIZES[newLevel] < LEVEL_SIZES[prev.level]) {
+            newRow = Math.min(newRow, LEVEL_SIZES[newLevel] - 1);
+            newCol = Math.min(newCol, LEVEL_SIZES[newLevel] - 1);
+          }
+          break;
+        case 'levelDown':
+          newLevel = Math.max(0, prev.level - 1);
+          // Adjust position if new level is smaller
+          if (LEVEL_SIZES[newLevel] < LEVEL_SIZES[prev.level]) {
+            newRow = Math.min(newRow, LEVEL_SIZES[newLevel] - 1);
+            newCol = Math.min(newCol, LEVEL_SIZES[newLevel] - 1);
+          }
           break;
       }
       
-      return {
-        ...prev,
-        cursorPosition: { row: newRow, col: newCol }
-      };
+      return { level: newLevel, row: newRow, col: newCol };
     });
-  }, [enableKeyboardMode]);
+  };
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+  const handleKeyDown = (event: KeyboardEvent) => {
     switch (event.key) {
       case 'ArrowUp':
         event.preventDefault();
@@ -82,27 +93,39 @@ export function useChessControls() {
         event.preventDefault();
         moveCursor('right');
         break;
-      case 'Enter':
-      case ' ':
+      case 'PageUp':
+      case 'q':
+      case 'Q':
+        event.preventDefault();
+        moveCursor('levelUp');
+        break;
+      case 'PageDown':
+      case 'e':
+      case 'E':
+        event.preventDefault();
+        moveCursor('levelDown');
+        break;
+      case 'Tab':
         event.preventDefault();
         enableKeyboardMode();
-        // Return the current cursor position for selection
-        return state.cursorPosition;
-      case 'Escape':
-        event.preventDefault();
-        setState(prev => ({ ...prev, isKeyboardMode: false }));
         break;
+      case 'Escape':
+        setIsKeyboardMode(false);
+        break;
+      default:
+        // Any other key press enables keyboard mode
+        if (event.key.length === 1 || ['Enter', 'Space'].includes(event.key)) {
+          enableKeyboardMode();
+        }
     }
-    return null;
-  }, [moveCursor, enableKeyboardMode, state.cursorPosition]);
+  };
 
-  const handleMouseMove = useCallback(() => {
-    // Disable keyboard mode when mouse is used
-    setState(prev => ({ ...prev, isKeyboardMode: false }));
-    if (keyboardTimeout.current) {
-      clearTimeout(keyboardTimeout.current);
+  const handleMouseMove = () => {
+    setIsKeyboardMode(false);
+    if (keyboardTimeoutRef.current) {
+      clearTimeout(keyboardTimeoutRef.current);
     }
-  }, []);
+  };
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -111,24 +134,21 @@ export function useChessControls() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('mousemove', handleMouseMove);
-      if (keyboardTimeout.current) {
-        clearTimeout(keyboardTimeout.current);
+      if (keyboardTimeoutRef.current) {
+        clearTimeout(keyboardTimeoutRef.current);
       }
     };
-  }, [handleKeyDown, handleMouseMove]);
-
-  const setCursorPosition = useCallback((position: ChessPosition) => {
-    setState(prev => ({
-      ...prev,
-      cursorPosition: position,
-      isKeyboardMode: false
-    }));
   }, []);
 
+  const handleSetCursorPosition = (position: Chess3DPosition) => {
+    setCursorPosition(position);
+    setIsKeyboardMode(false); // Disable keyboard mode when manually setting position
+  };
+
   return {
-    cursorPosition: state.cursorPosition,
-    isKeyboardMode: state.isKeyboardMode,
-    setCursorPosition,
+    cursorPosition,
+    isKeyboardMode,
+    setCursorPosition: handleSetCursorPosition,
     moveCursor
   };
 }

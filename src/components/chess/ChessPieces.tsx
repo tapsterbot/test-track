@@ -199,27 +199,30 @@ function ChessPiece3D({ piece, position, onClick }: ChessPieceProps) {
 
 interface ChessPiecesProps {
   board: (ChessPiece | null)[][];
+  level: number;
+  levelY: number;
   onPieceClick: (row: number, col: number) => void;
 }
 
-export function ChessPieces({ board, onPieceClick }: ChessPiecesProps) {
+export function ChessPieces({ board, level, levelY, onPieceClick }: ChessPiecesProps) {
   const pieces = [];
+  const levelSize = board.length;
   
-  for (let row = 0; row < 8; row++) {
-    for (let col = 0; col < 8; col++) {
+  for (let row = 0; row < levelSize; row++) {
+    for (let col = 0; col < levelSize; col++) {
       const piece = board[row][col];
       if (piece) {
         pieces.push(
           <ChessPiece3D
-            key={`${row}-${col}-${piece.type}-${piece.color}`}
+            key={`${level}-${row}-${col}`}
             piece={piece}
-            position={[col - 3.5, 0.3, row - 3.5]}
+            position={[col - levelSize/2 + 0.5, levelY + 0.5, row - levelSize/2 + 0.5]}
             onClick={() => onPieceClick(row, col)}
           />
         );
       }
     }
   }
-
+  
   return <>{pieces}</>;
 }
