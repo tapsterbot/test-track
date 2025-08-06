@@ -366,7 +366,6 @@ export function RaumschachBoard({ gameState, selectedPosition, validMoves, onSqu
       <Canvas
         camera={{ position: [8, 8, 8], fov: 75 }}
         style={{ background: 'hsl(var(--background))' }}
-        onClick={onCanvasClick}
       >
         <OrbitControls
           enablePan={true}
