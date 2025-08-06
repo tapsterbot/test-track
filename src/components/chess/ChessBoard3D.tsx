@@ -197,7 +197,7 @@ function CameraController({
   const controlsRef = useRef<any>();
 
   useFrame(() => {
-    if (!controlsRef.current) return;
+    if (!controlsRef.current || !camera) return;
 
     // Only restrict orbit in non-orbit modes
     if (cameraMode !== 'orbit') {
@@ -218,6 +218,11 @@ function CameraController({
     
     controlsRef.current.update();
   });
+
+  // Don't render OrbitControls if camera isn't available yet
+  if (!camera) {
+    return null;
+  }
 
   return (
     <OrbitControls
