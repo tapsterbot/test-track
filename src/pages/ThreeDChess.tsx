@@ -39,6 +39,12 @@ export default function ThreeDChess() {
     });
   };
 
+  const handleCanvasClick = () => {
+    if (!isGameActive) {
+      handleNewGame();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader
@@ -57,6 +63,7 @@ export default function ThreeDChess() {
                 selectedPosition={selectedPosition}
                 validMoves={validMoves}
                 onSquareClick={selectSquare}
+                onCanvasClick={handleCanvasClick}
                 isActive={isGameActive}
               />
             </div>

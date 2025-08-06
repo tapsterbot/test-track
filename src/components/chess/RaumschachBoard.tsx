@@ -9,6 +9,7 @@ interface RaumschachBoardProps {
   selectedPosition: Position | null;
   validMoves: Position[];
   onSquareClick: (position: Position) => void;
+  onCanvasClick?: () => void;
   isActive: boolean;
 }
 
@@ -359,12 +360,13 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick }: Omit<
   );
 }
 
-export function RaumschachBoard({ gameState, selectedPosition, validMoves, onSquareClick, isActive }: RaumschachBoardProps) {
+export function RaumschachBoard({ gameState, selectedPosition, validMoves, onSquareClick, onCanvasClick, isActive }: RaumschachBoardProps) {
   return (
-    <div className="w-full h-full nasa-panel">
+    <div className="relative w-full h-full nasa-panel">
       <Canvas
         camera={{ position: [8, 8, 8], fov: 75 }}
         style={{ background: 'hsl(var(--background))' }}
+        onClick={onCanvasClick}
       >
         <OrbitControls
           enablePan={true}
@@ -373,6 +375,7 @@ export function RaumschachBoard({ gameState, selectedPosition, validMoves, onSqu
           minDistance={5}
           maxDistance={20}
           target={[0, 3, 0]}
+          enabled={isActive}
         />
         <Scene
           gameState={gameState}
@@ -381,6 +384,23 @@ export function RaumschachBoard({ gameState, selectedPosition, validMoves, onSqu
           onSquareClick={isActive ? onSquareClick : () => {}}
         />
       </Canvas>
+      
+      {/* Game Ready Overlay */}
+      {!isActive && (
+        <div 
+          className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center cursor-pointer z-10"
+          onClick={onCanvasClick}
+        >
+          <div className="text-center">
+            <h2 className="text-4xl font-futura font-bold text-primary mb-4 tracking-wider">
+              GAME READY
+            </h2>
+            <p className="text-lg text-muted-foreground font-futura tracking-wide">
+              Click anywhere to begin
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
