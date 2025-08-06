@@ -59,17 +59,7 @@ function Square({ position, piece, isSelected, isValidMove, onClick }: SquarePro
         />
       </mesh>
       
-      {/* Valid move indicator */}
-      {isValidMove && (
-        <mesh position={[0, 0.2, 0]}>
-          <sphereGeometry args={[0.2]} />
-          <meshPhongMaterial 
-            color="#f59e0b" // Amber for move indicators
-            transparent 
-            opacity={0.6}
-          />
-        </mesh>
-      )}
+      {/* Valid move indicators removed - squares highlight instead */}
       
       {/* Chess piece */}
       {piece && (
