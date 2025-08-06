@@ -19,7 +19,7 @@ const Index = () => {
     "/button-demo", "/text-input-demo", "/login-demo", "/dropdown-demo", 
     "/checkbox-radio-demo", "/table-demo", "/modal-demo", "/alert-demo", 
     "/file-upload-demo", "/drag-drop-demo", "/frames-demo", "/dynamic-demo", 
-    "/canvas-demo", "/multi-window-demo", "/advanced-button-demo"
+    "/canvas-demo", "/multi-window-demo", "/advanced-button-demo", "/chess-demo"
   ];
 
   const demoPages = [
@@ -204,6 +204,13 @@ const Index = () => {
     description: "3D Mars rover terrain navigation with physics-based controls",
     difficulty: "Expert",
     elements: ["three.js", "vehicle physics", "terrain generation", "multi-input controls", "telemetry display"],
+    implemented: true
+  }, {
+    title: "3D Chess Command",
+    path: "/chess-demo",
+    description: "Star Trek-style tri-dimensional chess with multi-level gameplay",
+    difficulty: "Expert",
+    elements: ["three.js", "3D chess", "orbit controls", "multi-level boards", "piece selection"],
     implemented: true
   }, {
     title: "WebSocket & Real-time Demo",
