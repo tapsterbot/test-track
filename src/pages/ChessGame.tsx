@@ -58,6 +58,17 @@ export default function ChessGame() {
     });
   };
 
+  const handleGameUpdate = (chessGameState: any) => {
+    setGameState(prevState => ({
+      ...prevState,
+      currentPlayer: chessGameState.currentPlayer || prevState.currentPlayer,
+      moveCount: chessGameState.moveCount || prevState.moveCount,
+      gameStatus: chessGameState.status === 'playing' ? 'active' : chessGameState.status || prevState.gameStatus,
+      capturedPieces: chessGameState.capturedPieces || prevState.capturedPieces,
+      lastMove: chessGameState.lastMove || prevState.lastMove
+    }));
+  };
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -194,13 +205,13 @@ export default function ChessGame() {
               <div className="flex justify-between">
                 <span>WHITE TIME:</span>
                 <span className={`${gameState.currentPlayer === 'white' && isGameActive ? 'text-primary' : 'text-muted-foreground'}`}>
-                  {formatTime(gameState.gameTime.white)}
+                  {formatTime(gameState.gameTime?.white || 600)}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>BLACK TIME:</span>
                 <span className={`${gameState.currentPlayer === 'black' && isGameActive ? 'text-primary' : 'text-muted-foreground'}`}>
-                  {formatTime(gameState.gameTime.black)}
+                  {formatTime(gameState.gameTime?.black || 600)}
                 </span>
               </div>
             </div>
@@ -230,7 +241,7 @@ export default function ChessGame() {
                 key={resetKey}
                 isActive={isGameActive}
                 cameraMode={cameraMode}
-                onGameUpdate={setGameState}
+                onGameUpdate={handleGameUpdate}
                 onToggleGame={handleToggleGame}
               />
             </div>
