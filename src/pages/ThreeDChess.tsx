@@ -42,6 +42,13 @@ export default function ThreeDChess() {
   const handleCanvasClick = () => {
     if (!isGameActive) {
       handleNewGame();
+    } else {
+      // Pause the game when active (for mobile usability)
+      setIsGameActive(false);
+      toast({
+        title: "Game Paused",
+        description: "Click to resume",
+      });
     }
   };
 
