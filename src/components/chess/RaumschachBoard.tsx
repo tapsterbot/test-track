@@ -318,17 +318,26 @@ function BoardStructure() {
   );
 }
 
+function CameraControls({ isActive }: { isActive: boolean }) {
+  const { camera, gl } = useThree();
+  
+  return (
+    <OrbitControls
+      args={[camera, gl.domElement]}
+      enablePan={isActive}
+      enableZoom={isActive}
+      enableRotate={isActive}
+      minDistance={5}
+      maxDistance={20}
+      target={[0, 3, 0]}
+    />
+  );
+}
+
 function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive }: Omit<RaumschachBoardProps, 'onCanvasClick' | 'onCanvasPointerDown' | 'onCanvasPointerMove' | 'onCanvasPointerUp'>) {
   return (
     <>
-      <OrbitControls
-        enablePan={isActive}
-        enableZoom={isActive}
-        enableRotate={isActive}
-        minDistance={5}
-        maxDistance={20}
-        target={[0, 3, 0]}
-      />
+      <CameraControls isActive={isActive} />
       
       <ambientLight intensity={0.6} />
       <directionalLight position={[10, 10, 5]} intensity={1.0} />
