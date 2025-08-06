@@ -78,12 +78,13 @@ export function ChessBoard3D({
           validMoves={validMoves}
           onSquareClick={onSquareClick}
         />
-        <ChessPieces
+        {/* Temporarily disabled to isolate error */}
+        {/* <ChessPieces
           gameState={gameState}
           level="main"
           selectedSquare={selectedSquare}
           onSquareClick={onSquareClick}
-        />
+        /> */}
       </group>
 
       {/* Upper Attack Boards */}
@@ -95,12 +96,12 @@ export function ChessBoard3D({
           onSquareClick={onSquareClick}
           size={[2, 4]}
         />
-        <ChessPieces
+        {/* <ChessPieces
           gameState={gameState}
           level="upper-left"
           selectedSquare={selectedSquare}
           onSquareClick={onSquareClick}
-        />
+        /> */}
       </group>
 
       <group position={[3, 3, -3]}>
@@ -111,12 +112,12 @@ export function ChessBoard3D({
           onSquareClick={onSquareClick}
           size={[2, 4]}
         />
-        <ChessPieces
+        {/* <ChessPieces
           gameState={gameState}
           level="upper-right"
           selectedSquare={selectedSquare}
           onSquareClick={onSquareClick}
-        />
+        /> */}
       </group>
 
       {/* Lower Attack Boards */}
@@ -128,12 +129,12 @@ export function ChessBoard3D({
           onSquareClick={onSquareClick}
           size={[2, 4]}
         />
-        <ChessPieces
+        {/* <ChessPieces
           gameState={gameState}
           level="lower-left"
           selectedSquare={selectedSquare}
           onSquareClick={onSquareClick}
-        />
+        /> */}
       </group>
 
       <group position={[3, -3, 3]}>
@@ -144,12 +145,12 @@ export function ChessBoard3D({
           onSquareClick={onSquareClick}
           size={[2, 4]}
         />
-        <ChessPieces
+        {/* <ChessPieces
           gameState={gameState}
           level="lower-right"
           selectedSquare={selectedSquare}
           onSquareClick={onSquareClick}
-        />
+        /> */}
       </group>
 
       {/* Support Structures */}
