@@ -120,71 +120,80 @@ export default function ThreeDChess() {
         description="5×5×5 RAUMSCHACH THREE-DIMENSIONAL CHESS"
       />
       
-      <div className="container mx-auto p-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
-        {/* Main 3D Chess Board */}
-        <div className="lg:col-span-3">
-          <SystemPanel title="3D CHESS BOARD" fullWidth>
-            <div className="h-[600px] w-full">
-              <RaumschachBoard
-                gameState={gameState}
-                selectedPosition={selectedPosition}
-                validMoves={validMoves}
-                onSquareClick={handleSquareClick}
-                onCanvasClick={handleCanvasClick}
-                onCanvasPointerDown={handleCanvasPointerDown}
-                onCanvasPointerMove={handleCanvasPointerMove}
-                onCanvasPointerUp={handleCanvasPointerUp}
-                isActive={isGameActive}
-                currentPlayer={getCurrentPlayer()}
-                gameStatus={getGameStatus()}
-                moveCount={getMoveHistory().length}
-                cursorPosition={cursorPosition}
-                isKeyboardMode={isKeyboardMode}
-                onMouseInteraction={handleMouseInteraction}
-              />
+      <div className="container mx-auto p-4">
+        {/* Compact Game Controls - Above the game */}
+        <div className="mb-4">
+          <div className="nasa-panel p-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-futura text-primary tracking-wide">GAME CONTROLS</h3>
+              <div className="flex gap-2">
+                <PushButton
+                  label="NEW GAME"
+                  onClick={handleNewGame}
+                  color="green"
+                  size="sm"
+                />
+                <PushButton
+                  label="RESET"
+                  onClick={handleResetGame}
+                  color="amber"
+                  size="sm"
+                />
+              </div>
             </div>
-          </SystemPanel>
+          </div>
         </div>
 
-        {/* Control Panels */}
-        <div className="space-y-4">
-          {/* Game Controls */}
-          <SystemPanel title="GAME CONTROLS">
-            <div className="space-y-3">
-              <PushButton
-                label="NEW GAME"
-                onClick={handleNewGame}
-                color="green"
-              />
-              <PushButton
-                label="RESET"
-                onClick={handleResetGame}
-                color="amber"
-              />
-            </div>
-          </SystemPanel>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+          {/* Main 3D Chess Board */}
+          <div className="lg:col-span-3">
+            <SystemPanel title="3D CHESS BOARD" fullWidth>
+              <div className="h-[600px] w-full">
+                <RaumschachBoard
+                  gameState={gameState}
+                  selectedPosition={selectedPosition}
+                  validMoves={validMoves}
+                  onSquareClick={handleSquareClick}
+                  onCanvasClick={handleCanvasClick}
+                  onCanvasPointerDown={handleCanvasPointerDown}
+                  onCanvasPointerMove={handleCanvasPointerMove}
+                  onCanvasPointerUp={handleCanvasPointerUp}
+                  isActive={isGameActive}
+                  currentPlayer={getCurrentPlayer()}
+                  gameStatus={getGameStatus()}
+                  moveCount={getMoveHistory().length}
+                  cursorPosition={cursorPosition}
+                  isKeyboardMode={isKeyboardMode}
+                  onMouseInteraction={handleMouseInteraction}
+                />
+              </div>
+            </SystemPanel>
+          </div>
 
-          {/* Instructions */}
-          <SystemPanel title="CONTROLS">
-            <div className="text-xs text-muted-foreground space-y-1">
-              <div className="text-primary mb-1">MOUSE:</div>
-              <div>• Click pieces to select</div>
-              <div>• Click valid squares to move</div>
-              <div>• Drag to orbit camera</div>
-              <div>• Scroll to zoom</div>
-              <div className="text-primary mb-1 mt-2">TOUCH:</div>
-              <div>• Tap pieces to select</div>
-              <div>• Tap valid squares to move</div>
-              <div>• Drag to orbit camera</div>
-              <div>• Pinch to zoom</div>
-              <div className="text-primary mb-1 mt-2">KEYBOARD:</div>
-              <div>• Arrow keys to navigate</div>
-              <div>• Page Up/Down for levels</div>
-              <div>• Space/Enter to select</div>
-              <div>• Escape to deselect</div>
-              <div>• R to reset, N for new game</div>
-            </div>
-          </SystemPanel>
+          {/* Control Panels */}
+          <div className="space-y-4">
+            {/* Instructions */}
+            <SystemPanel title="CONTROLS">
+              <div className="text-xs text-muted-foreground space-y-1">
+                <div className="text-primary mb-1">MOUSE:</div>
+                <div>• Click pieces to select</div>
+                <div>• Click valid squares to move</div>
+                <div>• Drag to orbit camera</div>
+                <div>• Scroll to zoom</div>
+                <div className="text-primary mb-1 mt-2">TOUCH:</div>
+                <div>• Tap pieces to select</div>
+                <div>• Tap valid squares to move</div>
+                <div>• Drag to orbit camera</div>
+                <div>• Pinch to zoom</div>
+                <div className="text-primary mb-1 mt-2">KEYBOARD:</div>
+                <div>• Arrow keys to navigate</div>
+                <div>• Page Up/Down for levels</div>
+                <div>• Space/Enter to select</div>
+                <div>• Escape to deselect</div>
+                <div>• R to reset, N for new game</div>
+              </div>
+            </SystemPanel>
+          </div>
         </div>
       </div>
     </div>
