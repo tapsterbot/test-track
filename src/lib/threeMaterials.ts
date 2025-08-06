@@ -47,8 +47,8 @@ export const createSquareMaterials = (level: string) => {
     lightSquare: materialCache.getMaterial(`${level}-light-square`, () => 
       new THREE.MeshStandardMaterial({ 
         color: '#f0d9b5', 
-        metalness: 0.1, 
-        roughness: 0.7,
+        metalness: 0.0, 
+        roughness: 0.9,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -57,8 +57,8 @@ export const createSquareMaterials = (level: string) => {
     darkSquare: materialCache.getMaterial(`${level}-dark-square`, () => 
       new THREE.MeshStandardMaterial({ 
         color: '#b58863', 
-        metalness: 0.1, 
-        roughness: 0.7,
+        metalness: 0.0, 
+        roughness: 0.9,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -67,8 +67,8 @@ export const createSquareMaterials = (level: string) => {
     selectedSquare: materialCache.getMaterial(`${level}-selected-square`, () => 
       new THREE.MeshStandardMaterial({ 
         color: '#7fc3ff', 
-        metalness: 0.1, 
-        roughness: 0.7,
+        metalness: 0.0, 
+        roughness: 0.8,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -77,8 +77,8 @@ export const createSquareMaterials = (level: string) => {
     validMove: materialCache.getMaterial(`${level}-valid-move`, () => 
       new THREE.MeshStandardMaterial({ 
         color: '#90ee90', 
-        metalness: 0.1, 
-        roughness: 0.7,
+        metalness: 0.0, 
+        roughness: 0.8,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -87,8 +87,8 @@ export const createSquareMaterials = (level: string) => {
     lightHovered: materialCache.getMaterial(`${level}-light-hovered`, () => 
       new THREE.MeshStandardMaterial({ 
         color: '#e6d3a8', 
-        metalness: 0.1, 
-        roughness: 0.7,
+        metalness: 0.0, 
+        roughness: 0.9,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -97,8 +97,8 @@ export const createSquareMaterials = (level: string) => {
     darkHovered: materialCache.getMaterial(`${level}-dark-hovered`, () => 
       new THREE.MeshStandardMaterial({ 
         color: '#a67d4a', 
-        metalness: 0.1, 
-        roughness: 0.7,
+        metalness: 0.0, 
+        roughness: 0.9,
         transparent,
         opacity,
         side: THREE.DoubleSide
@@ -112,33 +112,33 @@ export const createPieceMaterials = () => {
     white: materialCache.getMaterial('piece-white', () => 
       new THREE.MeshStandardMaterial({
         color: '#f5f5f5',
-        metalness: 0.3,
-        roughness: 0.4
+        metalness: 0.0,
+        roughness: 0.8
       })
     ),
     black: materialCache.getMaterial('piece-black', () => 
       new THREE.MeshStandardMaterial({
         color: '#2c2c2c',
-        metalness: 0.3,
-        roughness: 0.4
+        metalness: 0.0,
+        roughness: 0.8
       })
     ),
     whiteSelected: materialCache.getMaterial('piece-white-selected', () => 
       new THREE.MeshStandardMaterial({
         color: '#f5f5f5',
-        metalness: 0.3,
-        roughness: 0.4,
+        metalness: 0.0,
+        roughness: 0.8,
         emissive: '#3366ff',
-        emissiveIntensity: 0.3
+        emissiveIntensity: 0.2
       })
     ),
     blackSelected: materialCache.getMaterial('piece-black-selected', () => 
       new THREE.MeshStandardMaterial({
         color: '#2c2c2c',
-        metalness: 0.3,
-        roughness: 0.4,
+        metalness: 0.0,
+        roughness: 0.8,
         emissive: '#3366ff',
-        emissiveIntensity: 0.3
+        emissiveIntensity: 0.2
       })
     )
   };
