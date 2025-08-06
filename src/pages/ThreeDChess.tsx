@@ -5,14 +5,14 @@ import { PushButton } from "@/components/mission-control/PushButton";
 import { IndicatorLight } from "@/components/mission-control/IndicatorLight";
 import { RaumschachBoard } from "@/components/chess/RaumschachBoard";
 import { useRaumschach } from "@/hooks/useRaumschach";
-import { useToast } from "@/hooks/use-toast";
+
 
 export default function ThreeDChess() {
   const [isGameActive, setIsGameActive] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const [clickedOnGameElement, setClickedOnGameElement] = useState(false);
-  const { toast } = useToast();
+  
   const {
     gameState,
     selectedPosition,
@@ -27,19 +27,11 @@ export default function ThreeDChess() {
   const handleNewGame = () => {
     resetGame();
     setIsGameActive(true);
-    toast({
-      title: "New Game Started",
-      description: "Raumschach 5×5×5 chess initialized",
-    });
   };
 
   const handleResetGame = () => {
     resetGame();
     setIsGameActive(false);
-    toast({
-      title: "Game Reset",
-      description: "All pieces returned to starting positions",
-    });
   };
 
   const handleCanvasClick = () => {
@@ -48,10 +40,6 @@ export default function ThreeDChess() {
     } else if (!isDragging && !clickedOnGameElement) {
       // Only pause if it wasn't a drag operation and wasn't clicking on game elements
       setIsGameActive(false);
-      toast({
-        title: "Game Paused",
-        description: "Click to resume",
-      });
     }
     // Reset the flag after handling the click
     setClickedOnGameElement(false);
