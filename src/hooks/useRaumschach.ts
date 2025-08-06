@@ -38,46 +38,46 @@ export function useRaumschach() {
       )
     );
 
-    // Place white pieces (levels 0-1)
-    // Level 0 (bottom)
-    board[0][0][0] = { type: 'rook', color: 'white' };
-    board[0][0][4] = { type: 'rook', color: 'white' };
-    board[0][4][0] = { type: 'rook', color: 'white' };
-    board[0][4][4] = { type: 'rook', color: 'white' };
+    // Place white pieces (levels 3-4) - now on top
+    // Level 4 (top)
+    board[4][0][0] = { type: 'rook', color: 'white' };
+    board[4][0][4] = { type: 'rook', color: 'white' };
+    board[4][4][0] = { type: 'rook', color: 'white' };
+    board[4][4][4] = { type: 'rook', color: 'white' };
     
-    // Level 1 - White pieces
-    board[1][1][1] = { type: 'knight', color: 'white' };
-    board[1][1][3] = { type: 'bishop', color: 'white' };
-    board[1][2][2] = { type: 'queen', color: 'white' };
-    board[1][3][1] = { type: 'bishop', color: 'white' };
-    board[1][3][3] = { type: 'knight', color: 'white' };
-    board[1][2][1] = { type: 'unicorn', color: 'white' };
-    board[1][2][3] = { type: 'king', color: 'white' };
+    // Level 3 - White pieces
+    board[3][1][1] = { type: 'knight', color: 'white' };
+    board[3][1][3] = { type: 'bishop', color: 'white' };
+    board[3][2][2] = { type: 'queen', color: 'white' };
+    board[3][3][1] = { type: 'bishop', color: 'white' };
+    board[3][3][3] = { type: 'knight', color: 'white' };
+    board[3][2][1] = { type: 'unicorn', color: 'white' };
+    board[3][2][3] = { type: 'king', color: 'white' };
     
     // White pawns on level 2 (middle level)
     for (let i = 0; i < 5; i++) {
-      board[2][1][i] = { type: 'pawn', color: 'white' };
+      board[2][3][i] = { type: 'pawn', color: 'white' };
     }
 
-    // Place black pieces (levels 3-4)
-    // Level 4 (top)
-    board[4][0][0] = { type: 'rook', color: 'black' };
-    board[4][0][4] = { type: 'rook', color: 'black' };
-    board[4][4][0] = { type: 'rook', color: 'black' };
-    board[4][4][4] = { type: 'rook', color: 'black' };
+    // Place black pieces (levels 0-1) - now on bottom
+    // Level 0 (bottom)
+    board[0][0][0] = { type: 'rook', color: 'black' };
+    board[0][0][4] = { type: 'rook', color: 'black' };
+    board[0][4][0] = { type: 'rook', color: 'black' };
+    board[0][4][4] = { type: 'rook', color: 'black' };
     
-    // Level 3 - Black pieces
-    board[3][1][1] = { type: 'knight', color: 'black' };
-    board[3][1][3] = { type: 'bishop', color: 'black' };
-    board[3][2][2] = { type: 'queen', color: 'black' };
-    board[3][3][1] = { type: 'bishop', color: 'black' };
-    board[3][3][3] = { type: 'knight', color: 'black' };
-    board[3][2][1] = { type: 'unicorn', color: 'black' };
-    board[3][2][3] = { type: 'king', color: 'black' };
+    // Level 1 - Black pieces
+    board[1][1][1] = { type: 'knight', color: 'black' };
+    board[1][1][3] = { type: 'bishop', color: 'black' };
+    board[1][2][2] = { type: 'queen', color: 'black' };
+    board[1][3][1] = { type: 'bishop', color: 'black' };
+    board[1][3][3] = { type: 'knight', color: 'black' };
+    board[1][2][1] = { type: 'unicorn', color: 'black' };
+    board[1][2][3] = { type: 'king', color: 'black' };
     
     // Black pawns on level 2 (middle level)
     for (let i = 0; i < 5; i++) {
-      board[2][3][i] = { type: 'pawn', color: 'black' };
+      board[2][1][i] = { type: 'pawn', color: 'black' };
     }
 
     return {
