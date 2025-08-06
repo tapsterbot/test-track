@@ -17,6 +17,9 @@ interface RaumschachBoardProps {
   currentPlayer: string;
   gameStatus: string;
   moveCount: number;
+  cursorPosition?: Position | null;
+  isKeyboardMode?: boolean;
+  onMouseInteraction?: () => void;
 }
 
 interface SquareProps {
@@ -24,10 +27,12 @@ interface SquareProps {
   piece: ChessPiece | null;
   isSelected: boolean;
   isValidMove: boolean;
+  isCursor: boolean;
   onClick: (position: Position) => void;
+  onMouseEnter?: () => void;
 }
 
-function Square({ position, piece, isSelected, isValidMove, onClick }: SquareProps) {
+function Square({ position, piece, isSelected, isValidMove, isCursor, onClick, onMouseEnter }: SquareProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   
@@ -36,8 +41,6 @@ function Square({ position, piece, isSelected, isValidMove, onClick }: SquarePro
   const z = (position.rank - 2) * 1.2;
   
   const isDark = (position.file + position.rank + position.level) % 2 === 1;
-  
-  // Removed spinning animation for better chess experience
 
   return (
     <group position={[x, y, z]}>
@@ -45,7 +48,10 @@ function Square({ position, piece, isSelected, isValidMove, onClick }: SquarePro
       <mesh
         ref={meshRef}
         onClick={() => onClick(position)}
-        onPointerOver={() => setHovered(true)}
+        onPointerOver={() => {
+          setHovered(true);
+          onMouseEnter?.();
+        }}
         onPointerOut={() => setHovered(false)}
       >
         <boxGeometry args={[1, 0.1, 1]} />
@@ -55,6 +61,8 @@ function Square({ position, piece, isSelected, isValidMove, onClick }: SquarePro
               ? "#22c55e" // Green for selected
               : isValidMove 
                 ? "#f59e0b" // Amber for valid moves
+                : isCursor
+                  ? "#3b82f6" // Blue for keyboard cursor
                 : hovered 
                   ? "#6b7280" // Gray for hover
                   : isDark 
@@ -66,7 +74,19 @@ function Square({ position, piece, isSelected, isValidMove, onClick }: SquarePro
         />
       </mesh>
       
-      {/* Valid move indicators removed - squares highlight instead */}
+      {/* Keyboard cursor indicator */}
+      {isCursor && (
+        <mesh position={[0, 0.06, 0]}>
+          <boxGeometry args={[1.1, 0.02, 1.1]} />
+          <meshPhongMaterial 
+            color="#3b82f6"
+            emissive="#1e40af"
+            emissiveIntensity={0.5}
+            transparent
+            opacity={0.9}
+          />
+        </mesh>
+      )}
       
       {/* Chess piece */}
       {piece && (
@@ -337,7 +357,7 @@ function CameraControls({ isActive }: { isActive: boolean }) {
   );
 }
 
-function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive'>) {
+function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive, cursorPosition, isKeyboardMode, onMouseInteraction }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive' | 'cursorPosition' | 'isKeyboardMode' | 'onMouseInteraction'>) {
   return (
     <>
       <CameraControls isActive={isActive} />
@@ -366,6 +386,10 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
               move.rank === rankIndex && 
               move.file === fileIndex
             );
+            const isCursor = isKeyboardMode && cursorPosition && 
+              cursorPosition.level === levelIndex && 
+              cursorPosition.rank === rankIndex && 
+              cursorPosition.file === fileIndex;
             
             return (
               <Square
@@ -374,7 +398,9 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
                 piece={square}
                 isSelected={isSelected}
                 isValidMove={isValidMove}
+                isCursor={isCursor}
                 onClick={onSquareClick}
+                onMouseEnter={onMouseInteraction}
               />
             );
           })
@@ -391,7 +417,9 @@ function GameHUD({
   currentPlayer, 
   gameStatus, 
   moveCount, 
-  isActive 
+  isActive,
+  cursorPosition,
+  isKeyboardMode
 }: {
   selectedPosition: Position | null;
   validMoves: Position[];
@@ -400,6 +428,8 @@ function GameHUD({
   gameStatus: string;
   moveCount: number;
   isActive: boolean;
+  cursorPosition?: Position | null;
+  isKeyboardMode?: boolean;
 }) {
   if (!isActive) return null;
 
@@ -446,22 +476,43 @@ function GameHUD({
       </div>
 
       {/* Bottom Left - Position Details */}
-      {selectedPosition && (
+      {(selectedPosition || (isKeyboardMode && cursorPosition)) && (
         <div className="absolute bottom-4 left-4 bg-black/80 border border-primary/30 rounded p-3 text-white">
-          <div className="text-xs font-futura text-primary mb-2 uppercase tracking-wider">POSITION</div>
+          <div className="text-xs font-futura text-primary mb-2 uppercase tracking-wider">
+            {isKeyboardMode && cursorPosition && !selectedPosition ? "CURSOR" : "POSITION"}
+          </div>
           <div className="space-y-1 text-xs font-mono">
-            <div className="flex justify-between gap-4">
-              <span>LEVEL:</span>
-              <span className="text-primary">{selectedPosition.level}</span>
-            </div>
-            <div className="flex justify-between gap-4">
-              <span>RANK:</span>
-              <span className="text-primary">{selectedPosition.rank}</span>
-            </div>
-            <div className="flex justify-between gap-4">
-              <span>FILE:</span>
-              <span className="text-primary">{selectedPosition.file}</span>
-            </div>
+            {selectedPosition ? (
+              <>
+                <div className="flex justify-between gap-4">
+                  <span>LEVEL:</span>
+                  <span className="text-primary">{selectedPosition.level}</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span>RANK:</span>
+                  <span className="text-primary">{selectedPosition.rank}</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span>FILE:</span>
+                  <span className="text-primary">{selectedPosition.file}</span>
+                </div>
+              </>
+            ) : (isKeyboardMode && cursorPosition) ? (
+              <>
+                <div className="flex justify-between gap-4">
+                  <span>LEVEL:</span>
+                  <span className="text-blue-400">{cursorPosition.level}</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span>RANK:</span>
+                  <span className="text-blue-400">{cursorPosition.rank}</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span>FILE:</span>
+                  <span className="text-blue-400">{cursorPosition.file}</span>
+                </div>
+              </>
+            ) : null}
           </div>
         </div>
       )}
@@ -498,7 +549,10 @@ export function RaumschachBoard({
   isActive,
   currentPlayer,
   gameStatus,
-  moveCount
+  moveCount,
+  cursorPosition,
+  isKeyboardMode,
+  onMouseInteraction
 }: RaumschachBoardProps) {
   return (
     <div className="relative w-full h-full nasa-panel">
@@ -516,6 +570,9 @@ export function RaumschachBoard({
           validMoves={validMoves}
           onSquareClick={isActive ? onSquareClick : () => {}}
           isActive={isActive}
+          cursorPosition={cursorPosition}
+          isKeyboardMode={isKeyboardMode}
+          onMouseInteraction={onMouseInteraction}
         />
       </Canvas>
       
@@ -528,6 +585,8 @@ export function RaumschachBoard({
         gameStatus={gameStatus}
         moveCount={moveCount}
         isActive={isActive}
+        cursorPosition={cursorPosition}
+        isKeyboardMode={isKeyboardMode}
       />
 
       {/* Game Ready Overlay */}

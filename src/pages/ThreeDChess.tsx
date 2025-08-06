@@ -5,6 +5,7 @@ import { PushButton } from "@/components/mission-control/PushButton";
 import { IndicatorLight } from "@/components/mission-control/IndicatorLight";
 import { RaumschachBoard } from "@/components/chess/RaumschachBoard";
 import { useRaumschach } from "@/hooks/useRaumschach";
+import { useChessKeyboard } from "@/hooks/useChessKeyboard";
 
 
 export default function ThreeDChess() {
@@ -23,6 +24,23 @@ export default function ThreeDChess() {
     getGameStatus,
     getMoveHistory
   } = useRaumschach();
+
+  const {
+    cursorPosition,
+    isKeyboardMode,
+    disableKeyboardMode
+  } = useChessKeyboard(
+    isGameActive,
+    selectSquare,
+    () => {
+      resetGame();
+      setIsGameActive(false);
+    },
+    () => {
+      resetGame();
+      setIsGameActive(true);
+    }
+  );
 
   const handleNewGame = () => {
     resetGame();
@@ -86,7 +104,12 @@ export default function ThreeDChess() {
 
   const handleSquareClick = (position: any) => {
     setClickedOnGameElement(true);
+    disableKeyboardMode(); // Switch to mouse mode
     selectSquare(position);
+  };
+
+  const handleMouseInteraction = () => {
+    disableKeyboardMode(); // Switch to mouse mode when hovering
   };
 
   return (
@@ -115,6 +138,9 @@ export default function ThreeDChess() {
                 currentPlayer={getCurrentPlayer()}
                 gameStatus={getGameStatus()}
                 moveCount={getMoveHistory().length}
+                cursorPosition={cursorPosition}
+                isKeyboardMode={isKeyboardMode}
+                onMouseInteraction={handleMouseInteraction}
               />
             </div>
           </SystemPanel>
@@ -174,11 +200,17 @@ export default function ThreeDChess() {
           {/* Instructions */}
           <SystemPanel title="CONTROLS">
             <div className="text-xs text-muted-foreground space-y-1">
+              <div className="text-primary mb-1">MOUSE:</div>
               <div>• Click pieces to select</div>
               <div>• Click valid squares to move</div>
               <div>• Drag to orbit camera</div>
               <div>• Scroll to zoom</div>
-              <div>• Arrow keys to rotate</div>
+              <div className="text-primary mb-1 mt-2">KEYBOARD:</div>
+              <div>• Arrow keys to navigate</div>
+              <div>• Page Up/Down for levels</div>
+              <div>• Space/Enter to select</div>
+              <div>• Escape to deselect</div>
+              <div>• R to reset, N for new game</div>
             </div>
           </SystemPanel>
         </div>

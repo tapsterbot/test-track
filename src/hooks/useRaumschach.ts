@@ -241,6 +241,13 @@ export function useRaumschach() {
   }, [gameState]);
 
   const selectSquare = useCallback((position: Position) => {
+    // Handle invalid position (used for deselection via keyboard)
+    if (position.level < 0 || position.rank < 0 || position.file < 0) {
+      setSelectedPosition(null);
+      setValidMoves([]);
+      return;
+    }
+
     const piece = getPieceAt(position);
     
     if (selectedPosition) {
