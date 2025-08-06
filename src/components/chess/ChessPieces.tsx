@@ -1,6 +1,6 @@
 import { ChessGameState, ChessSquare } from '@/hooks/useChessGame';
-import { useState } from 'react';
-import * as THREE from 'three';
+import { useState, useMemo, memo, useCallback } from 'react';
+import { createPieceMaterials, getSharedGeometries } from '@/lib/threeMaterials';
 
 interface ChessPiecesProps {
   gameState: ChessGameState;
@@ -9,16 +9,15 @@ interface ChessPiecesProps {
   onSquareClick: (square: ChessSquare) => void;
 }
 
-function PieceGeometry({ piece }: { piece: string }) {
+const PieceGeometry = memo(function PieceGeometry({ piece }: { piece: string }) {
   const type = piece.toLowerCase();
+  const geometries = useMemo(() => getSharedGeometries(), []);
   
   switch (type) {
     case 'k': // King
       return (
         <group>
-          <mesh position={[0, 0.3, 0]}>
-            <cylinderGeometry args={[0.3, 0.35, 0.6]} />
-          </mesh>
+          <mesh position={[0, 0.3, 0]} geometry={geometries.king} />
           <mesh position={[0, 0.7, 0]}>
             <boxGeometry args={[0.1, 0.3, 0.1]} />
           </mesh>
@@ -31,9 +30,7 @@ function PieceGeometry({ piece }: { piece: string }) {
     case 'q': // Queen
       return (
         <group>
-          <mesh position={[0, 0.3, 0]}>
-            <cylinderGeometry args={[0.28, 0.32, 0.6]} />
-          </mesh>
+          <mesh position={[0, 0.3, 0]} geometry={geometries.queen} />
           <mesh position={[0, 0.65, 0]}>
             <coneGeometry args={[0.25, 0.3]} />
           </mesh>
@@ -43,9 +40,7 @@ function PieceGeometry({ piece }: { piece: string }) {
     case 'r': // Rook
       return (
         <group>
-          <mesh position={[0, 0.25, 0]}>
-            <boxGeometry args={[0.5, 0.5, 0.5]} />
-          </mesh>
+          <mesh position={[0, 0.25, 0]} geometry={geometries.rook} />
           <mesh position={[0, 0.55, 0]}>
             <boxGeometry args={[0.6, 0.1, 0.6]} />
           </mesh>
@@ -55,9 +50,7 @@ function PieceGeometry({ piece }: { piece: string }) {
     case 'b': // Bishop
       return (
         <group>
-          <mesh position={[0, 0.25, 0]}>
-            <cylinderGeometry args={[0.25, 0.3, 0.5]} />
-          </mesh>
+          <mesh position={[0, 0.25, 0]} geometry={geometries.bishop} />
           <mesh position={[0, 0.55, 0]}>
             <coneGeometry args={[0.2, 0.3]} />
           </mesh>
@@ -70,9 +63,7 @@ function PieceGeometry({ piece }: { piece: string }) {
     case 'n': // Knight
       return (
         <group>
-          <mesh position={[0, 0.25, 0]}>
-            <cylinderGeometry args={[0.25, 0.3, 0.5]} />
-          </mesh>
+          <mesh position={[0, 0.25, 0]} geometry={geometries.knight} />
           <mesh position={[0, 0.5, 0.15]}>
             <boxGeometry args={[0.2, 0.4, 0.3]} />
           </mesh>
@@ -85,9 +76,7 @@ function PieceGeometry({ piece }: { piece: string }) {
     case 'p': // Pawn
       return (
         <group>
-          <mesh position={[0, 0.2, 0]}>
-            <cylinderGeometry args={[0.2, 0.25, 0.4]} />
-          </mesh>
+          <mesh position={[0, 0.2, 0]} geometry={geometries.pawn} />
           <mesh position={[0, 0.45, 0]}>
             <sphereGeometry args={[0.15]} />
           </mesh>
@@ -96,14 +85,12 @@ function PieceGeometry({ piece }: { piece: string }) {
     
     default:
       return (
-        <mesh position={[0, 0.25, 0]}>
-          <cylinderGeometry args={[0.2, 0.25, 0.5]} />
-        </mesh>
+        <mesh position={[0, 0.25, 0]} geometry={geometries.pawn} />
       );
   }
-}
+});
 
-export function ChessPieces({ 
+export const ChessPieces = memo(function ChessPieces({ 
   gameState, 
   level, 
   selectedSquare, 
@@ -111,53 +98,77 @@ export function ChessPieces({
 }: ChessPiecesProps) {
   const [hoveredPiece, setHoveredPiece] = useState<string | null>(null);
   
-  const pieces = [];
+  // Use stable materials
+  const materials = useMemo(() => createPieceMaterials(), []);
+  
   const boardState = gameState.boards[level];
   
-  if (!boardState) return null;
+  // Stable event handlers
+  const handlePieceHover = useCallback((pieceKey: string) => {
+    setHoveredPiece(pieceKey);
+  }, []);
   
-  for (let file = 0; file < boardState.length; file++) {
-    for (let rank = 0; rank < boardState[file].length; rank++) {
-      const piece = boardState[file][rank];
-      if (!piece) continue;
-      
-      const pieceKey = `${level}-${file}-${rank}-${piece}`;
-      const square: ChessSquare = { level, file, rank };
-      const boardSize = level === 'main' ? [8, 8] : [2, 4];
-      
-      const isSelected = selectedSquare && 
-        selectedSquare.level === level && 
-        selectedSquare.file === file && 
-        selectedSquare.rank === rank;
-      
-      const isHovered = hoveredPiece === pieceKey;
-      const isWhite = piece === piece.toUpperCase();
-      
-      pieces.push(
-        <group
-          key={pieceKey}
-          position={[
-            file - (boardSize[0] - 1) / 2,
-            0.15,
-            rank - (boardSize[1] - 1) / 2
-          ]}
-          onPointerOver={() => setHoveredPiece(pieceKey)}
-          onPointerOut={() => setHoveredPiece(null)}
-          onClick={() => onSquareClick(square)}
-          scale={isHovered ? 1.1 : 1}
-        >
-          <meshStandardMaterial
-            color={isWhite ? '#f5f5f5' : '#2c2c2c'}
-            metalness={0.3}
-            roughness={0.4}
-            emissive={isSelected ? '#3366ff' : '#000000'}
-            emissiveIntensity={isSelected ? 0.3 : 0}
-          />
-          <PieceGeometry piece={piece} />
-        </group>
-      );
+  const handlePieceLeave = useCallback(() => {
+    setHoveredPiece(null);
+  }, []);
+
+  const handlePieceClick = useCallback((square: ChessSquare) => {
+    onSquareClick(square);
+  }, [onSquareClick]);
+  
+  // Memoize pieces array to prevent recreation
+  const pieces = useMemo(() => {
+    if (!boardState) return [];
+    
+    const pieceElements = [];
+    
+    for (let file = 0; file < boardState.length; file++) {
+      for (let rank = 0; rank < boardState[file].length; rank++) {
+        const piece = boardState[file][rank];
+        if (!piece) continue;
+        
+        const pieceKey = `${level}-${file}-${rank}-${piece}`;
+        const square: ChessSquare = { level, file, rank };
+        const boardSize = level === 'main' ? [8, 8] : [2, 4];
+        
+        const isSelected = selectedSquare && 
+          selectedSquare.level === level && 
+          selectedSquare.file === file && 
+          selectedSquare.rank === rank;
+        
+        const isHovered = hoveredPiece === pieceKey;
+        const isWhite = piece === piece.toUpperCase();
+        
+        // Select material based on piece color and selection state
+        let material;
+        if (isSelected) {
+          material = isWhite ? materials.whiteSelected : materials.blackSelected;
+        } else {
+          material = isWhite ? materials.white : materials.black;
+        }
+        
+        pieceElements.push(
+          <group
+            key={pieceKey}
+            position={[
+              file - (boardSize[0] - 1) / 2,
+              0.15,
+              rank - (boardSize[1] - 1) / 2
+            ]}
+            onPointerOver={() => handlePieceHover(pieceKey)}
+            onPointerOut={handlePieceLeave}
+            onClick={() => handlePieceClick(square)}
+            scale={isHovered ? 1.1 : 1}
+          >
+            <meshStandardMaterial attach="material" {...material} />
+            <PieceGeometry piece={piece} />
+          </group>
+        );
+      }
     }
-  }
+    
+    return pieceElements;
+  }, [boardState, level, selectedSquare, hoveredPiece, materials, handlePieceHover, handlePieceLeave, handlePieceClick]);
   
   return <>{pieces}</>;
-}
+});
