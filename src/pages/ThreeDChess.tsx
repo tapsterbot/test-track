@@ -11,6 +11,7 @@ export default function ThreeDChess() {
   const [isGameActive, setIsGameActive] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
+  const [clickedOnGameElement, setClickedOnGameElement] = useState(false);
   const { toast } = useToast();
   const {
     gameState,
@@ -44,14 +45,16 @@ export default function ThreeDChess() {
   const handleCanvasClick = () => {
     if (!isGameActive) {
       handleNewGame();
-    } else if (!isDragging) {
-      // Only pause if it wasn't a drag operation
+    } else if (!isDragging && !clickedOnGameElement) {
+      // Only pause if it wasn't a drag operation and wasn't clicking on game elements
       setIsGameActive(false);
       toast({
         title: "Game Paused",
         description: "Click to resume",
       });
     }
+    // Reset the flag after handling the click
+    setClickedOnGameElement(false);
   };
 
   const handleCanvasPointerDown = (event: any) => {
@@ -78,6 +81,11 @@ export default function ThreeDChess() {
     setTimeout(() => setIsDragging(false), 50);
   };
 
+  const handleSquareClick = (position: any) => {
+    setClickedOnGameElement(true);
+    selectSquare(position);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader
@@ -95,7 +103,7 @@ export default function ThreeDChess() {
                 gameState={gameState}
                 selectedPosition={selectedPosition}
                 validMoves={validMoves}
-                onSquareClick={selectSquare}
+                onSquareClick={handleSquareClick}
                 onCanvasClick={handleCanvasClick}
                 onCanvasPointerDown={handleCanvasPointerDown}
                 onCanvasPointerMove={handleCanvasPointerMove}
