@@ -91,6 +91,7 @@ function ChessSquare({
       onClick={handleClick}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
+      userData={{ type: 'square' }}
     >
       <boxGeometry args={[1, 0.1, 1]} />
       <meshStandardMaterial 
@@ -277,6 +278,8 @@ function SceneContent({
 }: ChessBoard3DProps) {
   const chessLogic = useChessLogic();
   const chessControls = useChessControls();
+  const [isDynamicOrbitMode, setIsDynamicOrbitMode] = useState(false);
+  const [isPointerDown, setIsPointerDown] = useState(false);
 
   useEffect(() => {
     const gameState = chessLogic.getGameState();
@@ -304,6 +307,38 @@ function SceneContent({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [chessLogic, chessControls]);
 
+  // Handle dynamic orbit mode based on click location
+  const handlePointerDown = (event: any) => {
+    setIsPointerDown(true);
+    const intersectedObject = event.intersections[0]?.object;
+    
+    // Check if click is on chess board elements (pieces or squares)
+    const isChessBoardClick = intersectedObject && (
+      intersectedObject.userData?.type === 'square' || 
+      intersectedObject.userData?.type === 'piece' ||
+      intersectedObject.parent?.userData?.type === 'square' ||
+      intersectedObject.parent?.userData?.type === 'piece'
+    );
+    
+    if (!isChessBoardClick) {
+      setIsDynamicOrbitMode(true);
+    } else {
+      setIsDynamicOrbitMode(false);
+    }
+  };
+
+  const handlePointerUp = () => {
+    setIsPointerDown(false);
+    // Keep orbit mode active briefly to allow for smooth camera transitions
+    setTimeout(() => {
+      if (!isPointerDown) {
+        setIsDynamicOrbitMode(false);
+      }
+    }, 100);
+  };
+
+  const effectiveCameraMode = isDynamicOrbitMode ? 'orbit' : cameraMode;
+
   return (
     <>
       {/* Lighting */}
@@ -317,6 +352,17 @@ function SceneContent({
       />
       <pointLight position={[0, 10, 0]} intensity={0.5} />
 
+      {/* Invisible plane to catch clicks outside the board */}
+      <mesh
+        position={[0, -2, 0]}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        userData={{ type: 'background' }}
+      >
+        <planeGeometry args={[50, 50]} />
+        <meshBasicMaterial transparent opacity={0} />
+      </mesh>
+
       {/* Board */}
       <Board
         selectedSquare={chessLogic.selectedSquare}
@@ -325,12 +371,11 @@ function SceneContent({
         isKeyboardMode={chessControls.isKeyboardMode}
         onSquareClick={handleSquareClick}
         board={chessLogic.board}
-        cameraMode={cameraMode}
+        cameraMode={effectiveCameraMode}
       />
 
-
       {/* Camera Controller */}
-      <CameraController cameraMode={cameraMode} isActive={isActive} />
+      <CameraController cameraMode={effectiveCameraMode} isActive={isActive} />
     </>
   );
 }

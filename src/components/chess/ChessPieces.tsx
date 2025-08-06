@@ -188,6 +188,7 @@ function ChessPiece3D({ piece, position, onClick, cameraMode }: ChessPieceProps 
       onClick={handleClick}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
+      userData={{ type: 'piece' }}
     >
       <group scale={hovered ? 1.1 : 1}>
         <meshStandardMaterial
