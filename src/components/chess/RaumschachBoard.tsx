@@ -318,9 +318,19 @@ function BoardStructure() {
   );
 }
 
-function Scene({ gameState, selectedPosition, validMoves, onSquareClick }: Omit<RaumschachBoardProps, 'isActive' | 'onCanvasClick'>) {
+function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive }: Omit<RaumschachBoardProps, 'onCanvasClick' | 'onCanvasPointerDown' | 'onCanvasPointerMove' | 'onCanvasPointerUp'>) {
   return (
     <>
+      <OrbitControls
+        enablePan={true}
+        enableZoom={true}
+        enableRotate={true}
+        minDistance={5}
+        maxDistance={20}
+        target={[0, 3, 0]}
+        enabled={isActive}
+      />
+      
       <ambientLight intensity={0.6} />
       <directionalLight position={[10, 10, 5]} intensity={1.0} />
       <directionalLight position={[-5, 5, -5]} intensity={0.5} />
@@ -384,20 +394,12 @@ export function RaumschachBoard({
         onPointerMove={onCanvasPointerMove}
         onPointerUp={onCanvasPointerUp}
       >
-        <OrbitControls
-          enablePan={true}
-          enableZoom={true}
-          enableRotate={true}
-          minDistance={5}
-          maxDistance={20}
-          target={[0, 3, 0]}
-          enabled={isActive}
-        />
         <Scene
           gameState={gameState}
           selectedPosition={selectedPosition}
           validMoves={validMoves}
           onSquareClick={isActive ? onSquareClick : () => {}}
+          isActive={isActive}
         />
       </Canvas>
       
