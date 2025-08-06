@@ -388,7 +388,7 @@ export function RaumschachBoard({ gameState, selectedPosition, validMoves, onSqu
       {/* Game Ready Overlay */}
       {!isActive && (
         <div 
-          className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center cursor-pointer z-10"
+          className="absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer z-10"
           onClick={onCanvasClick}
         >
           <div className="text-center">
