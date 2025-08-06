@@ -66,9 +66,18 @@ function ChessSquare({
     <mesh
       ref={meshRef}
       position={position}
-      onClick={onClick}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        setHovered(true);
+      }}
+      onPointerOut={(e) => {
+        e.stopPropagation();
+        setHovered(false);
+      }}
     >
       <boxGeometry args={[1, 0.1, 1]} />
       <meshStandardMaterial 
@@ -199,19 +208,25 @@ function CameraController({
   useFrame(() => {
     if (!controlsRef.current) return;
 
-    // Only override camera position for fixed views, let orbit mode be free
+    // Always update controls
+    controlsRef.current.update();
+
+    // Only override camera position for fixed views
     if (cameraMode !== 'orbit') {
       switch (cameraMode) {
         case 'white':
-          camera.position.lerp(new THREE.Vector3(0, 12, 8), 0.03);
-          controlsRef.current.target.lerp(new THREE.Vector3(0, 0, -1), 0.03);
+          const whitePos = new THREE.Vector3(0, 12, 8);
+          const whiteTarget = new THREE.Vector3(0, 0, -1);
+          camera.position.lerp(whitePos, 0.02);
+          controlsRef.current.target.lerp(whiteTarget, 0.02);
           break;
         case 'black':
-          camera.position.lerp(new THREE.Vector3(0, 12, -8), 0.03);
-          controlsRef.current.target.lerp(new THREE.Vector3(0, 0, 1), 0.03);
+          const blackPos = new THREE.Vector3(0, 12, -8);
+          const blackTarget = new THREE.Vector3(0, 0, 1);
+          camera.position.lerp(blackPos, 0.02);
+          controlsRef.current.target.lerp(blackTarget, 0.02);
           break;
       }
-      controlsRef.current.update();
     }
   });
 
@@ -220,15 +235,19 @@ function CameraController({
       ref={controlsRef}
       enablePan={true}
       enableZoom={true}
-      enableRotate={true}
+      enableRotate={cameraMode === 'orbit'}
       enableDamping={true}
-      dampingFactor={0.05}
+      dampingFactor={0.1}
       maxPolarAngle={Math.PI / 2}
-      minPolarAngle={Math.PI / 6}
-      minDistance={8}
-      maxDistance={25}
+      minPolarAngle={Math.PI / 8}
+      minDistance={10}
+      maxDistance={30}
       target={[0, 0, 0]}
-      makeDefault
+      mouseButtons={{
+        LEFT: THREE.MOUSE.ROTATE,
+        MIDDLE: THREE.MOUSE.DOLLY,
+        RIGHT: THREE.MOUSE.PAN
+      }}
     />
   );
 }
@@ -299,19 +318,16 @@ function SceneContent({
 }
 
 export function ChessBoard3D(props: ChessBoard3DProps) {
-  const handleCanvasClick = () => {
-    if (!props.isActive) {
-      props.onToggleGame();
-    }
-  };
-
   return (
-    <div className="w-full h-full" onClick={handleCanvasClick}>
+    <div className="w-full h-full" style={{ touchAction: 'none' }}>
       <Canvas
         camera={{ position: [0, 15, 10], fov: 60 }}
         shadows
         style={{ background: 'transparent' }}
         gl={{ antialias: true, alpha: true }}
+        onPointerMissed={() => {
+          // Allow orbit controls when clicking empty space
+        }}
       >
         <SceneContent {...props} />
       </Canvas>
