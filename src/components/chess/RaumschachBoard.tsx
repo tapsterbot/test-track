@@ -49,14 +49,14 @@ function Square({ position, piece, isSelected, isValidMove, onClick }: SquarePro
         <meshPhongMaterial 
           color={
             isSelected 
-              ? "hsl(var(--primary))" 
+              ? "#22c55e" // Green for selected
               : isValidMove 
-                ? "hsl(var(--accent))" 
+                ? "#f59e0b" // Amber for valid moves
                 : hovered 
-                  ? "hsl(var(--muted))" 
+                  ? "#6b7280" // Gray for hover
                   : isDark 
-                    ? "hsl(var(--muted-foreground))" 
-                    : "hsl(var(--card))"
+                    ? "#374151" // Dark gray for dark squares
+                    : "#f3f4f6" // Light gray for light squares
           }
           transparent
           opacity={0.8}
@@ -68,7 +68,7 @@ function Square({ position, piece, isSelected, isValidMove, onClick }: SquarePro
         <mesh position={[0, 0.2, 0]}>
           <sphereGeometry args={[0.2]} />
           <meshPhongMaterial 
-            color="hsl(var(--accent))" 
+            color="#f59e0b" // Amber for move indicators
             transparent 
             opacity={0.6}
           />
@@ -102,7 +102,7 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
     }
   });
 
-  const color = piece.color === 'white' ? "hsl(var(--card))" : "hsl(var(--foreground))";
+  const color = piece.color === 'white' ? "#ffffff" : "#1f2937";
   
   const renderPieceGeometry = () => {
     switch (piece.type) {
@@ -130,8 +130,8 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
       {renderPieceGeometry()}
       <meshPhongMaterial 
         color={color} 
-        emissive={isSelected ? "hsl(var(--primary))" : "black"}
-        emissiveIntensity={isSelected ? 0.2 : 0}
+        emissive={isSelected ? "#22c55e" : "#000000"}
+        emissiveIntensity={isSelected ? 0.3 : 0}
       />
     </mesh>
   );
@@ -146,7 +146,7 @@ function BoardStructure() {
           key={`level-${level}`}
           position={[-3.5, level * 1.5, 0]}
           fontSize={0.3}
-          color="hsl(var(--muted-foreground))"
+          color="#6b7280"
           anchorX="center"
           anchorY="middle"
         >
@@ -160,7 +160,7 @@ function BoardStructure() {
           <mesh key={`pillar-${x}-${z}`} position={[x * 1.2, 3, z * 1.2]}>
             <cylinderGeometry args={[0.02, 0.02, 6]} />
             <meshPhongMaterial 
-              color="hsl(var(--border))" 
+              color="#9ca3af" 
               transparent 
               opacity={0.3} 
             />
@@ -174,9 +174,10 @@ function BoardStructure() {
 function Scene({ gameState, selectedPosition, validMoves, onSquareClick }: Omit<RaumschachBoardProps, 'isActive'>) {
   return (
     <>
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[10, 10, 5]} intensity={0.8} />
-      <pointLight position={[0, 6, 0]} intensity={0.5} />
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[10, 10, 5]} intensity={1.0} />
+      <directionalLight position={[-5, 5, -5]} intensity={0.5} />
+      <pointLight position={[0, 8, 0]} intensity={0.8} />
       
       <BoardStructure />
       
