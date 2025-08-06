@@ -174,23 +174,29 @@ export default function ThreeDChess() {
           <div className="space-y-4">
             {/* Instructions */}
             <SystemPanel title="CONTROLS">
-              <div className="text-xs text-muted-foreground space-y-1">
-                <div className="text-primary mb-1">MOUSE:</div>
-                <div>• Click pieces to select</div>
-                <div>• Click valid squares to move</div>
-                <div>• Drag to orbit camera</div>
-                <div>• Scroll to zoom</div>
-                <div className="text-primary mb-1 mt-2">TOUCH:</div>
-                <div>• Tap pieces to select</div>
-                <div>• Tap valid squares to move</div>
-                <div>• Drag to orbit camera</div>
-                <div>• Pinch to zoom</div>
-                <div className="text-primary mb-1 mt-2">KEYBOARD:</div>
-                <div>• Arrow keys to navigate</div>
-                <div>• Page Up/Down for levels</div>
-                <div>• Space/Enter to select</div>
-                <div>• Escape to deselect</div>
-                <div>• R to reset, N for new game</div>
+              <div className="text-xs text-muted-foreground grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <div className="text-primary mb-1">MOUSE:</div>
+                  <div>• Click pieces to select</div>
+                  <div>• Click valid squares to move</div>
+                  <div>• Drag to orbit camera</div>
+                  <div>• Scroll to zoom</div>
+                </div>
+                <div>
+                  <div className="text-primary mb-1">TOUCH:</div>
+                  <div>• Tap pieces to select</div>
+                  <div>• Tap valid squares to move</div>
+                  <div>• Drag to orbit camera</div>
+                  <div>• Pinch to zoom</div>
+                </div>
+                <div>
+                  <div className="text-primary mb-1">KEYBOARD:</div>
+                  <div>• Arrow keys to navigate</div>
+                  <div>• Page Up/Down for levels</div>
+                  <div>• Space/Enter to select</div>
+                  <div>• Escape to deselect</div>
+                  <div>• R to reset, N for new game</div>
+                </div>
               </div>
             </SystemPanel>
           </div>
