@@ -139,7 +139,7 @@ function PieceGeometry({ type }: { type: ChessPiece['type'] }) {
   }
 }
 
-function ChessPiece3D({ piece, position, onClick }: ChessPieceProps) {
+function ChessPiece3D({ piece, position, onClick, cameraMode }: ChessPieceProps & { cameraMode: 'orbit' | 'white' | 'black' }) {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
 
@@ -159,23 +159,35 @@ function ChessPiece3D({ piece, position, onClick }: ChessPieceProps) {
   const materialColor = piece.color === 'white' ? '#f8f8f8' : '#2c2c2c';
   const emissiveColor = piece.color === 'white' ? '#ffffff' : '#000000';
 
+  // Disable interactions in orbit mode
+  const isOrbitMode = cameraMode === 'orbit';
+
+  const handleClick = (e: any) => {
+    if (isOrbitMode) return;
+    e.stopPropagation();
+    onClick();
+  };
+
+  const handlePointerOver = (e: any) => {
+    if (isOrbitMode) return;
+    e.stopPropagation();
+    setHovered(true);
+    document.body.style.cursor = 'pointer';
+  };
+
+  const handlePointerOut = () => {
+    if (isOrbitMode) return;
+    setHovered(false);
+    document.body.style.cursor = 'auto';
+  };
+
   return (
     <group
       ref={groupRef}
       position={position}
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick();
-      }}
-      onPointerOver={(e) => {
-        e.stopPropagation();
-        setHovered(true);
-        document.body.style.cursor = 'pointer';
-      }}
-      onPointerOut={() => {
-        setHovered(false);
-        document.body.style.cursor = 'auto';
-      }}
+      onClick={handleClick}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
     >
       <group scale={hovered ? 1.1 : 1}>
         <meshStandardMaterial
@@ -184,6 +196,8 @@ function ChessPiece3D({ piece, position, onClick }: ChessPieceProps) {
           emissiveIntensity={0.1}
           roughness={0.3}
           metalness={piece.color === 'white' ? 0.1 : 0.2}
+          opacity={isOrbitMode ? 0.7 : 1}
+          transparent={isOrbitMode}
         />
         <PieceGeometry type={piece.type} />
       </group>
@@ -202,9 +216,10 @@ interface ChessPiecesProps {
   level: number;
   levelY: number;
   onPieceClick: (row: number, col: number) => void;
+  cameraMode: 'orbit' | 'white' | 'black';
 }
 
-export function ChessPieces({ board, level, levelY, onPieceClick }: ChessPiecesProps) {
+export function ChessPieces({ board, level, levelY, onPieceClick, cameraMode }: ChessPiecesProps) {
   const pieces = [];
   const levelSize = board.length;
   
@@ -218,6 +233,7 @@ export function ChessPieces({ board, level, levelY, onPieceClick }: ChessPiecesP
             piece={piece}
             position={[col - levelSize/2 + 0.5, levelY + 0.5, row - levelSize/2 + 0.5]}
             onClick={() => onPieceClick(row, col)}
+            cameraMode={cameraMode}
           />
         );
       }

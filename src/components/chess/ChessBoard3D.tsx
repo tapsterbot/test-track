@@ -13,14 +13,15 @@ interface ChessBoard3DProps {
   onToggleGame: () => void;
 }
 
-function ChessSquare({ 
-  position, 
-  color, 
-  isSelected, 
-  isValidMove, 
+function ChessSquare({
+  position,
+  color,
+  isSelected,
+  isValidMove,
   isKeyboardCursor,
   level,
-  onClick 
+  onClick,
+  cameraMode
 }: {
   position: [number, number, number];
   color: 'light' | 'dark';
@@ -29,6 +30,7 @@ function ChessSquare({
   isKeyboardCursor: boolean;
   level: number;
   onClick: () => void;
+  cameraMode: 'orbit' | 'white' | 'black';
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
@@ -62,21 +64,43 @@ function ChessSquare({
     materialColor = '#4a9eff'; // Blue for keyboard cursor
   }
 
+  // Disable interactions in orbit mode
+  const isOrbitMode = cameraMode === 'orbit';
+
+  const handleClick = (e: any) => {
+    if (isOrbitMode) return;
+    e.stopPropagation();
+    onClick();
+  };
+
+  const handlePointerOver = (e: any) => {
+    if (isOrbitMode) return;
+    e.stopPropagation();
+    setHovered(true);
+  };
+
+  const handlePointerOut = () => {
+    if (isOrbitMode) return;
+    setHovered(false);
+  };
+
   return (
     <mesh
       ref={meshRef}
       position={position}
-      onClick={onClick}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
+      onClick={handleClick}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
     >
       <boxGeometry args={[1, 0.1, 1]} />
       <meshStandardMaterial 
         color={materialColor}
         roughness={0.3}
         metalness={0.1}
+        opacity={isOrbitMode ? 0.7 : 1}
+        transparent={isOrbitMode}
       />
-      {isValidMove && (
+      {isValidMove && !isOrbitMode && (
         <mesh position={[0, 0.06, 0]}>
           <cylinderGeometry args={[0.15, 0.15, 0.02, 16]} />
           <meshStandardMaterial color="#ffd700" transparent opacity={0.8} />
@@ -95,7 +119,8 @@ function Board({
   keyboardCursor, 
   isKeyboardMode,
   onSquareClick,
-  board
+  board,
+  cameraMode
 }: {
   selectedSquare: Chess3DPosition | null;
   validMoves: Chess3DPosition[];
@@ -103,6 +128,7 @@ function Board({
   isKeyboardMode: boolean;
   onSquareClick: (level: number, row: number, col: number) => void;
   board: any[][][];
+  cameraMode: 'orbit' | 'white' | 'black';
 }) {
   const levels = [];
   
@@ -137,6 +163,7 @@ function Board({
             isKeyboardCursor={isKeyboardCursor}
             level={level}
             onClick={() => onSquareClick(level, row, col)}
+            cameraMode={cameraMode}
           />
         );
       }
@@ -159,7 +186,8 @@ function Board({
           board={board[level]} 
           level={level}
           levelY={levelY}
-          onPieceClick={(row, col) => onSquareClick(level, row, col)} 
+          onPieceClick={(row, col) => onSquareClick(level, row, col)}
+          cameraMode={cameraMode}
         />
       </group>
     );
@@ -297,6 +325,7 @@ function SceneContent({
         isKeyboardMode={chessControls.isKeyboardMode}
         onSquareClick={handleSquareClick}
         board={chessLogic.board}
+        cameraMode={cameraMode}
       />
 
 
