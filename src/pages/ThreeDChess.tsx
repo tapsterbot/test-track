@@ -205,6 +205,11 @@ export default function ThreeDChess() {
               <div>• Click valid squares to move</div>
               <div>• Drag to orbit camera</div>
               <div>• Scroll to zoom</div>
+              <div className="text-primary mb-1 mt-2">TOUCH:</div>
+              <div>• Tap pieces to select</div>
+              <div>• Tap valid squares to move</div>
+              <div>• Drag to orbit camera</div>
+              <div>• Pinch to zoom</div>
               <div className="text-primary mb-1 mt-2">KEYBOARD:</div>
               <div>• Arrow keys to navigate</div>
               <div>• Page Up/Down for levels</div>
