@@ -69,7 +69,7 @@ export default function ChessGame() {
     }));
   };
 
-  const formatTime = (seconds: number) => {
+  const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
@@ -77,57 +77,30 @@ export default function ChessGame() {
 
   return (
     <div className="min-h-screen bg-background">
-      <ModuleHeader
-        moduleNumber="026"
-        title="3D CHESS BOARD"
+      <ModuleHeader 
+        moduleNumber="026" 
+        title="3D CHESS BOARD" 
         description="STRATEGIC THINKING & PATTERN RECOGNITION TRAINING"
       />
-
-      <div className="container mx-auto px-4 pt-8 pb-1">
-        {/* Mission Briefing */}
-        <div className="mb-8">
+      
+      <div className="container mx-auto p-4 space-y-6">
+        {/* Mission Briefing & Controls */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+          {/* Mission Briefing */}
           <SystemPanel title="MISSION BRIEFING">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="nasa-panel">
-                <CardHeader>
-                  <CardTitle className="text-lg font-futura text-primary">OBJECTIVE</CardTitle>
-                  <CardDescription>Master strategic thinking through chess</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Navigate the complexities of chess strategy in a 3D environment. Use logical thinking and pattern recognition to outmaneuver your opponent.
-                  </p>
-                  <div className="space-y-2 text-xs">
-                    <div>□ GOAL: Checkmate opponent's king</div>
-                    <div>□ CONTROLS: Click pieces to select and move</div>
-                    <div>□ KEYBOARD: Arrow keys to navigate board</div>
-                    <div>□ CAMERA: Multiple viewing perspectives available</div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="nasa-panel">
-                <CardHeader>
-                  <CardTitle className="text-lg font-futura text-accent">PROTOCOLS</CardTitle>
-                  <CardDescription>Game rules and procedures</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 text-xs">
-                    <div>• Standard chess rules apply</div>
-                    <div>• White always moves first</div>
-                    <div>• Special moves: Castling, En passant</div>
-                    <div>• Pawn promotion available</div>
-                    <div>• Game timer: 10 minutes per player</div>
-                    <div>• Touch controls for mobile devices</div>
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="space-y-2 text-xs">
+              <p>Tri-dimensional chess simulation activated.</p>
+              <p>Navigate pieces across three levels using strategic thinking.</p>
+              <p><strong>CONTROLS:</strong></p>
+              <ul className="space-y-1 text-muted-foreground">
+                <li>• Arrow keys: Move cursor</li>
+                <li>• Q/E or Page Up/Down: Change level</li>
+                <li>• Enter/Space: Select piece</li>
+                <li>• Mouse: Click to interact</li>
+              </ul>
             </div>
           </SystemPanel>
-        </div>
 
-        {/* Control Panels */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
           {/* Game Controls */}
           <SystemPanel title="GAME CONTROLS">
             <div className="space-y-3">
@@ -139,8 +112,9 @@ export default function ChessGame() {
                 size="sm"
               >
                 <Play className="w-4 h-4 mr-2" />
-                START GAME
+                START MISSION
               </Button>
+              
               <Button
                 onClick={handlePauseGame}
                 disabled={!isGameActive}
@@ -149,8 +123,9 @@ export default function ChessGame() {
                 size="sm"
               >
                 <Pause className="w-4 h-4 mr-2" />
-                PAUSE
+                PAUSE MISSION
               </Button>
+              
               <Button
                 onClick={handleResetGame}
                 className="w-full nasa-panel"
@@ -158,8 +133,9 @@ export default function ChessGame() {
                 size="sm"
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
-                RESET
+                RESET MISSION
               </Button>
+              
               <Button
                 onClick={handleToggleCameraMode}
                 className="w-full nasa-panel"
@@ -167,7 +143,7 @@ export default function ChessGame() {
                 size="sm"
               >
                 <Eye className="w-4 h-4 mr-2" />
-                CAMERA: {cameraMode.toUpperCase()}
+                VIEW: {cameraMode.toUpperCase()}
               </Button>
             </div>
           </SystemPanel>
@@ -190,12 +166,6 @@ export default function ChessGame() {
                   {gameState.gameStatus?.toUpperCase() || 'ACTIVE'}
                 </span>
               </div>
-              {gameState.lastMove && (
-                <div className="flex justify-between">
-                  <span>LAST MOVE:</span>
-                  <span className="text-accent">{gameState.lastMove.from}-{gameState.lastMove.to}</span>
-                </div>
-              )}
             </div>
           </SystemPanel>
 
@@ -251,12 +221,10 @@ export default function ChessGame() {
               <div className="absolute inset-0 bg-background/80 flex items-center justify-center rounded-lg">
                 <div className="text-center nasa-panel p-8">
                   <Crown className="w-12 h-12 text-primary mx-auto mb-4" />
-                  <h3 className="text-lg font-futura text-primary mb-2">CHESS SIMULATION READY</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Click START GAME to begin strategic training
-                  </p>
+                  <h3 className="text-lg font-semibold mb-2">3D Chess Mission Ready</h3>
+                  <p className="text-sm text-muted-foreground mb-4">Click to begin strategic analysis</p>
                   <Button onClick={handleStartGame} className="nasa-panel">
-                    <Play className="w-4 h-4 mr-2" />
+                    <Target className="w-4 h-4 mr-2" />
                     INITIATE GAME
                   </Button>
                 </div>
