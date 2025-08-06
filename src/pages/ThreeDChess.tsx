@@ -92,7 +92,7 @@ export default function ThreeDChess() {
   return (
     <div className="min-h-screen bg-background">
       <ModuleHeader
-        moduleNumber="024"
+        moduleNumber="026"
         title="3D CHESS"
         description="5×5×5 RAUMSCHACH THREE-DIMENSIONAL CHESS"
       />
