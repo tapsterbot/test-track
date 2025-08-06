@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 export interface ChessSquare {
   level: 'main' | 'upper-left' | 'upper-right' | 'lower-left' | 'lower-right';
@@ -216,7 +216,7 @@ export function useChessGame() {
     setValidMoves([]);
 
     return true;
-  }, [gameState, moveHistory]);
+  }, [gameState, moveHistory, squareToString]);
 
   const selectSquare = useCallback((square: ChessSquare) => {
     const piece = getPieceAt(square);
@@ -248,7 +248,7 @@ export function useChessGame() {
     
     setSelectedSquare(null);
     setValidMoves([]);
-  }, [selectedSquare, validMoves, gameState.currentPlayer, makeMove]);
+  }, [selectedSquare, validMoves, gameState.currentPlayer, makeMove, getValidMoves]);
 
   const resetGame = useCallback(() => {
     setGameState(initialChessState);
