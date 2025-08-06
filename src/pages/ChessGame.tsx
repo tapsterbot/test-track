@@ -166,17 +166,17 @@ export default function ChessGame() {
             <div className="space-y-2 text-xs">
               <div className="flex justify-between">
                 <span>CURRENT TURN:</span>
-                <span className="text-primary">{gameState.currentPlayer.toUpperCase()}</span>
+                <span className="text-primary">{gameState.currentPlayer?.toUpperCase() || 'WHITE'}</span>
               </div>
               <div className="flex justify-between">
                 <span>MOVE COUNT:</span>
-                <span className="text-accent">{Math.ceil(gameState.moveCount / 2)}</span>
+                <span className="text-accent">{Math.ceil((gameState.moveCount || 0) / 2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>GAME STATUS:</span>
                 <span className={`${gameState.gameStatus === 'check' ? 'text-destructive' : 
                   gameState.gameStatus === 'active' ? 'text-primary' : 'text-muted-foreground'}`}>
-                  {gameState.gameStatus.toUpperCase()}
+                  {gameState.gameStatus?.toUpperCase() || 'ACTIVE'}
                 </span>
               </div>
               {gameState.lastMove && (
@@ -255,7 +255,7 @@ export default function ChessGame() {
             {/* HUD Overlay */}
             <div className="absolute top-4 left-4 space-y-2">
               <div className="nasa-panel px-3 py-2 bg-background/90">
-                <div className="text-xs text-primary">TURN: {gameState.currentPlayer.toUpperCase()}</div>
+                <div className="text-xs text-primary">TURN: {gameState.currentPlayer?.toUpperCase() || 'WHITE'}</div>
               </div>
               {gameState.gameStatus !== 'active' && (
                 <div className="nasa-panel px-3 py-2 bg-background/90">
