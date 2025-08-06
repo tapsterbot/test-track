@@ -174,7 +174,7 @@ export default function ThreeDChess() {
           <div className="space-y-4">
             {/* Instructions */}
             <SystemPanel title="CONTROLS">
-              <div className="text-xs text-muted-foreground grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-xs text-muted-foreground grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <div>
                   <div className="text-primary mb-1">MOUSE:</div>
                   <div>• Click pieces to select</div>
