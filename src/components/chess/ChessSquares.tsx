@@ -1,6 +1,5 @@
 import { ChessSquare } from '@/hooks/useChessGame';
 import { useState, useMemo, memo, useCallback } from 'react';
-import { createSquareMaterials, getSharedGeometries } from '@/lib/threeMaterials';
 
 interface ChessSquaresProps {
   level: 'main' | 'upper-left' | 'upper-right' | 'lower-left' | 'lower-right';
@@ -20,10 +19,6 @@ export const ChessSquares = memo(function ChessSquares({
   const [hoveredSquare, setHoveredSquare] = useState<string | null>(null);
   
   const [width, height] = size;
-  
-  // Use shared geometries and stable materials
-  const { square: boxGeometry, frame: frameGeometry } = useMemo(() => getSharedGeometries(), []);
-  const materials = useMemo(() => createSquareMaterials(level), [level]);
   
   // Stable event handlers
   const handleSquareHover = useCallback((squareKey: string) => {
@@ -62,16 +57,16 @@ export const ChessSquares = memo(function ChessSquares({
         const isValidMove = validMovesSet.has(squareKey);
         const isHovered = hoveredSquare === squareKey;
         
-        // Select the appropriate material based on state
-        let material;
+        // Determine color based on state
+        let color: string;
         if (isSelected) {
-          material = materials.selectedSquare;
+          color = '#7fc3ff';
         } else if (isValidMove) {
-          material = materials.validMove;
+          color = '#90ee90';
         } else if (isHovered) {
-          material = isLight ? materials.lightHovered : materials.darkHovered;
+          color = isLight ? '#e6d3a8' : '#a67d4a';
         } else {
-          material = isLight ? materials.lightSquare : materials.darkSquare;
+          color = isLight ? '#f0d9b5' : '#b58863';
         }
         
         squareElements.push(
@@ -87,20 +82,20 @@ export const ChessSquares = memo(function ChessSquares({
             onClick={() => handleSquareClick(square)}
             castShadow
             receiveShadow
-            geometry={boxGeometry}
-            material={material}
-          />
+          >
+            <boxGeometry args={[0.9, 0.1, 0.9]} />
+            <meshStandardMaterial
+              color={color}
+              metalness={0.0}
+              roughness={0.95}
+            />
+          </mesh>
         );
       }
     }
     
     return squareElements;
-  }, [width, height, level, selectedSquareKey, validMovesSet, hoveredSquare, materials, boxGeometry, handleSquareHover, handleSquareLeave, handleSquareClick]);
-
-  // Memoize frame geometry and material
-  const frameMaterial = useMemo(() => {
-    return materials.darkSquare.clone();
-  }, [materials.darkSquare, level]);
+  }, [width, height, level, selectedSquareKey, validMovesSet, hoveredSquare, handleSquareHover, handleSquareLeave, handleSquareClick]);
 
   return (
     <>
@@ -109,10 +104,15 @@ export const ChessSquares = memo(function ChessSquares({
       <mesh 
         position={[0, 0, 0]} 
         receiveShadow
-        geometry={frameGeometry}
-        material={frameMaterial}
         scale={[width + 0.2, 1, height + 0.2]}
-      />
+      >
+        <boxGeometry args={[1, 0.2, 1]} />
+        <meshStandardMaterial
+          color="#b58863"
+          metalness={0.0}
+          roughness={0.95}
+        />
+      </mesh>
     </>
   );
 });
