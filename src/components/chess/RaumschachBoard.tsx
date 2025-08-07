@@ -275,15 +275,16 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
 function BoardStructure() {
   return (
     <>
-      {/* Level indicators */}
+      {/* Level indicators - positioned on the far side, facing the camera */}
       {[0, 1, 2, 3, 4].map((level) => (
         <Text
           key={`level-${level}`}
-          position={[-3.5, level * 1.5, 0]}
+          position={[3.5, level * 1.5, 0]}
           fontSize={0.3}
           color="#6b7280"
           anchorX="center"
           anchorY="middle"
+          rotation={[0, Math.PI, 0]}
         >
           L{level}
         </Text>
@@ -539,7 +540,7 @@ export function RaumschachBoard({
   return (
     <div className="relative w-full h-full nasa-panel">
       <Canvas
-        camera={{ position: [8, 8, 8], fov: 75 }}
+        camera={{ position: [-8, 8, 8], fov: 75 }}
         style={{ background: 'hsl(var(--background))' }}
         onClick={onCanvasClick}
         onPointerDown={onCanvasPointerDown}
