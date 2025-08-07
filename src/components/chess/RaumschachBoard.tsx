@@ -289,6 +289,36 @@ function BoardStructure() {
           L{level}
         </Text>
       ))}
+      
+      {/* File (column) indicators - positioned on the right side */}
+      {[0, 1, 2, 3, 4].map((file) => (
+        <Text
+          key={`file-${file}`}
+          position={[(file - 2) * 1.2, -0.5, 3.5]}
+          fontSize={0.3}
+          color="#6b7280"
+          anchorX="center"
+          anchorY="middle"
+          rotation={[0, Math.PI, 0]}
+        >
+          {String.fromCharCode(65 + file)}
+        </Text>
+      ))}
+      
+      {/* Rank (row) indicators - positioned on the front side */}
+      {[0, 1, 2, 3, 4].map((rank) => (
+        <Text
+          key={`rank-${rank}`}
+          position={[-3.5, -0.5, (rank - 2) * 1.2]}
+          fontSize={0.3}
+          color="#6b7280"
+          anchorX="center"
+          anchorY="middle"
+          rotation={[0, Math.PI, 0]}
+        >
+          {rank + 1}
+        </Text>
+      ))}
     </>
   );
 }
