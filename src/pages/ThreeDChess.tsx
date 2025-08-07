@@ -28,8 +28,7 @@ export default function ThreeDChess() {
     gameSettings,
     updateGameSettings,
     pendingPromotion,
-    handlePromotionChoice,
-    getKingInCheck
+    handlePromotionChoice
   } = useRaumschach();
 
   const handleCameraRotateLeft = () => {
@@ -182,7 +181,6 @@ export default function ThreeDChess() {
                   cursorPosition={cursorPosition}
                   isKeyboardMode={isKeyboardMode}
                   onMouseInteraction={handleMouseInteraction}
-                  kingInCheck={getKingInCheck()}
                 />
               </div>
             </SystemPanel>

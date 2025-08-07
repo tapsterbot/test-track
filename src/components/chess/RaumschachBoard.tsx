@@ -20,7 +20,6 @@ interface RaumschachBoardProps {
   cursorPosition?: Position | null;
   isKeyboardMode?: boolean;
   onMouseInteraction?: () => void;
-  kingInCheck?: { color: 'white' | 'black' } | null;
 }
 
 interface SquareProps {
@@ -31,10 +30,9 @@ interface SquareProps {
   isCursor: boolean;
   onClick: (position: Position) => void;
   onMouseEnter?: () => void;
-  isKingInCheck?: boolean;
 }
 
-function Square({ position, piece, isSelected, isValidMove, isCursor, onClick, onMouseEnter, isKingInCheck }: SquareProps) {
+function Square({ position, piece, isSelected, isValidMove, isCursor, onClick, onMouseEnter }: SquareProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   
@@ -65,16 +63,12 @@ function Square({ position, piece, isSelected, isValidMove, isCursor, onClick, o
                 ? "#f59e0b" // Amber for valid moves
                 : isCursor
                   ? "#3b82f6" // Blue for keyboard cursor
-                : isKingInCheck
-                  ? "#dc2626" // Red for king in check
                 : hovered 
                   ? "#6b7280" // Gray for hover
                   : isDark 
                     ? "#374151" // Dark gray for dark squares
                     : "#f3f4f6" // Light gray for light squares
           }
-          emissive={isKingInCheck ? "#dc2626" : "#000000"}
-          emissiveIntensity={isKingInCheck ? 0.4 : 0}
           transparent
           opacity={0.9}
         />
@@ -356,17 +350,7 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight }: {
   );
 }
 
-function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive, cursorPosition, isKeyboardMode, onMouseInteraction, kingInCheck }: { 
-  gameState: GameState; 
-  selectedPosition: Position | null; 
-  validMoves: Position[]; 
-  onSquareClick: (position: Position) => void; 
-  isActive: boolean; 
-  cursorPosition?: Position | null; 
-  isKeyboardMode?: boolean; 
-  onMouseInteraction?: () => void;
-  kingInCheck?: { color: 'white' | 'black' } | null;
-}) {
+function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive, cursorPosition, isKeyboardMode, onMouseInteraction }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive' | 'cursorPosition' | 'isKeyboardMode' | 'onMouseInteraction'>) {
   const rotateLeft = () => (window as any).rotateCameraLeft?.();
   const rotateRight = () => (window as any).rotateCameraRight?.();
   
@@ -402,9 +386,6 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
               cursorPosition.level === levelIndex && 
               cursorPosition.rank === rankIndex && 
               cursorPosition.file === fileIndex;
-            const isKingInCheck = kingInCheck && 
-              square?.type === 'king' && 
-              square?.color === kingInCheck.color;
             
             return (
               <Square
@@ -416,7 +397,6 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
                 isCursor={isCursor}
                 onClick={onSquareClick}
                 onMouseEnter={onMouseInteraction}
-                isKingInCheck={!!isKingInCheck}
               />
             );
           })
@@ -435,8 +415,7 @@ function GameHUD({
   moveCount, 
   isActive,
   cursorPosition,
-  isKeyboardMode,
-  kingInCheck
+  isKeyboardMode
 }: {
   selectedPosition: Position | null;
   validMoves: Position[];
@@ -447,7 +426,6 @@ function GameHUD({
   isActive: boolean;
   cursorPosition?: Position | null;
   isKeyboardMode?: boolean;
-  kingInCheck?: { color: 'white' | 'black' } | null;
 }) {
   if (!isActive) return null;
 
@@ -455,65 +433,12 @@ function GameHUD({
     ? gameState.board[selectedPosition.level][selectedPosition.rank][selectedPosition.file]
     : null;
 
-  const getStatusDisplay = () => {
-    switch (gameState.gameStatus) {
-      case 'check':
-        return <span className="text-yellow-400 animate-pulse">CHECK!</span>;
-      case 'checkmate':
-        return <span className="text-red-400 animate-pulse">CHECKMATE!</span>;
-      case 'stalemate':
-        return <span className="text-gray-400">STALEMATE</span>;
-      default:
-        return <span className="text-primary">ACTIVE</span>;
-    }
-  };
-
-  const getStatusMessage = () => {
-    switch (gameState.gameStatus) {
-      case 'check':
-        return `${kingInCheck?.color?.toUpperCase() || 'PLAYER'} KING IN CHECK!`;
-      case 'checkmate':
-        const winner = gameState.currentPlayer === 'white' ? 'BLACK' : 'WHITE';
-        return `${winner} WINS BY CHECKMATE!`;
-      case 'stalemate':
-        return 'GAME DRAWN BY STALEMATE';
-      default:
-        return null;
-    }
-  };
-
-  const statusMessage = getStatusMessage();
-
   return (
     <div className="absolute inset-0 pointer-events-none">
-      {/* Critical Status Alert (when check/checkmate/stalemate) */}
-      {statusMessage && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
-          <div className={`bg-black/95 border-2 rounded-lg p-6 text-center shadow-lg ${
-            gameState.gameStatus === 'check' 
-              ? "border-yellow-400" 
-              : gameState.gameStatus === 'checkmate' 
-                ? "border-red-400" 
-                : "border-gray-400"
-          }`}>
-            <div className="text-2xl font-mono font-bold mb-2">
-              {getStatusDisplay()}
-            </div>
-            <div className="text-lg font-mono text-white">
-              {statusMessage}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Top Left - Game Status */}
       <div className="absolute top-4 left-4 bg-black/80 border border-primary/30 rounded p-3 text-white">
         <div className="text-xs font-futura text-primary mb-2 uppercase tracking-wider">GAME STATUS</div>
         <div className="space-y-1 text-xs font-mono">
-          <div className="flex justify-between gap-4">
-            <span>STATUS:</span>
-            {getStatusDisplay()}
-          </div>
           <div className="flex justify-between gap-4">
             <span>PLAYER:</span>
             <span className="text-primary">{currentPlayer.toUpperCase()}</span>
@@ -623,8 +548,7 @@ export function RaumschachBoard({
   moveCount,
   cursorPosition,
   isKeyboardMode,
-  onMouseInteraction,
-  kingInCheck
+  onMouseInteraction
 }: RaumschachBoardProps) {
   return (
     <div className="relative w-full h-full nasa-panel">
@@ -645,7 +569,6 @@ export function RaumschachBoard({
           cursorPosition={cursorPosition}
           isKeyboardMode={isKeyboardMode}
           onMouseInteraction={onMouseInteraction}
-          kingInCheck={kingInCheck}
         />
       </Canvas>
       
@@ -660,7 +583,6 @@ export function RaumschachBoard({
         isActive={isActive}
         cursorPosition={cursorPosition}
         isKeyboardMode={isKeyboardMode}
-        kingInCheck={kingInCheck}
       />
 
       {/* Game Ready Overlay */}
