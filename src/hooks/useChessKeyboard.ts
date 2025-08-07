@@ -10,7 +10,9 @@ export function useChessKeyboard(
   isActive: boolean,
   onSelect: (position: Position) => void,
   onReset: () => void,
-  onNewGame: () => void
+  onNewGame: () => void,
+  onCameraRotateLeft?: () => void,
+  onCameraRotateRight?: () => void
 ) {
   const [keyboardState, setKeyboardState] = useState<ChessKeyboardState>({
     cursorPosition: { level: 2, rank: 2, file: 2 }, // Start at center of board
@@ -103,11 +105,19 @@ export function useChessKeyboard(
           break;
         case 'ArrowLeft':
           event.preventDefault();
-          moveCursor('left');
+          if (event.ctrlKey || event.metaKey) {
+            onCameraRotateLeft?.();
+          } else {
+            moveCursor('left');
+          }
           break;
         case 'ArrowRight':
           event.preventDefault();
-          moveCursor('right');
+          if (event.ctrlKey || event.metaKey) {
+            onCameraRotateRight?.();
+          } else {
+            moveCursor('right');
+          }
           break;
         case 'PageUp':
           event.preventDefault();

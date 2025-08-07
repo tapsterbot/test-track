@@ -31,6 +31,14 @@ export default function ThreeDChess() {
     handlePromotionChoice
   } = useRaumschach();
 
+  const handleCameraRotateLeft = () => {
+    (window as any).rotateCameraLeft?.();
+  };
+
+  const handleCameraRotateRight = () => {
+    (window as any).rotateCameraRight?.();
+  };
+
   const {
     cursorPosition,
     isKeyboardMode,
@@ -45,7 +53,9 @@ export default function ThreeDChess() {
     () => {
       resetGame();
       setIsGameActive(true);
-    }
+    },
+    handleCameraRotateLeft,
+    handleCameraRotateRight
   );
 
   const handleNewGame = () => {
@@ -197,7 +207,8 @@ export default function ThreeDChess() {
                 <div>
                   <div className="text-primary mb-1">KEYBOARD:</div>
                   <div>• Arrow keys to navigate</div>
-                  <div>• Page Up/Down for levels</div>
+                  <div>• Page Up/Down or Shift+Up/Down for levels</div>
+                  <div>• Ctrl+Left/Right to rotate camera</div>
                   <div>• Space/Enter to select</div>
                   <div>• Escape to deselect</div>
                   <div>• R to reset, N for new game</div>

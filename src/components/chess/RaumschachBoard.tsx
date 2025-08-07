@@ -306,11 +306,39 @@ function BoardStructure() {
   );
 }
 
-function CameraControls({ isActive }: { isActive: boolean }) {
+function CameraControls({ isActive, onRotateLeft, onRotateRight }: { 
+  isActive: boolean;
+  onRotateLeft?: () => void;
+  onRotateRight?: () => void;
+}) {
   const { camera, gl } = useThree();
+  const controlsRef = useRef<any>(null);
+  
+  // Expose rotation functions
+  useEffect(() => {
+    if (onRotateLeft) {
+      (window as any).rotateCameraLeft = () => {
+        if (controlsRef.current) {
+          const currentAzimuth = controlsRef.current.getAzimuthalAngle();
+          controlsRef.current.setAzimuthalAngle(currentAzimuth - Math.PI / 4); // 45 degrees left
+          controlsRef.current.update();
+        }
+      };
+    }
+    if (onRotateRight) {
+      (window as any).rotateCameraRight = () => {
+        if (controlsRef.current) {
+          const currentAzimuth = controlsRef.current.getAzimuthalAngle();
+          controlsRef.current.setAzimuthalAngle(currentAzimuth + Math.PI / 4); // 45 degrees right
+          controlsRef.current.update();
+        }
+      };
+    }
+  }, [onRotateLeft, onRotateRight]);
   
   return (
     <OrbitControls
+      ref={controlsRef}
       args={[camera, gl.domElement]}
       enablePan={isActive}
       enableZoom={isActive}
@@ -323,9 +351,12 @@ function CameraControls({ isActive }: { isActive: boolean }) {
 }
 
 function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive, cursorPosition, isKeyboardMode, onMouseInteraction }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive' | 'cursorPosition' | 'isKeyboardMode' | 'onMouseInteraction'>) {
+  const rotateLeft = () => (window as any).rotateCameraLeft?.();
+  const rotateRight = () => (window as any).rotateCameraRight?.();
+  
   return (
     <>
-      <CameraControls isActive={isActive} />
+      <CameraControls isActive={isActive} onRotateLeft={rotateLeft} onRotateRight={rotateRight} />
       
       <ambientLight intensity={0.6} />
       <directionalLight position={[10, 10, 5]} intensity={1.0} />
