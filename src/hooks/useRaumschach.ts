@@ -286,13 +286,14 @@ export function useRaumschach() {
               // Auto-promote to default piece
               promotePawn(selectedPosition, position, gameSettings.defaultPromotionPiece);
             } else {
-              // Set up pending promotion
+              // Set up pending promotion - don't make the move yet, wait for promotion choice
               setPendingPromotion({
                 position: position,
                 color: movingPiece.color
               });
-              // Store the move details for when promotion is selected
-              makeMove(selectedPosition, position);
+              // Store the selected and target positions for when promotion is completed
+              setSelectedPosition(selectedPosition);
+              setValidMoves([position]); // Keep the target position as valid
             }
             return;
           }
@@ -380,13 +381,14 @@ export function useRaumschach() {
   }, [gameState]);
 
   const handlePromotionChoice = useCallback((promoteTo: PromotablePiece) => {
-    if (pendingPromotion) {
-      const lastMove = moveHistory[moveHistory.length - 1];
-      if (lastMove) {
-        promotePawn(lastMove.from, lastMove.to, promoteTo);
+    if (pendingPromotion && selectedPosition) {
+      // Find the target position from valid moves (should be the promotion square)
+      const targetPosition = validMoves[0]; // We stored this as the only valid move
+      if (targetPosition) {
+        promotePawn(selectedPosition, targetPosition, promoteTo);
       }
     }
-  }, [pendingPromotion, moveHistory, promotePawn]);
+  }, [pendingPromotion, selectedPosition, validMoves, promotePawn]);
 
   const updateGameSettings = useCallback((newSettings: Partial<GameSettings>) => {
     setGameSettings(prev => ({ ...prev, ...newSettings }));
