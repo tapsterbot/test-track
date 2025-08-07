@@ -55,8 +55,8 @@ export function useRaumschach() {
       )
     );
 
-    // Official Raumschach starting position
-    // Based on Ferdinand Maack's original setup
+    // Official Raumschach starting position according to Ferdinand Maack's rules
+    // Each side has: 2 rooks, 2 knights, 2 bishops, 1 queen, 1 king, 1 unicorn, 5 pawns
 
     // Level 0 (Level A) - WHITE pieces (bottom level)
     board[0][0][0] = { type: 'rook', color: 'white' };     // Aa1
@@ -65,27 +65,26 @@ export function useRaumschach() {
     board[0][0][3] = { type: 'knight', color: 'white' };   // Ad1
     board[0][0][4] = { type: 'rook', color: 'white' };     // Ae1
     
-    // Level 1 (Level B) - WHITE pieces
-    board[1][0][0] = { type: 'bishop', color: 'white' };   // Ba1
-    board[1][0][1] = { type: 'unicorn', color: 'white' };  // Bb1
-    board[1][0][2] = { type: 'queen', color: 'white' };    // Bc1
-    board[1][0][3] = { type: 'bishop', color: 'white' };   // Bd1
-    board[1][0][4] = { type: 'unicorn', color: 'white' };  // Be1
-    
-    // White pawns on both levels A and B (rank 2)
+    // White pawns on level A (rank 2) - 5 pawns total
     for (let i = 0; i < 5; i++) {
       board[0][1][i] = { type: 'pawn', color: 'white' };   // Aa2-Ae2
-      board[1][1][i] = { type: 'pawn', color: 'white' };   // Ba2-Be2
     }
+    
+    // Level 1 (Level B) - WHITE pieces
+    board[1][0][0] = { type: 'bishop', color: 'white' };   // Ba1
+    board[1][0][1] = { type: 'unicorn', color: 'white' };  // Bb1 (only 1 unicorn per side)
+    board[1][0][2] = { type: 'queen', color: 'white' };    // Bc1
+    board[1][0][3] = { type: 'bishop', color: 'white' };   // Bd1
+    // Be1 remains empty
 
     // Level 2 (Level C) - Empty at startup (middle level)
 
-    // Level 3 (Level D) - BLACK pieces
+    // Level 3 (Level D) - BLACK pieces  
     board[3][4][0] = { type: 'bishop', color: 'black' };   // Da5
-    board[3][4][1] = { type: 'unicorn', color: 'black' };  // Db5
+    board[3][4][1] = { type: 'unicorn', color: 'black' };  // Db5 (only 1 unicorn per side)
     board[3][4][2] = { type: 'queen', color: 'black' };    // Dc5
     board[3][4][3] = { type: 'bishop', color: 'black' };   // Dd5
-    board[3][4][4] = { type: 'unicorn', color: 'black' };  // De5
+    // De5 remains empty
     
     // Level 4 (Level E) - BLACK pieces (top level)
     board[4][4][0] = { type: 'rook', color: 'black' };     // Ea5
@@ -94,9 +93,8 @@ export function useRaumschach() {
     board[4][4][3] = { type: 'knight', color: 'black' };   // Ed5
     board[4][4][4] = { type: 'rook', color: 'black' };     // Ee5
     
-    // Black pawns on both levels D and E (rank 4)
+    // Black pawns on level E (rank 4) - 5 pawns total
     for (let i = 0; i < 5; i++) {
-      board[3][3][i] = { type: 'pawn', color: 'black' };   // Da4-De4
       board[4][3][i] = { type: 'pawn', color: 'black' };   // Ea4-Ee4
     }
 
