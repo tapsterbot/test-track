@@ -109,10 +109,20 @@ interface ChessPieceComponentProps {
 function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponentProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   
-  // Chess piece rendering - no animations for better gameplay
-
-  const color = piece.color === 'white' ? "#ffffff" : "#1f2937";
+  // Improved colors and materials for better visibility
+  const color = piece.color === 'white' ? "#f8f9fa" : "#1f2937"; // Slightly off-white for better edge definition
+  const edgeColor = piece.color === 'white' ? "#e9ecef" : "#111827"; // Darker edges for contrast
   
+  const createMaterial = (useEdge = false) => (
+    <meshPhongMaterial 
+      color={useEdge ? edgeColor : color}
+      shininess={piece.color === 'white' ? 30 : 80}
+      specular={piece.color === 'white' ? "#ffffff" : "#444444"}
+      emissive={isSelected ? "#22c55e" : "#000000"}
+      emissiveIntensity={isSelected ? 0.3 : 0}
+    />
+  );
+
   const renderPiece = () => {
     switch (piece.type) {
       case 'king':
@@ -121,20 +131,17 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
             {/* Base cylinder */}
             <mesh position={[0, -0.1, 0]}>
               <cylinderGeometry args={[0.25, 0.3, 0.4, 8]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
+            </mesh>
+            {/* Edge outline */}
+            <mesh position={[0, -0.1, 0]} scale={[1.02, 1.02, 1.02]}>
+              <cylinderGeometry args={[0.25, 0.3, 0.4, 8]} />
+              <meshBasicMaterial color={edgeColor} transparent opacity={0.3} />
             </mesh>
             {/* Crown top */}
             <mesh position={[0, 0.2, 0]}>
               <cylinderGeometry args={[0.15, 0.2, 0.3, 8]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
             </mesh>
           </group>
         );
@@ -144,11 +151,12 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
             {/* Base cylinder */}
             <mesh position={[0, -0.05, 0]}>
               <cylinderGeometry args={[0.2, 0.25, 0.4, 8]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
+            </mesh>
+            {/* Edge outline */}
+            <mesh position={[0, -0.05, 0]} scale={[1.02, 1.02, 1.02]}>
+              <cylinderGeometry args={[0.2, 0.25, 0.4, 8]} />
+              <meshBasicMaterial color={edgeColor} transparent opacity={0.3} />
             </mesh>
             {/* Crown points */}
             {[0, 1, 2, 3, 4].map((i) => (
@@ -158,11 +166,7 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
                 Math.sin((i * Math.PI * 2) / 5) * 0.15
               ]}>
                 <sphereGeometry args={[0.05]} />
-                <meshPhongMaterial 
-                  color={color} 
-                  emissive={isSelected ? "#22c55e" : "#000000"}
-                  emissiveIntensity={isSelected ? 0.3 : 0}
-                />
+                {createMaterial()}
               </mesh>
             ))}
           </group>
@@ -173,22 +177,19 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
             {/* Base */}
             <mesh>
               <boxGeometry args={[0.35, 0.4, 0.35]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
+            </mesh>
+            {/* Edge outline */}
+            <mesh scale={[1.02, 1.02, 1.02]}>
+              <boxGeometry args={[0.35, 0.4, 0.35]} />
+              <meshBasicMaterial color={edgeColor} transparent opacity={0.3} />
             </mesh>
             {/* Crenellations */}
             {[-0.1, 0.1].map((x) => 
               [-0.1, 0.1].map((z) => (
                 <mesh key={`${x}-${z}`} position={[x, 0.25, z]}>
                   <boxGeometry args={[0.08, 0.1, 0.08]} />
-                  <meshPhongMaterial 
-                    color={color} 
-                    emissive={isSelected ? "#22c55e" : "#000000"}
-                    emissiveIntensity={isSelected ? 0.3 : 0}
-                  />
+                  {createMaterial()}
                 </mesh>
               ))
             )}
@@ -200,20 +201,12 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
             {/* Base */}
             <mesh position={[0, -0.1, 0]}>
               <cylinderGeometry args={[0.15, 0.2, 0.4, 8]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
             </mesh>
             {/* Miter top */}
             <mesh position={[0, 0.2, 0]}>
               <coneGeometry args={[0.12, 0.25, 8]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
             </mesh>
           </group>
         );
@@ -223,20 +216,12 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
             {/* Body */}
             <mesh position={[0, -0.05, 0]}>
               <boxGeometry args={[0.25, 0.3, 0.35]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
             </mesh>
             {/* Head */}
             <mesh position={[0, 0.15, 0.15]}>
               <boxGeometry args={[0.15, 0.2, 0.25]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
             </mesh>
           </group>
         );
@@ -246,20 +231,12 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
             {/* Body */}
             <mesh position={[0, -0.05, 0]}>
               <coneGeometry args={[0.2, 0.4, 6]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
             </mesh>
             {/* Horn */}
             <mesh position={[0, 0.35, 0]}>
               <cylinderGeometry args={[0.02, 0.04, 0.3]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
             </mesh>
           </group>
         );
@@ -269,20 +246,12 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
             {/* Base */}
             <mesh position={[0, -0.1, 0]}>
               <cylinderGeometry args={[0.12, 0.15, 0.2]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
             </mesh>
             {/* Head */}
             <mesh position={[0, 0.1, 0]}>
               <sphereGeometry args={[0.15]} />
-              <meshPhongMaterial 
-                color={color} 
-                emissive={isSelected ? "#22c55e" : "#000000"}
-                emissiveIntensity={isSelected ? 0.3 : 0}
-              />
+              {createMaterial()}
             </mesh>
           </group>
         );
@@ -290,11 +259,7 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
         return (
           <mesh>
             <sphereGeometry args={[0.2]} />
-            <meshPhongMaterial 
-              color={color} 
-              emissive={isSelected ? "#22c55e" : "#000000"}
-              emissiveIntensity={isSelected ? 0.3 : 0}
-            />
+            {createMaterial()}
           </mesh>
         );
     }
