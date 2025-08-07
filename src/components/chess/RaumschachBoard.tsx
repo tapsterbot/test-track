@@ -109,17 +109,17 @@ interface ChessPieceComponentProps {
 function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponentProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   
-  // Improved colors and materials for better visibility
-  const color = piece.color === 'white' ? "#f8f9fa" : "#1f2937"; // Slightly off-white for better edge definition
-  const edgeColor = piece.color === 'white' ? "#e9ecef" : "#111827"; // Darker edges for contrast
+  // More solid colors for better visibility
+  const color = piece.color === 'white' ? "#e2e8f0" : "#1f2937"; // Light gray instead of white
+  const edgeColor = piece.color === 'white' ? "#94a3b8" : "#111827"; // Darker edges for strong contrast
   
   const createMaterial = (useEdge = false) => (
     <meshPhongMaterial 
       color={useEdge ? edgeColor : color}
-      shininess={piece.color === 'white' ? 30 : 80}
-      specular={piece.color === 'white' ? "#ffffff" : "#444444"}
-      emissive={isSelected ? "#22c55e" : "#000000"}
-      emissiveIntensity={isSelected ? 0.3 : 0}
+      shininess={piece.color === 'white' ? 5 : 80} // Lower shininess for white pieces to make them more solid
+      specular={piece.color === 'white' ? "#64748b" : "#444444"} // Darker specular for white pieces
+      emissive={isSelected ? "#22c55e" : (piece.color === 'white' ? "#f1f5f9" : "#000000")} // Slight emission for white pieces
+      emissiveIntensity={isSelected ? 0.3 : (piece.color === 'white' ? 0.1 : 0)}
     />
   );
 
@@ -134,9 +134,9 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
               {createMaterial()}
             </mesh>
             {/* Edge outline */}
-            <mesh position={[0, -0.1, 0]} scale={[1.02, 1.02, 1.02]}>
+            <mesh position={[0, -0.1, 0]} scale={[1.03, 1.03, 1.03]}>
               <cylinderGeometry args={[0.25, 0.3, 0.4, 8]} />
-              <meshBasicMaterial color={edgeColor} transparent opacity={0.3} />
+              <meshBasicMaterial color={edgeColor} transparent opacity={0.6} />
             </mesh>
             {/* Crown top */}
             <mesh position={[0, 0.2, 0]}>
@@ -154,9 +154,9 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
               {createMaterial()}
             </mesh>
             {/* Edge outline */}
-            <mesh position={[0, -0.05, 0]} scale={[1.02, 1.02, 1.02]}>
+            <mesh position={[0, -0.05, 0]} scale={[1.03, 1.03, 1.03]}>
               <cylinderGeometry args={[0.2, 0.25, 0.4, 8]} />
-              <meshBasicMaterial color={edgeColor} transparent opacity={0.3} />
+              <meshBasicMaterial color={edgeColor} transparent opacity={0.6} />
             </mesh>
             {/* Crown points */}
             {[0, 1, 2, 3, 4].map((i) => (
@@ -180,9 +180,9 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
               {createMaterial()}
             </mesh>
             {/* Edge outline */}
-            <mesh scale={[1.02, 1.02, 1.02]}>
+            <mesh scale={[1.03, 1.03, 1.03]}>
               <boxGeometry args={[0.35, 0.4, 0.35]} />
-              <meshBasicMaterial color={edgeColor} transparent opacity={0.3} />
+              <meshBasicMaterial color={edgeColor} transparent opacity={0.6} />
             </mesh>
             {/* Crenellations */}
             {[-0.1, 0.1].map((x) => 
