@@ -87,11 +87,19 @@ export function useChessKeyboard(
       switch (event.code) {
         case 'ArrowUp':
           event.preventDefault();
-          moveCursor('up');
+          if (event.shiftKey) {
+            moveCursor('level-up');
+          } else {
+            moveCursor('up');
+          }
           break;
         case 'ArrowDown':
           event.preventDefault();
-          moveCursor('down');
+          if (event.shiftKey) {
+            moveCursor('level-down');
+          } else {
+            moveCursor('down');
+          }
           break;
         case 'ArrowLeft':
           event.preventDefault();
