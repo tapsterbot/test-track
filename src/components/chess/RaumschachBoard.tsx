@@ -543,7 +543,7 @@ export function RaumschachBoard({
   return (
     <div className="relative w-full h-full nasa-panel">
       <Canvas
-        camera={{ position: [10, 8, 6], fov: 75 }}
+        camera={{ position: [12, 6, 4], fov: 75 }}
         style={{ background: 'hsl(var(--background))' }}
         onClick={onCanvasClick}
         onPointerDown={onCanvasPointerDown}
