@@ -288,20 +288,6 @@ function BoardStructure() {
           L{level}
         </Text>
       ))}
-      
-      {/* Support pillars */}
-      {[-2, -1, 0, 1, 2].map((x) =>
-        [-2, -1, 0, 1, 2].map((z) => (
-          <mesh key={`pillar-${x}-${z}`} position={[x * 1.2, 3, z * 1.2]}>
-            <cylinderGeometry args={[0.02, 0.02, 6]} />
-            <meshPhongMaterial 
-              color="#9ca3af" 
-              transparent 
-              opacity={0.3} 
-            />
-          </mesh>
-        ))
-      )}
     </>
   );
 }
