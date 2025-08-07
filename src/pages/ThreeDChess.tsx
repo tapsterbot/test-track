@@ -4,6 +4,8 @@ import { SystemPanel } from "@/components/mission-control/SystemPanel";
 import { PushButton } from "@/components/mission-control/PushButton";
 import { IndicatorLight } from "@/components/mission-control/IndicatorLight";
 import { RaumschachBoard } from "@/components/chess/RaumschachBoard";
+import { GameSettings } from "@/components/chess/GameSettings";
+import { PromotionDialog } from "@/components/chess/PromotionDialog";
 import { useRaumschach } from "@/hooks/useRaumschach";
 import { useChessKeyboard } from "@/hooks/useChessKeyboard";
 
@@ -22,7 +24,11 @@ export default function ThreeDChess() {
     resetGame,
     getCurrentPlayer,
     getGameStatus,
-    getMoveHistory
+    getMoveHistory,
+    gameSettings,
+    updateGameSettings,
+    pendingPromotion,
+    handlePromotionChoice
   } = useRaumschach();
 
   const {
@@ -172,6 +178,12 @@ export default function ThreeDChess() {
 
           {/* Control Panels */}
           <div className="space-y-4">
+            {/* Game Settings */}
+            <GameSettings
+              settings={gameSettings}
+              onUpdateSettings={updateGameSettings}
+            />
+
             {/* Instructions */}
             <SystemPanel title="CONTROLS">
               <div className="text-xs text-muted-foreground grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -195,6 +207,15 @@ export default function ThreeDChess() {
           </div>
         </div>
       </div>
+
+      {/* Promotion Dialog */}
+      {pendingPromotion && (
+        <PromotionDialog
+          isOpen={true}
+          color={pendingPromotion.color}
+          onSelect={handlePromotionChoice}
+        />
+      )}
     </div>
   );
 }

@@ -11,6 +11,18 @@ export interface ChessPiece {
   color: 'white' | 'black';
 }
 
+export type PromotablePiece = 'queen' | 'rook' | 'bishop' | 'knight' | 'unicorn';
+
+export interface GameSettings {
+  defaultPromotionPiece: PromotablePiece;
+  autoPromote: boolean;
+}
+
+export interface PendingPromotion {
+  position: Position;
+  color: 'white' | 'black';
+}
+
 export interface GameState {
   board: (ChessPiece | null)[][][]; // 5x5x5 board
   currentPlayer: 'white' | 'black';
@@ -29,6 +41,11 @@ export function useRaumschach() {
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(null);
   const [validMoves, setValidMoves] = useState<Position[]>([]);
   const [moveHistory, setMoveHistory] = useState<Move[]>([]);
+  const [gameSettings, setGameSettings] = useState<GameSettings>({
+    defaultPromotionPiece: 'queen',
+    autoPromote: true
+  });
+  const [pendingPromotion, setPendingPromotion] = useState<PendingPromotion | null>(null);
 
   function initializeBoard(): GameState {
     // Create empty 5x5x5 board
@@ -259,32 +276,30 @@ export function useRaumschach() {
       );
       
       if (isValidMove) {
-        // Make the move
-        const newBoard = gameState.board.map(level => 
-          level.map(rank => rank.slice())
-        );
+        const movingPiece = gameState.board[selectedPosition.level][selectedPosition.rank][selectedPosition.file];
         
-        const movingPiece = newBoard[selectedPosition.level][selectedPosition.rank][selectedPosition.file];
-        const capturedPiece = newBoard[position.level][position.rank][position.file];
+        // Check for pawn promotion
+        if (movingPiece?.type === 'pawn') {
+          const promotionLevel = movingPiece.color === 'white' ? 4 : 0;
+          if (position.level === promotionLevel) {
+            if (gameSettings.autoPromote) {
+              // Auto-promote to default piece
+              promotePawn(selectedPosition, position, gameSettings.defaultPromotionPiece);
+            } else {
+              // Set up pending promotion
+              setPendingPromotion({
+                position: position,
+                color: movingPiece.color
+              });
+              // Store the move details for when promotion is selected
+              makeMove(selectedPosition, position);
+            }
+            return;
+          }
+        }
         
-        newBoard[position.level][position.rank][position.file] = movingPiece;
-        newBoard[selectedPosition.level][selectedPosition.rank][selectedPosition.file] = null;
-        
-        const move: Move = {
-          from: selectedPosition,
-          to: position,
-          piece: movingPiece!,
-          captured: capturedPiece || undefined
-        };
-        
-        setMoveHistory(prev => [...prev, move]);
-        setGameState(prev => ({
-          ...prev,
-          board: newBoard,
-          currentPlayer: prev.currentPlayer === 'white' ? 'black' : 'white'
-        }));
-        setSelectedPosition(null);
-        setValidMoves([]);
+        // Regular move
+        makeMove(selectedPosition, position);
       } else if (piece && piece.color === gameState.currentPlayer) {
         // Select new piece
         setSelectedPosition(position);
@@ -299,13 +314,90 @@ export function useRaumschach() {
       setSelectedPosition(position);
       setValidMoves(getValidMoves(position));
     }
-  }, [selectedPosition, validMoves, gameState, getValidMoves]);
+  }, [selectedPosition, validMoves, gameState, getValidMoves, gameSettings]);
+
+  const makeMove = useCallback((from: Position, to: Position) => {
+    const newBoard = gameState.board.map(level => 
+      level.map(rank => rank.slice())
+    );
+    
+    const movingPiece = newBoard[from.level][from.rank][from.file];
+    const capturedPiece = newBoard[to.level][to.rank][to.file];
+    
+    newBoard[to.level][to.rank][to.file] = movingPiece;
+    newBoard[from.level][from.rank][from.file] = null;
+    
+    const move: Move = {
+      from,
+      to,
+      piece: movingPiece!,
+      captured: capturedPiece || undefined
+    };
+    
+    setMoveHistory(prev => [...prev, move]);
+    setGameState(prev => ({
+      ...prev,
+      board: newBoard,
+      currentPlayer: prev.currentPlayer === 'white' ? 'black' : 'white'
+    }));
+    setSelectedPosition(null);
+    setValidMoves([]);
+  }, [gameState]);
+
+  const promotePawn = useCallback((from: Position, to: Position, promoteTo: PromotablePiece) => {
+    const newBoard = gameState.board.map(level => 
+      level.map(rank => rank.slice())
+    );
+    
+    const movingPiece = newBoard[from.level][from.rank][from.file];
+    const capturedPiece = newBoard[to.level][to.rank][to.file];
+    
+    if (movingPiece?.type === 'pawn') {
+      newBoard[to.level][to.rank][to.file] = {
+        type: promoteTo,
+        color: movingPiece.color
+      };
+      newBoard[from.level][from.rank][from.file] = null;
+      
+      const move: Move = {
+        from,
+        to,
+        piece: { ...movingPiece, type: promoteTo },
+        captured: capturedPiece || undefined
+      };
+      
+      setMoveHistory(prev => [...prev, move]);
+      setGameState(prev => ({
+        ...prev,
+        board: newBoard,
+        currentPlayer: prev.currentPlayer === 'white' ? 'black' : 'white'
+      }));
+    }
+    
+    setSelectedPosition(null);
+    setValidMoves([]);
+    setPendingPromotion(null);
+  }, [gameState]);
+
+  const handlePromotionChoice = useCallback((promoteTo: PromotablePiece) => {
+    if (pendingPromotion) {
+      const lastMove = moveHistory[moveHistory.length - 1];
+      if (lastMove) {
+        promotePawn(lastMove.from, lastMove.to, promoteTo);
+      }
+    }
+  }, [pendingPromotion, moveHistory, promotePawn]);
+
+  const updateGameSettings = useCallback((newSettings: Partial<GameSettings>) => {
+    setGameSettings(prev => ({ ...prev, ...newSettings }));
+  }, []);
 
   const resetGame = useCallback(() => {
     setGameState(initializeBoard());
     setSelectedPosition(null);
     setValidMoves([]);
     setMoveHistory([]);
+    setPendingPromotion(null);
   }, []);
 
   const getCurrentPlayer = () => gameState.currentPlayer;
@@ -320,6 +412,10 @@ export function useRaumschach() {
     resetGame,
     getCurrentPlayer,
     getGameStatus,
-    getMoveHistory
+    getMoveHistory,
+    gameSettings,
+    updateGameSettings,
+    pendingPromotion,
+    handlePromotionChoice
   };
 }
