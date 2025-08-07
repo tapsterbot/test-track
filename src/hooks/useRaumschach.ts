@@ -115,45 +115,26 @@ export function useRaumschach() {
     return gameState.board[pos.level][pos.rank][pos.file];
   };
 
-  // Move helper function definitions before getValidMoves
-  const getValidMovesForPosition = useCallback((board: (ChessPiece | null)[][][], pos: Position): Position[] => {
+  // Helper function for getting piece moves
+  const getPieceValidMoves = (board: (ChessPiece | null)[][][], pos: Position): Position[] => {
     const piece = board[pos.level][pos.rank][pos.file];
     if (!piece) return [];
 
     const moves: Position[] = [];
-    
-    // Direction vectors for 3D movement
     const directions = {
-      straight: [
-        [1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]
-      ],
-      diagonal: [
-        [1, 1, 0], [1, -1, 0], [-1, 1, 0], [-1, -1, 0],
-        [1, 0, 1], [1, 0, -1], [-1, 0, 1], [-1, 0, -1],
-        [0, 1, 1], [0, 1, -1], [0, -1, 1], [0, -1, -1]
-      ],
-      triagonal: [
-        [1, 1, 1], [1, 1, -1], [1, -1, 1], [1, -1, -1],
-        [-1, 1, 1], [-1, 1, -1], [-1, -1, 1], [-1, -1, -1]
-      ]
+      straight: [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]],
+      diagonal: [[1, 1, 0], [1, -1, 0], [-1, 1, 0], [-1, -1, 0], [1, 0, 1], [1, 0, -1], [-1, 0, 1], [-1, 0, -1], [0, 1, 1], [0, 1, -1], [0, -1, 1], [0, -1, -1]],
+      triagonal: [[1, 1, 1], [1, 1, -1], [1, -1, 1], [1, -1, -1], [-1, 1, 1], [-1, 1, -1], [-1, -1, 1], [-1, -1, -1]]
     };
 
     const addMovesInDirections = (dirs: number[][], maxDistance: number = 5) => {
       dirs.forEach(([dl, dr, df]) => {
         for (let dist = 1; dist <= maxDistance; dist++) {
-          const newPos: Position = {
-            level: pos.level + dl * dist,
-            rank: pos.rank + dr * dist,
-            file: pos.file + df * dist
-          };
-          
+          const newPos: Position = { level: pos.level + dl * dist, rank: pos.rank + dr * dist, file: pos.file + df * dist };
           if (!isValidPosition(newPos)) break;
-          
           const targetPiece = board[newPos.level][newPos.rank][newPos.file];
           if (targetPiece) {
-            if (targetPiece.color !== piece.color) {
-              moves.push(newPos);
-            }
+            if (targetPiece.color !== piece.color) moves.push(newPos);
             break;
           } else {
             moves.push(newPos);
@@ -165,276 +146,134 @@ export function useRaumschach() {
     switch (piece.type) {
       case 'king':
         [...directions.straight, ...directions.diagonal, ...directions.triagonal].forEach(([dl, dr, df]) => {
-          const newPos: Position = {
-            level: pos.level + dl,
-            rank: pos.rank + dr,
-            file: pos.file + df
-          };
+          const newPos: Position = { level: pos.level + dl, rank: pos.rank + dr, file: pos.file + df };
           if (isValidPosition(newPos)) {
             const targetPiece = board[newPos.level][newPos.rank][newPos.file];
-            if (!targetPiece || targetPiece.color !== piece.color) {
-              moves.push(newPos);
-            }
+            if (!targetPiece || targetPiece.color !== piece.color) moves.push(newPos);
           }
         });
         break;
-
       case 'queen':
         addMovesInDirections([...directions.straight, ...directions.diagonal]);
         break;
-
       case 'rook':
         addMovesInDirections(directions.straight);
         break;
-
       case 'bishop':
         addMovesInDirections(directions.diagonal);
         break;
-
       case 'unicorn':
         addMovesInDirections(directions.triagonal);
         break;
-
       case 'knight':
-        const knightMoves = [
-          [2, 1, 0], [2, -1, 0], [-2, 1, 0], [-2, -1, 0],
-          [1, 2, 0], [1, -2, 0], [-1, 2, 0], [-1, -2, 0],
-          [2, 0, 1], [2, 0, -1], [-2, 0, 1], [-2, 0, -1],
-          [1, 0, 2], [1, 0, -2], [-1, 0, 2], [-1, 0, -2],
-          [0, 2, 1], [0, 2, -1], [0, -2, 1], [0, -2, -1],
-          [0, 1, 2], [0, 1, -2], [0, -1, 2], [0, -1, -2]
-        ];
-        
-        knightMoves.forEach(([dl, dr, df]) => {
-          const newPos: Position = {
-            level: pos.level + dl,
-            rank: pos.rank + dr,
-            file: pos.file + df
-          };
+        [[2, 1, 0], [2, -1, 0], [-2, 1, 0], [-2, -1, 0], [1, 2, 0], [1, -2, 0], [-1, 2, 0], [-1, -2, 0], [2, 0, 1], [2, 0, -1], [-2, 0, 1], [-2, 0, -1], [1, 0, 2], [1, 0, -2], [-1, 0, 2], [-1, 0, -2], [0, 2, 1], [0, 2, -1], [0, -2, 1], [0, -2, -1], [0, 1, 2], [0, 1, -2], [0, -1, 2], [0, -1, -2]].forEach(([dl, dr, df]) => {
+          const newPos: Position = { level: pos.level + dl, rank: pos.rank + dr, file: pos.file + df };
           if (isValidPosition(newPos)) {
             const targetPiece = board[newPos.level][newPos.rank][newPos.file];
-            if (!targetPiece || targetPiece.color !== piece.color) {
-              moves.push(newPos);
-            }
+            if (!targetPiece || targetPiece.color !== piece.color) moves.push(newPos);
           }
         });
         break;
-
       case 'pawn':
         const direction = piece.color === 'white' ? 1 : -1;
-        const forward: Position = {
-          level: pos.level + direction,
-          rank: pos.rank,
-          file: pos.file
-        };
-        
-        if (isValidPosition(forward) && !board[forward.level][forward.rank][forward.file]) {
-          moves.push(forward);
-        }
-        
-        const captures = [
-          { level: pos.level + direction, rank: pos.rank + 1, file: pos.file },
-          { level: pos.level + direction, rank: pos.rank - 1, file: pos.file },
-          { level: pos.level + direction, rank: pos.rank, file: pos.file + 1 },
-          { level: pos.level + direction, rank: pos.rank, file: pos.file - 1 }
-        ];
-        
-        captures.forEach(capturePos => {
+        const forward: Position = { level: pos.level + direction, rank: pos.rank, file: pos.file };
+        if (isValidPosition(forward) && !board[forward.level][forward.rank][forward.file]) moves.push(forward);
+        [{ level: pos.level + direction, rank: pos.rank + 1, file: pos.file }, { level: pos.level + direction, rank: pos.rank - 1, file: pos.file }, { level: pos.level + direction, rank: pos.rank, file: pos.file + 1 }, { level: pos.level + direction, rank: pos.rank, file: pos.file - 1 }].forEach(capturePos => {
           if (isValidPosition(capturePos)) {
             const targetPiece = board[capturePos.level][capturePos.rank][capturePos.file];
-            if (targetPiece && targetPiece.color !== piece.color) {
-              moves.push(capturePos);
-            }
+            if (targetPiece && targetPiece.color !== piece.color) moves.push(capturePos);
           }
         });
         break;
     }
-
     return moves;
-  }, []);
+  };
 
-  // Game status detection functions
-  const findKing = useCallback((board: (ChessPiece | null)[][][], color: 'white' | 'black'): Position | null => {
+  // Game status functions
+  const findKing = (board: (ChessPiece | null)[][][], color: 'white' | 'black'): Position | null => {
     for (let level = 0; level < 5; level++) {
       for (let rank = 0; rank < 5; rank++) {
         for (let file = 0; file < 5; file++) {
           const piece = board[level][rank][file];
-          if (piece?.type === 'king' && piece.color === color) {
-            return { level, rank, file };
-          }
+          if (piece?.type === 'king' && piece.color === color) return { level, rank, file };
         }
       }
     }
     return null;
-  }, []);
+  };
 
-  const isPositionUnderAttack = useCallback((board: (ChessPiece | null)[][][], pos: Position, attackingColor: 'white' | 'black'): boolean => {
-    // Check if any piece of attackingColor can move to this position
+  const isPositionUnderAttack = (board: (ChessPiece | null)[][][], pos: Position, attackingColor: 'white' | 'black'): boolean => {
     for (let level = 0; level < 5; level++) {
       for (let rank = 0; rank < 5; rank++) {
         for (let file = 0; file < 5; file++) {
           const piece = board[level][rank][file];
           if (piece?.color === attackingColor) {
-            const piecePos = { level, rank, file };
-            const moves = getValidMovesForPosition(board, piecePos);
-            if (moves.some(move => move.level === pos.level && move.rank === pos.rank && move.file === pos.file)) {
-              return true;
-            }
+            const moves = getPieceValidMoves(board, { level, rank, file });
+            if (moves.some(move => move.level === pos.level && move.rank === pos.rank && move.file === pos.file)) return true;
           }
         }
       }
     }
     return false;
-  }, [getValidMovesForPosition]);
+  };
 
-  const isKingInCheck = useCallback((board: (ChessPiece | null)[][][], color: 'white' | 'black'): boolean => {
+  const isKingInCheck = (board: (ChessPiece | null)[][][], color: 'white' | 'black'): boolean => {
     const kingPos = findKing(board, color);
     if (!kingPos) return false;
+    return isPositionUnderAttack(board, kingPos, color === 'white' ? 'black' : 'white');
+  };
 
-    const enemyColor = color === 'white' ? 'black' : 'white';
-    return isPositionUnderAttack(board, kingPos, enemyColor);
-  }, [findKing, isPositionUnderAttack]);
-
-  const getValidMoves = useCallback((pos: Position): Position[] => {
-    const piece = getPieceAt(pos);
-    if (!piece || piece.color !== gameState.currentPlayer) return [];
-
-    // Don't allow moves if game is over
-    if (gameState.gameStatus === 'checkmate' || gameState.gameStatus === 'stalemate') {
-      return [];
-    }
-
-    const possibleMoves = getValidMovesForPosition(gameState.board, pos);
-    
-    // Filter out moves that would leave the king in check
-    const legalMoves: Position[] = [];
-    for (const move of possibleMoves) {
-      const testBoard = gameState.board.map(level => level.map(rank => rank.slice()));
-      testBoard[move.level][move.rank][move.file] = piece;
-      testBoard[pos.level][pos.rank][pos.file] = null;
-      
-      if (!isKingInCheck(testBoard, piece.color)) {
-        legalMoves.push(move);
-      }
-    }
-
-    return legalMoves;
-  }, [gameState, getValidMovesForPosition, isKingInCheck]);
-
-  const selectSquare = useCallback((position: Position) => {
-    // Handle invalid position (used for deselection via keyboard)
-    if (position.level < 0 || position.rank < 0 || position.file < 0) {
-      setSelectedPosition(null);
-      setValidMoves([]);
-      return;
-    }
-
-    const piece = getPieceAt(position);
-    
-    if (selectedPosition) {
-      // Check if clicking on a valid move
-      const isValidMove = validMoves.some(move => 
-        move.level === position.level && 
-        move.rank === position.rank && 
-        move.file === position.file
-      );
-      
-      if (isValidMove) {
-        const movingPiece = gameState.board[selectedPosition.level][selectedPosition.rank][selectedPosition.file];
-        
-        // Check for pawn promotion
-        if (movingPiece?.type === 'pawn') {
-          const promotionLevel = movingPiece.color === 'white' ? 4 : 0;
-          if (position.level === promotionLevel) {
-            if (gameSettings.autoPromote) {
-              // Auto-promote to default piece
-              promotePawn(selectedPosition, position, gameSettings.defaultPromotionPiece);
-            } else {
-              // Set up pending promotion - don't make the move yet, wait for promotion choice
-              setPendingPromotion({
-                position: position,
-                color: movingPiece.color
-              });
-              // Store the selected and target positions for when promotion is completed
-              setSelectedPosition(selectedPosition);
-              setValidMoves([position]); // Keep the target position as valid
-            }
-            return;
-          }
-        }
-        
-        // Regular move
-        makeMove(selectedPosition, position);
-      } else if (piece && piece.color === gameState.currentPlayer) {
-        // Select new piece
-        setSelectedPosition(position);
-        setValidMoves(getValidMoves(position));
-      } else {
-        // Deselect
-        setSelectedPosition(null);
-        setValidMoves([]);
-      }
-    } else if (piece && piece.color === gameState.currentPlayer) {
-      // Select piece
-      setSelectedPosition(position);
-      setValidMoves(getValidMoves(position));
-    }
-  }, [selectedPosition, validMoves, gameState, getValidMoves, gameSettings]);
-
-
-  const hasValidMoves = useCallback((board: (ChessPiece | null)[][][], color: 'white' | 'black'): boolean => {
+  const hasValidMoves = (board: (ChessPiece | null)[][][], color: 'white' | 'black'): boolean => {
     for (let level = 0; level < 5; level++) {
       for (let rank = 0; rank < 5; rank++) {
         for (let file = 0; file < 5; file++) {
           const piece = board[level][rank][file];
           if (piece?.color === color) {
-            const piecePos = { level, rank, file };
-            const moves = getValidMovesForPosition(board, piecePos);
-            
-            // Check if any move is legal (doesn't leave king in check)
+            const moves = getPieceValidMoves(board, { level, rank, file });
             for (const move of moves) {
               const testBoard = board.map(level => level.map(rank => rank.slice()));
               testBoard[move.level][move.rank][move.file] = piece;
               testBoard[level][rank][file] = null;
-              
-              if (!isKingInCheck(testBoard, color)) {
-                return true;
-              }
+              if (!isKingInCheck(testBoard, color)) return true;
             }
           }
         }
       }
     }
     return false;
-  }, [getValidMovesForPosition, isKingInCheck]);
+  };
+
+  const getValidMoves = useCallback((pos: Position): Position[] => {
+    const piece = getPieceAt(pos);
+    if (!piece || piece.color !== gameState.currentPlayer || gameState.gameStatus === 'checkmate' || gameState.gameStatus === 'stalemate') return [];
+
+    const possibleMoves = getPieceValidMoves(gameState.board, pos);
+    const legalMoves: Position[] = [];
+    for (const move of possibleMoves) {
+      const testBoard = gameState.board.map(level => level.map(rank => rank.slice()));
+      testBoard[move.level][move.rank][move.file] = piece;
+      testBoard[pos.level][pos.rank][pos.file] = null;
+      if (!isKingInCheck(testBoard, piece.color)) legalMoves.push(move);
+    }
+    return legalMoves;
+  }, [gameState]);
 
   const makeMove = useCallback((from: Position, to: Position) => {
-    const newBoard = gameState.board.map(level => 
-      level.map(rank => rank.slice())
-    );
-    
+    const newBoard = gameState.board.map(level => level.map(rank => rank.slice()));
     const movingPiece = newBoard[from.level][from.rank][from.file];
     const capturedPiece = newBoard[to.level][to.rank][to.file];
     
     newBoard[to.level][to.rank][to.file] = movingPiece;
     newBoard[from.level][from.rank][from.file] = null;
     
-    const move: Move = {
-      from,
-      to,
-      piece: movingPiece!,
-      captured: capturedPiece || undefined
-    };
+    const move: Move = { from, to, piece: movingPiece!, captured: capturedPiece || undefined };
     
-    // Determine new game status
     const nextPlayer = gameState.currentPlayer === 'white' ? 'black' : 'white';
     let newGameStatus: 'active' | 'check' | 'checkmate' | 'stalemate' = 'active';
     
-    // Check if king was captured (immediate game over)
     if (capturedPiece?.type === 'king') {
       newGameStatus = 'checkmate';
     } else {
-      // Check the game state for the next player
       const nextPlayerInCheck = isKingInCheck(newBoard, nextPlayer);
       const nextPlayerHasMoves = hasValidMoves(newBoard, nextPlayer);
       
@@ -448,47 +287,73 @@ export function useRaumschach() {
     }
     
     setMoveHistory(prev => [...prev, move]);
-    setGameState(prev => ({
-      ...prev,
-      board: newBoard,
-      currentPlayer: nextPlayer,
-      gameStatus: newGameStatus
-    }));
+    setGameState(prev => ({ ...prev, board: newBoard, currentPlayer: nextPlayer, gameStatus: newGameStatus }));
     setSelectedPosition(null);
     setValidMoves([]);
-  }, [gameState, isKingInCheck, hasValidMoves]);
+  }, [gameState]);
+
+  const selectSquare = useCallback((position: Position) => {
+    if (position.level < 0 || position.rank < 0 || position.file < 0) {
+      setSelectedPosition(null);
+      setValidMoves([]);
+      return;
+    }
+
+    const piece = getPieceAt(position);
+    
+    if (selectedPosition) {
+      const isValidMove = validMoves.some(move => 
+        move.level === position.level && move.rank === position.rank && move.file === position.file
+      );
+      
+      if (isValidMove) {
+        const movingPiece = gameState.board[selectedPosition.level][selectedPosition.rank][selectedPosition.file];
+        
+        if (movingPiece?.type === 'pawn') {
+          const promotionLevel = movingPiece.color === 'white' ? 4 : 0;
+          if (position.level === promotionLevel) {
+            if (gameSettings.autoPromote) {
+              promotePawn(selectedPosition, position, gameSettings.defaultPromotionPiece);
+            } else {
+              setPendingPromotion({ position: position, color: movingPiece.color });
+              setSelectedPosition(selectedPosition);
+              setValidMoves([position]);
+            }
+            return;
+          }
+        }
+        
+        makeMove(selectedPosition, position);
+      } else if (piece && piece.color === gameState.currentPlayer) {
+        setSelectedPosition(position);
+        setValidMoves(getValidMoves(position));
+      } else {
+        setSelectedPosition(null);
+        setValidMoves([]);
+      }
+    } else if (piece && piece.color === gameState.currentPlayer) {
+      setSelectedPosition(position);
+      setValidMoves(getValidMoves(position));
+    }
+  }, [selectedPosition, validMoves, gameState, getValidMoves, gameSettings]);
 
   const promotePawn = useCallback((from: Position, to: Position, promoteTo: PromotablePiece) => {
-    const newBoard = gameState.board.map(level => 
-      level.map(rank => rank.slice())
-    );
-    
+    const newBoard = gameState.board.map(level => level.map(rank => rank.slice()));
     const movingPiece = newBoard[from.level][from.rank][from.file];
     const capturedPiece = newBoard[to.level][to.rank][to.file];
     
     if (movingPiece?.type === 'pawn') {
-      newBoard[to.level][to.rank][to.file] = {
-        type: promoteTo,
-        color: movingPiece.color
-      };
+      newBoard[to.level][to.rank][to.file] = { type: promoteTo, color: movingPiece.color };
       newBoard[from.level][from.rank][from.file] = null;
       
-      const move: Move = {
-        from,
-        to,
-        piece: { ...movingPiece, type: promoteTo },
-        captured: capturedPiece || undefined
-      };
+      const move: Move = { from, to, piece: { ...movingPiece, type: promoteTo }, captured: capturedPiece || undefined };
       
-      // Determine new game status after promotion
       const nextPlayer = gameState.currentPlayer === 'white' ? 'black' : 'white';
       let newGameStatus: 'active' | 'check' | 'checkmate' | 'stalemate' = 'active';
       
-      // Check if king was captured (immediate game over)
       if (capturedPiece?.type === 'king') {
         newGameStatus = 'checkmate';
       } else {
-        // Check the game state for the next player
         const nextPlayerInCheck = isKingInCheck(newBoard, nextPlayer);
         const nextPlayerHasMoves = hasValidMoves(newBoard, nextPlayer);
         
@@ -502,23 +367,17 @@ export function useRaumschach() {
       }
       
       setMoveHistory(prev => [...prev, move]);
-      setGameState(prev => ({
-        ...prev,
-        board: newBoard,
-        currentPlayer: nextPlayer,
-        gameStatus: newGameStatus
-      }));
+      setGameState(prev => ({ ...prev, board: newBoard, currentPlayer: nextPlayer, gameStatus: newGameStatus }));
     }
     
     setSelectedPosition(null);
     setValidMoves([]);
     setPendingPromotion(null);
-  }, [gameState, isKingInCheck, hasValidMoves]);
+  }, [gameState]);
 
   const handlePromotionChoice = useCallback((promoteTo: PromotablePiece) => {
     if (pendingPromotion && selectedPosition) {
-      // Find the target position from valid moves (should be the promotion square)
-      const targetPosition = validMoves[0]; // We stored this as the only valid move
+      const targetPosition = validMoves[0];
       if (targetPosition) {
         promotePawn(selectedPosition, targetPosition, promoteTo);
       }
@@ -537,17 +396,11 @@ export function useRaumschach() {
     setPendingPromotion(null);
   }, []);
 
-  const getCurrentPlayer = () => gameState.currentPlayer;
-  const getGameStatus = () => gameState.gameStatus;
-  const getMoveHistory = () => moveHistory;
-
-  // Check if a king is in check (for visual highlighting)
   const getKingInCheck = useCallback((): { color: 'white' | 'black' } | null => {
     if (gameState.gameStatus === 'check' || gameState.gameStatus === 'checkmate') {
-      // The current player's king is in check if it's check/checkmate
       const playerInCheck = gameState.gameStatus === 'checkmate' ? 
-        (gameState.currentPlayer === 'white' ? 'black' : 'white') : // In checkmate, the previous player delivered checkmate
-        gameState.currentPlayer; // In check, current player's king is in check
+        (gameState.currentPlayer === 'white' ? 'black' : 'white') :
+        gameState.currentPlayer;
       return { color: playerInCheck };
     }
     return null;
@@ -559,9 +412,9 @@ export function useRaumschach() {
     validMoves,
     selectSquare,
     resetGame,
-    getCurrentPlayer,
-    getGameStatus,
-    getMoveHistory,
+    getCurrentPlayer: () => gameState.currentPlayer,
+    getGameStatus: () => gameState.gameStatus,
+    getMoveHistory: () => moveHistory,
     gameSettings,
     updateGameSettings,
     pendingPromotion,
