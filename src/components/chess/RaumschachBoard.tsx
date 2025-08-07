@@ -70,7 +70,7 @@ function Square({ position, piece, isSelected, isValidMove, isCursor, onClick, o
                     : "#f3f4f6" // Light gray for light squares
           }
           transparent
-          opacity={0.8}
+          opacity={0.9}
         />
       </mesh>
       
