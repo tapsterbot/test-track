@@ -350,45 +350,48 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
       <directionalLight position={[-5, 5, -5]} intensity={0.5} />
       <pointLight position={[0, 8, 0]} intensity={0.8} />
       
-      <BoardStructure />
-      
-      {/* Render all squares and pieces */}
-      {gameState.board.map((level, levelIndex) =>
-        level.map((rank, rankIndex) =>
-          rank.map((square, fileIndex) => {
-            const position: Position = { 
-              level: levelIndex, 
-              rank: rankIndex, 
-              file: fileIndex 
-            };
-            const isSelected = selectedPosition?.level === levelIndex && 
-                             selectedPosition?.rank === rankIndex && 
-                             selectedPosition?.file === fileIndex;
-            const isValidMove = validMoves.some(move => 
-              move.level === levelIndex && 
-              move.rank === rankIndex && 
-              move.file === fileIndex
-            );
-            const isCursor = isKeyboardMode && cursorPosition && 
-              cursorPosition.level === levelIndex && 
-              cursorPosition.rank === rankIndex && 
-              cursorPosition.file === fileIndex;
-            
-            return (
-              <Square
-                key={`${levelIndex}-${rankIndex}-${fileIndex}`}
-                position={position}
-                piece={square}
-                isSelected={isSelected}
-                isValidMove={isValidMove}
-                isCursor={isCursor}
-                onClick={onSquareClick}
-                onMouseEnter={onMouseInteraction}
-              />
-            );
-          })
-        )
-      )}
+      {/* Rotate the entire board 180 degrees so white side faces camera */}
+      <group rotation={[0, Math.PI, 0]}>
+        <BoardStructure />
+        
+        {/* Render all squares and pieces */}
+        {gameState.board.map((level, levelIndex) =>
+          level.map((rank, rankIndex) =>
+            rank.map((square, fileIndex) => {
+              const position: Position = { 
+                level: levelIndex, 
+                rank: rankIndex, 
+                file: fileIndex 
+              };
+              const isSelected = selectedPosition?.level === levelIndex && 
+                               selectedPosition?.rank === rankIndex && 
+                               selectedPosition?.file === fileIndex;
+              const isValidMove = validMoves.some(move => 
+                move.level === levelIndex && 
+                move.rank === rankIndex && 
+                move.file === fileIndex
+              );
+              const isCursor = isKeyboardMode && cursorPosition && 
+                cursorPosition.level === levelIndex && 
+                cursorPosition.rank === rankIndex && 
+                cursorPosition.file === fileIndex;
+              
+              return (
+                <Square
+                  key={`${levelIndex}-${rankIndex}-${fileIndex}`}
+                  position={position}
+                  piece={square}
+                  isSelected={isSelected}
+                  isValidMove={isValidMove}
+                  isCursor={isCursor}
+                  onClick={onSquareClick}
+                  onMouseEnter={onMouseInteraction}
+                />
+              );
+            })
+          )
+        )}
+      </group>
     </>
   );
 }
@@ -540,7 +543,7 @@ export function RaumschachBoard({
   return (
     <div className="relative w-full h-full nasa-panel">
       <Canvas
-        camera={{ position: [-8, 8, 8], fov: 75 }}
+        camera={{ position: [8, 8, 8], fov: 75 }}
         style={{ background: 'hsl(var(--background))' }}
         onClick={onCanvasClick}
         onPointerDown={onCanvasPointerDown}
