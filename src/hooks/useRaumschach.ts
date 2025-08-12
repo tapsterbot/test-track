@@ -43,7 +43,7 @@ export function useRaumschach() {
   const [moveHistory, setMoveHistory] = useState<Move[]>([]);
   const [gameSettings, setGameSettings] = useState<GameSettings>({
     defaultPromotionPiece: 'queen',
-    autoPromote: false // Test promotion dialog
+    autoPromote: false
   });
   const [pendingPromotion, setPendingPromotion] = useState<PendingPromotion | null>(null);
 
@@ -104,16 +104,10 @@ export function useRaumschach() {
     board[4][4][3] = { type: 'knight', color: 'black' };   // Ed5
     board[4][4][4] = { type: 'rook', color: 'black' };     // Ee5
     
-    // Black pawns on level E (rank 3) - FIXED: Black pawns start at rank 3, promote at rank 0
+    // Black pawns on level E (rank 3) - Black pawns start at rank 3, promote at rank 0
     for (let i = 0; i < 5; i++) {
       board[4][3][i] = { type: 'pawn', color: 'black' };   // Ea4-Ee4
     }
-
-    // TEST PROMOTION: Place test pawns close to promotion
-    // White pawn at rank 3 (one move from promotion at rank 4)
-    board[2][3][2] = { type: 'pawn', color: 'white' };   // Cc4 - white pawn ready to promote
-    // Black pawn at rank 1 (one move from promotion at rank 0) 
-    board[2][1][2] = { type: 'pawn', color: 'black' };   // Cc2 - black pawn ready to promote
 
     return {
       board,
@@ -261,25 +255,17 @@ export function useRaumschach() {
           }
         }
         
-        // Vertical moves (along level dimension)
-        const verticalUp: Position = {
-          level: pos.level + 1,
+        // Vertical moves (along level dimension) - FIXED: White pawns move up, black pawns move down
+        const verticalDirection = piece.color === 'white' ? 1 : -1;
+        const vertical: Position = {
+          level: pos.level + verticalDirection,
           rank: pos.rank,
           file: pos.file
         };
         
-        const verticalDown: Position = {
-          level: pos.level - 1,
-          rank: pos.rank,
-          file: pos.file
-        };
-        
-        if (isValidPosition(verticalUp) && !getPieceAt(verticalUp)) {
-          moves.push(verticalUp);
-        }
-        
-        if (isValidPosition(verticalDown) && !getPieceAt(verticalDown)) {
-          moves.push(verticalDown);
+        if (isValidPosition(vertical) && !getPieceAt(vertical)) {
+          moves.push(vertical);
+          console.log(`📍 ${piece.color} pawn can move ${piece.color === 'white' ? 'up' : 'down'} from level ${pos.level} to level ${vertical.level}`);
         }
         
         // Diagonal captures (forward + one square in file or level dimension)
