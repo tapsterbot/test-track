@@ -4,6 +4,17 @@ import { OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
 import { GameState, Position, ChessPiece } from "@/hooks/useRaumschach";
 
+// Component to capture the canvas element
+function CanvasCapture({ onCanvasReady }: { onCanvasReady?: (canvas: HTMLCanvasElement | null) => void }) {
+  const { gl } = useThree();
+  
+  useEffect(() => {
+    onCanvasReady?.(gl.domElement);
+  }, [gl.domElement, onCanvasReady]);
+  
+  return null;
+}
+
 interface RaumschachBoardProps {
   gameState: GameState;
   selectedPosition: Position | null;
@@ -744,16 +755,9 @@ export function RaumschachBoard({
   onCameraAzimuthChange,
   onCanvasReady
 }: RaumschachBoardProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    onCanvasReady?.(canvasRef.current);
-  }, [onCanvasReady]);
-
   return (
     <div className="relative w-full h-full nasa-panel">
       <Canvas
-        ref={canvasRef}
         camera={{ position: [-8, 8, 8], fov: 75 }}
         style={{ background: 'hsl(var(--background))' }}
         onClick={onCanvasClick}
@@ -761,6 +765,7 @@ export function RaumschachBoard({
         onPointerMove={onCanvasPointerMove}
         onPointerUp={onCanvasPointerUp}
       >
+        <CanvasCapture onCanvasReady={onCanvasReady} />
         <Scene
           gameState={gameState}
           selectedPosition={selectedPosition}
