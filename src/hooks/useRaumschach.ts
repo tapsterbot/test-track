@@ -311,15 +311,25 @@ export function useRaumschach() {
       if (isValidMove) {
         const movingPiece = gameState.board[selectedPosition.level][selectedPosition.rank][selectedPosition.file];
         
-        // Check for pawn promotion
+        // Check for pawn promotion - can happen by reaching rank OR level limits
         if (movingPiece?.type === 'pawn') {
           const promotionRank = movingPiece.color === 'white' ? 4 : 0;
-          console.log(`🏁 Pawn promotion check: ${movingPiece.color} pawn moving to rank ${position.rank} (promotion rank: ${promotionRank})`);
-          console.log(`📍 Target position:`, position);
-          console.log(`🎯 From position:`, selectedPosition);
+          const promotionLevel = movingPiece.color === 'white' ? 4 : 0;
           
-          if (position.rank === promotionRank) {
-            console.log(`✅ PROMOTION TRIGGERED! ${movingPiece.color} pawn reached promotion rank ${promotionRank}`);
+          console.log(`🏁 Pawn promotion check: ${movingPiece.color} pawn moving to position:`, position);
+          console.log(`🎯 Checking rank ${position.rank} (promotion rank: ${promotionRank}) and level ${position.level} (promotion level: ${promotionLevel})`);
+          
+          const reachedPromotionRank = position.rank === promotionRank;
+          const reachedPromotionLevel = position.level === promotionLevel;
+          
+          if (reachedPromotionRank || reachedPromotionLevel) {
+            if (reachedPromotionRank) {
+              console.log(`✅ PROMOTION TRIGGERED! ${movingPiece.color} pawn reached promotion rank ${promotionRank}`);
+            }
+            if (reachedPromotionLevel) {
+              console.log(`✅ PROMOTION TRIGGERED! ${movingPiece.color} pawn reached promotion level ${promotionLevel}`);
+            }
+            
             if (gameSettings.autoPromote) {
               console.log(`🤖 Auto-promoting to ${gameSettings.defaultPromotionPiece}`);
               // Auto-promote to default piece
@@ -337,7 +347,7 @@ export function useRaumschach() {
             }
             return;
           } else {
-            console.log(`❌ No promotion: pawn at rank ${position.rank}, needs to reach ${promotionRank}`);
+            console.log(`❌ No promotion: pawn at rank ${position.rank}/level ${position.level}, needs rank ${promotionRank} OR level ${promotionLevel}`);
           }
         }
         
