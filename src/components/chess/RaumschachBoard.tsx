@@ -325,7 +325,7 @@ function BoardStructure() {
           anchorX="center"
           anchorY="middle"
         >
-          L{level + 1}
+          {String.fromCharCode(65 + level)}
         </Text>
       ))}
       
@@ -339,7 +339,7 @@ function BoardStructure() {
           anchorX="center"
           anchorY="middle"
         >
-          {String.fromCharCode(65 + file)}
+          {String.fromCharCode(97 + file)}
         </Text>
       ))}
       
@@ -593,7 +593,8 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
 }
 
 // Helper functions to convert internal coordinates to chess notation
-const fileIndexToLetter = (index: number): string => String.fromCharCode(65 + index);
+const fileIndexToLetter = (index: number): string => String.fromCharCode(97 + index);
+const levelIndexToLetter = (index: number): string => String.fromCharCode(65 + index);
 const indexToHumanNumber = (index: number): number => index + 1;
 
 function GameHUD({ 
@@ -672,7 +673,7 @@ function GameHUD({
               <>
                 <div className="flex justify-between gap-4">
                   <span>LEVEL:</span>
-                  <span className="text-primary">{indexToHumanNumber(selectedPosition.level)}</span>
+                  <span className="text-primary">{levelIndexToLetter(selectedPosition.level)}</span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span>RANK:</span>
@@ -687,7 +688,7 @@ function GameHUD({
               <>
                 <div className="flex justify-between gap-4">
                   <span>LEVEL:</span>
-                  <span className="text-blue-400">{indexToHumanNumber(cursorPosition.level)}</span>
+                  <span className="text-blue-400">{levelIndexToLetter(cursorPosition.level)}</span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span>RANK:</span>
