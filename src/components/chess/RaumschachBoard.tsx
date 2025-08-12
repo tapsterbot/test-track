@@ -325,9 +325,8 @@ function BoardStructure() {
           color="#6b7280"
           anchorX="center"
           anchorY="middle"
-          rotation={[0, Math.PI, 0]}
         >
-          L{level}
+          L{level + 1}
         </Text>
       ))}
       
