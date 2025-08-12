@@ -21,6 +21,7 @@ interface RaumschachBoardProps {
   isKeyboardMode?: boolean;
   onMouseInteraction?: () => void;
   onCameraAzimuthChange?: (azimuth: number) => void;
+  onCanvasReady?: (canvas: HTMLCanvasElement | null) => void;
 }
 
 interface SquareProps {
@@ -740,11 +741,19 @@ export function RaumschachBoard({
   cursorPosition,
   isKeyboardMode,
   onMouseInteraction,
-  onCameraAzimuthChange
+  onCameraAzimuthChange,
+  onCanvasReady
 }: RaumschachBoardProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    onCanvasReady?.(canvasRef.current);
+  }, [onCanvasReady]);
+
   return (
     <div className="relative w-full h-full nasa-panel">
       <Canvas
+        ref={canvasRef}
         camera={{ position: [-8, 8, 8], fov: 75 }}
         style={{ background: 'hsl(var(--background))' }}
         onClick={onCanvasClick}

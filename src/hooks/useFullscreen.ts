@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
-export function useFullscreen() {
+export function useFullscreen(targetElement?: HTMLElement | null) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { toast } = useToast();
 
@@ -27,7 +27,7 @@ export function useFullscreen() {
     }
 
     try {
-      const element = document.documentElement;
+      const element = targetElement || document.documentElement;
       
       if (element.requestFullscreen) {
         await element.requestFullscreen();
@@ -93,8 +93,13 @@ export function useFullscreen() {
       (document as any).mozFullScreenElement ||
       (document as any).msFullscreenElement;
     
-    setIsFullscreen(!!fullscreenElement);
-  }, []);
+    // If we have a target element, check if it's the one that's fullscreen
+    if (targetElement) {
+      setIsFullscreen(fullscreenElement === targetElement);
+    } else {
+      setIsFullscreen(!!fullscreenElement);
+    }
+  }, [targetElement]);
 
   // Listen for fullscreen changes
   useEffect(() => {
