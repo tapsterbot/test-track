@@ -237,6 +237,7 @@ export function useRaumschach() {
       case 'pawn':
         // Pawn movement - forward along rank dimension and vertically along level dimension
         const direction = piece.color === 'white' ? 1 : -1;
+        console.log(`♟️ Calculating moves for ${piece.color} pawn at`, pos);
         
         // Single forward move (along rank)
         const forward: Position = {
@@ -247,6 +248,10 @@ export function useRaumschach() {
         
         if (isValidPosition(forward) && !getPieceAt(forward)) {
           moves.push(forward);
+          const promotionRank = piece.color === 'white' ? 4 : 0;
+          if (forward.rank === promotionRank) {
+            console.log(`🎯 PROMOTION MOVE AVAILABLE: ${piece.color} pawn can move to promotion rank ${promotionRank} at`, forward);
+          }
         }
         
         // Vertical moves (along level dimension)
@@ -316,11 +321,18 @@ export function useRaumschach() {
         // Check for pawn promotion
         if (movingPiece?.type === 'pawn') {
           const promotionRank = movingPiece.color === 'white' ? 4 : 0;
+          console.log(`🏁 Pawn promotion check: ${movingPiece.color} pawn moving to rank ${position.rank} (promotion rank: ${promotionRank})`);
+          console.log(`📍 Target position:`, position);
+          console.log(`🎯 From position:`, selectedPosition);
+          
           if (position.rank === promotionRank) {
+            console.log(`✅ PROMOTION TRIGGERED! ${movingPiece.color} pawn reached promotion rank ${promotionRank}`);
             if (gameSettings.autoPromote) {
+              console.log(`🤖 Auto-promoting to ${gameSettings.defaultPromotionPiece}`);
               // Auto-promote to default piece
               promotePawn(selectedPosition, position, gameSettings.defaultPromotionPiece);
             } else {
+              console.log(`🎭 Opening promotion dialog for ${movingPiece.color} player`);
               // Set up pending promotion - don't make the move yet, wait for promotion choice
               setPendingPromotion({
                 position: position,
@@ -331,6 +343,8 @@ export function useRaumschach() {
               setValidMoves([position]); // Keep the target position as valid
             }
             return;
+          } else {
+            console.log(`❌ No promotion: pawn at rank ${position.rank}, needs to reach ${promotionRank}`);
           }
         }
         
