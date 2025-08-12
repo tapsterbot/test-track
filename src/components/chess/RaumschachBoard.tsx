@@ -29,12 +29,12 @@ interface SquareProps {
   isSelected: boolean;
   isValidMove: boolean;
   isCursor: boolean;
+  isHovered: boolean;
   onMouseEnter?: () => void;
 }
 
-function Square({ position, piece, isSelected, isValidMove, isCursor, onMouseEnter }: SquareProps) {
+function Square({ position, piece, isSelected, isValidMove, isCursor, isHovered, onMouseEnter }: SquareProps) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const [hovered, setHovered] = useState(false);
   
   const x = (position.file - 2) * 1.2;
   const y = position.level * 1.5;
@@ -55,10 +55,8 @@ function Square({ position, piece, isSelected, isValidMove, isCursor, onMouseEnt
       <mesh
         ref={meshRef}
         onPointerOver={() => {
-          setHovered(true);
           onMouseEnter?.();
         }}
-        onPointerOut={() => setHovered(false)}
       >
         <boxGeometry args={[1, 0.1, 1]} />
         <meshPhongMaterial 
@@ -69,7 +67,7 @@ function Square({ position, piece, isSelected, isValidMove, isCursor, onMouseEnt
                 ? "#f59e0b" // Amber for valid moves
                 : isCursor
                   ? "#3b82f6" // Blue for keyboard cursor
-                : hovered 
+                : isHovered 
                   ? "#6b7280" // Gray for hover
                   : isDark 
                     ? "#374151" // Dark gray for dark squares
@@ -462,7 +460,70 @@ function ClickHandler({ onSquareClick, isActive }: { onSquareClick: (position: P
   return null;
 }
 
+// Hover handler component using raycasting
+function HoverHandler({ 
+  onHoverChange, 
+  isActive 
+}: { 
+  onHoverChange: (position: Position | null) => void; 
+  isActive: boolean; 
+}) {
+  const { camera, scene, raycaster, pointer } = useThree();
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!isActive) {
+        onHoverChange(null);
+        return;
+      }
+
+      // Convert mouse position to normalized device coordinates (-1 to +1)
+      const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      // Update the raycaster with the camera and pointer position
+      raycaster.setFromCamera(pointer, camera);
+
+      // Calculate objects intersecting the picking ray
+      const intersects = raycaster.intersectObjects(scene.children, true);
+
+      if (intersects.length > 0) {
+        // Find the closest intersection with valid userData
+        for (const intersection of intersects) {
+          const userData = intersection.object.userData;
+          if (userData && (userData.type === 'square' || userData.type === 'piece')) {
+            const position = userData.type === 'piece' ? userData.position : userData.position;
+            onHoverChange(position);
+            return;
+          }
+        }
+      }
+
+      // No valid intersection found
+      onHoverChange(null);
+    };
+
+    const handleMouseLeave = () => {
+      onHoverChange(null);
+    };
+
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      canvas.addEventListener('mousemove', handleMouseMove);
+      canvas.addEventListener('mouseleave', handleMouseLeave);
+      return () => {
+        canvas.removeEventListener('mousemove', handleMouseMove);
+        canvas.removeEventListener('mouseleave', handleMouseLeave);
+      };
+    }
+  }, [camera, scene, raycaster, pointer, onHoverChange, isActive]);
+
+  return null;
+}
+
 function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive, cursorPosition, isKeyboardMode, onMouseInteraction, onCameraAzimuthChange }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive' | 'cursorPosition' | 'isKeyboardMode' | 'onMouseInteraction' | 'onCameraAzimuthChange'>) {
+  const [hoveredPosition, setHoveredPosition] = useState<Position | null>(null);
   const rotateLeft = () => (window as any).rotateCameraLeft?.();
   const rotateRight = () => (window as any).rotateCameraRight?.();
   
@@ -475,6 +536,7 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
         onAzimuthChange={onCameraAzimuthChange}
       />
       <ClickHandler onSquareClick={onSquareClick} isActive={isActive} />
+      <HoverHandler onHoverChange={setHoveredPosition} isActive={isActive} />
       
       <ambientLight intensity={0.6} />
       <directionalLight position={[10, 10, 5]} intensity={1.0} />
@@ -506,6 +568,9 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
                 cursorPosition.level === levelIndex && 
                 cursorPosition.rank === rankIndex && 
                 cursorPosition.file === fileIndex;
+              const isHovered = hoveredPosition?.level === levelIndex && 
+                hoveredPosition?.rank === rankIndex && 
+                hoveredPosition?.file === fileIndex;
               
               return (
                 <Square
@@ -515,6 +580,7 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
                   isSelected={isSelected}
                   isValidMove={isValidMove}
                   isCursor={isCursor}
+                  isHovered={isHovered}
                   onMouseEnter={onMouseInteraction}
                 />
               );
