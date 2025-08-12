@@ -331,11 +331,11 @@ function BoardStructure() {
         </Text>
       ))}
       
-      {/* File (column) indicators - positioned on the front side, A on left */}
+      {/* File (column) indicators - positioned next to rank 1 (white pieces) */}
       {[0, 1, 2, 3, 4].map((file) => (
         <Text
           key={`file-${file}`}
-          position={[(file - 2) * 1.2, -0.5, -3.5]}
+          position={[(file - 2) * 1.2, -0.5, 2.8]}
           fontSize={0.3}
           color="#6b7280"
           anchorX="center"
