@@ -507,6 +507,10 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
   );
 }
 
+// Helper functions to convert internal coordinates to chess notation
+const fileIndexToLetter = (index: number): string => String.fromCharCode(65 + index);
+const indexToHumanNumber = (index: number): number => index + 1;
+
 function GameHUD({ 
   selectedPosition, 
   validMoves, 
@@ -583,30 +587,30 @@ function GameHUD({
               <>
                 <div className="flex justify-between gap-4">
                   <span>LEVEL:</span>
-                  <span className="text-primary">{selectedPosition.level}</span>
+                  <span className="text-primary">{indexToHumanNumber(selectedPosition.level)}</span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span>RANK:</span>
-                  <span className="text-primary">{selectedPosition.rank}</span>
+                  <span className="text-primary">{indexToHumanNumber(selectedPosition.rank)}</span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span>FILE:</span>
-                  <span className="text-primary">{selectedPosition.file}</span>
+                  <span className="text-primary">{fileIndexToLetter(selectedPosition.file)}</span>
                 </div>
               </>
             ) : (isKeyboardMode && cursorPosition) ? (
               <>
                 <div className="flex justify-between gap-4">
                   <span>LEVEL:</span>
-                  <span className="text-blue-400">{cursorPosition.level}</span>
+                  <span className="text-blue-400">{indexToHumanNumber(cursorPosition.level)}</span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span>RANK:</span>
-                  <span className="text-blue-400">{cursorPosition.rank}</span>
+                  <span className="text-blue-400">{indexToHumanNumber(cursorPosition.rank)}</span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span>FILE:</span>
-                  <span className="text-blue-400">{cursorPosition.file}</span>
+                  <span className="text-blue-400">{fileIndexToLetter(cursorPosition.file)}</span>
                 </div>
               </>
             ) : null}
