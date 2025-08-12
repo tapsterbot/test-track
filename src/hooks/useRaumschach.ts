@@ -248,19 +248,6 @@ export function useRaumschach() {
         
         if (isValidPosition(forward) && !getPieceAt(forward)) {
           moves.push(forward);
-          
-          // Double forward move from starting position
-          if (pos.rank === startingRank) {
-            const doubleForward: Position = {
-              level: pos.level,
-              rank: pos.rank + (2 * direction),
-              file: pos.file
-            };
-            
-            if (isValidPosition(doubleForward) && !getPieceAt(doubleForward)) {
-              moves.push(doubleForward);
-            }
-          }
         }
         
         // Diagonal captures (forward + one square in file or level dimension)
