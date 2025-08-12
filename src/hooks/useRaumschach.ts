@@ -235,11 +235,10 @@ export function useRaumschach() {
         break;
 
       case 'pawn':
-        // Pawn movement - forward along rank dimension, capture diagonally
+        // Pawn movement - forward along rank dimension and vertically along level dimension
         const direction = piece.color === 'white' ? 1 : -1;
-        const startingRank = piece.color === 'white' ? 1 : 3;
         
-        // Single forward move
+        // Single forward move (along rank)
         const forward: Position = {
           level: pos.level,
           rank: pos.rank + direction,
@@ -248,6 +247,27 @@ export function useRaumschach() {
         
         if (isValidPosition(forward) && !getPieceAt(forward)) {
           moves.push(forward);
+        }
+        
+        // Vertical moves (along level dimension)
+        const verticalUp: Position = {
+          level: pos.level + 1,
+          rank: pos.rank,
+          file: pos.file
+        };
+        
+        const verticalDown: Position = {
+          level: pos.level - 1,
+          rank: pos.rank,
+          file: pos.file
+        };
+        
+        if (isValidPosition(verticalUp) && !getPieceAt(verticalUp)) {
+          moves.push(verticalUp);
+        }
+        
+        if (isValidPosition(verticalDown) && !getPieceAt(verticalDown)) {
+          moves.push(verticalDown);
         }
         
         // Diagonal captures (forward + one square in file or level dimension)
