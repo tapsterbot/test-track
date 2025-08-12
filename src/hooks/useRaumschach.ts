@@ -235,24 +235,40 @@ export function useRaumschach() {
         break;
 
       case 'pawn':
-        // Simplified pawn movement - forward one square, capture diagonally
+        // Pawn movement - forward along rank dimension, capture diagonally
         const direction = piece.color === 'white' ? 1 : -1;
+        const startingRank = piece.color === 'white' ? 1 : 3;
+        
+        // Single forward move
         const forward: Position = {
-          level: pos.level + direction,
-          rank: pos.rank,
+          level: pos.level,
+          rank: pos.rank + direction,
           file: pos.file
         };
         
         if (isValidPosition(forward) && !getPieceAt(forward)) {
           moves.push(forward);
+          
+          // Double forward move from starting position
+          if (pos.rank === startingRank) {
+            const doubleForward: Position = {
+              level: pos.level,
+              rank: pos.rank + (2 * direction),
+              file: pos.file
+            };
+            
+            if (isValidPosition(doubleForward) && !getPieceAt(doubleForward)) {
+              moves.push(doubleForward);
+            }
+          }
         }
         
-        // Diagonal captures
+        // Diagonal captures (forward + one square in file or level dimension)
         const captures = [
-          { level: pos.level + direction, rank: pos.rank + 1, file: pos.file },
-          { level: pos.level + direction, rank: pos.rank - 1, file: pos.file },
-          { level: pos.level + direction, rank: pos.rank, file: pos.file + 1 },
-          { level: pos.level + direction, rank: pos.rank, file: pos.file - 1 }
+          { level: pos.level, rank: pos.rank + direction, file: pos.file + 1 },
+          { level: pos.level, rank: pos.rank + direction, file: pos.file - 1 },
+          { level: pos.level + 1, rank: pos.rank + direction, file: pos.file },
+          { level: pos.level - 1, rank: pos.rank + direction, file: pos.file }
         ];
         
         captures.forEach(capturePos => {
@@ -292,8 +308,8 @@ export function useRaumschach() {
         
         // Check for pawn promotion
         if (movingPiece?.type === 'pawn') {
-          const promotionLevel = movingPiece.color === 'white' ? 4 : 0;
-          if (position.level === promotionLevel) {
+          const promotionRank = movingPiece.color === 'white' ? 4 : 0;
+          if (position.rank === promotionRank) {
             if (gameSettings.autoPromote) {
               // Auto-promote to default piece
               promotePawn(selectedPosition, position, gameSettings.defaultPromotionPiece);
