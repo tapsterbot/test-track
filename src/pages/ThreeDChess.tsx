@@ -136,138 +136,136 @@ export default function ThreeDChess() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {!isFullscreen && (
-        <ModuleHeader
-          moduleNumber="026"
-          title="3D CHESS"
-          description="5×5×5 RAUMSCHACH THREE-DIMENSIONAL CHESS"
-        />
+    <>
+      {/* Fullscreen Chess Board Only */}
+      {isFullscreen && (
+        <div className="fixed inset-0 z-50 w-screen h-screen bg-background">
+          <RaumschachBoard
+            gameState={gameState}
+            selectedPosition={selectedPosition}
+            validMoves={validMoves}
+            onSquareClick={handleSquareClick}
+            onCanvasClick={handleCanvasClick}
+            onCanvasPointerDown={handleCanvasPointerDown}
+            onCanvasPointerMove={handleCanvasPointerMove}
+            onCanvasPointerUp={handleCanvasPointerUp}
+            isActive={isGameActive}
+            currentPlayer={getCurrentPlayer()}
+            gameStatus={getGameStatus()}
+            moveCount={getMoveHistory().length}
+            cursorPosition={cursorPosition}
+            isKeyboardMode={isKeyboardMode}
+            onMouseInteraction={handleMouseInteraction}
+            onCameraAzimuthChange={setCameraAzimuth}
+            onCanvasReady={setCanvasElement}
+          />
+        </div>
       )}
-      
-      <div className={`container mx-auto ${isFullscreen ? 'p-0 max-w-none h-screen' : 'p-4'}`}>
-        {/* Compact Game Controls - Above the game */}
-        {!isFullscreen && (
-          <div className="mb-4">
-            <div className="nasa-panel p-3">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-futura text-primary tracking-wide">GAME CONTROLS</h3>
-                <div className="flex gap-2">
-                  <PushButton
-                    label="NEW GAME"
-                    onClick={handleNewGame}
-                    color="green"
-                    size="sm"
-                  />
-                  <PushButton
-                    label="RESET"
-                    onClick={handleResetGame}
-                    color="amber"
-                    size="sm"
-                  />
-                  {isAvailable && (
+
+      {/* Normal Layout - Hidden in fullscreen */}
+      {!isFullscreen && (
+        <div className="min-h-screen bg-background">
+          <ModuleHeader
+            moduleNumber="026"
+            title="3D CHESS"
+            description="5×5×5 RAUMSCHACH THREE-DIMENSIONAL CHESS"
+          />
+          
+          <div className="container mx-auto p-4">
+            {/* Compact Game Controls - Above the game */}
+            <div className="mb-4">
+              <div className="nasa-panel p-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-futura text-primary tracking-wide">GAME CONTROLS</h3>
+                  <div className="flex gap-2">
                     <PushButton
-                      label="FULLSCREEN"
-                      onClick={toggleFullscreen}
-                      color="white"
+                      label="NEW GAME"
+                      onClick={handleNewGame}
+                      color="green"
                       size="sm"
                     />
-                  )}
+                    <PushButton
+                      label="RESET"
+                      onClick={handleResetGame}
+                      color="amber"
+                      size="sm"
+                    />
+                    {isAvailable && (
+                      <PushButton
+                        label="FULLSCREEN"
+                        onClick={toggleFullscreen}
+                        color="white"
+                        size="sm"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
 
-        <div className={`grid grid-cols-1 gap-4 ${isFullscreen ? 'h-screen' : 'lg:grid-cols-4'}`}>
-          {/* Main 3D Chess Board */}
-          <div className={isFullscreen ? 'h-full' : 'lg:col-span-3'}>
-            {!isFullscreen && (
-              <SystemPanel title="3D CHESS BOARD" fullWidth>
-                <div className="w-full h-[600px]">
-                  <RaumschachBoard
-                    gameState={gameState}
-                    selectedPosition={selectedPosition}
-                    validMoves={validMoves}
-                    onSquareClick={handleSquareClick}
-                    onCanvasClick={handleCanvasClick}
-                    onCanvasPointerDown={handleCanvasPointerDown}
-                    onCanvasPointerMove={handleCanvasPointerMove}
-                    onCanvasPointerUp={handleCanvasPointerUp}
-                    isActive={isGameActive}
-                    currentPlayer={getCurrentPlayer()}
-                    gameStatus={getGameStatus()}
-                    moveCount={getMoveHistory().length}
-                    cursorPosition={cursorPosition}
-                    isKeyboardMode={isKeyboardMode}
-                    onMouseInteraction={handleMouseInteraction}
-                    onCameraAzimuthChange={setCameraAzimuth}
-                    onCanvasReady={setCanvasElement}
-                  />
-                </div>
-              </SystemPanel>
-            )}
-            {isFullscreen && (
-              <div className="w-full h-full">
-                <RaumschachBoard
-                  gameState={gameState}
-                  selectedPosition={selectedPosition}
-                  validMoves={validMoves}
-                  onSquareClick={handleSquareClick}
-                  onCanvasClick={handleCanvasClick}
-                  onCanvasPointerDown={handleCanvasPointerDown}
-                  onCanvasPointerMove={handleCanvasPointerMove}
-                  onCanvasPointerUp={handleCanvasPointerUp}
-                  isActive={isGameActive}
-                  currentPlayer={getCurrentPlayer()}
-                  gameStatus={getGameStatus()}
-                  moveCount={getMoveHistory().length}
-                  cursorPosition={cursorPosition}
-                  isKeyboardMode={isKeyboardMode}
-                  onMouseInteraction={handleMouseInteraction}
-                  onCameraAzimuthChange={setCameraAzimuth}
-                  onCanvasReady={setCanvasElement}
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
+              {/* Main 3D Chess Board */}
+              <div className="lg:col-span-3">
+                <SystemPanel title="3D CHESS BOARD" fullWidth>
+                  <div className="w-full h-[600px]">
+                    <RaumschachBoard
+                      gameState={gameState}
+                      selectedPosition={selectedPosition}
+                      validMoves={validMoves}
+                      onSquareClick={handleSquareClick}
+                      onCanvasClick={handleCanvasClick}
+                      onCanvasPointerDown={handleCanvasPointerDown}
+                      onCanvasPointerMove={handleCanvasPointerMove}
+                      onCanvasPointerUp={handleCanvasPointerUp}
+                      isActive={isGameActive}
+                      currentPlayer={getCurrentPlayer()}
+                      gameStatus={getGameStatus()}
+                      moveCount={getMoveHistory().length}
+                      cursorPosition={cursorPosition}
+                      isKeyboardMode={isKeyboardMode}
+                      onMouseInteraction={handleMouseInteraction}
+                      onCameraAzimuthChange={setCameraAzimuth}
+                      onCanvasReady={setCanvasElement}
+                    />
+                  </div>
+                </SystemPanel>
+              </div>
+
+              {/* Control Panels */}
+              <div className="space-y-4">
+                {/* Game Settings */}
+                <GameSettings
+                  settings={gameSettings}
+                  onUpdateSettings={updateGameSettings}
                 />
+
+                {/* Instructions */}
+                <SystemPanel title="CONTROLS">
+                  <div className="text-xs text-muted-foreground grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <div className="text-primary mb-1">MOUSE/TOUCH:</div>
+                      <div>• Click/tap pieces to select</div>
+                      <div>• Click/tap valid squares to move</div>
+                      <div>• Drag to orbit camera</div>
+                      <div>• Scroll/pinch to zoom</div>
+                    </div>
+                    <div>
+                      <div className="text-primary mb-1">KEYBOARD:</div>
+                      <div>• Arrow keys to navigate</div>
+                      <div>• Page Up/Down or Shift+Up/Down for levels</div>
+                      <div>• Ctrl+Left/Right to rotate camera</div>
+                      <div>• Space/Enter to select</div>
+                      <div>• Escape to deselect</div>
+                      <div>• R to reset, N for new game</div>
+                      <div>• F to toggle fullscreen</div>
+                    </div>
+                  </div>
+                </SystemPanel>
               </div>
-            )}
-          </div>
-
-          {/* Control Panels - Hidden in fullscreen */}
-          {!isFullscreen && (
-            <div className="space-y-4">
-              {/* Game Settings */}
-              <GameSettings
-                settings={gameSettings}
-                onUpdateSettings={updateGameSettings}
-              />
-
-              {/* Instructions */}
-              <SystemPanel title="CONTROLS">
-                <div className="text-xs text-muted-foreground grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <div className="text-primary mb-1">MOUSE/TOUCH:</div>
-                    <div>• Click/tap pieces to select</div>
-                    <div>• Click/tap valid squares to move</div>
-                    <div>• Drag to orbit camera</div>
-                    <div>• Scroll/pinch to zoom</div>
-                  </div>
-                  <div>
-                    <div className="text-primary mb-1">KEYBOARD:</div>
-                    <div>• Arrow keys to navigate</div>
-                    <div>• Page Up/Down or Shift+Up/Down for levels</div>
-                    <div>• Ctrl+Left/Right to rotate camera</div>
-                    <div>• Space/Enter to select</div>
-                    <div>• Escape to deselect</div>
-                    <div>• R to reset, N for new game</div>
-                    <div>• F to toggle fullscreen</div>
-                  </div>
-                </div>
-              </SystemPanel>
             </div>
-          )}
+          </div>
         </div>
-      </div>
-
+      )}
       {/* Promotion Dialog */}
       {pendingPromotion && (
         <PromotionDialog
@@ -276,6 +274,6 @@ export default function ThreeDChess() {
           onSelect={handlePromotionChoice}
         />
       )}
-    </div>
+    </>
   );
 }
