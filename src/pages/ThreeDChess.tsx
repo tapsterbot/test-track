@@ -8,6 +8,8 @@ import { GameSettings } from "@/components/chess/GameSettings";
 import { PromotionDialog } from "@/components/chess/PromotionDialog";
 import { useRaumschach } from "@/hooks/useRaumschach";
 import { useChessKeyboard } from "@/hooks/useChessKeyboard";
+import { useFullscreen } from "@/hooks/useFullscreen";
+import { Maximize, Minimize } from "lucide-react";
 
 
 export default function ThreeDChess() {
@@ -31,6 +33,8 @@ export default function ThreeDChess() {
     pendingPromotion,
     handlePromotionChoice
   } = useRaumschach();
+
+  const { isFullscreen, toggleFullscreen, isAvailable } = useFullscreen();
 
   const handleCameraRotateLeft = () => {
     (window as any).rotateCameraLeft?.();
@@ -132,13 +136,15 @@ export default function ThreeDChess() {
 
   return (
     <div className="min-h-screen bg-background">
-      <ModuleHeader
-        moduleNumber="026"
-        title="3D CHESS"
-        description="5×5×5 RAUMSCHACH THREE-DIMENSIONAL CHESS"
-      />
+      {!isFullscreen && (
+        <ModuleHeader
+          moduleNumber="026"
+          title="3D CHESS"
+          description="5×5×5 RAUMSCHACH THREE-DIMENSIONAL CHESS"
+        />
+      )}
       
-      <div className="container mx-auto p-4">
+      <div className={`container mx-auto ${isFullscreen ? 'p-2 max-w-none h-screen' : 'p-4'}`}>
         {/* Compact Game Controls - Above the game */}
         <div className="mb-4">
           <div className="nasa-panel p-3">
@@ -157,16 +163,24 @@ export default function ThreeDChess() {
                   color="amber"
                   size="sm"
                 />
+                {isAvailable && (
+                  <PushButton
+                    label={isFullscreen ? "EXIT FULL" : "FULLSCREEN"}
+                    onClick={toggleFullscreen}
+                    color="white"
+                    size="sm"
+                  />
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div className={`grid grid-cols-1 gap-4 ${isFullscreen ? 'lg:grid-cols-5 h-[calc(100vh-4rem)]' : 'lg:grid-cols-4'}`}>
           {/* Main 3D Chess Board */}
-          <div className="lg:col-span-3">
+          <div className={isFullscreen ? 'lg:col-span-4' : 'lg:col-span-3'}>
             <SystemPanel title="3D CHESS BOARD" fullWidth>
-              <div className="h-[600px] w-full">
+              <div className={`w-full ${isFullscreen ? 'h-[calc(100vh-8rem)]' : 'h-[600px]'}`}>
                 <RaumschachBoard
                   gameState={gameState}
                   selectedPosition={selectedPosition}
@@ -215,6 +229,7 @@ export default function ThreeDChess() {
                   <div>• Space/Enter to select</div>
                   <div>• Escape to deselect</div>
                   <div>• R to reset, N for new game</div>
+                  <div>• F to toggle fullscreen</div>
                 </div>
               </div>
             </SystemPanel>
