@@ -49,20 +49,20 @@ export function useChessKeyboard(
         
         switch (direction) {
           case 'up': // Away from camera
-            deltaRank = Math.round(-cameraForward.z);
-            deltaFile = Math.round(cameraForward.x);
-            break;
-          case 'down': // Toward camera
             deltaRank = Math.round(cameraForward.z);
             deltaFile = Math.round(-cameraForward.x);
             break;
-          case 'left': // Camera left
-            deltaRank = Math.round(-cameraRight.z);
-            deltaFile = Math.round(cameraRight.x);
+          case 'down': // Toward camera
+            deltaRank = Math.round(-cameraForward.z);
+            deltaFile = Math.round(cameraForward.x);
             break;
-          case 'right': // Camera right
+          case 'left': // Camera left
             deltaRank = Math.round(cameraRight.z);
             deltaFile = Math.round(-cameraRight.x);
+            break;
+          case 'right': // Camera right
+            deltaRank = Math.round(-cameraRight.z);
+            deltaFile = Math.round(cameraRight.x);
             break;
         }
         
