@@ -37,7 +37,7 @@ function Square({ position, piece, isSelected, isValidMove, isCursor, onMouseEnt
   
   const x = (position.file - 2) * 1.2;
   const y = position.level * 1.5;
-  const z = (position.rank - 2) * 1.2;
+  const z = (2 - position.rank) * 1.2; // Flip Z to put rank 0 at back, rank 4 at front
   
   const isDark = (position.file + position.rank + position.level) % 2 === 1;
 
@@ -331,31 +331,29 @@ function BoardStructure() {
         </Text>
       ))}
       
-      {/* File (column) indicators - positioned on the right side */}
+      {/* File (column) indicators - positioned on the front side, A on left */}
       {[0, 1, 2, 3, 4].map((file) => (
         <Text
           key={`file-${file}`}
-          position={[(file - 2) * 1.2, -0.5, 3.5]}
+          position={[(file - 2) * 1.2, -0.5, -3.5]}
           fontSize={0.3}
           color="#6b7280"
           anchorX="center"
           anchorY="middle"
-          rotation={[0, Math.PI, 0]}
         >
           {String.fromCharCode(65 + file)}
         </Text>
       ))}
       
-      {/* Rank (row) indicators - positioned on the front side */}
+      {/* Rank (row) indicators - positioned on the left side, 1 at White's side */}
       {[0, 1, 2, 3, 4].map((rank) => (
         <Text
           key={`rank-${rank}`}
-          position={[-3.5, -0.5, (rank - 2) * 1.2]}
+          position={[-3.5, -0.5, (2 - rank) * 1.2]}
           fontSize={0.3}
           color="#6b7280"
           anchorX="center"
           anchorY="middle"
-          rotation={[0, Math.PI, 0]}
         >
           {rank + 1}
         </Text>
@@ -464,8 +462,8 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
       <directionalLight position={[-5, 5, -5]} intensity={0.5} />
       <pointLight position={[0, 8, 0]} intensity={0.8} />
       
-      {/* Rotate the entire board 180 degrees so white side faces camera */}
-      <group rotation={[0, Math.PI, 0]}>
+      {/* Board positioned for traditional chess view - White at bottom, File A on left */}
+      <group>
         <BoardStructure />
         
         {/* Render all squares and pieces */}
