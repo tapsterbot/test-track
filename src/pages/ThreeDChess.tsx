@@ -15,6 +15,7 @@ export default function ThreeDChess() {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const [clickedOnGameElement, setClickedOnGameElement] = useState(false);
+  const [cameraAzimuth, setCameraAzimuth] = useState(0);
   
   const {
     gameState,
@@ -55,7 +56,8 @@ export default function ThreeDChess() {
       setIsGameActive(true);
     },
     handleCameraRotateLeft,
-    handleCameraRotateRight
+    handleCameraRotateRight,
+    cameraAzimuth
   );
 
   const handleNewGame = () => {
@@ -181,6 +183,7 @@ export default function ThreeDChess() {
                   cursorPosition={cursorPosition}
                   isKeyboardMode={isKeyboardMode}
                   onMouseInteraction={handleMouseInteraction}
+                  onCameraAzimuthChange={setCameraAzimuth}
                 />
               </div>
             </SystemPanel>

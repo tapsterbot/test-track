@@ -12,7 +12,8 @@ export function useChessKeyboard(
   onReset: () => void,
   onNewGame: () => void,
   onCameraRotateLeft?: () => void,
-  onCameraRotateRight?: () => void
+  onCameraRotateRight?: () => void,
+  cameraAzimuth?: number
 ) {
   const [keyboardState, setKeyboardState] = useState<ChessKeyboardState>({
     cursorPosition: { level: 2, rank: 2, file: 2 }, // Start at center of board
@@ -31,25 +32,42 @@ export function useChessKeyboard(
     setKeyboardState(prev => {
       const newPos = { ...prev.cursorPosition };
       
-      switch (direction) {
-        case 'up':
-          newPos.rank = Math.max(0, newPos.rank - 1);
-          break;
-        case 'down':
-          newPos.rank = Math.min(4, newPos.rank + 1);
-          break;
-        case 'left':
-          newPos.file = Math.max(0, newPos.file - 1);
-          break;
-        case 'right':
-          newPos.file = Math.min(4, newPos.file + 1);
-          break;
-        case 'level-up':
-          newPos.level = Math.min(4, newPos.level + 1);
-          break;
-        case 'level-down':
-          newPos.level = Math.max(0, newPos.level - 1);
-          break;
+      if (direction === 'level-up') {
+        newPos.level = Math.min(4, newPos.level + 1);
+      } else if (direction === 'level-down') {
+        newPos.level = Math.max(0, newPos.level - 1);
+      } else {
+        // Calculate camera-relative directions
+        const azimuth = cameraAzimuth || 0;
+        
+        // Camera directions in world space
+        const cameraForward = { x: Math.sin(azimuth), z: Math.cos(azimuth) };
+        const cameraRight = { x: Math.cos(azimuth), z: -Math.sin(azimuth) };
+        
+        let deltaRank = 0;
+        let deltaFile = 0;
+        
+        switch (direction) {
+          case 'up': // Away from camera
+            deltaRank = Math.round(-cameraForward.z);
+            deltaFile = Math.round(cameraForward.x);
+            break;
+          case 'down': // Toward camera
+            deltaRank = Math.round(cameraForward.z);
+            deltaFile = Math.round(-cameraForward.x);
+            break;
+          case 'left': // Camera left
+            deltaRank = Math.round(-cameraRight.z);
+            deltaFile = Math.round(cameraRight.x);
+            break;
+          case 'right': // Camera right
+            deltaRank = Math.round(cameraRight.z);
+            deltaFile = Math.round(-cameraRight.x);
+            break;
+        }
+        
+        newPos.rank = Math.max(0, Math.min(4, newPos.rank + deltaRank));
+        newPos.file = Math.max(0, Math.min(4, newPos.file + deltaFile));
       }
 
       return {
@@ -58,7 +76,7 @@ export function useChessKeyboard(
         isKeyboardMode: true
       };
     });
-  }, []);
+  }, [cameraAzimuth]);
 
   const selectCurrentSquare = useCallback(() => {
     if (keyboardState.isKeyboardMode) {

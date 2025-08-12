@@ -20,6 +20,7 @@ interface RaumschachBoardProps {
   cursorPosition?: Position | null;
   isKeyboardMode?: boolean;
   onMouseInteraction?: () => void;
+  onCameraAzimuthChange?: (azimuth: number) => void;
 }
 
 interface SquareProps {
@@ -361,13 +362,27 @@ function BoardStructure() {
   );
 }
 
-function CameraControls({ isActive, onRotateLeft, onRotateRight }: { 
+function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange }: { 
   isActive: boolean;
   onRotateLeft?: () => void;
   onRotateRight?: () => void;
+  onAzimuthChange?: (azimuth: number) => void;
 }) {
   const { camera, gl } = useThree();
   const controlsRef = useRef<any>(null);
+  
+  // Track azimuth changes
+  useEffect(() => {
+    const updateAzimuth = () => {
+      if (controlsRef.current && onAzimuthChange) {
+        const azimuth = controlsRef.current.getAzimuthalAngle();
+        onAzimuthChange(azimuth);
+      }
+    };
+
+    const interval = setInterval(updateAzimuth, 100); // Update 10 times per second
+    return () => clearInterval(interval);
+  }, [onAzimuthChange]);
   
   // Expose rotation functions
   useEffect(() => {
@@ -447,13 +462,18 @@ function ClickHandler({ onSquareClick, isActive }: { onSquareClick: (position: P
   return null;
 }
 
-function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive, cursorPosition, isKeyboardMode, onMouseInteraction }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive' | 'cursorPosition' | 'isKeyboardMode' | 'onMouseInteraction'>) {
+function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive, cursorPosition, isKeyboardMode, onMouseInteraction, onCameraAzimuthChange }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive' | 'cursorPosition' | 'isKeyboardMode' | 'onMouseInteraction' | 'onCameraAzimuthChange'>) {
   const rotateLeft = () => (window as any).rotateCameraLeft?.();
   const rotateRight = () => (window as any).rotateCameraRight?.();
   
   return (
     <>
-      <CameraControls isActive={isActive} onRotateLeft={rotateLeft} onRotateRight={rotateRight} />
+      <CameraControls 
+        isActive={isActive} 
+        onRotateLeft={rotateLeft} 
+        onRotateRight={rotateRight}
+        onAzimuthChange={onCameraAzimuthChange}
+      />
       <ClickHandler onSquareClick={onSquareClick} isActive={isActive} />
       
       <ambientLight intensity={0.6} />
@@ -637,11 +657,11 @@ function GameHUD({
   );
 }
 
-export function RaumschachBoard({ 
-  gameState, 
-  selectedPosition, 
-  validMoves, 
-  onSquareClick, 
+export function RaumschachBoard({
+  gameState,
+  selectedPosition,
+  validMoves,
+  onSquareClick,
   onCanvasClick,
   onCanvasPointerDown,
   onCanvasPointerMove,
@@ -652,7 +672,8 @@ export function RaumschachBoard({
   moveCount,
   cursorPosition,
   isKeyboardMode,
-  onMouseInteraction
+  onMouseInteraction,
+  onCameraAzimuthChange
 }: RaumschachBoardProps) {
   return (
     <div className="relative w-full h-full nasa-panel">
@@ -673,6 +694,7 @@ export function RaumschachBoard({
           cursorPosition={cursorPosition}
           isKeyboardMode={isKeyboardMode}
           onMouseInteraction={onMouseInteraction}
+          onCameraAzimuthChange={onCameraAzimuthChange}
         />
       </Canvas>
       
