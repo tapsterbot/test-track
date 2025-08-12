@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree, ThreeEvent } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
 import { GameState, Position, ChessPiece } from "@/hooks/useRaumschach";
@@ -28,11 +28,10 @@ interface SquareProps {
   isSelected: boolean;
   isValidMove: boolean;
   isCursor: boolean;
-  onClick: (position: Position) => void;
   onMouseEnter?: () => void;
 }
 
-function Square({ position, piece, isSelected, isValidMove, isCursor, onClick, onMouseEnter }: SquareProps) {
+function Square({ position, piece, isSelected, isValidMove, isCursor, onMouseEnter }: SquareProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   
@@ -42,12 +41,18 @@ function Square({ position, piece, isSelected, isValidMove, isCursor, onClick, o
   
   const isDark = (position.file + position.rank + position.level) % 2 === 1;
 
+  // Add userData to mesh for identification
+  useEffect(() => {
+    if (meshRef.current) {
+      meshRef.current.userData = { type: 'square', position };
+    }
+  }, [position]);
+
   return (
     <group position={[x, y, z]}>
       {/* Square */}
       <mesh
         ref={meshRef}
-        onClick={() => onClick(position)}
         onPointerOver={() => {
           setHovered(true);
           onMouseEnter?.();
@@ -94,6 +99,7 @@ function Square({ position, piece, isSelected, isValidMove, isCursor, onClick, o
           piece={piece} 
           position={[0, 0.3, 0]} 
           isSelected={isSelected}
+          boardPosition={position}
         />
       )}
     </group>
@@ -104,10 +110,18 @@ interface ChessPieceComponentProps {
   piece: ChessPiece;
   position: [number, number, number];
   isSelected: boolean;
+  boardPosition: Position;
 }
 
-function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponentProps) {
+function ChessPieceComponent({ piece, position, isSelected, boardPosition }: ChessPieceComponentProps) {
   const meshRef = useRef<THREE.Mesh>(null);
+
+  // Add userData to all piece meshes for identification
+  const addUserDataToMesh = (mesh: THREE.Mesh) => {
+    if (mesh) {
+      mesh.userData = { type: 'piece', piece, position: boardPosition };
+    }
+  };
   
   // More solid colors for better visibility
   const color = piece.color === 'white' ? "#e2e8f0" : "#1f2937"; // Light gray instead of white
@@ -123,36 +137,49 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
     />
   );
 
+  const createMeshWithUserData = (geometryJsx: any, materialJsx: any, meshPosition?: [number, number, number]) => (
+    <mesh 
+      ref={(mesh) => { if (mesh) addUserDataToMesh(mesh); }} 
+      position={meshPosition}
+    >
+      {geometryJsx}
+      {materialJsx}
+    </mesh>
+  );
+
   const renderPiece = () => {
     switch (piece.type) {
       case 'king':
         return (
           <group>
             {/* Base cylinder */}
-            <mesh position={[0, -0.1, 0]}>
-              <cylinderGeometry args={[0.25, 0.3, 0.4, 8]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <cylinderGeometry args={[0.25, 0.3, 0.4, 8]} />,
+              createMaterial(),
+              [0, -0.1, 0]
+            )}
             {/* Edge outline */}
             <mesh position={[0, -0.1, 0]} scale={[1.03, 1.03, 1.03]}>
               <cylinderGeometry args={[0.25, 0.3, 0.4, 8]} />
               <meshBasicMaterial color={edgeColor} transparent opacity={0.6} />
             </mesh>
             {/* Crown top */}
-            <mesh position={[0, 0.2, 0]}>
-              <cylinderGeometry args={[0.15, 0.2, 0.3, 8]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <cylinderGeometry args={[0.15, 0.2, 0.3, 8]} />,
+              createMaterial(),
+              [0, 0.2, 0]
+            )}
           </group>
         );
       case 'queen':
         return (
           <group>
             {/* Base cylinder */}
-            <mesh position={[0, -0.05, 0]}>
-              <cylinderGeometry args={[0.2, 0.25, 0.4, 8]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <cylinderGeometry args={[0.2, 0.25, 0.4, 8]} />,
+              createMaterial(),
+              [0, -0.05, 0]
+            )}
             {/* Edge outline */}
             <mesh position={[0, -0.05, 0]} scale={[1.03, 1.03, 1.03]}>
               <cylinderGeometry args={[0.2, 0.25, 0.4, 8]} />
@@ -160,11 +187,15 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
             </mesh>
             {/* Crown points */}
             {[0, 1, 2, 3, 4].map((i) => (
-              <mesh key={i} position={[
-                Math.cos((i * Math.PI * 2) / 5) * 0.15,
-                0.25,
-                Math.sin((i * Math.PI * 2) / 5) * 0.15
-              ]}>
+              <mesh 
+                key={i} 
+                position={[
+                  Math.cos((i * Math.PI * 2) / 5) * 0.15,
+                  0.25,
+                  Math.sin((i * Math.PI * 2) / 5) * 0.15
+                ]}
+                ref={(mesh) => { if (mesh) addUserDataToMesh(mesh); }}
+              >
                 <sphereGeometry args={[0.05]} />
                 {createMaterial()}
               </mesh>
@@ -175,10 +206,10 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
         return (
           <group>
             {/* Base */}
-            <mesh>
-              <boxGeometry args={[0.35, 0.4, 0.35]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <boxGeometry args={[0.35, 0.4, 0.35]} />,
+              createMaterial()
+            )}
             {/* Edge outline */}
             <mesh scale={[1.03, 1.03, 1.03]}>
               <boxGeometry args={[0.35, 0.4, 0.35]} />
@@ -187,7 +218,11 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
             {/* Crenellations */}
             {[-0.1, 0.1].map((x) => 
               [-0.1, 0.1].map((z) => (
-                <mesh key={`${x}-${z}`} position={[x, 0.25, z]}>
+                <mesh 
+                  key={`${x}-${z}`} 
+                  position={[x, 0.25, z]}
+                  ref={(mesh) => { if (mesh) addUserDataToMesh(mesh); }}
+                >
                   <boxGeometry args={[0.08, 0.1, 0.08]} />
                   {createMaterial()}
                 </mesh>
@@ -199,68 +234,74 @@ function ChessPieceComponent({ piece, position, isSelected }: ChessPieceComponen
         return (
           <group>
             {/* Base */}
-            <mesh position={[0, -0.1, 0]}>
-              <cylinderGeometry args={[0.15, 0.2, 0.4, 8]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <cylinderGeometry args={[0.15, 0.2, 0.4, 8]} />,
+              createMaterial(),
+              [0, -0.1, 0]
+            )}
             {/* Miter top */}
-            <mesh position={[0, 0.2, 0]}>
-              <coneGeometry args={[0.12, 0.25, 8]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <coneGeometry args={[0.12, 0.25, 8]} />,
+              createMaterial(),
+              [0, 0.2, 0]
+            )}
           </group>
         );
       case 'knight':
         return (
           <group>
             {/* Body */}
-            <mesh position={[0, -0.05, 0]}>
-              <boxGeometry args={[0.25, 0.3, 0.35]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <boxGeometry args={[0.25, 0.3, 0.35]} />,
+              createMaterial(),
+              [0, -0.05, 0]
+            )}
             {/* Head */}
-            <mesh position={[0, 0.15, 0.15]}>
-              <boxGeometry args={[0.15, 0.2, 0.25]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <boxGeometry args={[0.15, 0.2, 0.25]} />,
+              createMaterial(),
+              [0, 0.15, 0.15]
+            )}
           </group>
         );
       case 'unicorn':
         return (
           <group>
             {/* Body */}
-            <mesh position={[0, -0.05, 0]}>
-              <coneGeometry args={[0.2, 0.4, 6]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <coneGeometry args={[0.2, 0.4, 6]} />,
+              createMaterial(),
+              [0, -0.05, 0]
+            )}
             {/* Horn */}
-            <mesh position={[0, 0.35, 0]}>
-              <cylinderGeometry args={[0.02, 0.04, 0.3]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <cylinderGeometry args={[0.02, 0.04, 0.3]} />,
+              createMaterial(),
+              [0, 0.35, 0]
+            )}
           </group>
         );
       case 'pawn':
         return (
           <group>
             {/* Base */}
-            <mesh position={[0, -0.1, 0]}>
-              <cylinderGeometry args={[0.12, 0.15, 0.2]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <cylinderGeometry args={[0.12, 0.15, 0.2]} />,
+              createMaterial(),
+              [0, -0.1, 0]
+            )}
             {/* Head */}
-            <mesh position={[0, 0.1, 0]}>
-              <sphereGeometry args={[0.15]} />
-              {createMaterial()}
-            </mesh>
+            {createMeshWithUserData(
+              <sphereGeometry args={[0.15]} />,
+              createMaterial(),
+              [0, 0.1, 0]
+            )}
           </group>
         );
       default:
-        return (
-          <mesh>
-            <sphereGeometry args={[0.2]} />
-            {createMaterial()}
-          </mesh>
+        return createMeshWithUserData(
+          <sphereGeometry args={[0.2]} />,
+          createMaterial()
         );
     }
   };
@@ -367,6 +408,48 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight }: {
   );
 }
 
+// Click handler component using raycasting
+function ClickHandler({ onSquareClick, isActive }: { onSquareClick: (position: Position) => void; isActive: boolean }) {
+  const { camera, scene, raycaster, pointer } = useThree();
+
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      if (!isActive) return;
+
+      // Convert mouse position to normalized device coordinates (-1 to +1)
+      const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      // Update the raycaster with the camera and pointer position
+      raycaster.setFromCamera(pointer, camera);
+
+      // Calculate objects intersecting the picking ray
+      const intersects = raycaster.intersectObjects(scene.children, true);
+
+      if (intersects.length > 0) {
+        // Find the closest intersection with valid userData
+        for (const intersection of intersects) {
+          const userData = intersection.object.userData;
+          if (userData && (userData.type === 'square' || userData.type === 'piece')) {
+            const position = userData.type === 'piece' ? userData.position : userData.position;
+            onSquareClick(position);
+            break;
+          }
+        }
+      }
+    };
+
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      canvas.addEventListener('click', handleClick);
+      return () => canvas.removeEventListener('click', handleClick);
+    }
+  }, [camera, scene, raycaster, pointer, onSquareClick, isActive]);
+
+  return null;
+}
+
 function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive, cursorPosition, isKeyboardMode, onMouseInteraction }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive' | 'cursorPosition' | 'isKeyboardMode' | 'onMouseInteraction'>) {
   const rotateLeft = () => (window as any).rotateCameraLeft?.();
   const rotateRight = () => (window as any).rotateCameraRight?.();
@@ -374,6 +457,7 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
   return (
     <>
       <CameraControls isActive={isActive} onRotateLeft={rotateLeft} onRotateRight={rotateRight} />
+      <ClickHandler onSquareClick={onSquareClick} isActive={isActive} />
       
       <ambientLight intensity={0.6} />
       <directionalLight position={[10, 10, 5]} intensity={1.0} />
@@ -414,7 +498,6 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
                   isSelected={isSelected}
                   isValidMove={isValidMove}
                   isCursor={isCursor}
-                  onClick={onSquareClick}
                   onMouseEnter={onMouseInteraction}
                 />
               );
