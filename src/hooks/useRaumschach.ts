@@ -43,7 +43,7 @@ export function useRaumschach() {
   const [moveHistory, setMoveHistory] = useState<Move[]>([]);
   const [gameSettings, setGameSettings] = useState<GameSettings>({
     defaultPromotionPiece: 'queen',
-    autoPromote: true
+    autoPromote: false // Test promotion dialog
   });
   const [pendingPromotion, setPendingPromotion] = useState<PendingPromotion | null>(null);
 
@@ -92,7 +92,7 @@ export function useRaumschach() {
     board[3][4][3] = { type: 'bishop', color: 'black' };   // Dd5
     board[3][4][4] = { type: 'unicorn', color: 'black' };  // De5
     
-    // Black pawns on level D (rank 4)
+    // Black pawns on level D (rank 3) - FIXED: Black pawns start at rank 3, promote at rank 0
     for (let i = 0; i < 5; i++) {
       board[3][3][i] = { type: 'pawn', color: 'black' };   // Da4-De4
     }
@@ -104,10 +104,16 @@ export function useRaumschach() {
     board[4][4][3] = { type: 'knight', color: 'black' };   // Ed5
     board[4][4][4] = { type: 'rook', color: 'black' };     // Ee5
     
-    // Black pawns on level E (rank 4)
+    // Black pawns on level E (rank 3) - FIXED: Black pawns start at rank 3, promote at rank 0
     for (let i = 0; i < 5; i++) {
       board[4][3][i] = { type: 'pawn', color: 'black' };   // Ea4-Ee4
     }
+
+    // TEST PROMOTION: Place test pawns close to promotion
+    // White pawn at rank 3 (one move from promotion at rank 4)
+    board[2][3][2] = { type: 'pawn', color: 'white' };   // Cc4 - white pawn ready to promote
+    // Black pawn at rank 1 (one move from promotion at rank 0) 
+    board[2][1][2] = { type: 'pawn', color: 'black' };   // Cc2 - black pawn ready to promote
 
     return {
       board,
@@ -248,6 +254,7 @@ export function useRaumschach() {
         
         if (isValidPosition(forward) && !getPieceAt(forward)) {
           moves.push(forward);
+          console.log(`📍 ${piece.color} pawn can move forward from rank ${pos.rank} to rank ${forward.rank}`);
           const promotionRank = piece.color === 'white' ? 4 : 0;
           if (forward.rank === promotionRank) {
             console.log(`🎯 PROMOTION MOVE AVAILABLE: ${piece.color} pawn can move to promotion rank ${promotionRank} at`, forward);
