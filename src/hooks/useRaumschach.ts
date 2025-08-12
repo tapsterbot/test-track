@@ -269,11 +269,11 @@ export function useRaumschach() {
         }
         
         // Diagonal captures (forward + one square in file or level dimension)
+        // White pawns can only capture forward and up, black pawns can only capture forward and down
         const captures = [
           { level: pos.level, rank: pos.rank + direction, file: pos.file + 1 },
           { level: pos.level, rank: pos.rank + direction, file: pos.file - 1 },
-          { level: pos.level + 1, rank: pos.rank + direction, file: pos.file },
-          { level: pos.level - 1, rank: pos.rank + direction, file: pos.file }
+          { level: pos.level + verticalDirection, rank: pos.rank + direction, file: pos.file }
         ];
         
         captures.forEach(capturePos => {
