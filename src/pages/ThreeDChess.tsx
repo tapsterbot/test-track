@@ -77,8 +77,8 @@ export default function ThreeDChess() {
   const handleCanvasClick = () => {
     if (!isGameActive) {
       handleNewGame();
-    } else if (!isDragging && !clickedOnGameElement) {
-      // Only pause if it wasn't a drag operation and wasn't clicking on game elements
+    } else if (!isDragging && !clickedOnGameElement && !isFullscreen) {
+      // Only pause if it wasn't a drag operation, wasn't clicking on game elements, and not in fullscreen
       setIsGameActive(false);
     }
     // Reset the flag after handling the click
