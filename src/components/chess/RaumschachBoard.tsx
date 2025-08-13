@@ -33,6 +33,7 @@ interface RaumschachBoardProps {
   onMouseInteraction?: () => void;
   onCameraAzimuthChange?: (azimuth: number) => void;
   onCanvasReady?: (canvas: HTMLCanvasElement | null) => void;
+  isFullscreen?: boolean;
 }
 
 interface SquareProps {
@@ -753,7 +754,8 @@ export function RaumschachBoard({
   isKeyboardMode,
   onMouseInteraction,
   onCameraAzimuthChange,
-  onCanvasReady
+  onCanvasReady,
+  isFullscreen
 }: RaumschachBoardProps) {
   return (
     <div className="relative w-full h-full nasa-panel">
@@ -780,20 +782,22 @@ export function RaumschachBoard({
       </Canvas>
       
       {/* Game HUD */}
-      <GameHUD
-        selectedPosition={selectedPosition}
-        validMoves={validMoves}
-        gameState={gameState}
-        currentPlayer={currentPlayer}
-        gameStatus={gameStatus}
-        moveCount={moveCount}
-        isActive={isActive}
-        cursorPosition={cursorPosition}
-        isKeyboardMode={isKeyboardMode}
-      />
+      {!isFullscreen && (
+        <GameHUD
+          selectedPosition={selectedPosition}
+          validMoves={validMoves}
+          gameState={gameState}
+          currentPlayer={currentPlayer}
+          gameStatus={gameStatus}
+          moveCount={moveCount}
+          isActive={isActive}
+          cursorPosition={cursorPosition}
+          isKeyboardMode={isKeyboardMode}
+        />
+      )}
 
       {/* Game Ready Overlay */}
-      {!isActive && (
+      {!isActive && !isFullscreen && (
         <div 
           className="absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer z-10"
           onClick={onCanvasClick}

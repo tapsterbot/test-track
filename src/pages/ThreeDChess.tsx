@@ -158,6 +158,7 @@ export default function ThreeDChess() {
             onMouseInteraction={handleMouseInteraction}
             onCameraAzimuthChange={setCameraAzimuth}
             onCanvasReady={setCanvasElement}
+            isFullscreen={true}
           />
         </div>
       )}
@@ -226,6 +227,7 @@ export default function ThreeDChess() {
                       onMouseInteraction={handleMouseInteraction}
                       onCameraAzimuthChange={setCameraAzimuth}
                       onCanvasReady={setCanvasElement}
+                      isFullscreen={false}
                     />
                   </div>
                 </SystemPanel>
