@@ -34,6 +34,7 @@ interface RaumschachBoardProps {
   onCameraAzimuthChange?: (azimuth: number) => void;
   onCanvasReady?: (canvas: HTMLCanvasElement | null) => void;
   isFullscreen?: boolean;
+  isDragging?: boolean;
 }
 
 interface SquareProps {
@@ -432,12 +433,12 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
 }
 
 // Click handler component using raycasting
-function ClickHandler({ onSquareClick, isActive }: { onSquareClick: (position: Position) => void; isActive: boolean }) {
+function ClickHandler({ onSquareClick, isActive, isDragging }: { onSquareClick: (position: Position) => void; isActive: boolean; isDragging?: boolean }) {
   const { camera, scene, raycaster, pointer } = useThree();
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
-      if (!isActive) return;
+      if (!isActive || isDragging) return;
 
       // Convert mouse position to normalized device coordinates (-1 to +1)
       const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
@@ -535,7 +536,7 @@ function HoverHandler({
   return null;
 }
 
-function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive, cursorPosition, isKeyboardMode, onMouseInteraction, onCameraAzimuthChange }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive' | 'cursorPosition' | 'isKeyboardMode' | 'onMouseInteraction' | 'onCameraAzimuthChange'>) {
+function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActive, cursorPosition, isKeyboardMode, onMouseInteraction, onCameraAzimuthChange, isDragging }: Pick<RaumschachBoardProps, 'gameState' | 'selectedPosition' | 'validMoves' | 'onSquareClick' | 'isActive' | 'cursorPosition' | 'isKeyboardMode' | 'onMouseInteraction' | 'onCameraAzimuthChange' | 'isDragging'>) {
   const [hoveredPosition, setHoveredPosition] = useState<Position | null>(null);
   const rotateLeft = () => (window as any).rotateCameraLeft?.();
   const rotateRight = () => (window as any).rotateCameraRight?.();
@@ -548,7 +549,7 @@ function Scene({ gameState, selectedPosition, validMoves, onSquareClick, isActiv
         onRotateRight={rotateRight}
         onAzimuthChange={onCameraAzimuthChange}
       />
-      <ClickHandler onSquareClick={onSquareClick} isActive={isActive} />
+      <ClickHandler onSquareClick={onSquareClick} isActive={isActive} isDragging={isDragging} />
       <HoverHandler onHoverChange={setHoveredPosition} isActive={isActive} />
       
       <ambientLight intensity={0.6} />
@@ -755,7 +756,8 @@ export function RaumschachBoard({
   onMouseInteraction,
   onCameraAzimuthChange,
   onCanvasReady,
-  isFullscreen
+  isFullscreen,
+  isDragging
 }: RaumschachBoardProps) {
   return (
     <div className={`relative w-full h-full ${isFullscreen ? '' : 'nasa-panel'}`}>
@@ -778,6 +780,7 @@ export function RaumschachBoard({
           isKeyboardMode={isKeyboardMode}
           onMouseInteraction={onMouseInteraction}
           onCameraAzimuthChange={onCameraAzimuthChange}
+          isDragging={isDragging}
         />
       </Canvas>
       

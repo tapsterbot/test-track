@@ -158,6 +158,7 @@ export default function ThreeDChess() {
             onCameraAzimuthChange={setCameraAzimuth}
             onCanvasReady={() => {}}
             isFullscreen={true}
+            isDragging={isDragging}
           />
         </div>
       )}
@@ -227,6 +228,7 @@ export default function ThreeDChess() {
                       onCameraAzimuthChange={setCameraAzimuth}
                       onCanvasReady={() => {}}
                       isFullscreen={false}
+                      isDragging={isDragging}
                     />
                   </div>
                 </SystemPanel>
