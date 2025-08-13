@@ -124,6 +124,13 @@ export default function ThreeDChess() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isGameActive]);
 
+  // Auto-activate game when entering fullscreen if paused
+  useEffect(() => {
+    if (isFullscreen && !isGameActive) {
+      setIsGameActive(true);
+    }
+  }, [isFullscreen, isGameActive]);
+
   const handleSquareClick = (position: any) => {
     setClickedOnGameElement(true);
     disableKeyboardMode(); // Switch to mouse mode
