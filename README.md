@@ -4,26 +4,7 @@ A comprehensive interactive demo platform featuring advanced UI components, 3D s
 
 ## 🚀 Features
 
-### 🏁 3D Chess (Raumschach)
-Experience the classic 3D chess variant with modern web technology:
-- **5×5×5 3D Board**: Play on a three-dimensional chess board with 125 squares
-- **Full Piece Movement**: All traditional chess pieces with adapted 3D movement rules
-- **Interactive Controls**: 
-  - Mouse drag-and-drop for piece movement
-  - Keyboard navigation (WASD + QE for 3D movement)
-  - Arrow keys for board rotation and navigation
-- **Game Features**:
-  - Fullscreen mode for immersive gameplay
-  - HUD displays showing game state and controls
-  - Pause/resume functionality
-  - Game timer and move tracking
-  - Promotion dialog for pawn advancement
-- **Visual Experience**: 
-  - Smooth 3D animations
-  - Piece highlighting and valid move indicators
-  - Dynamic camera controls
-
-### 🎮 Other Interactive Demos
+- **3D Chess (Raumschach)**: Full 3D chess game with 5×5×5 board, keyboard navigation, and immersive gameplay
 - **Interactive UI Components**: Buttons, forms, modals, dropdowns, and more
 - **Mission Control**: Retro-styled control panels with working switches and indicators
 - **Vehicle Simulator**: 3D physics-based vehicle simulation with joystick controls
