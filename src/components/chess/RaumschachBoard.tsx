@@ -782,19 +782,17 @@ export function RaumschachBoard({
       </Canvas>
       
       {/* Game HUD */}
-      {!isFullscreen && (
-        <GameHUD
-          selectedPosition={selectedPosition}
-          validMoves={validMoves}
-          gameState={gameState}
-          currentPlayer={currentPlayer}
-          gameStatus={gameStatus}
-          moveCount={moveCount}
-          isActive={isActive}
-          cursorPosition={cursorPosition}
-          isKeyboardMode={isKeyboardMode}
-        />
-      )}
+      <GameHUD
+        selectedPosition={selectedPosition}
+        validMoves={validMoves}
+        gameState={gameState}
+        currentPlayer={currentPlayer}
+        gameStatus={gameStatus}
+        moveCount={moveCount}
+        isActive={isActive}
+        cursorPosition={cursorPosition}
+        isKeyboardMode={isKeyboardMode}
+      />
 
       {/* Game Ready Overlay */}
       {!isActive && !isFullscreen && (
