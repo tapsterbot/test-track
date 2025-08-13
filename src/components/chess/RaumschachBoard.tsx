@@ -758,7 +758,7 @@ export function RaumschachBoard({
   isFullscreen
 }: RaumschachBoardProps) {
   return (
-    <div className="relative w-full h-full nasa-panel">
+    <div className={`relative w-full h-full ${isFullscreen ? '' : 'nasa-panel'}`}>
       <Canvas
         camera={{ position: [-8, 8, 8], fov: 75 }}
         style={{ background: 'hsl(var(--background))' }}
