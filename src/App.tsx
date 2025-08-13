@@ -23,6 +23,7 @@ import AdvancedButtonDemo from "./pages/AdvancedButtonDemo";
 import CommsTarget from "./pages/CommsTarget";
 import VehicleSimulator from "./pages/VehicleSimulator";
 import ThreeDChess from "./pages/ThreeDChess";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ const App = () => (
           <Route path="/vehicle-simulator" element={<VehicleSimulator />} />
           <Route path="/3d-chess" element={<ThreeDChess />} />
             <Route path="/comms-target" element={<CommsTarget />} />
+          <Route path="/about" element={<About />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
