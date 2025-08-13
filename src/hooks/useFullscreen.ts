@@ -49,7 +49,7 @@ export function useFullscreen(targetElement?: HTMLElement | null) {
       });
       return false;
     }
-  }, [isAvailable, toast]);
+  }, [targetElement, isAvailable, toast]);
 
   // Exit fullscreen mode
   const exitFullscreen = useCallback(async () => {
@@ -93,13 +93,9 @@ export function useFullscreen(targetElement?: HTMLElement | null) {
       (document as any).mozFullScreenElement ||
       (document as any).msFullscreenElement;
     
-    // If we have a target element, check if it's the one that's fullscreen
-    if (targetElement) {
-      setIsFullscreen(fullscreenElement === targetElement);
-    } else {
-      setIsFullscreen(!!fullscreenElement);
-    }
-  }, [targetElement]);
+    // Simply check if any element is in fullscreen mode
+    setIsFullscreen(!!fullscreenElement);
+  }, []);
 
   // Listen for fullscreen changes
   useEffect(() => {
