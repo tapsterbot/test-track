@@ -18,7 +18,6 @@ export default function ThreeDChess() {
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const [clickedOnGameElement, setClickedOnGameElement] = useState(false);
   const [cameraAzimuth, setCameraAzimuth] = useState(0);
-  const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
   
   const {
     gameState,
@@ -35,7 +34,7 @@ export default function ThreeDChess() {
     handlePromotionChoice
   } = useRaumschach();
 
-  const { isFullscreen, toggleFullscreen, isAvailable } = useFullscreen(canvasElement);
+  const { isFullscreen, toggleFullscreen, isAvailable } = useFullscreen();
 
   const handleCameraRotateLeft = () => {
     (window as any).rotateCameraLeft?.();
@@ -157,7 +156,7 @@ export default function ThreeDChess() {
             isKeyboardMode={isKeyboardMode}
             onMouseInteraction={handleMouseInteraction}
             onCameraAzimuthChange={setCameraAzimuth}
-            onCanvasReady={setCanvasElement}
+            onCanvasReady={() => {}}
             isFullscreen={true}
           />
         </div>
@@ -226,7 +225,7 @@ export default function ThreeDChess() {
                       isKeyboardMode={isKeyboardMode}
                       onMouseInteraction={handleMouseInteraction}
                       onCameraAzimuthChange={setCameraAzimuth}
-                      onCanvasReady={setCanvasElement}
+                      onCanvasReady={() => {}}
                       isFullscreen={false}
                     />
                   </div>
@@ -259,7 +258,6 @@ export default function ThreeDChess() {
                       <div>• Space/Enter to select</div>
                       <div>• Escape to deselect</div>
                       <div>• R to reset, N for new game</div>
-                      <div>• F to toggle fullscreen</div>
                     </div>
                   </div>
                 </SystemPanel>

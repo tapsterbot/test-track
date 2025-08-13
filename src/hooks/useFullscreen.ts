@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
-export function useFullscreen(targetElement?: HTMLElement | null) {
+export function useFullscreen() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { toast } = useToast();
 
@@ -27,7 +27,7 @@ export function useFullscreen(targetElement?: HTMLElement | null) {
     }
 
     try {
-      const element = targetElement || document.documentElement;
+      const element = document.documentElement;
       
       if (element.requestFullscreen) {
         await element.requestFullscreen();
@@ -49,7 +49,7 @@ export function useFullscreen(targetElement?: HTMLElement | null) {
       });
       return false;
     }
-  }, [targetElement, isAvailable, toast]);
+  }, [isAvailable, toast]);
 
   // Exit fullscreen mode
   const exitFullscreen = useCallback(async () => {
@@ -120,24 +120,7 @@ export function useFullscreen(targetElement?: HTMLElement | null) {
     };
   }, [checkFullscreenState]);
 
-  // Handle keyboard shortcut (F key)
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      // Only trigger on F key when not typing in an input
-      if (event.key === 'f' || event.key === 'F') {
-        const target = event.target as HTMLElement;
-        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
-          return;
-        }
-        
-        event.preventDefault();
-        toggleFullscreen();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [toggleFullscreen]);
+  // Removed F key shortcut to prevent conflicts
 
   return {
     isFullscreen,
