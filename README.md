@@ -67,12 +67,13 @@ npm run lint         # Run ESLint
 src/
 ├── components/          # Reusable UI components
 │   ├── ui/             # shadcn/ui base components
+│   ├── chess/          # 3D chess game components
 │   ├── mission-control/ # Mission control components
 │   └── simulator/      # Vehicle simulator components
 ├── pages/              # Page components (routes)
 ├── hooks/              # Custom React hooks
 ├── lib/                # Utility functions
-└── assets/             # Static assets
+└── assets/             # Static assets (images, etc.)
 ```
 
 ## 🧪 Testing Scenarios
