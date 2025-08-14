@@ -571,9 +571,9 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
 
       console.log(`Selected camera position with score ${bestScore}, distance ${bestPosition.distance}`);
       
-      // Temporarily adjust minimum distance for ultra-close zoom
-      const originalMinDistance = controlsRef.current.minDistance;
-      controlsRef.current.minDistance = 1.5;
+      // Set minimum distance to prevent jumping after focus
+      const focusedDistance = bestPosition.distance;
+      controlsRef.current.minDistance = Math.max(1.5, focusedDistance - 0.5);
       
       // Smooth animation to the optimal position
       const startPosition = camera.position.clone();
@@ -596,10 +596,6 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
         if (progress < 1) {
           requestAnimationFrame(animateCamera);
         } else {
-          // Restore original minimum distance after animation
-          setTimeout(() => {
-            controlsRef.current.minDistance = originalMinDistance;
-          }, 100);
           console.log('Enhanced focus animation complete - piece should be clearly visible and clickable');
         }
       };
