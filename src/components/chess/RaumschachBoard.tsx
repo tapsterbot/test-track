@@ -417,6 +417,109 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
       };
     }
   }, [onRotateLeft, onRotateRight]);
+
+  // Expose focus on piece function
+  useEffect(() => {
+    (window as any).focusOnPiece = (level: number | string, file: number | string, rank: number | string) => {
+      if (!controlsRef.current) {
+        console.error('Camera controls not available');
+        return;
+      }
+
+      // Convert chess notation to numeric values if needed
+      const parseCoordinate = (coord: number | string, type: 'level' | 'file' | 'rank'): number => {
+        if (typeof coord === 'number') {
+          return coord;
+        }
+        
+        const str = coord.toString().toLowerCase();
+        
+        if (type === 'level') {
+          // Convert A-E to 0-4
+          const charCode = str.charCodeAt(0);
+          if (charCode >= 97 && charCode <= 101) { // a-e
+            return charCode - 97;
+          } else if (charCode >= 65 && charCode <= 69) { // A-E
+            return charCode - 65;
+          }
+        } else if (type === 'file') {
+          // Convert a-e to 0-4
+          const charCode = str.charCodeAt(0);
+          if (charCode >= 97 && charCode <= 101) { // a-e
+            return charCode - 97;
+          } else if (charCode >= 65 && charCode <= 69) { // A-E
+            return charCode - 65;
+          }
+        } else if (type === 'rank') {
+          // Convert 1-5 to 0-4
+          const num = parseInt(str);
+          if (num >= 1 && num <= 5) {
+            return num - 1;
+          }
+        }
+        
+        console.error(`Invalid ${type} coordinate: ${coord}`);
+        return 0;
+      };
+
+      const numLevel = parseCoordinate(level, 'level');
+      const numFile = parseCoordinate(file, 'file');
+      const numRank = parseCoordinate(rank, 'rank');
+
+      // Validate coordinates
+      if (numLevel < 0 || numLevel > 4 || numFile < 0 || numFile > 4 || numRank < 0 || numRank > 4) {
+        console.error('Invalid coordinates: Level, File, and Rank must be 0-4 or equivalent chess notation');
+        return;
+      }
+
+      // Calculate 3D world position (same logic as Square component)
+      const x = (numFile - 2) * 1.2;
+      const y = numLevel * 1.5;
+      const z = (2 - numRank) * 1.2;
+
+      console.log(`Focusing on piece at Level ${numLevel}, File ${numFile}, Rank ${numRank} (world position: ${x}, ${y}, ${z})`);
+
+      // Set camera target to the piece position
+      const newTarget = new THREE.Vector3(x, y, z);
+      
+      // Calculate optimal camera position (slightly elevated and angled for best view)
+      const distance = 8; // Good viewing distance
+      const elevation = Math.PI / 6; // 30 degrees elevation
+      const azimuth = Math.PI / 4; // 45 degrees azimuth for good angle
+
+      const cameraX = x + distance * Math.cos(elevation) * Math.cos(azimuth);
+      const cameraY = y + distance * Math.sin(elevation);
+      const cameraZ = z + distance * Math.cos(elevation) * Math.sin(azimuth);
+
+      // Smoothly animate to new position
+      controlsRef.current.target.copy(newTarget);
+      
+      // Use three.js to smoothly move camera
+      const startPosition = camera.position.clone();
+      const endPosition = new THREE.Vector3(cameraX, cameraY, cameraZ);
+      const startTime = Date.now();
+      const duration = 1500; // 1.5 seconds
+
+      const animateCamera = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Smooth easing function
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        camera.position.lerpVectors(startPosition, endPosition, easeProgress);
+        controlsRef.current.update();
+
+        if (progress < 1) {
+          requestAnimationFrame(animateCamera);
+        } else {
+          console.log('Focus animation complete');
+        }
+      };
+
+      animateCamera();
+    };
+  }, [camera]);
   
   return (
     <OrbitControls
