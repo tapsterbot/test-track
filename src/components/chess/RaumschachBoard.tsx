@@ -491,23 +491,26 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
       const cameraY = y + distance * Math.sin(elevation);
       const cameraZ = z + distance * Math.cos(elevation) * Math.sin(azimuth);
 
-      // Smoothly animate to new position
-      controlsRef.current.target.copy(newTarget);
-      
-      // Use three.js to smoothly move camera
+      // Smoothly animate both camera position and target
       const startPosition = camera.position.clone();
+      const startTarget = controlsRef.current.target.clone();
       const endPosition = new THREE.Vector3(cameraX, cameraY, cameraZ);
+      const endTarget = newTarget;
       const startTime = Date.now();
-      const duration = 1500; // 1.5 seconds
+      const duration = 2000; // 2 seconds for smoother animation
 
       const animateCamera = () => {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
         
-        // Smooth easing function
-        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        // Smooth cubic-bezier easing (ease-in-out)
+        const easeProgress = progress < 0.5 
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
         
+        // Smoothly interpolate both camera position and target
         camera.position.lerpVectors(startPosition, endPosition, easeProgress);
+        controlsRef.current.target.lerpVectors(startTarget, endTarget, easeProgress);
         controlsRef.current.update();
 
         if (progress < 1) {
