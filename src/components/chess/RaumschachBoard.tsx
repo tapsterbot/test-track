@@ -479,9 +479,10 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
 
       console.log(`Focusing on piece at Level ${numLevel}, File ${numFile}, Rank ${numRank} (world position: ${x}, ${y}, ${z})`);
 
-      // Enhanced target positioning - add piece height offset for better centering
+      // Enhanced target positioning - focus on center vertical axis of the board
       const pieceHeight = 0.3;
-      const newTarget = new THREE.Vector3(x, y + pieceHeight, z);
+      const centerAxisTarget = new THREE.Vector3(0, y + pieceHeight, 0);
+      const piecePosition = new THREE.Vector3(x, y + pieceHeight, z);
       
       // Multi-angle camera positioning with ultra-close distances
       const testAngles = [
@@ -511,21 +512,21 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
         const testAngle = Math.PI / 6; // 30 degrees elevation
         const testAzimuth = 0;
         
-        const cameraX = x + distance * Math.cos(testAngle) * Math.cos(testAzimuth);
-        const cameraY = y + distance * Math.sin(testAngle) + pieceHeight;
-        const cameraZ = z + distance * Math.cos(testAngle) * Math.sin(testAzimuth);
+        const cameraX = distance * Math.cos(testAngle) * Math.cos(testAzimuth);
+        const cameraY = (y + pieceHeight) + distance * Math.sin(testAngle);
+        const cameraZ = distance * Math.cos(testAngle) * Math.sin(testAzimuth);
         
         const testCameraPos = new THREE.Vector3(cameraX, cameraY, cameraZ);
         
-        // Test line of sight
-        const direction = new THREE.Vector3().subVectors(newTarget, testCameraPos).normalize();
+        // Test line of sight to piece from center axis view
+        const direction = new THREE.Vector3().subVectors(piecePosition, testCameraPos).normalize();
         raycaster.set(testCameraPos, direction);
         const intersects = raycaster.intersectObjects(scene.children, true);
         
         let hasObstruction = false;
         for (const intersect of intersects) {
           const intersectDistance = testCameraPos.distanceTo(intersect.point);
-          const targetDistance = testCameraPos.distanceTo(newTarget);
+          const targetDistance = testCameraPos.distanceTo(piecePosition);
           
           if (intersectDistance < targetDistance - 0.3) {
             hasObstruction = true;
@@ -561,14 +562,14 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
       
       for (const azimuth of azimuthAngles) {
         for (const elevation of elevationAngles) {
-          const cameraX = x + maxZoomDistance * Math.cos(elevation) * Math.cos(azimuth);
-          const cameraY = y + maxZoomDistance * Math.sin(elevation) + pieceHeight;
-          const cameraZ = z + maxZoomDistance * Math.cos(elevation) * Math.sin(azimuth);
+          const cameraX = maxZoomDistance * Math.cos(elevation) * Math.cos(azimuth);
+          const cameraY = (y + pieceHeight) + maxZoomDistance * Math.sin(elevation);
+          const cameraZ = maxZoomDistance * Math.cos(elevation) * Math.sin(azimuth);
           
           const testCameraPos = new THREE.Vector3(cameraX, cameraY, cameraZ);
           
-          // Test line of sight
-          const direction = new THREE.Vector3().subVectors(newTarget, testCameraPos).normalize();
+          // Test line of sight to piece from center axis view
+          const direction = new THREE.Vector3().subVectors(piecePosition, testCameraPos).normalize();
           raycaster.set(testCameraPos, direction);
           const intersects = raycaster.intersectObjects(scene.children, true);
           
@@ -577,7 +578,7 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
           
           for (const intersect of intersects) {
             const intersectDistance = testCameraPos.distanceTo(intersect.point);
-            const targetDistance = testCameraPos.distanceTo(newTarget);
+            const targetDistance = testCameraPos.distanceTo(piecePosition);
             
             if (intersectDistance < targetDistance - 0.3) {
               hasObstruction = true;
@@ -594,7 +595,7 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
               bestRotationScore = score;
               bestRotation = {
                 camera: testCameraPos.clone(),
-                target: newTarget.clone(),
+                target: centerAxisTarget.clone(),
                 azimuth,
                 elevation
               };
@@ -609,11 +610,11 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
         const fallbackAzimuth = Math.PI / 4;
         bestRotation = {
           camera: new THREE.Vector3(
-            x + maxZoomDistance * Math.cos(fallbackElevation) * Math.cos(fallbackAzimuth),
-            y + maxZoomDistance * Math.sin(fallbackElevation) + pieceHeight,
-            z + maxZoomDistance * Math.cos(fallbackElevation) * Math.sin(fallbackAzimuth)
+            maxZoomDistance * Math.cos(fallbackElevation) * Math.cos(fallbackAzimuth),
+            (y + pieceHeight) + maxZoomDistance * Math.sin(fallbackElevation),
+            maxZoomDistance * Math.cos(fallbackElevation) * Math.sin(fallbackAzimuth)
           ),
-          target: newTarget.clone(),
+          target: centerAxisTarget.clone(),
           azimuth: fallbackAzimuth,
           elevation: fallbackElevation
         };
@@ -637,13 +638,13 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
       
       for (const adjustment of panAdjustments) {
         const adjustedTarget = new THREE.Vector3(
-          newTarget.x + adjustment.x,
-          newTarget.y + adjustment.y,
-          newTarget.z + adjustment.z
+          centerAxisTarget.x + adjustment.x,
+          centerAxisTarget.y + adjustment.y,
+          centerAxisTarget.z + adjustment.z
         );
         
-        // Calculate camera position relative to new target
-        const direction = new THREE.Vector3().subVectors(bestRotation.camera, newTarget).normalize();
+        // Calculate camera position relative to adjusted center axis target
+        const direction = new THREE.Vector3().subVectors(bestRotation.camera, centerAxisTarget).normalize();
         const adjustedCamera = new THREE.Vector3().addVectors(
           adjustedTarget,
           direction.multiplyScalar(maxZoomDistance)
