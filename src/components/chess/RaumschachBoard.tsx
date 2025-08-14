@@ -479,65 +479,41 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
 
       console.log(`Focusing on piece at Level ${numLevel}, File ${numFile}, Rank ${numRank} (world position: ${x}, ${y}, ${z})`);
 
-      // Target position includes piece height for better visibility
-      const pieceHeight = 0.3;
-      const newTarget = new THREE.Vector3(x, y + pieceHeight, z);
+      // Set camera target to the piece position
+      const newTarget = new THREE.Vector3(x, y, z);
       
-      // Test multiple camera angles to find the best clickable position
-      const testAngles = [
-        { azimuth: Math.PI / 4, elevation: Math.PI / 5, distance: 6.5 },      // 45° azimuth, ~36° elevation
-        { azimuth: -Math.PI / 4, elevation: Math.PI / 5, distance: 6.5 },     // -45° azimuth, ~36° elevation
-        { azimuth: Math.PI / 3, elevation: Math.PI / 4, distance: 7 },        // 60° azimuth, 45° elevation
-        { azimuth: -Math.PI / 3, elevation: Math.PI / 4, distance: 7 },       // -60° azimuth, 45° elevation
-        { azimuth: 0, elevation: Math.PI / 3, distance: 6.8 },                // Front view, ~60° elevation
-        { azimuth: Math.PI, elevation: Math.PI / 3, distance: 6.8 }           // Back view, ~60° elevation
-      ];
+      // Calculate optimal camera position (slightly elevated and angled for best view)
+      const distance = 8; // Good viewing distance
+      const elevation = Math.PI / 6; // 30 degrees elevation
+      const azimuth = Math.PI / 4; // 45 degrees azimuth for good angle
 
-      // Select optimal camera position - prefer angles that show piece clearly
-      let bestAngle = testAngles[0];
+      const cameraX = x + distance * Math.cos(elevation) * Math.cos(azimuth);
+      const cameraY = y + distance * Math.sin(elevation);
+      const cameraZ = z + distance * Math.cos(elevation) * Math.sin(azimuth);
+
+      // Smoothly animate to new position
+      controlsRef.current.target.copy(newTarget);
       
-      // Prioritize angles based on piece position for better visibility
-      if (numFile <= 1) { // Left side of board
-        bestAngle = testAngles.find(a => a.azimuth > 0) || testAngles[0];
-      } else if (numFile >= 3) { // Right side of board
-        bestAngle = testAngles.find(a => a.azimuth < 0) || testAngles[1];
-      } else if (numRank <= 1) { // Front of board
-        bestAngle = testAngles[4]; // Front view
-      } else if (numRank >= 3) { // Back of board
-        bestAngle = testAngles[5]; // Back view
-      }
-
-      // Calculate camera position with optimal angle
-      const cameraX = x + bestAngle.distance * Math.cos(bestAngle.elevation) * Math.cos(bestAngle.azimuth);
-      const cameraY = y + pieceHeight + bestAngle.distance * Math.sin(bestAngle.elevation);
-      const cameraZ = z + bestAngle.distance * Math.cos(bestAngle.elevation) * Math.sin(bestAngle.azimuth);
-
-      // Store starting positions for smooth animation
+      // Use three.js to smoothly move camera
       const startPosition = camera.position.clone();
-      const startTarget = controlsRef.current.target.clone();
       const endPosition = new THREE.Vector3(cameraX, cameraY, cameraZ);
-      
       const startTime = Date.now();
-      const duration = 1800; // Slightly longer for smoother animation
+      const duration = 1500; // 1.5 seconds
 
       const animateCamera = () => {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
         
-        // Smooth easing with ease-in-out
-        const easeProgress = progress < 0.5 
-          ? 2 * progress * progress 
-          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+        // Smooth easing function
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
         
-        // Animate both camera position and target
         camera.position.lerpVectors(startPosition, endPosition, easeProgress);
-        controlsRef.current.target.lerpVectors(startTarget, newTarget, easeProgress);
         controlsRef.current.update();
 
         if (progress < 1) {
           requestAnimationFrame(animateCamera);
         } else {
-          console.log('Focus animation complete - piece should be clickable');
+          console.log('Focus animation complete');
         }
       };
 
