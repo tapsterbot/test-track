@@ -483,9 +483,9 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
       const pieceHeight = 0.3;
       const piecePosition = new THREE.Vector3(x, y + pieceHeight, z);
       
-      // Target is between the piece and center axis for natural board view
+      // Target is closer to piece position for better centering, with slight center axis bias
       const centerAxisPoint = new THREE.Vector3(0, y + pieceHeight, 0);
-      const targetPosition = new THREE.Vector3().lerpVectors(piecePosition, centerAxisPoint, 0.3);
+      const targetPosition = new THREE.Vector3().lerpVectors(piecePosition, centerAxisPoint, 0.15);
       
       // Multi-angle camera positioning with ultra-close distances
       const testAngles = [
@@ -638,14 +638,16 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
       console.log('Stage 3: Precision panning for perfect centering...');
       let finalPosition = bestRotation;
       
-      // Test larger adjustments to target position for better centering
+      // Test larger adjustments to target position for better piece centering
       const panAdjustments = [
         { x: 0, y: 0, z: 0 }, // Current position
-        { x: 0.3, y: 0, z: 0 }, { x: -0.3, y: 0, z: 0 },
-        { x: 0, y: 0.3, z: 0 }, { x: 0, y: -0.3, z: 0 },
-        { x: 0, y: 0, z: 0.3 }, { x: 0, y: 0, z: -0.3 },
-        { x: 0.2, y: 0.2, z: 0 }, { x: -0.2, y: -0.2, z: 0 },
-        { x: 0.2, y: 0, z: 0.2 }, { x: -0.2, y: 0, z: -0.2 }
+        { x: 0.5, y: 0, z: 0 }, { x: -0.5, y: 0, z: 0 },
+        { x: 0, y: 0.4, z: 0 }, { x: 0, y: -0.4, z: 0 },
+        { x: 0, y: 0, z: 0.5 }, { x: 0, y: 0, z: -0.5 },
+        { x: 0.3, y: 0.3, z: 0 }, { x: -0.3, y: -0.3, z: 0 },
+        { x: 0.3, y: 0, z: 0.3 }, { x: -0.3, y: 0, z: -0.3 },
+        { x: 0.4, y: 0.2, z: 0 }, { x: -0.4, y: -0.2, z: 0 },
+        { x: 0.2, y: 0, z: 0.4 }, { x: -0.2, y: 0, z: -0.4 }
       ];
       
       let bestPanScore = -1;
