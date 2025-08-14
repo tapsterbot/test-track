@@ -420,8 +420,7 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
 
   // Expose focus on piece function
   useEffect(() => {
-    // Function follows standard Raumschach notation: File-Level-Rank (e.g., "c", "A", "4" for Ac4)
-    (window as any).focusOnPiece = (file: number | string, level: number | string, rank: number | string) => {
+    (window as any).focusOnPiece = (level: number | string, file: number | string, rank: number | string) => {
       if (!controlsRef.current) {
         console.error('Camera controls not available');
         return;
@@ -463,8 +462,8 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
         return 0;
       };
 
-      const numFile = parseCoordinate(file, 'file');
       const numLevel = parseCoordinate(level, 'level');
+      const numFile = parseCoordinate(file, 'file');
       const numRank = parseCoordinate(rank, 'rank');
 
       // Validate coordinates
