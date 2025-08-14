@@ -479,10 +479,9 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
 
       console.log(`Focusing on piece at Level ${numLevel}, File ${numFile}, Rank ${numRank} (world position: ${x}, ${y}, ${z})`);
 
-      // Target the center vertical axis of the board at the piece's Y level for natural viewing
+      // Enhanced target positioning - add piece height offset for better centering
       const pieceHeight = 0.3;
-      const piecePosition = new THREE.Vector3(x, y + pieceHeight, z);
-      const newTarget = new THREE.Vector3(0, y + pieceHeight, 0); // Center vertical axis
+      const newTarget = new THREE.Vector3(x, y + pieceHeight, z);
       
       // Multi-angle camera positioning with ultra-close distances
       const testAngles = [
@@ -512,24 +511,23 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
         const testAngle = Math.PI / 6; // 30 degrees elevation
         const testAzimuth = 0;
         
-        // Position camera around the center axis, not the piece
-        const cameraX = 0 + distance * Math.cos(testAngle) * Math.cos(testAzimuth);
+        const cameraX = x + distance * Math.cos(testAngle) * Math.cos(testAzimuth);
         const cameraY = y + distance * Math.sin(testAngle) + pieceHeight;
-        const cameraZ = 0 + distance * Math.cos(testAngle) * Math.sin(testAzimuth);
+        const cameraZ = z + distance * Math.cos(testAngle) * Math.sin(testAzimuth);
         
         const testCameraPos = new THREE.Vector3(cameraX, cameraY, cameraZ);
         
-        // Test line of sight to the piece (even though we target center axis)
-        const directionToPiece = new THREE.Vector3().subVectors(piecePosition, testCameraPos).normalize();
-        raycaster.set(testCameraPos, directionToPiece);
+        // Test line of sight
+        const direction = new THREE.Vector3().subVectors(newTarget, testCameraPos).normalize();
+        raycaster.set(testCameraPos, direction);
         const intersects = raycaster.intersectObjects(scene.children, true);
         
         let hasObstruction = false;
         for (const intersect of intersects) {
           const intersectDistance = testCameraPos.distanceTo(intersect.point);
-          const pieceDistance = testCameraPos.distanceTo(piecePosition);
+          const targetDistance = testCameraPos.distanceTo(newTarget);
           
-          if (intersectDistance < pieceDistance - 0.3) {
+          if (intersectDistance < targetDistance - 0.3) {
             hasObstruction = true;
             break;
           }
@@ -563,16 +561,15 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
       
       for (const azimuth of azimuthAngles) {
         for (const elevation of elevationAngles) {
-          // Position camera around the center axis for natural board viewing
-          const cameraX = 0 + maxZoomDistance * Math.cos(elevation) * Math.cos(azimuth);
+          const cameraX = x + maxZoomDistance * Math.cos(elevation) * Math.cos(azimuth);
           const cameraY = y + maxZoomDistance * Math.sin(elevation) + pieceHeight;
-          const cameraZ = 0 + maxZoomDistance * Math.cos(elevation) * Math.sin(azimuth);
+          const cameraZ = z + maxZoomDistance * Math.cos(elevation) * Math.sin(azimuth);
           
           const testCameraPos = new THREE.Vector3(cameraX, cameraY, cameraZ);
           
-          // Test line of sight to the piece (ensure piece visibility)
-          const directionToPiece = new THREE.Vector3().subVectors(piecePosition, testCameraPos).normalize();
-          raycaster.set(testCameraPos, directionToPiece);
+          // Test line of sight
+          const direction = new THREE.Vector3().subVectors(newTarget, testCameraPos).normalize();
+          raycaster.set(testCameraPos, direction);
           const intersects = raycaster.intersectObjects(scene.children, true);
           
           let score = 0;
@@ -580,9 +577,9 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
           
           for (const intersect of intersects) {
             const intersectDistance = testCameraPos.distanceTo(intersect.point);
-            const pieceDistance = testCameraPos.distanceTo(piecePosition);
+            const targetDistance = testCameraPos.distanceTo(newTarget);
             
-            if (intersectDistance < pieceDistance - 0.3) {
+            if (intersectDistance < targetDistance - 0.3) {
               hasObstruction = true;
               break;
             }
@@ -612,9 +609,9 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
         const fallbackAzimuth = Math.PI / 4;
         bestRotation = {
           camera: new THREE.Vector3(
-            0 + maxZoomDistance * Math.cos(fallbackElevation) * Math.cos(fallbackAzimuth),
+            x + maxZoomDistance * Math.cos(fallbackElevation) * Math.cos(fallbackAzimuth),
             y + maxZoomDistance * Math.sin(fallbackElevation) + pieceHeight,
-            0 + maxZoomDistance * Math.cos(fallbackElevation) * Math.sin(fallbackAzimuth)
+            z + maxZoomDistance * Math.cos(fallbackElevation) * Math.sin(fallbackAzimuth)
           ),
           target: newTarget.clone(),
           azimuth: fallbackAzimuth,
