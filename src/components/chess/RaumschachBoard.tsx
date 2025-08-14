@@ -482,8 +482,8 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
       // Set camera target to the piece position
       const newTarget = new THREE.Vector3(x, y, z);
       
-      // Calculate optimal camera position (slightly elevated and angled for best view)
-      const distance = 8; // Good viewing distance
+      // Calculate optimal camera position (maximum zoom for closest view)
+      const distance = 5.1; // Just above minDistance (5) for maximum zoom
       const elevation = Math.PI / 6; // 30 degrees elevation
       const azimuth = Math.PI / 4; // 45 degrees azimuth for good angle
 
