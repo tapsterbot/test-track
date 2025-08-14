@@ -483,7 +483,7 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
       const pieceHeight = 0.3;
       const newTarget = new THREE.Vector3(x, y + pieceHeight, z);
       
-      // Multi-angle camera positioning with collision detection
+      // Multi-angle camera positioning with ultra-close distances
       const testAngles = [
         { azimuth: 0, elevation: Math.PI / 6 }, // 0°, 30° elevation
         { azimuth: Math.PI / 4, elevation: Math.PI / 6 }, // 45°, 30° elevation
@@ -497,14 +497,15 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
         { azimuth: Math.PI / 4, elevation: Math.PI / 3 }, // 45°, 60° elevation
       ];
 
-      // Score and select the best camera position
+      // Score and select the closest possible camera position
       let bestPosition = null;
       let bestScore = -1;
       const raycaster = new THREE.Raycaster();
       
       for (const angle of testAngles) {
-        // Test multiple distances to find optimal zoom
-        const distances = [3.5, 4.0, 4.5, 5.0];
+        // Test ultra-close distances for maximum zoom - closest possible while maintaining clickability
+        const distances = [1.8, 2.2, 2.6, 3.0];
+        
         
         for (const distance of distances) {
           const cameraX = x + distance * Math.cos(angle.elevation) * Math.cos(angle.azimuth);
@@ -551,9 +552,9 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
         }
       }
       
-      // Fallback to default position if no good position found
+      // Fallback to ultra-close position if no good position found
       if (!bestPosition) {
-        const fallbackDistance = 4.5;
+        const fallbackDistance = 2.5;
         const fallbackElevation = Math.PI / 6;
         const fallbackAzimuth = Math.PI / 4;
         
@@ -570,9 +571,9 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
 
       console.log(`Selected camera position with score ${bestScore}, distance ${bestPosition.distance}`);
       
-      // Temporarily adjust minimum distance for closer zoom
+      // Temporarily adjust minimum distance for ultra-close zoom
       const originalMinDistance = controlsRef.current.minDistance;
-      controlsRef.current.minDistance = 2.5;
+      controlsRef.current.minDistance = 1.5;
       
       // Smooth animation to the optimal position
       const startPosition = camera.position.clone();
