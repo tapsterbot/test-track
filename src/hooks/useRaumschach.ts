@@ -43,7 +43,7 @@ export function useRaumschach() {
   const [moveHistory, setMoveHistory] = useState<Move[]>([]);
   const [gameSettings, setGameSettings] = useState<GameSettings>({
     defaultPromotionPiece: 'queen',
-    autoPromote: false
+    autoPromote: true
   });
   const [pendingPromotion, setPendingPromotion] = useState<PendingPromotion | null>(null);
 
