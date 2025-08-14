@@ -497,110 +497,218 @@ function CameraControls({ isActive, onRotateLeft, onRotateRight, onAzimuthChange
         { azimuth: Math.PI / 4, elevation: Math.PI / 3 }, // 45°, 60° elevation
       ];
 
-      // Score and select the closest possible camera position
-      let bestPosition = null;
-      let bestScore = -1;
+      // Multi-Stage Focus Enhancement
       const raycaster = new THREE.Raycaster();
       
-      for (const angle of testAngles) {
-        // Test ultra-close distances for maximum zoom - closest possible while maintaining clickability
-        const distances = [1.8, 2.2, 2.6, 3.0];
+      // Stage 1: Find Maximum Zoom Distance
+      console.log('Stage 1: Finding maximum zoom distance...');
+      let maxZoomDistance = null;
+      
+      // Test distances from ultra-close to reasonable, find the closest that works
+      const testDistances = [0.8, 1.0, 1.2, 1.5, 1.8, 2.0, 2.2, 2.5];
+      for (const distance of testDistances) {
+        // Test with a basic angle first to see if this distance is viable
+        const testAngle = Math.PI / 6; // 30 degrees elevation
+        const testAzimuth = 0;
         
+        const cameraX = x + distance * Math.cos(testAngle) * Math.cos(testAzimuth);
+        const cameraY = y + distance * Math.sin(testAngle) + pieceHeight;
+        const cameraZ = z + distance * Math.cos(testAngle) * Math.sin(testAzimuth);
         
-        for (const distance of distances) {
-          const cameraX = x + distance * Math.cos(angle.elevation) * Math.cos(angle.azimuth);
-          const cameraY = y + distance * Math.sin(angle.elevation) + pieceHeight;
-          const cameraZ = z + distance * Math.cos(angle.elevation) * Math.sin(angle.azimuth);
+        const testCameraPos = new THREE.Vector3(cameraX, cameraY, cameraZ);
+        
+        // Test line of sight
+        const direction = new THREE.Vector3().subVectors(newTarget, testCameraPos).normalize();
+        raycaster.set(testCameraPos, direction);
+        const intersects = raycaster.intersectObjects(scene.children, true);
+        
+        let hasObstruction = false;
+        for (const intersect of intersects) {
+          const intersectDistance = testCameraPos.distanceTo(intersect.point);
+          const targetDistance = testCameraPos.distanceTo(newTarget);
+          
+          if (intersectDistance < targetDistance - 0.3) {
+            hasObstruction = true;
+            break;
+          }
+        }
+        
+        if (!hasObstruction) {
+          maxZoomDistance = distance;
+          break; // Found the closest working distance
+        }
+      }
+      
+      if (!maxZoomDistance) {
+        maxZoomDistance = 2.5; // Fallback distance
+      }
+      
+      console.log(`Stage 1 complete: Maximum zoom distance = ${maxZoomDistance}`);
+      
+      // Stage 2: Find Optimal Rotation at Max Zoom
+      console.log('Stage 2: Finding optimal rotation...');
+      let bestRotation = null;
+      let bestRotationScore = -1;
+      
+      // Test many more angles for better coverage
+      const azimuthAngles = [];
+      const elevationAngles = [Math.PI / 8, Math.PI / 6, Math.PI / 4, Math.PI / 3]; // 22.5°, 30°, 45°, 60°
+      
+      // Generate 16 azimuth angles (every 22.5 degrees)
+      for (let i = 0; i < 16; i++) {
+        azimuthAngles.push((i * Math.PI * 2) / 16);
+      }
+      
+      for (const azimuth of azimuthAngles) {
+        for (const elevation of elevationAngles) {
+          const cameraX = x + maxZoomDistance * Math.cos(elevation) * Math.cos(azimuth);
+          const cameraY = y + maxZoomDistance * Math.sin(elevation) + pieceHeight;
+          const cameraZ = z + maxZoomDistance * Math.cos(elevation) * Math.sin(azimuth);
           
           const testCameraPos = new THREE.Vector3(cameraX, cameraY, cameraZ);
           
-          // Test line of sight from camera to piece
+          // Test line of sight
           const direction = new THREE.Vector3().subVectors(newTarget, testCameraPos).normalize();
           raycaster.set(testCameraPos, direction);
-          
-          // Check for intersections with board elements (excluding the target piece area)
           const intersects = raycaster.intersectObjects(scene.children, true);
+          
+          let score = 0;
           let hasObstruction = false;
           
           for (const intersect of intersects) {
             const intersectDistance = testCameraPos.distanceTo(intersect.point);
             const targetDistance = testCameraPos.distanceTo(newTarget);
             
-            // If something is blocking the view to the piece
-            if (intersectDistance < targetDistance - 0.5) {
+            if (intersectDistance < targetDistance - 0.3) {
               hasObstruction = true;
               break;
             }
           }
           
-          // Score this position (closer distance is better, no obstruction is better)
-          let score = 0;
           if (!hasObstruction) {
             score += 100; // Clear line of sight bonus
-          }
-          score += (10 - distance); // Closer is better (max zoom preference)
-          score += Math.sin(angle.elevation) * 10; // Slight preference for elevated angles
-          
-          if (score > bestScore) {
-            bestScore = score;
-            bestPosition = { 
-              camera: testCameraPos.clone(), 
-              target: newTarget.clone(),
-              distance: distance 
-            };
+            score += Math.sin(elevation) * 20; // Prefer elevated angles
+            score += Math.random() * 5; // Small randomness to break ties
+            
+            if (score > bestRotationScore) {
+              bestRotationScore = score;
+              bestRotation = {
+                camera: testCameraPos.clone(),
+                target: newTarget.clone(),
+                azimuth,
+                elevation
+              };
+            }
           }
         }
       }
       
-      // Fallback to ultra-close position if no good position found
-      if (!bestPosition) {
-        const fallbackDistance = 2.5;
+      if (!bestRotation) {
+        // Fallback rotation
         const fallbackElevation = Math.PI / 6;
         const fallbackAzimuth = Math.PI / 4;
-        
-        bestPosition = {
+        bestRotation = {
           camera: new THREE.Vector3(
-            x + fallbackDistance * Math.cos(fallbackElevation) * Math.cos(fallbackAzimuth),
-            y + fallbackDistance * Math.sin(fallbackElevation) + pieceHeight,
-            z + fallbackDistance * Math.cos(fallbackElevation) * Math.sin(fallbackAzimuth)
+            x + maxZoomDistance * Math.cos(fallbackElevation) * Math.cos(fallbackAzimuth),
+            y + maxZoomDistance * Math.sin(fallbackElevation) + pieceHeight,
+            z + maxZoomDistance * Math.cos(fallbackElevation) * Math.sin(fallbackAzimuth)
           ),
           target: newTarget.clone(),
-          distance: fallbackDistance
+          azimuth: fallbackAzimuth,
+          elevation: fallbackElevation
         };
       }
-
-      console.log(`Selected camera position with score ${bestScore}, distance ${bestPosition.distance}`);
       
-      // Set minimum distance to prevent jumping after focus
-      const focusedDistance = bestPosition.distance;
-      controlsRef.current.minDistance = Math.max(1.5, focusedDistance - 0.5);
+      console.log(`Stage 2 complete: Optimal rotation found with score ${bestRotationScore}`);
       
-      // Smooth animation to the optimal position
+      // Stage 3: Precision Panning for Perfect Centering
+      console.log('Stage 3: Precision panning for perfect centering...');
+      let finalPosition = bestRotation;
+      
+      // Test small adjustments to target position for perfect centering
+      const panAdjustments = [
+        { x: 0, y: 0, z: 0 }, // Current position
+        { x: 0.1, y: 0, z: 0 }, { x: -0.1, y: 0, z: 0 },
+        { x: 0, y: 0.1, z: 0 }, { x: 0, y: -0.1, z: 0 },
+        { x: 0, y: 0, z: 0.1 }, { x: 0, y: 0, z: -0.1 }
+      ];
+      
+      let bestPanScore = -1;
+      
+      for (const adjustment of panAdjustments) {
+        const adjustedTarget = new THREE.Vector3(
+          newTarget.x + adjustment.x,
+          newTarget.y + adjustment.y,
+          newTarget.z + adjustment.z
+        );
+        
+        // Calculate camera position relative to new target
+        const direction = new THREE.Vector3().subVectors(bestRotation.camera, newTarget).normalize();
+        const adjustedCamera = new THREE.Vector3().addVectors(
+          adjustedTarget,
+          direction.multiplyScalar(maxZoomDistance)
+        );
+        
+        // Score based on how centered the piece would be
+        const score = 100 - (Math.abs(adjustment.x) + Math.abs(adjustment.y) + Math.abs(adjustment.z)) * 10;
+        
+        if (score > bestPanScore) {
+          bestPanScore = score;
+          finalPosition = {
+            camera: adjustedCamera,
+            target: adjustedTarget,
+            azimuth: bestRotation.azimuth,
+            elevation: bestRotation.elevation
+          };
+        }
+      }
+      
+      console.log(`Stage 3 complete: Final position optimized with pan score ${bestPanScore}`);
+      console.log(`Multi-stage focus complete: Distance=${maxZoomDistance}, Final score=${bestPanScore}`);
+      
+      // Set minimum distance to match the focused distance
+      controlsRef.current.minDistance = Math.max(0.5, maxZoomDistance - 0.3);
+      
+      // Sequential animation through all stages
       const startPosition = camera.position.clone();
       const startTarget = controlsRef.current.target.clone();
       const startTime = Date.now();
-      const duration = 1000; // 1 second for faster response
+      const totalDuration = 1500; // 1.5 seconds for more sophisticated animation
 
-      const animateCamera = () => {
+      const animateMultiStage = () => {
         const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
+        const progress = Math.min(elapsed / totalDuration, 1);
         
-        // Smooth easing function
-        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        // Multi-stage easing: fast start, smooth middle, precise end
+        let easeProgress;
+        if (progress < 0.3) {
+          // Stage 1: Fast zoom
+          easeProgress = (progress / 0.3) * 0.4;
+        } else if (progress < 0.7) {
+          // Stage 2: Smooth rotation
+          const stageProgress = (progress - 0.3) / 0.4;
+          easeProgress = 0.4 + stageProgress * 0.4;
+        } else {
+          // Stage 3: Precise final positioning
+          const stageProgress = (progress - 0.7) / 0.3;
+          easeProgress = 0.8 + stageProgress * 0.2;
+        }
         
-        // Animate both camera position and target simultaneously
-        camera.position.lerpVectors(startPosition, bestPosition.camera, easeProgress);
-        controlsRef.current.target.lerpVectors(startTarget, bestPosition.target, easeProgress);
+        // Apply smooth easing to final progress
+        const smoothProgress = 1 - Math.pow(1 - easeProgress, 2);
+        
+        camera.position.lerpVectors(startPosition, finalPosition.camera, smoothProgress);
+        controlsRef.current.target.lerpVectors(startTarget, finalPosition.target, smoothProgress);
         controlsRef.current.update();
 
         if (progress < 1) {
-          requestAnimationFrame(animateCamera);
+          requestAnimationFrame(animateMultiStage);
         } else {
-          console.log('Enhanced focus animation complete - piece should be clearly visible and clickable');
+          console.log('Multi-stage focus animation complete - piece optimally positioned and clickable');
         }
       };
 
-      animateCamera();
+      animateMultiStage();
     };
   }, [camera, scene]);
   
